@@ -5,13 +5,16 @@ name: Build $1B+ Revenue Universe
 # companies with > $1B trailing revenue that the daily screener scans
 # (PHASE 2, daily-screener.yml).
 #
-# Checking revenue for thousands of tickers in one run trips Yahoo
+# Checking revenue for thousands of tickers from a single IP trips Yahoo
 # Finance's rate limiting -- the same throttling that can stall the daily
-# screener if it scans its universe twice in a short window. So this job
-# runs once a day, well before the screener, and only checks a batch of
-# the oldest / never-checked tickers (see CHUNK_SIZE in build_universe.py),
-# committing its progress each time. A couple of weeks of daily runs fully
-# bootstraps the universe; afterwards it keeps refreshing stale entries.
+# screener if it scans its universe twice in a short window. Each
+# GitHub-hosted runner gets its own IP though, so this fans the work out
+# across SHARD_COUNT parallel "scan" jobs (each checking a different slice
+# of the oldest/never-checked tickers -- see CHUNK_SIZE in
+# build_universe.py) and a single "merge" job combines their results and
+# commits. Running N shards checks roughly N * CHUNK_SIZE tickers/day, so
+# the universe bootstraps in days rather than weeks; afterwards this keeps
+# refreshing stale entries indefinitely.
 
 on:
   schedule:
@@ -19,12 +22,19 @@ on:
   workflow_dispatch:        # adds a manual "Run workflow" button for testing
 
 permissions:
-  contents: write           # required so the job can commit the universe back
+  contents: write           # required so the merge job can commit the universe back
+
+env:
+  SHARD_COUNT: 4
 
 jobs:
-  build-universe:
+  scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        shard: [0, 1, 2, 3]
+      fail-fast: false
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -37,8 +47,43 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Build / refresh the $1B+ revenue universe
-        run: python screener/build_universe.py
+      - name: Scan this shard's slice of the universe
+        run: |
+          python screener/build_universe.py scan \
+            --shard-index ${{ matrix.shard }} --shard-count ${{ env.SHARD_COUNT }}
+
+      - name: Upload this shard's results
+        uses: actions/upload-artifact@v4
+        with:
+          name: universe-partial-${{ matrix.shard }}
+          path: screener/universe_partial_${{ matrix.shard }}.csv
+          if-no-files-found: error
+
+  merge:
+    needs: scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Download every shard's results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: universe-partial-*
+          path: screener/
+          merge-multiple: true
+
+      - name: Merge shard results, recompute the qualifying list
+        run: python screener/build_universe.py merge --shard-count ${{ env.SHARD_COUNT }}
 
       - name: Commit universe files back to the repo
         run: |
