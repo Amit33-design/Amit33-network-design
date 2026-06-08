@@ -53,7 +53,7 @@ PROFILES = {
         "week_drop_pct":  -12.0,        # loosened from -20
         "min_revenue":    1_000_000_000,
         "max_rec_mean":   2.5,
-        "min_upside_pct": 10.0,
+        "min_upside_pct": 5.0,          # loosened from 10.0 to surface more matches
     },
     # Deep small-cap selloff: keep the -20% weekly crash, drop the revenue floor.
     "SMALL_CAP_CRASH": {
@@ -61,7 +61,7 @@ PROFILES = {
         "week_drop_pct":  -20.0,        # original strict weekly bar
         "min_revenue":    0,            # revenue floor removed (HIGHER RISK)
         "max_rec_mean":   2.5,
-        "min_upside_pct": 10.0,
+        "min_upside_pct": 5.0,          # loosened from 10.0 to surface more matches
     },
 }
 
