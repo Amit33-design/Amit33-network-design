@@ -29,6 +29,7 @@ Optional: edit UNIVERSE below, or pass your own list of tickers.
 """
 
 import io
+import os
 import time
 import math
 import pandas as pd
@@ -67,10 +68,34 @@ PROFILES = {
 
 # ---------------------------------------------------------------------------
 # UNIVERSE — the list of tickers to scan.
-# Default pulls the S&P 500 from Wikipedia; falls back to a small sample.
-# Replace with your own list for a broader / different universe.
+#
+# Two-phase pipeline:
+#   PHASE 1 (build_universe.py, run on its own schedule) scrapes every
+#            NASDAQ/NYSE-listed US company and caches the ones with
+#            trailing revenue > $1B to universe_1b_revenue.csv. This covers
+#            ANY qualifying US company, not just the S&P 500.
+#   PHASE 2 (this screener) loads that cached list and applies the
+#            day-drop / week-drop / options / rating checks daily.
+#
+# If the cache doesn't exist yet (e.g. build_universe.py hasn't run), this
+# falls back to the S&P 500 from Wikipedia, then a small hard-coded sample.
 # ---------------------------------------------------------------------------
+CACHED_UNIVERSE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                    "universe_1b_revenue.csv")
+
+
 def load_universe():
+    if os.path.exists(CACHED_UNIVERSE_PATH):
+        try:
+            cached = pd.read_csv(CACHED_UNIVERSE_PATH)
+            tickers = cached["ticker"].dropna().tolist()
+            if tickers:
+                print(f"Loaded {len(tickers)} tickers with revenue > $1B "
+                      f"from the cached universe ({CACHED_UNIVERSE_PATH}).")
+                return tickers
+        except Exception as e:
+            print(f"Could not read cached universe ({e}); falling back to S&P 500.")
+
     try:
         resp = requests.get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies",
                             headers=WIKI_HEADERS, timeout=15)

@@ -1,0 +1,50 @@
+name: Build $1B+ Revenue Universe
+
+# PHASE 1 of the two-phase screener pipeline: bootstraps and refreshes
+# screener/universe_1b_revenue.csv -- the list of US-listed (NASDAQ/NYSE)
+# companies with > $1B trailing revenue that the daily screener scans
+# (PHASE 2, daily-screener.yml).
+#
+# Checking revenue for thousands of tickers in one run trips Yahoo
+# Finance's rate limiting -- the same throttling that can stall the daily
+# screener if it scans its universe twice in a short window. So this job
+# runs once a day, well before the screener, and only checks a batch of
+# the oldest / never-checked tickers (see CHUNK_SIZE in build_universe.py),
+# committing its progress each time. A couple of weeks of daily runs fully
+# bootstraps the universe; afterwards it keeps refreshing stale entries.
+
+on:
+  schedule:
+    - cron: '0 11 * * *'   # ~daily, hours before the 6 AM Pacific screener
+  workflow_dispatch:        # adds a manual "Run workflow" button for testing
+
+permissions:
+  contents: write           # required so the job can commit the universe back
+
+jobs:
+  build-universe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build / refresh the $1B+ revenue universe
+        run: python screener/build_universe.py
+
+      - name: Commit universe files back to the repo
+        run: |
+          git config user.name  "screener-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add screener/universe_1b_revenue.csv screener/universe_scan_state.csv
+          git commit -m "Refresh \$1B+ revenue universe $(TZ=America/Los_Angeles date +%F)" \
+            || echo "No changes to commit"
+          git push
