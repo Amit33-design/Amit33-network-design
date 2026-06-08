@@ -133,8 +133,19 @@ def pick_chunk(full_list, state, size):
 
 
 def fetch_revenue(ticker):
+    """Trailing revenue in USD, or None if unavailable / not USD-denominated.
+
+    yfinance reports `totalRevenue` in the company's reporting currency, not
+    USD -- e.g. Honda (HMC) reports in JPY and Argentine ADRs (GGAL, BMA, ...)
+    report in ARS, both of which dwarf $1B in nominal local-currency terms
+    without representing $1B+ of actual USD revenue. Restricting to
+    `financialCurrency == "USD"` keeps the $1B floor meaningful and, as a
+    side effect, keeps the universe to companies that report in USD.
+    """
     try:
         info = yf.Ticker(ticker).info or {}
+        if (info.get("financialCurrency") or "").upper() != "USD":
+            return None
         return info.get("totalRevenue")
     except Exception:
         return None
