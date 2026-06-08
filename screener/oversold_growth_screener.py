@@ -28,10 +28,15 @@ Optional: edit UNIVERSE below, or pass your own list of tickers.
 -------------------------------------------------------------------------
 """
 
+import io
 import time
 import math
 import pandas as pd
+import requests
 import yfinance as yf
+
+# Wikipedia returns 403 Forbidden to requests without a browser-like User-Agent.
+WIKI_HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; oversold-growth-screener/1.0)"}
 
 # ---------------------------------------------------------------------------
 # CRITERIA — tweak these thresholds to loosen or tighten the screen
@@ -67,7 +72,10 @@ PROFILES = {
 # ---------------------------------------------------------------------------
 def load_universe():
     try:
-        tables = pd.read_html("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
+        resp = requests.get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies",
+                            headers=WIKI_HEADERS, timeout=15)
+        resp.raise_for_status()
+        tables = pd.read_html(io.StringIO(resp.text))
         tickers = tables[0]["Symbol"].str.replace(".", "-", regex=False).tolist()
         print(f"Loaded {len(tickers)} tickers from S&P 500.")
         return tickers
