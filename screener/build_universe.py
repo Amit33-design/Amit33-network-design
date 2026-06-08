@@ -28,18 +28,22 @@ SETUP (run on your own machine, not a restricted sandbox):
 -------------------------------------------------------------------------
 """
 
+import io
 import os
 import sys
 import time
 
 import pandas as pd
+import requests
 import yfinance as yf
 
 # NASDAQ Trader publishes plain pipe-delimited symbol directories for every
 # NASDAQ-listed and "other" (NYSE / NYSE American / ARCA / BATS) listed
-# security — no fragile HTML scraping required.
+# security — no fragile HTML scraping required. Like Wikipedia, it returns
+# 403 Forbidden without a browser-like User-Agent.
 NASDAQ_LISTED_URL = "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt"
 OTHER_LISTED_URL = "https://www.nasdaqtrader.com/dynamic/SymDir/otherlisted.txt"
+LISTING_HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; oversold-growth-screener/1.0)"}
 
 REVENUE_FLOOR = 1_000_000_000
 CHUNK_SIZE = 800          # tickers checked per run (~10-15 min at SLEEP_BETWEEN)
@@ -51,18 +55,25 @@ STATE_PATH = os.path.join(HERE, "universe_scan_state.csv")
 OUTPUT_PATH = os.path.join(HERE, "universe_1b_revenue.csv")
 
 
+def _fetch_listing(url):
+    resp = requests.get(url, headers=LISTING_HEADERS, timeout=30)
+    resp.raise_for_status()
+    # Pipe-delimited with a trailing "File Creation Time..." footer row.
+    return pd.read_csv(io.StringIO(resp.text), sep="|")
+
+
 def load_full_listing():
     """Every NASDAQ + NYSE/AMEX common-stock ticker (best effort, ETFs/test issues excluded)."""
     symbols = []
     try:
-        nas = pd.read_csv(NASDAQ_LISTED_URL, sep="|")
+        nas = _fetch_listing(NASDAQ_LISTED_URL)
         nas = nas[(nas["Test Issue"] == "N") & (nas["ETF"] == "N")]
         symbols += nas["Symbol"].tolist()
     except Exception as e:
         print(f"Could not load nasdaqlisted.txt ({e})")
 
     try:
-        oth = pd.read_csv(OTHER_LISTED_URL, sep="|")
+        oth = _fetch_listing(OTHER_LISTED_URL)
         oth = oth[(oth["Test Issue"] == "N") & (oth["ETF"] == "N")]
         symbols += oth["ACT Symbol"].tolist()
     except Exception as e:
