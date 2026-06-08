@@ -1,0 +1,69 @@
+name: Daily Stock Screener
+
+# Runs the oversold-growth screener every morning at 6:00 AM Pacific
+# and commits results/screen_<date>.csv back to the repo.
+
+on:
+  schedule:
+    # GitHub Actions cron is in UTC and does NOT adjust for daylight saving.
+    # 6 AM Pacific = 13:00 UTC (PDT, summer) or 14:00 UTC (PST, winter).
+    # We trigger at BOTH and then gate to the real 6 AM Pacific in the job.
+    - cron: '0 13,14 * * *'
+  workflow_dispatch:    # adds a manual "Run workflow" button for testing
+
+permissions:
+  contents: write       # required so the job can commit results back
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Gate to 6 AM Pacific (manual runs always proceed)
+        id: gate
+        run: |
+          HOUR=$(TZ=America/Los_Angeles date +%H)
+          echo "Current Pacific hour: $HOUR"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manual run requested; proceeding regardless of hour."
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          elif [ "$HOUR" = "06" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Not 6 AM Pacific; this trigger is skipped."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Python
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.gate.outputs.run == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Run the screener
+        if: steps.gate.outputs.run == 'true'
+        run: python screener/run_ci.py
+
+      - name: Commit results back to the repo
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          git config user.name  "screener-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add results/
+          git commit -m "Daily screen $(TZ=America/Los_Angeles date +%F)" \
+            || echo "No changes to commit"
+          git push
+
+      - name: Also upload results as a downloadable artifact
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: screen-results
+          path: results/
+          if-no-files-found: ignore
