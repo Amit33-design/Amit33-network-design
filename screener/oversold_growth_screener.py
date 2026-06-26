@@ -64,6 +64,14 @@ PROFILES = {
         "max_rec_mean":   2.5,
         "min_upside_pct": 5.0,          # loosened from 10.0 to surface more matches
     },
+    # Monthly crash with strong bounce-back potential: >$1B revenue,
+    # dropped 30-50% over the past month, analysts see 50%+ upside.
+    "MONTHLY_CRASH_BOUNCE": {
+        "month_drop_range": (-50.0, -30.0),
+        "min_revenue":    1_000_000_000,
+        "max_rec_mean":   2.5,
+        "min_upside_pct": 50.0,
+    },
 }
 
 # ---------------------------------------------------------------------------
@@ -126,19 +134,19 @@ def screen_ticker(ticker):
     try:
         t = yf.Ticker(ticker)
 
-        # --- price history for day & week drops ---
-        hist = t.history(period="10d", interval="1d")
-        if len(hist) < 6:
+        # --- price history for day, week & month drops ---
+        hist = t.history(period="45d", interval="1d")
+        if len(hist) < 2:
             return None
         closes = hist["Close"].dropna()
+        if len(closes) < 2:
+            return None
         last = closes.iloc[-1]
         prev_day = closes.iloc[-2]
-        week_ago = closes.iloc[-6]   # ~5 sessions back
 
         day_change = pct(last, prev_day)
-        week_change = pct(last, week_ago)
-        if day_change is None or week_change is None:
-            return None
+        week_change = pct(last, closes.iloc[-6]) if len(closes) >= 6 else None
+        month_change = pct(last, closes.iloc[-22]) if len(closes) >= 22 else None
 
         info = t.info or {}
         revenue = info.get("totalRevenue") or 0
@@ -152,13 +160,24 @@ def screen_ticker(ticker):
         # Evaluate against every profile; collect the ones that pass.
         passed = []
         for name, p in PROFILES.items():
-            if (day_change <= p["day_drop_pct"]
-                    and week_change <= p["week_drop_pct"]
-                    and revenue >= p["min_revenue"]
-                    and ((rec_mean is not None and rec_mean <= p["max_rec_mean"])
-                         or rec_key in ("buy", "strong_buy"))
-                    and upside is not None and upside >= p["min_upside_pct"]):
-                passed.append(name)
+            day_req = p.get("day_drop_pct")
+            week_req = p.get("week_drop_pct")
+            month_range = p.get("month_drop_range")
+            if day_req is not None and (day_change is None or day_change > day_req):
+                continue
+            if week_req is not None and (week_change is None or week_change > week_req):
+                continue
+            if month_range and (month_change is None
+                                or not (month_range[0] <= month_change <= month_range[1])):
+                continue
+            if revenue < p["min_revenue"]:
+                continue
+            if not ((rec_mean is not None and rec_mean <= p["max_rec_mean"])
+                    or rec_key in ("buy", "strong_buy")):
+                continue
+            if upside is None or upside < p["min_upside_pct"]:
+                continue
+            passed.append(name)
         if not passed:
             return None
 
@@ -186,8 +205,9 @@ def screen_ticker(ticker):
             "ticker": ticker,
             "profiles": "+".join(passed),
             "price": round(last, 2),
-            "day_%": round(day_change, 1),
-            "week_%": round(week_change, 1),
+            "day_%": round(day_change, 1) if day_change is not None else None,
+            "week_%": round(week_change, 1) if week_change is not None else None,
+            "month_%": round(month_change, 1) if month_change is not None else None,
             "revenue_$B": round(revenue / 1e9, 2),
             "rec_mean": rec_mean,
             "rec": rec_key,
@@ -211,7 +231,7 @@ def main():
             matches.append(result)
             print(f"  MATCH [{result['profiles']:<28}] {ticker:6} "
                   f"day {result['day_%']}%  week {result['week_%']}%  "
-                  f"upside {result['upside_%']}%")
+                  f"month {result['month_%']}%  upside {result['upside_%']}%")
         if i % 25 == 0:
             print(f"  ...{i}/{len(universe)} scanned, {len(matches)} matches so far")
         time.sleep(SLEEP_BETWEEN)

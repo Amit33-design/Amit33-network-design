@@ -5,9 +5,10 @@ CI entry point for the GitHub Actions cloud agent.
 Runs ONE scan and writes results/screen_<YYYY-MM-DD>.csv (Pacific date).
 Designed to be invoked by .github/workflows/daily-screener.yml.
 
-It reuses the dual-profile logic in oversold_growth_screener.py:
-  - LARGE_CAP_DIP   : -5% day, -12% week, >$1B revenue, Buy rating, upside
-  - SMALL_CAP_CRASH : -5% day, -20% week, no revenue floor, Buy rating, upside
+It reuses the multi-profile logic in oversold_growth_screener.py:
+  - LARGE_CAP_DIP       : -5% day, -12% week, >$1B revenue, Buy rating, upside
+  - SMALL_CAP_CRASH     : -5% day, -20% week, no revenue floor, Buy rating, upside
+  - MONTHLY_CRASH_BOUNCE: -30% to -50% month, >$1B revenue, Buy rating, 50%+ upside
 """
 import os
 import sys
@@ -41,7 +42,7 @@ def main():
             matches.append(result)
             print(f"  MATCH [{result['profiles']}] {ticker} "
                   f"day {result['day_%']}% week {result['week_%']}% "
-                  f"upside {result['upside_%']}%")
+                  f"month {result['month_%']}% upside {result['upside_%']}%")
         if i % 50 == 0:
             print(f"  ...{i}/{len(universe)} scanned, {len(matches)} matches")
         time.sleep(SLEEP_BETWEEN)
@@ -54,8 +55,8 @@ def main():
     else:
         # Write an empty (header-only) file so the daily history is unbroken
         df = pd.DataFrame(columns=[
-            "ticker", "profiles", "price", "day_%", "week_%", "revenue_$B",
-            "rec_mean", "rec", "target", "upside_%", "options"
+            "ticker", "profiles", "price", "day_%", "week_%", "month_%",
+            "revenue_$B", "rec_mean", "rec", "target", "upside_%", "options"
         ])
 
     df.to_csv(out_path, index=False)
