@@ -159,8 +159,8 @@ export default function Portfolio() {
               </div>
               <div className="mt-2 text-xs text-slate-400">
                 {live
-                  ? "Live prices fetched on demand. AlphaHunter score/recommendation shown for tickers in the latest scan."
-                  : "Live quotes unavailable — showing snapshot prices. Score shown for scanned tickers."}
+                  ? "Live prices + an on-the-go technical Buy/Hold/Sell (trend, RSI, momentum, 52-week position) for every holding. Full AlphaHunter score shown when the ticker is in the latest scan."
+                  : "Live quotes unavailable — showing snapshot prices. Recommendation shown for scanned tickers."}
               </div>
             </>
           )}

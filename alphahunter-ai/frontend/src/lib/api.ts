@@ -74,7 +74,10 @@ async function analyzePortfolioLive(
   positions: { ticker: string; quantity: number; cost_basis: number }[]
 ): Promise<{ data: PortfolioResponse; live: boolean }> {
   const tickers = positions.map((p) => p.ticker.toUpperCase());
-  let quotes: Record<string, { price: number; name?: string }> = {};
+  let quotes: Record<
+    string,
+    { price: number; name?: string; score?: number; recommendation?: string }
+  > = {};
   let live = false;
   try {
     const res = await fetch("/api/quote", {
@@ -116,11 +119,14 @@ async function analyzePortfolioLive(
       market_value: Math.round(value * 100) / 100,
       gain_loss: Math.round(gl * 100) / 100,
       "gain_loss_%": basis ? Math.round((gl / basis) * 1000) / 10 : 0,
+      // Prefer the full AlphaHunter score for scanned names; otherwise use the
+      // live on-the-go technical score/recommendation from /api/quote so every
+      // holding gets a Buy/Hold/Sell signal.
       scores: rec?.subscores,
-      overall_score: rec?.score,
+      overall_score: rec?.score ?? q?.score,
       recommendation: rec
         ? rec.score >= 70 ? "Buy More" : rec.score >= 55 ? "Hold" : rec.score >= 40 ? "Reduce" : "Sell"
-        : "Not in latest scan",
+        : q?.recommendation ?? (price != null ? "Hold" : "no data"),
       covered_call: rec?.covered_call,
       cash_secured_put: rec?.cash_secured_put,
     };
