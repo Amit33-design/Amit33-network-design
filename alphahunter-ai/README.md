@@ -27,7 +27,8 @@ the proven NASDAQ-Trader universe, and keeps the legacy screener untouched.
 | REST API (FastAPI) | `backend/api/routes.py` | ✅ working |
 | AI explanation / NL queries | `backend/ai/explainer.py` | ✅ rule-based; OpenAI optional |
 | Database (Postgres) | `backend/database/` | ✅ optional, degrades gracefully |
-| Frontend (React/AG Grid) | `frontend/` | ⬜ next phase |
+| Frontend (React/AG Grid/Plotly) | `frontend/` | ✅ built (Dashboard, Opportunities, Options, Portfolio, Backtest) |
+| Daily scan CI | `.github/workflows/alphahunter-scan.yml` | ✅ commits dated results |
 
 ## The screener strategy
 

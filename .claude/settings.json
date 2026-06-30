@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f \"$CLAUDE_PROJECT_DIR/CODE.md\" ]; then printf '===== CODE.md (repo guide — read before acting) =====\\n\\n'; cat \"$CLAUDE_PROJECT_DIR/CODE.md\"; else echo 'CODE.md not found at repo root.'; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
