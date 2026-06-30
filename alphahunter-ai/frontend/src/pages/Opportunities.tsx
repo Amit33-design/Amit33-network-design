@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { api } from "../lib/api";
+import { api, isSnapshot } from "../lib/api";
 import type { Recommendation } from "../lib/types";
 import RecGrid from "../components/RecGrid";
 import { ErrorBox, Loading } from "../components/Loading";
+import SnapshotBanner from "../components/SnapshotBanner";
 
 type Feed = "top" | "oversold" | "breakouts";
 
@@ -11,6 +12,7 @@ export default function Opportunities() {
   const [rows, setRows] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [snap, setSnap] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -18,7 +20,10 @@ export default function Opportunities() {
     const call =
       feed === "top" ? api.marketTop : feed === "oversold" ? api.oversold : api.breakouts;
     call(100)
-      .then((r) => setRows(r.results))
+      .then((r) => {
+        setRows(r.results);
+        setSnap(isSnapshot());
+      })
       .catch((e) => setError(String(e)))
       .finally(() => setLoading(false));
   }, [feed]);
@@ -41,6 +46,7 @@ export default function Opportunities() {
           ))}
         </div>
       </div>
+      {snap && <SnapshotBanner />}
       {loading ? <Loading /> : error ? <ErrorBox error={error} /> : <RecGrid rows={rows} />}
     </div>
   );

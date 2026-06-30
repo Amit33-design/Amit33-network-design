@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
-import { api } from "../lib/api";
+import { api, isSnapshot } from "../lib/api";
 import type { Recommendation } from "../lib/types";
 import { ErrorBox, Loading } from "../components/Loading";
+import SnapshotBanner from "../components/SnapshotBanner";
 
 function Card({ label, value, accent }: { label: string; value: string; accent?: string }) {
   return (
@@ -42,6 +43,7 @@ export default function Dashboard() {
   return (
     <div>
       <h1 className="text-xl font-bold text-ink mb-4">Dashboard</h1>
+      {isSnapshot() && <SnapshotBanner />}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <Card label="Setups Found" value={String(rows.length)} />
         <Card label="High Conviction" value={String(high)} accent="text-alpha" />

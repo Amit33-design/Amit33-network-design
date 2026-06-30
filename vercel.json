@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd alphahunter-ai/frontend && npm install && npm run build",
+  "outputDirectory": "alphahunter-ai/frontend/dist",
+  "installCommand": "echo 'install handled in buildCommand'",
+  "framework": null,
+  "rewrites": [
+    { "source": "/((?!assets/|snapshot.json).*)", "destination": "/index.html" }
+  ]
+}

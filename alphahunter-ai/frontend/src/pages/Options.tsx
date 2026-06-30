@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { api } from "../lib/api";
+import { api, isSnapshot } from "../lib/api";
 import type { Recommendation } from "../lib/types";
 import { ErrorBox, Loading } from "../components/Loading";
+import SnapshotBanner from "../components/SnapshotBanner";
 
 type Kind = "coveredcalls" | "csp";
 
@@ -45,6 +46,7 @@ export default function Options() {
         </div>
       </div>
 
+      {!loading && isSnapshot() && <SnapshotBanner />}
       {loading ? (
         <Loading label="Pulling option chains…" />
       ) : error ? (
