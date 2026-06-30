@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { api } from "../lib/api";
+import { api, isSnapshot } from "../lib/api";
 import type { PortfolioResponse } from "../lib/types";
 import { ErrorBox } from "../components/Loading";
+import SnapshotBanner from "../components/SnapshotBanner";
 
-const SAMPLE = `AAPL, 10, 150
-MSFT, 5, 320
-NVDA, 8, 95`;
+// Defaults use tickers from the latest scan so the demo populates offline.
+// (In snapshot mode only scanned tickers can be priced; run a live scan for any ticker.)
+const SAMPLE = `PLTR, 10, 90
+COIN, 5, 180
+ZS, 8, 150
+CTSH, 20, 45`;
 
 export default function Portfolio() {
   const [text, setText] = useState(SAMPLE);
@@ -40,6 +44,7 @@ export default function Portfolio() {
   return (
     <div>
       <h1 className="text-xl font-bold text-ink mb-4">Portfolio Analyzer</h1>
+      {data && isSnapshot() && <SnapshotBanner />}
       <div className="grid md:grid-cols-3 gap-6">
         <div className="bg-white rounded-xl shadow-sm p-4">
           <div className="text-sm text-slate-500 mb-2">

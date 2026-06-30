@@ -66,6 +66,79 @@ async function scanWithFallback(
   }
 }
 
+// Client-side portfolio analysis against the snapshot, used when no backend is
+// reachable. Tickers present in the latest scan get a real price/score/rec;
+// others are flagged so the user knows to run a live scan for full coverage.
+async function portfolioFromSnapshot(
+  positions: { ticker: string; quantity: number; cost_basis: number }[]
+): Promise<PortfolioResponse> {
+  const all = await loadSnapshot();
+  snapshotMode = true;
+  const byTicker = new Map(all.map((r) => [r.ticker.toUpperCase(), r]));
+  let mv = 0;
+  let cost = 0;
+  const rows = positions.map((p) => {
+    const rec = byTicker.get(p.ticker.toUpperCase());
+    if (!rec || rec.metrics?.price == null) {
+      return { ticker: p.ticker.toUpperCase(), error: "not in latest scan" };
+    }
+    const price = Number(rec.metrics.price);
+    const value = price * p.quantity;
+    const basis = p.cost_basis * p.quantity;
+    mv += value;
+    cost += basis;
+    const gl = value - basis;
+    return {
+      ticker: p.ticker.toUpperCase(),
+      quantity: p.quantity,
+      cost_basis: p.cost_basis,
+      price,
+      market_value: Math.round(value * 100) / 100,
+      gain_loss: Math.round(gl * 100) / 100,
+      "gain_loss_%": basis ? Math.round((gl / basis) * 1000) / 10 : 0,
+      scores: rec.subscores,
+      overall_score: rec.score,
+      recommendation:
+        rec.score >= 70 ? "Buy More" : rec.score >= 55 ? "Hold" : rec.score >= 40 ? "Reduce" : "Sell",
+      covered_call: rec.covered_call,
+      cash_secured_put: rec.cash_secured_put,
+    };
+  });
+  const gl = mv - cost;
+  return {
+    summary: {
+      market_value: Math.round(mv * 100) / 100,
+      cost_basis: Math.round(cost * 100) / 100,
+      gain_loss: Math.round(gl * 100) / 100,
+      "gain_loss_%": cost ? Math.round((gl / cost) * 1000) / 10 : 0,
+      positions: rows.filter((r) => !("error" in r)).length,
+    },
+    positions: rows,
+  };
+}
+
+// Ask the Vercel serverless function to trigger the GitHub Actions scan.
+// Returns {triggered:true} on success, or {configured:false, actionsUrl} when
+// the deploy has no GITHUB_DISPATCH_TOKEN set (so the UI can link out instead).
+export async function runScan(): Promise<{
+  triggered?: boolean;
+  configured?: boolean;
+  actionsUrl?: string;
+  error?: string;
+}> {
+  try {
+    const res = await fetch("/api/run-scan", { method: "POST" });
+    return await res.json();
+  } catch (e) {
+    return {
+      configured: false,
+      actionsUrl:
+        "https://github.com/Amit33-design/Amit33-network-design/actions/workflows/alphahunter-scan.yml",
+      error: String(e),
+    };
+  }
+}
+
 export const api = {
   marketTop: (limit = 50) => scanWithFallback(`/market/top?limit=${limit}`),
   oversold: (limit = 50) =>
@@ -80,7 +153,16 @@ export const api = {
   morning: () => get<any>(`/report/morning`),
   backtest: (ticker: string, hold = 10) =>
     get<any>(`/backtest/${encodeURIComponent(ticker)}?hold_days=${hold}`),
-  importPortfolio: (positions: { ticker: string; quantity: number; cost_basis: number }[]) =>
-    post<PortfolioResponse>(`/portfolio/import`, { positions }),
+  importPortfolio: async (
+    positions: { ticker: string; quantity: number; cost_basis: number }[]
+  ): Promise<PortfolioResponse> => {
+    try {
+      const live = await post<PortfolioResponse>(`/portfolio/import`, { positions });
+      snapshotMode = false;
+      return live;
+    } catch {
+      return portfolioFromSnapshot(positions);
+    }
+  },
   ask: (query: string) => post<any>(`/ai/ask`, { query }),
 };

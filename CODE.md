@@ -123,6 +123,14 @@ build (framework preset must stay "Other", root dir `./`). With no backend
 attached, the site serves `frontend/public/snapshot.json` and shows a
 "Snapshot mode" banner; wire a live backend by setting `VITE_API_TARGET`.
 
+**Refreshing the deployed data**: the daily scan (`backend/run_daily.py`)
+rewrites `frontend/public/snapshot.json`; committing it auto-deploys fresh data.
+The site's **"Run Scan" button** (header) POSTs to the Vercel serverless
+function `api/run-scan.js`, which triggers the `alphahunter-scan.yml` workflow.
+That function needs a Vercel env var **`GITHUB_DISPATCH_TOKEN`** (fine-grained
+PAT, Actions: read+write on this repo); without it the button links to the
+Actions page instead. The SPA rewrite in `vercel.json` excludes `api/`.
+
 **Tests must stay offline** — they use synthetic fixtures in
 `tests/conftest.py`. Never add a test that hits the network.
 

@@ -1,4 +1,5 @@
 import { NavLink, Navigate, Route, Routes } from "react-router-dom";
+import RunScanButton from "./components/RunScanButton";
 import Dashboard from "./pages/Dashboard";
 import Opportunities from "./pages/Opportunities";
 import Options from "./pages/Options";
@@ -36,8 +37,11 @@ export default function App() {
               </NavLink>
             ))}
           </nav>
-          <div className="ml-auto text-xs text-slate-300">
-            Research tool — not financial advice
+          <div className="ml-auto flex items-center gap-3">
+            <RunScanButton />
+            <span className="hidden md:inline text-xs text-slate-300">
+              Research tool — not financial advice
+            </span>
           </div>
         </div>
       </header>
