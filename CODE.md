@@ -115,6 +115,14 @@ each wired to the REST API via `src/lib/api.ts`. See `frontend/README.md`.
 commits dated `alphahunter-ai/results/alphahunter_<date>.{json,csv}`.
 `workflow_dispatch` accepts `limit` and `loose` inputs for manual runs.
 
+**Live deployment (Vercel)**: the frontend is deployed at
+**https://amit33-network-design.vercel.app** (Vercel project
+`amit33-network-design`, team `netdesign-team`, Git-linked to this repo's
+`main`). **Every push to `main` auto-deploys.** Root `vercel.json` drives the
+build (framework preset must stay "Other", root dir `./`). With no backend
+attached, the site serves `frontend/public/snapshot.json` and shows a
+"Snapshot mode" banner; wire a live backend by setting `VITE_API_TARGET`.
+
 **Tests must stay offline** — they use synthetic fixtures in
 `tests/conftest.py`. Never add a test that hits the network.
 
