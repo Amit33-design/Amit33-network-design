@@ -66,54 +66,78 @@ async function scanWithFallback(
   }
 }
 
-// Client-side portfolio analysis against the snapshot, used when no backend is
-// reachable. Tickers present in the latest scan get a real price/score/rec;
-// others are flagged so the user knows to run a live scan for full coverage.
-async function portfolioFromSnapshot(
+// Live portfolio analysis "on the go": fetch live prices for ANY ticker via the
+// /api/quote serverless function, compute gain/loss from them, and enrich with
+// the AlphaHunter score/recommendation from the latest scan when available.
+// Falls back to snapshot-only pricing if the quote function isn't reachable.
+async function analyzePortfolioLive(
   positions: { ticker: string; quantity: number; cost_basis: number }[]
-): Promise<PortfolioResponse> {
-  const all = await loadSnapshot();
-  snapshotMode = true;
-  const byTicker = new Map(all.map((r) => [r.ticker.toUpperCase(), r]));
+): Promise<{ data: PortfolioResponse; live: boolean }> {
+  const tickers = positions.map((p) => p.ticker.toUpperCase());
+  let quotes: Record<string, { price: number; name?: string }> = {};
+  let live = false;
+  try {
+    const res = await fetch("/api/quote", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tickers }),
+    });
+    if (res.ok) {
+      quotes = (await res.json()).quotes || {};
+      live = Object.keys(quotes).length > 0;
+    }
+  } catch {
+    live = false;
+  }
+
+  const snap = await loadSnapshot().catch(() => [] as Recommendation[]);
+  const byTicker = new Map(snap.map((r) => [r.ticker.toUpperCase(), r]));
+
   let mv = 0;
   let cost = 0;
   const rows = positions.map((p) => {
-    const rec = byTicker.get(p.ticker.toUpperCase());
-    if (!rec || rec.metrics?.price == null) {
-      return { ticker: p.ticker.toUpperCase(), error: "not in latest scan" };
+    const tk = p.ticker.toUpperCase();
+    const rec = byTicker.get(tk);
+    const q = quotes[tk];
+    const price = q?.price ?? (rec?.metrics?.price as number | undefined);
+    if (price == null) {
+      return { ticker: tk, error: "no live quote" };
     }
-    const price = Number(rec.metrics.price);
     const value = price * p.quantity;
     const basis = p.cost_basis * p.quantity;
     mv += value;
     cost += basis;
     const gl = value - basis;
     return {
-      ticker: p.ticker.toUpperCase(),
+      ticker: tk,
       quantity: p.quantity,
       cost_basis: p.cost_basis,
-      price,
+      price: Math.round(price * 100) / 100,
       market_value: Math.round(value * 100) / 100,
       gain_loss: Math.round(gl * 100) / 100,
       "gain_loss_%": basis ? Math.round((gl / basis) * 1000) / 10 : 0,
-      scores: rec.subscores,
-      overall_score: rec.score,
-      recommendation:
-        rec.score >= 70 ? "Buy More" : rec.score >= 55 ? "Hold" : rec.score >= 40 ? "Reduce" : "Sell",
-      covered_call: rec.covered_call,
-      cash_secured_put: rec.cash_secured_put,
+      scores: rec?.subscores,
+      overall_score: rec?.score,
+      recommendation: rec
+        ? rec.score >= 70 ? "Buy More" : rec.score >= 55 ? "Hold" : rec.score >= 40 ? "Reduce" : "Sell"
+        : "Not in latest scan",
+      covered_call: rec?.covered_call,
+      cash_secured_put: rec?.cash_secured_put,
     };
   });
   const gl = mv - cost;
   return {
-    summary: {
-      market_value: Math.round(mv * 100) / 100,
-      cost_basis: Math.round(cost * 100) / 100,
-      gain_loss: Math.round(gl * 100) / 100,
-      "gain_loss_%": cost ? Math.round((gl / cost) * 1000) / 10 : 0,
-      positions: rows.filter((r) => !("error" in r)).length,
+    live,
+    data: {
+      summary: {
+        market_value: Math.round(mv * 100) / 100,
+        cost_basis: Math.round(cost * 100) / 100,
+        gain_loss: Math.round(gl * 100) / 100,
+        "gain_loss_%": cost ? Math.round((gl / cost) * 1000) / 10 : 0,
+        positions: rows.filter((r) => !("error" in r)).length,
+      },
+      positions: rows,
     },
-    positions: rows,
   };
 }
 
@@ -153,15 +177,17 @@ export const api = {
   morning: () => get<any>(`/report/morning`),
   backtest: (ticker: string, hold = 10) =>
     get<any>(`/backtest/${encodeURIComponent(ticker)}?hold_days=${hold}`),
+  // Prefer the full FastAPI backend; else live quotes via /api/quote; else
+  // snapshot-only pricing. Returns {data, live} so the UI can label the mode.
   importPortfolio: async (
     positions: { ticker: string; quantity: number; cost_basis: number }[]
-  ): Promise<PortfolioResponse> => {
+  ): Promise<{ data: PortfolioResponse; live: boolean }> => {
     try {
-      const live = await post<PortfolioResponse>(`/portfolio/import`, { positions });
+      const data = await post<PortfolioResponse>(`/portfolio/import`, { positions });
       snapshotMode = false;
-      return live;
+      return { data, live: true };
     } catch {
-      return portfolioFromSnapshot(positions);
+      return analyzePortfolioLive(positions);
     }
   },
   ask: (query: string) => post<any>(`/ai/ask`, { query }),

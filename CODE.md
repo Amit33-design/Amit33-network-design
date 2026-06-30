@@ -131,6 +131,11 @@ That function needs a Vercel env var **`GITHUB_DISPATCH_TOKEN`** (fine-grained
 PAT, Actions: read+write on this repo); without it the button links to the
 Actions page instead. The SPA rewrite in `vercel.json` excludes `api/`.
 
+**Serverless functions** live in `api/` at the repo root (deployed by Vercel):
+`api/run-scan.js` (triggers the scan) and `api/quote.js` (live Yahoo quotes so
+the Portfolio Analyzer prices ANY ticker on demand on the static site).
+Portfolio holdings are saved to `localStorage` (`alphahunter.portfolio`).
+
 **Tests must stay offline** — they use synthetic fixtures in
 `tests/conftest.py`. Never add a test that hits the network.
 

@@ -1,21 +1,35 @@
-import { useState } from "react";
-import { api, isSnapshot } from "../lib/api";
+import { useEffect, useState } from "react";
+import { api } from "../lib/api";
 import type { PortfolioResponse } from "../lib/types";
 import { ErrorBox } from "../components/Loading";
-import SnapshotBanner from "../components/SnapshotBanner";
 
-// Defaults use tickers from the latest scan so the demo populates offline.
-// (In snapshot mode only scanned tickers can be priced; run a live scan for any ticker.)
-const SAMPLE = `PLTR, 10, 90
-COIN, 5, 180
-ZS, 8, 150
-CTSH, 20, 45`;
+const STORAGE_KEY = "alphahunter.portfolio";
+const SAMPLE = `AAPL, 10, 150
+MSFT, 5, 320
+NVDA, 8, 95
+PLTR, 12, 90`;
 
 export default function Portfolio() {
   const [text, setText] = useState(SAMPLE);
   const [data, setData] = useState<PortfolioResponse | null>(null);
+  const [live, setLive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [savedAt, setSavedAt] = useState<string>("");
+
+  // Load saved holdings on first mount.
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const obj = JSON.parse(saved);
+        if (obj.text) setText(obj.text);
+        if (obj.savedAt) setSavedAt(obj.savedAt);
+      } catch {
+        /* ignore */
+      }
+    }
+  }, []);
 
   function parse() {
     return text
@@ -29,11 +43,21 @@ export default function Portfolio() {
       .filter((p) => p.ticker && p.quantity > 0);
   }
 
+  function save() {
+    const when = new Date().toLocaleString();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ text, savedAt: when }));
+    setSavedAt(when);
+  }
+
   async function analyze() {
     setLoading(true);
     setError("");
     try {
-      setData(await api.importPortfolio(parse()));
+      const { data, live } = await api.importPortfolio(parse());
+      setData(data);
+      setLive(live);
+      // Auto-save on every successful analyze so holdings persist.
+      save();
     } catch (e) {
       setError(String(e));
     } finally {
@@ -43,12 +67,23 @@ export default function Portfolio() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-ink mb-4">Portfolio Analyzer</h1>
-      {data && isSnapshot() && <SnapshotBanner />}
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-xl font-bold text-ink">Portfolio Analyzer</h1>
+        {data && (
+          <span
+            className={`text-xs px-2 py-1 rounded ${
+              live ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
+            }`}
+          >
+            {live ? "● Live prices" : "● Snapshot prices"}
+          </span>
+        )}
+      </div>
+
       <div className="grid md:grid-cols-3 gap-6">
         <div className="bg-white rounded-xl shadow-sm p-4">
           <div className="text-sm text-slate-500 mb-2">
-            Paste holdings — <code>TICKER, qty, cost basis</code> per line:
+            Holdings — <code>TICKER, qty, cost basis</code> per line:
           </div>
           <textarea
             value={text}
@@ -56,13 +91,26 @@ export default function Portfolio() {
             rows={10}
             className="w-full border rounded p-2 font-mono text-sm"
           />
-          <button
-            onClick={analyze}
-            disabled={loading}
-            className="mt-3 bg-alpha text-white px-4 py-2 rounded font-medium disabled:opacity-50"
-          >
-            {loading ? "Analyzing…" : "Analyze"}
-          </button>
+          <div className="mt-3 flex items-center gap-2">
+            <button
+              onClick={analyze}
+              disabled={loading}
+              className="bg-alpha text-white px-4 py-2 rounded font-medium disabled:opacity-50"
+            >
+              {loading ? "Analyzing…" : "Analyze (live)"}
+            </button>
+            <button
+              onClick={save}
+              className="border border-slate-300 text-slate-700 px-3 py-2 rounded font-medium hover:bg-slate-50"
+            >
+              Save
+            </button>
+          </div>
+          {savedAt && (
+            <div className="mt-2 text-xs text-slate-400">
+              Saved on this device · {savedAt}
+            </div>
+          )}
         </div>
 
         <div className="md:col-span-2">
@@ -108,6 +156,11 @@ export default function Portfolio() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+              <div className="mt-2 text-xs text-slate-400">
+                {live
+                  ? "Live prices fetched on demand. AlphaHunter score/recommendation shown for tickers in the latest scan."
+                  : "Live quotes unavailable — showing snapshot prices. Score shown for scanned tickers."}
               </div>
             </>
           )}
