@@ -21,7 +21,10 @@ import pandas as pd
 from backend.scanners.runner import run_scan
 
 PACIFIC = ZoneInfo("America/Los_Angeles")
-RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "results")
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RESULTS_DIR = os.path.join(_ROOT, "results")
+# The deployed static site reads this file; refreshing it auto-deploys via Vercel.
+FRONTEND_SNAPSHOT = os.path.join(_ROOT, "frontend", "public", "snapshot.json")
 
 CSV_COLUMNS = [
     "ticker", "company", "score", "action", "confidence",
@@ -83,9 +86,17 @@ def main() -> None:
     df = pd.DataFrame(rows, columns=CSV_COLUMNS)
     df.to_csv(csv_path, index=False)
 
+    # Refresh the snapshot the deployed frontend serves (same Recommendation
+    # shape as the live API), so committing it auto-deploys fresh data to Vercel.
+    os.makedirs(os.path.dirname(FRONTEND_SNAPSHOT), exist_ok=True)
+    with open(FRONTEND_SNAPSHOT, "w") as f:
+        json.dump({"date": today, "snapshot": True, "live": True,
+                   "count": len(results), "results": results}, f, indent=2, default=str)
+
     print(f"\nWrote {len(results)} ranked recommendations:")
     print(f"  {json_path}")
     print(f"  {csv_path}")
+    print(f"  {FRONTEND_SNAPSHOT}  (deployed site refreshes on commit)")
     if results:
         top = results[0]
         print(f"Top pick: {top['ticker']} score {top['score']} ({top['action']})")

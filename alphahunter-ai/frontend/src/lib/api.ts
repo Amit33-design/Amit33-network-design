@@ -12,12 +12,22 @@ const BASE = "/api";
 let snapshotMode = false;
 export const isSnapshot = () => snapshotMode;
 
+// Metadata about the bundled snapshot, so the UI can show its date and whether
+// it came from a real scan (the daily workflow sets live:true) vs the seed.
+export interface SnapshotMeta {
+  date: string;
+  live: boolean;
+}
+let snapshotMeta: SnapshotMeta = { date: "2026-06-25", live: false };
+export const snapshotInfo = () => snapshotMeta;
+
 let snapshotCache: Recommendation[] | null = null;
 async function loadSnapshot(): Promise<Recommendation[]> {
   if (snapshotCache) return snapshotCache;
   const res = await fetch("/snapshot.json");
   if (!res.ok) throw new Error("no snapshot available");
   const data = await res.json();
+  snapshotMeta = { date: data.date ?? "unknown", live: data.live === true };
   snapshotCache = data.results as Recommendation[];
   return snapshotCache;
 }
