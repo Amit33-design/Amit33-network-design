@@ -4,6 +4,9 @@ export interface Recommendation {
   company: string;
   score: number;
   action: string;
+  quality_grade?: string;
+  "expected_gain_%"?: number | null;
+  "analyst_upside_%"?: number | null;
   subscores: Record<string, number>;
   weights: Record<string, number>;
   entry: number | null;

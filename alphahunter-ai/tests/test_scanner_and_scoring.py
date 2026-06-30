@@ -28,6 +28,23 @@ def test_composite_score_bounds_and_shape(crash_snapshot):
     assert rec["confidence"] in {"High", "Medium", "Low"}
 
 
+def test_quality_grade_and_expected_gain(crash_snapshot):
+    hit = AlphaHunterScanner(require_all=False).evaluate(crash_snapshot)
+    rec = score_snapshot(crash_snapshot, hit, md=None)
+    assert rec["quality_grade"] in {"A", "B", "C", "D", "F"}
+    # The crash fixture has $150 target vs ~$95 price -> positive analyst upside,
+    # and expected_gain should be a positive fraction of it (tempered down).
+    assert rec["analyst_upside_%"] is not None and rec["analyst_upside_%"] > 0
+    assert rec["expected_gain_%"] is not None
+    assert 0 < rec["expected_gain_%"] <= rec["analyst_upside_%"]
+
+
+def test_quality_grade_monotonic():
+    from backend.scoring.engines import quality_grade
+    grades = [quality_grade(s) for s in (90, 70, 60, 45, 20)]
+    assert grades == ["A", "B", "C", "D", "F"]
+
+
 def test_weights_sum_to_one():
     from backend.config import settings
     assert abs(sum(settings.score_weights.values()) - 1.0) < 1e-9

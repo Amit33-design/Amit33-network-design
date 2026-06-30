@@ -68,6 +68,20 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
     reward = (target1 - entry) if (entry and target1) else None
     rr = round(reward / risk, 2) if (risk and reward and risk > 0) else None
 
+    # Quality grade (A–F) from the fundamental sub-score, and an expected-gain
+    # estimate: analyst upside tempered by how confident/high-quality the setup
+    # is — so the list can be ranked by realistic gain, not raw target upside.
+    grade = engines.quality_grade(by_name["fundamental"].score)
+    analyst_upside = (
+        (snap.target_mean_price - last) / last * 100.0
+        if (snap.target_mean_price and last) else None
+    )
+    conf = _confidence(hit, composite)
+    conf_mult = {"High": 0.85, "Medium": 0.6, "Low": 0.4}[conf]
+    quality_mult = 0.7 + 0.6 * (by_name["fundamental"].score / 100.0)  # 0.7–1.3
+    expected_gain = (round(analyst_upside * conf_mult * min(quality_mult, 1.0), 1)
+                     if analyst_upside is not None else None)
+
     explanation = _build_explanation(snap.ticker, composite, weights, by_name, hit)
 
     return {
@@ -75,6 +89,9 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
         "company": snap.info.get("shortName") or snap.info.get("longName") or snap.ticker,
         "score": composite,
         "action": _action_from_score(composite),
+        "quality_grade": grade,
+        "analyst_upside_%": round(analyst_upside, 1) if analyst_upside is not None else None,
+        "expected_gain_%": expected_gain,
         "subscores": {n: round(by_name[n].score, 1) for n in weights},
         "weights": weights,
         "entry": entry,
@@ -84,7 +101,7 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
         "risk_reward": rr,
         "covered_call": (opt_metrics or {}).get("covered_call_idea"),
         "cash_secured_put": (opt_metrics or {}).get("csp_idea"),
-        "confidence": _confidence(hit, composite),
+        "confidence": conf,
         "criteria_passed": hit.passed_names,
         "criteria_failed": hit.failed_names,
         "metrics": {k: v for k, v in hit.metrics.items() if k != "indicators"},

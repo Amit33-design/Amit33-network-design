@@ -58,42 +58,89 @@ def technical_score(ind: dict) -> SubScore:
 
 
 # --------------------------------------------------------------------------
-# Fundamental (25%) — quality / solvency / cash generation
+# Fundamental / Quality (25%) — multi-factor quality, solvency, growth, value
 # --------------------------------------------------------------------------
 def fundamental_score(info: dict) -> SubScore:
     score = 50.0
     factors: list[str] = []
 
+    # --- cash generation ---
     fcf = info.get("freeCashflow")
     if fcf is not None:
         if fcf > 0:
-            score += 12; factors.append("positive free cash flow")
+            score += 10; factors.append("positive free cash flow")
         else:
             score -= 12; factors.append("negative free cash flow")
 
+    # --- profitability ---
     margins = info.get("profitMargins")
     if margins is not None:
         if margins > 0.15:
-            score += 10; factors.append(f"strong net margin ({margins*100:.0f}%)")
+            score += 9; factors.append(f"strong net margin ({margins*100:.0f}%)")
+        elif margins > 0.05:
+            score += 4
         elif margins < 0:
             score -= 10; factors.append("unprofitable")
 
+    gross = info.get("grossMargins")
+    if gross is not None and gross > 0.40:
+        score += 4; factors.append(f"high gross margin ({gross*100:.0f}%)")
+
     roe = info.get("returnOnEquity")
     if roe is not None and roe > 0.15:
-        score += 8; factors.append(f"high ROE ({roe*100:.0f}%)")
+        score += 7; factors.append(f"high ROE ({roe*100:.0f}%)")
 
+    roa = info.get("returnOnAssets")
+    if roa is not None and roa > 0.08:
+        score += 5; factors.append(f"high ROA ({roa*100:.0f}%)")
+
+    # --- growth ---
     rev_growth = info.get("revenueGrowth")
     if rev_growth is not None:
         if rev_growth > 0.10:
-            score += 8; factors.append(f"revenue growth ({rev_growth*100:.0f}%)")
+            score += 7; factors.append(f"revenue growth ({rev_growth*100:.0f}%)")
         elif rev_growth < 0:
             score -= 6; factors.append("shrinking revenue")
 
+    earn_growth = info.get("earningsGrowth")
+    if earn_growth is not None and earn_growth > 0.10:
+        score += 5; factors.append(f"earnings growth ({earn_growth*100:.0f}%)")
+
+    # --- value (cheap growth is the sweet spot) ---
+    peg = info.get("pegRatio")
+    if peg is not None and 0 < peg < 1.5:
+        score += 6; factors.append(f"attractive PEG ({peg:.2f})")
+    elif peg is not None and peg > 3:
+        score -= 4; factors.append(f"rich PEG ({peg:.2f})")
+
+    # --- balance sheet / solvency ---
     de = info.get("debtToEquity")
-    if de is not None and de > 300:
-        score -= 8; factors.append(f"high leverage (D/E {de:.0f}%)")
+    if de is not None:
+        if de > 300:
+            score -= 8; factors.append(f"high leverage (D/E {de:.0f}%)")
+        elif de < 80:
+            score += 4; factors.append("low leverage")
+
+    cr = info.get("currentRatio")
+    if cr is not None and cr >= 1.5:
+        score += 4; factors.append(f"healthy liquidity (CR {cr:.1f})")
+    elif cr is not None and cr < 1.0:
+        score -= 6; factors.append(f"tight liquidity (CR {cr:.1f})")
 
     return SubScore("fundamental", _clamp(score), factors)
+
+
+def quality_grade(fundamental: float) -> str:
+    """Map the 0-100 fundamental/quality score to a letter grade A–F."""
+    if fundamental >= 80:
+        return "A"
+    if fundamental >= 68:
+        return "B"
+    if fundamental >= 55:
+        return "C"
+    if fundamental >= 42:
+        return "D"
+    return "F"
 
 
 # --------------------------------------------------------------------------
