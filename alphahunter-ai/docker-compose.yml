@@ -1,0 +1,37 @@
+# AlphaHunter AI — local stack.
+# The API runs standalone; Postgres and Redis are optional and only used when
+# DATABASE_URL / REDIS_URL are set in the api service environment.
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      ALPHAHUNTER_ENV: development
+      # Uncomment to enable persistence/caching against the services below:
+      # DATABASE_URL: postgresql+psycopg://alphahunter:alphahunter@db:5432/alphahunter
+      # REDIS_URL: redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: alphahunter
+      POSTGRES_PASSWORD: alphahunter
+      POSTGRES_DB: alphahunter
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:

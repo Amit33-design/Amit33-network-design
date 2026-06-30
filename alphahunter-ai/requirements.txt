@@ -1,0 +1,27 @@
+# AlphaHunter AI — backend dependencies
+# Core web
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+pydantic-settings>=2.2
+
+# Data / numerics
+pandas>=2.2
+numpy>=1.26
+yfinance>=0.2.40
+requests>=2.31
+
+# Scheduling
+APScheduler>=3.10
+
+# Persistence (optional at runtime; app degrades gracefully without a DB)
+SQLAlchemy>=2.0
+
+# ML (used by the optional ML ranker; safe to omit for the rule-based path)
+scikit-learn>=1.4
+
+# Testing
+pytest>=8.0
+
+# Optional explanation layer — only needed if OPENAI_API_KEY is set
+# openai>=1.30
