@@ -108,6 +108,22 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
     reward = (target1 - entry) if (entry and target1) else None
     rr = round(reward / risk, 2) if (risk and reward and risk > 0) else None
 
+    # Position sizing: risk a fixed % of the account per trade against the
+    # ATR stop distance — bigger stops mean fewer shares, automatically.
+    position = None
+    if risk and risk > 0 and entry:
+        budget = settings.account_size * settings.max_risk_pct / 100.0
+        shares = int(budget // risk)
+        if shares > 0:
+            position = {
+                "shares": shares,
+                "value": round(shares * entry, 2),
+                "risk_$": round(shares * risk, 2),
+                "basis": f"{settings.max_risk_pct:.1f}% of ${settings.account_size:,.0f} "
+                         f"at ${risk:.2f}/share stop distance",
+            }
+    rr_pass = rr is not None and rr >= settings.min_risk_reward
+
     # Quality grade (A–F) from the fundamental sub-score, and an expected-gain
     # estimate: analyst upside tempered by how confident/high-quality the setup
     # is — so the list can be ranked by realistic gain, not raw target upside.
@@ -131,6 +147,13 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
     expected_gain = (round(analyst_upside * conf_mult * min(quality_mult, 1.0), 1)
                      if analyst_upside is not None else None)
 
+    risk_flags = compute_risk_flags(snap.info, ind, last)
+    if rr is not None and not rr_pass:
+        risk_flags.append({
+            "level": "warn",
+            "text": f"R:R {rr:.2f} below {settings.min_risk_reward:.1f} floor",
+        })
+
     explanation = _build_explanation(snap.ticker, composite, weights, by_name, hit)
     if bt["hist_trades"] >= 3:
         explanation += (
@@ -150,8 +173,10 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
         "hist_win_rate": bt["hist_win_rate"],
         "hist_avg_return_%": bt["hist_avg_return_%"],
         "hist_trades": bt["hist_trades"],
-        "risk_flags": compute_risk_flags(snap.info, ind, last),
+        "risk_flags": risk_flags,
         "rel_strength": rs,
+        "position": position,
+        "rr_pass": rr_pass,
         "csp_signal": compute_csp_signal(
             ind.get("ret_1d"), ind.get("above_ema200"), analyst_upside,
             bt, opt_metrics, last, atr,

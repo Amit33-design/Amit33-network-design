@@ -111,6 +111,23 @@ def test_rel_strength_with_fake_benchmarks(crash_snapshot):
     assert down.score < 50 and any("lagging" in f for f in down.factors)
 
 
+def test_position_sizing_and_rr_gate(crash_snapshot):
+    from backend.config import settings
+    hit = AlphaHunterScanner(require_all=False).evaluate(crash_snapshot)
+    rec = score_snapshot(crash_snapshot, hit, md=None)
+    # Sizing math: shares = floor(account*risk% / stop distance), risk_$ <= budget.
+    pos = rec["position"]
+    assert pos is not None and pos["shares"] >= 1
+    budget = settings.account_size * settings.max_risk_pct / 100.0
+    assert pos["risk_$"] <= budget + 1e-6
+    risk_per_share = rec["entry"] - rec["stop_loss"]
+    assert pos["shares"] == int(budget // risk_per_share)
+    # R:R gate consistent with the flag list.
+    assert isinstance(rec["rr_pass"], bool)
+    if rec["risk_reward"] is not None and not rec["rr_pass"]:
+        assert any("R:R" in f["text"] for f in rec["risk_flags"])
+
+
 def test_csp_signal_fires_on_dip_with_upside_and_history():
     from backend.scoring.csp_signal import compute_csp_signal
     bt_good = {"hist_trades": 8, "hist_win_rate": 0.7, "hist_avg_return_%": 4.2}

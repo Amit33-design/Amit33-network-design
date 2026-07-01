@@ -39,6 +39,11 @@ class Settings(BaseSettings):
     csp_min_hist_win: float = 0.55         # historical bounce rate for "strong"
     csp_min_upside: float = 10.0           # analyst upside counts as potential
 
+    # Position sizing & risk/reward gates
+    account_size: float = 25_000           # notional account for sizing math
+    max_risk_pct: float = 1.0              # risk per trade, % of account
+    min_risk_reward: float = 1.5           # R:R floor; below it gets flagged
+
     # Composite AI score weights (spec: 35/25/20/10/10)
     weight_technical: float = 0.35
     weight_fundamental: float = 0.25

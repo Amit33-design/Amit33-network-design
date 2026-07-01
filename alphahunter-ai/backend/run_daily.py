@@ -33,7 +33,8 @@ CSV_COLUMNS = [
     "csp_signal", "csp_reason",
     "risk_flags", "action", "confidence",
     "rsi", "day_%", "month_%", "revenue_$B", "institutional_%",
-    "entry", "stop_loss", "target1", "target2", "risk_reward",
+    "entry", "stop_loss", "target1", "target2", "risk_reward", "rr_pass",
+    "suggested_shares", "position_value",
     "covered_call", "cash_secured_put",
 ]
 
@@ -69,6 +70,9 @@ def _flatten(rec: dict) -> dict:
         "target1": rec.get("target1"),
         "target2": rec.get("target2"),
         "risk_reward": rec.get("risk_reward"),
+        "rr_pass": rec.get("rr_pass"),
+        "suggested_shares": (rec.get("position") or {}).get("shares"),
+        "position_value": (rec.get("position") or {}).get("value"),
         "covered_call": rec.get("covered_call"),
         "cash_secured_put": rec.get("cash_secured_put"),
     }

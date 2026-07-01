@@ -66,8 +66,11 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   an RS line on mobile cards. Degrades to None offline.
 
 ## Next (prioritized)
-- [ ] **Iter 5 — Position sizing & risk/reward gates.** Suggest size from ATR
-  and a max-risk %, and filter out setups with R:R below a floor.
+- [x] **Iter 5 — Position sizing & risk/reward gates.** Each recommendation
+  now includes a `position` (shares/value/risk-$) sized so the ATR-stop risks
+  `MAX_RISK_PCT` of `ACCOUNT_SIZE`, plus `rr_pass` vs the `MIN_RISK_REWARD`
+  floor — failures get a red R:R warn flag. Grid "Size" column + red R:R,
+  mobile-card size line, CSV columns, config knobs, sizing-math test.
 - [ ] **Iter 6 — "Top Gainers" leaderboard view.** New frontend page ranking
   by `expected_gain_pct` with quality grade, plus a sparkline per name.
 - [ ] **Iter 7 — Alerts.** Wire `alerts/engine.py` into the daily scan to push

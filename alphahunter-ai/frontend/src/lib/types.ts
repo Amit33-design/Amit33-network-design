@@ -24,6 +24,13 @@ export interface Recommendation {
     idea: string | null;
     reason: string;
   } | null;
+  position?: {
+    shares: number;
+    value: number;
+    "risk_$": number;
+    basis: string;
+  } | null;
+  rr_pass?: boolean;
   subscores: Record<string, number>;
   weights: Record<string, number>;
   entry: number | null;

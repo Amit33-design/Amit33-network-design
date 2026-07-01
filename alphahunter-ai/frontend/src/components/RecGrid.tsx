@@ -35,7 +35,14 @@ const columns: ColDef<Recommendation>[] = [
   { headerName: "Entry", field: "entry", width: 90, valueFormatter: num },
   { headerName: "Stop", field: "stop_loss", width: 90, valueFormatter: num },
   { headerName: "Target", field: "target1", width: 95, valueFormatter: num },
-  { headerName: "R:R", field: "risk_reward", width: 80, valueFormatter: num },
+  { headerName: "R:R", field: "risk_reward", width: 80, valueFormatter: num,
+    cellStyle: (p) => ({ color: p.data?.rr_pass === false ? "#c0392b" : "#334155",
+                         fontWeight: p.data?.rr_pass === false ? 700 : 400 }) },
+  { headerName: "Size", width: 130, sortable: false,
+    valueGetter: (p) => p.data?.position
+      ? `${p.data.position.shares} sh (~$${Math.round(p.data.position.value).toLocaleString()})`
+      : "—",
+    tooltipValueGetter: (p) => p.data?.position?.basis ?? "" },
   { headerName: "RS vs SPY", width: 110,
     valueGetter: (p) => p.data?.rel_strength?.vs_spy ?? null,
     valueFormatter: (p: any) => (p.value == null ? "—" : `${p.value >= 0 ? "+" : ""}${p.value}pp`),
@@ -88,6 +95,13 @@ function RecCard({ r }: { r: Recommendation }) {
         <Cell k="Month" v={m["month_%"] != null ? `${m["month_%"]}%` : "—"} />
         <Cell k="RSI" v={m.rsi != null ? Number(m.rsi).toFixed(0) : "—"} />
       </div>
+      {r.position && (
+        <div className="mt-1 text-xs text-slate-500">
+          Size: {r.position.shares} sh (~${Math.round(r.position.value).toLocaleString()},
+          risking ${Math.round(r.position["risk_$"])})
+          {r.rr_pass === false && <span className="text-red-600 font-semibold"> · R:R below floor</span>}
+        </div>
+      )}
       {r.csp_signal?.active && (
         <div className="mt-2 text-xs font-semibold text-emerald-700 bg-emerald-50 rounded px-2 py-1">
           💰 CSP {r.csp_signal.strength}
