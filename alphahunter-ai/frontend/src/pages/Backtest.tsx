@@ -69,7 +69,7 @@ export default function Backtest() {
 
       {error && <ErrorBox error={error} />}
       {result && !result.error && (
-        <div className="grid grid-cols-3 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {metrics.map(([k, v]) => (
             <div key={k} className="bg-white rounded-xl shadow-sm p-4">
               <div className="text-xs uppercase tracking-wide text-slate-400">{k}</div>

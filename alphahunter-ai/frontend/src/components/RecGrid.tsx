@@ -48,16 +48,67 @@ const columns: ColDef<Recommendation>[] = [
   { headerName: "Why", field: "reasoning", width: 520, wrapText: true, autoHeight: true },
 ];
 
+function RecCard({ r }: { r: Recommendation }) {
+  const m = r.metrics || {};
+  const scoreColor = r.score >= 70 ? "#1b7f4b" : r.score >= 50 ? "#b7791f" : "#c0392b";
+  const warn = (r.risk_flags || []).some((f) => f.level === "warn");
+  return (
+    <div className="bg-white rounded-xl shadow-sm p-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <span className="font-bold text-alpha text-lg">{r.ticker}</span>
+          <span className="ml-2 text-sm text-slate-500">{r.company}</span>
+        </div>
+        <div className="text-right">
+          <div className="text-xl font-bold" style={{ color: scoreColor }}>{r.score}</div>
+          <div className="text-xs text-slate-400">{r.action}</div>
+        </div>
+      </div>
+      <div className="mt-2 grid grid-cols-3 gap-2 text-sm">
+        <Cell k="Quality" v={r.quality_grade ?? "—"} />
+        <Cell k="Exp. Gain" v={r["expected_gain_%"] != null ? `${r["expected_gain_%"]}%` : "—"} accent="#1b7f4b" />
+        <Cell k="Conf." v={r.confidence} />
+        <Cell k="Day" v={m["day_%"] != null ? `${m["day_%"]}%` : "—"} />
+        <Cell k="Month" v={m["month_%"] != null ? `${m["month_%"]}%` : "—"} />
+        <Cell k="RSI" v={m.rsi != null ? Number(m.rsi).toFixed(0) : "—"} />
+      </div>
+      {(r.risk_flags || []).length > 0 && (
+        <div className={`mt-2 text-xs ${warn ? "text-red-600" : "text-alpha"}`}>
+          {(r.risk_flags || []).map((f) => f.text).join(" · ")}
+        </div>
+      )}
+      <div className="mt-2 text-xs text-slate-500">{r.reasoning}</div>
+    </div>
+  );
+}
+
+function Cell({ k, v, accent }: { k: string; v: any; accent?: string }) {
+  return (
+    <div>
+      <div className="text-[10px] uppercase tracking-wide text-slate-400">{k}</div>
+      <div className="font-semibold" style={accent ? { color: accent } : undefined}>{v}</div>
+    </div>
+  );
+}
+
 export default function RecGrid({ rows }: { rows: Recommendation[] }) {
   return (
-    <div className="ag-theme-quartz" style={{ width: "100%", height: 620 }}>
-      <AgGridReact<Recommendation>
-        rowData={rows}
-        columnDefs={columns}
-        defaultColDef={{ sortable: true, filter: true, resizable: true }}
-        pagination
-        paginationPageSize={25}
-      />
-    </div>
+    <>
+      {/* Desktop / tablet: full AG Grid */}
+      <div className="ag-theme-quartz hidden md:block" style={{ width: "100%", height: "70vh", minHeight: 420 }}>
+        <AgGridReact<Recommendation>
+          rowData={rows}
+          columnDefs={columns}
+          defaultColDef={{ sortable: true, filter: true, resizable: true }}
+          pagination
+          paginationPageSize={25}
+        />
+      </div>
+      {/* Mobile: scrollable card list (the wide grid is unusable on phones) */}
+      <div className="md:hidden space-y-3">
+        {rows.length === 0 && <div className="text-slate-500">No matches.</div>}
+        {rows.map((r) => <RecCard key={r.ticker} r={r} />)}
+      </div>
+    </>
   );
 }

@@ -24,7 +24,7 @@ export default function Options() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h1 className="text-xl font-bold text-ink">Options Income</h1>
         <div className="flex gap-1 bg-white rounded-lg p-1 shadow-sm">
           <button

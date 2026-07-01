@@ -105,7 +105,7 @@ export default function Analysis() {
                 </span>
               </div>
             </div>
-            <div className="ml-auto flex items-center gap-4">
+            <div className="sm:ml-auto flex items-center gap-4 flex-wrap">
               {cycleBadge}
               <div className="text-center">
                 <div className="text-xs uppercase tracking-wide text-slate-400">Score</div>

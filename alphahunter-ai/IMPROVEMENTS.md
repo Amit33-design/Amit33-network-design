@@ -9,6 +9,12 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Mobile-browser compatibility pass.** Opportunities renders a card list
+  on phones (the wide AG Grid is desktop-only now); grid height is responsive
+  (70vh). Fixed non-responsive grids (Portfolio summary, Backtest metrics),
+  headers/toggles wrap, container padding shrinks on small screens, root has
+  overflow-x-hidden to kill stray horizontal scroll, and the Analysis verdict
+  header wraps cleanly. Viewport meta already mobile-correct.
 - [x] **Mobile Run Scan fix + advanced Technical Analysis (paid-app style).**
   Run Scan renders a native anchor link (mobile popup-blockers reject
   window.open from async callbacks) and the header is responsive (Run Scan

@@ -117,7 +117,7 @@ export default function Portfolio() {
           {error && <ErrorBox error={error} />}
           {data && (
             <>
-              <div className="grid grid-cols-3 gap-3 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
                 <Stat label="Market Value" value={`$${data.summary.market_value.toLocaleString()}`} />
                 <Stat
                   label="Gain / Loss"
