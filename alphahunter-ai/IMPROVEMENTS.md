@@ -48,9 +48,15 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   flags (strong-buy consensus, golden-cross). Added `dist_52w_low` indicator,
   config knobs, a "Risk / Catalyst" grid column, and CSV output.
 
+- [x] **Iter 4 — Sector relative strength.** New
+  `scoring/relative_strength.py`: 3-month return spread vs SPY and vs the
+  stock's SPDR sector ETF (11-sector map, benchmarks TTL-cached so a scan adds
+  ≤12 fetches). Leaders (+5pp) get a bounded momentum boost, laggards (−15pp) a
+  haircut — folded in before the weighted blend, recorded as factors.
+  `rel_strength` in the payload/CSV, "RS vs SPY" + "Sector" grid columns, and
+  an RS line on mobile cards. Degrades to None offline.
+
 ## Next (prioritized)
-- [ ] **Iter 4 — Sector relative strength.** Rank each name vs its sector ETF
-  and vs SPY; reward leaders in strong sectors. Add `rel_strength` score.
 - [ ] **Iter 5 — Position sizing & risk/reward gates.** Suggest size from ATR
   and a max-risk %, and filter out setups with R:R below a floor.
 - [ ] **Iter 6 — "Top Gainers" leaderboard view.** New frontend page ranking

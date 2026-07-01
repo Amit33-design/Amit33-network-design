@@ -36,6 +36,11 @@ const columns: ColDef<Recommendation>[] = [
   { headerName: "Stop", field: "stop_loss", width: 90, valueFormatter: num },
   { headerName: "Target", field: "target1", width: 95, valueFormatter: num },
   { headerName: "R:R", field: "risk_reward", width: 80, valueFormatter: num },
+  { headerName: "RS vs SPY", width: 110,
+    valueGetter: (p) => p.data?.rel_strength?.vs_spy ?? null,
+    valueFormatter: (p: any) => (p.value == null ? "—" : `${p.value >= 0 ? "+" : ""}${p.value}pp`),
+    cellStyle: (p) => ({ color: (p.value ?? 0) > 0 ? "#1b7f4b" : (p.value ?? 0) < 0 ? "#c0392b" : "#334155" }) },
+  { headerName: "Sector", width: 150, valueGetter: (p) => p.data?.rel_strength?.sector ?? "—" },
   { headerName: "Risk / Catalyst", width: 260, sortable: false,
     valueGetter: (p) => (p.data?.risk_flags || []).map((f: any) => f.text).join(" · "),
     cellStyle: (p) => {
@@ -72,6 +77,12 @@ function RecCard({ r }: { r: Recommendation }) {
         <Cell k="Month" v={m["month_%"] != null ? `${m["month_%"]}%` : "—"} />
         <Cell k="RSI" v={m.rsi != null ? Number(m.rsi).toFixed(0) : "—"} />
       </div>
+      {r.rel_strength?.vs_spy != null && (
+        <div className={`mt-1 text-xs ${r.rel_strength.vs_spy >= 0 ? "text-alpha" : "text-red-600"}`}>
+          {r.rel_strength.vs_spy >= 0 ? "▲" : "▼"} {Math.abs(r.rel_strength.vs_spy)}pp vs SPY (3mo)
+          {r.rel_strength.sector ? ` · ${r.rel_strength.sector}` : ""}
+        </div>
+      )}
       {(r.risk_flags || []).length > 0 && (
         <div className={`mt-2 text-xs ${warn ? "text-red-600" : "text-alpha"}`}>
           {(r.risk_flags || []).map((f) => f.text).join(" · ")}

@@ -11,6 +11,12 @@ export interface Recommendation {
   "hist_avg_return_%"?: number | null;
   hist_trades?: number | null;
   risk_flags?: { level: "warn" | "info" | "good"; text: string }[];
+  rel_strength?: {
+    vs_spy: number | null;
+    vs_sector: number | null;
+    sector: string | null;
+    sector_etf: string | null;
+  } | null;
   subscores: Record<string, number>;
   weights: Record<string, number>;
   entry: number | null;

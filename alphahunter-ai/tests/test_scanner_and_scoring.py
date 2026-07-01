@@ -72,6 +72,45 @@ def test_risk_flags_shape(crash_snapshot):
         assert f["level"] in {"warn", "info", "good"}
 
 
+def test_rel_strength_offline_is_none(crash_snapshot):
+    # With no market-data provider, rel strength degrades to None and the
+    # payload still carries the field.
+    hit = AlphaHunterScanner(require_all=False).evaluate(crash_snapshot)
+    rec = score_snapshot(crash_snapshot, hit, md=None)
+    assert "rel_strength" in rec
+    assert rec["rel_strength"] is None
+
+
+def test_rel_strength_with_fake_benchmarks(crash_snapshot):
+    import numpy as np
+    import pandas as pd
+    from backend.indicators import technical as ta
+    from backend.scoring.relative_strength import compute_rel_strength, apply_rel_strength
+    from backend.scoring.engines import SubScore
+
+    # Flat benchmark: 0% over the lookback -> spread == the stock's own return.
+    flat = pd.DataFrame({"Close": [100.0] * 130})
+
+    class FakeMD:
+        def history(self, symbol, period="6mo"):
+            return flat
+
+    crash_snapshot.info["sector"] = "Technology"
+    ind = ta.indicator_bundle(crash_snapshot.history)
+    rs = compute_rel_strength(crash_snapshot, ind, FakeMD())
+    assert rs is not None
+    assert rs["sector_etf"] == "XLK"
+    assert rs["vs_spy"] == round(ind["ret_60d"] - 0.0, 1)
+
+    # A big positive spread should boost momentum; a big negative one cut it.
+    up = SubScore("momentum", 50.0)
+    apply_rel_strength(up, {"vs_spy": 20.0, "vs_sector": None, "sector_etf": "XLK"})
+    assert up.score > 50 and any("outperforming" in f for f in up.factors)
+    down = SubScore("momentum", 50.0)
+    apply_rel_strength(down, {"vs_spy": -30.0, "vs_sector": None, "sector_etf": "XLK"})
+    assert down.score < 50 and any("lagging" in f for f in down.factors)
+
+
 def test_risk_flags_detects_leverage_and_earnings():
     from backend.scoring.risk import compute_risk_flags
     import datetime as dt
