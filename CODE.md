@@ -132,8 +132,11 @@ PAT, Actions: read+write on this repo); without it the button links to the
 Actions page instead. The SPA rewrite in `vercel.json` excludes `api/`.
 
 **Serverless functions** live in `api/` at the repo root (deployed by Vercel):
-`api/run-scan.js` (triggers the scan) and `api/quote.js` (live Yahoo quotes so
-the Portfolio Analyzer prices ANY ticker on demand on the static site).
+`api/run-scan.js` (triggers the scan), `api/quote.js` (live Yahoo quotes +
+on-the-go technical Buy/Hold/Sell so the Portfolio Analyzer works for ANY
+ticker), and `api/ta.js` (single-ticker real-time technical analysis behind the
+**Analysis** tab — price history, EMA/RSI/MACD/ATR, verdict + factors).
+`node --check api/*.js` before committing — these are plain JS with no build.
 Portfolio holdings are saved to `localStorage` (`alphahunter.portfolio`).
 
 **Tests must stay offline** — they use synthetic fixtures in

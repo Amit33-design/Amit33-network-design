@@ -9,6 +9,11 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Single-ticker real-time Technical Analysis tab.** New `/analysis` page +
+  `api/ta.js` serverless function: price chart with EMA20/50/200 overlays, RSI
+  subplot, full indicator panel (RSI, MACD, ATR, multi-horizon returns, 52w
+  position), and a Buy/Hold/Sell verdict with explainable bull/bear factors.
+  Fixed an invalid-object-key syntax bug in `api/quote.js` found en route.
 - [x] **Iter 1 — Quality grade + expected-gain ranking.** Richer multi-factor
   fundamental/quality score (ROE, ROA, margins, PEG, growth, leverage,
   liquidity) → A–F `quality_grade`; `expected_gain_pct` (analyst upside

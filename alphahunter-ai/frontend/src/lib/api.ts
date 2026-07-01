@@ -32,8 +32,8 @@ async function loadSnapshot(): Promise<Recommendation[]> {
   return snapshotCache;
 }
 
-async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`${BASE}${path}`);
+async function get<T>(path: string, raw = false): Promise<T> {
+  const res = await fetch(raw ? path : `${BASE}${path}`);
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
   return res.json() as Promise<T>;
 }
@@ -180,6 +180,9 @@ export const api = {
     scanWithFallback(`/options/coveredcalls?limit=${limit}`, (r) => !!r.covered_call),
   csp: (limit = 25) =>
     scanWithFallback(`/options/csp?limit=${limit}`, (r) => !!r.cash_secured_put),
+  // Real-time deep technical analysis for a single ticker (Analysis tab).
+  technicalAnalysis: (ticker: string, range = "1y") =>
+    get<any>(`/api/ta?ticker=${encodeURIComponent(ticker)}&range=${range}`, true),
   morning: () => get<any>(`/report/morning`),
   backtest: (ticker: string, hold = 10) =>
     get<any>(`/backtest/${encodeURIComponent(ticker)}?hold_days=${hold}`),
