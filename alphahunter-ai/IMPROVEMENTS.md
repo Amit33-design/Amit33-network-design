@@ -19,11 +19,13 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   liquidity) → A–F `quality_grade`; `expected_gain_pct` (analyst upside
   tempered by confidence & quality); surfaced in API, CSV, and the grid.
 
+- [x] **Iter 2 — Backtest-calibrated confidence.** Each hit now backtests its
+  own oversold setup (via `MarketData.history` + `backtesting/engine.py`) →
+  `hist_win_rate`, `hist_avg_return_%`, `hist_trades`; confidence is bumped up
+  (win≥60% & +avg) or down (win<40% or −avg) when ≥3 historical trades exist,
+  the stat is woven into the reasoning, and shown as a "Hist. Win%" grid column.
+
 ## Next (prioritized)
-- [ ] **Iter 2 — Backtest-calibrated confidence.** For each hit, compute the
-  historical bounce rate + avg forward return of its setup (reuse
-  `backtesting/engine.py`) and show "historically bounced X% of the time,
-  avg +Y%". Calibrate `confidence` to that, not just criteria count.
 - [ ] **Iter 3 — Catalyst & risk awareness.** Flag earnings within N days
   (avoid pre-earnings landmines), recent analyst upgrades/downgrades, and
   distance-to-52w-low support. Add a `risk_flags` list per recommendation.

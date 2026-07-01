@@ -28,7 +28,8 @@ FRONTEND_SNAPSHOT = os.path.join(_ROOT, "frontend", "public", "snapshot.json")
 
 CSV_COLUMNS = [
     "ticker", "company", "score", "quality_grade", "expected_gain_%",
-    "analyst_upside_%", "action", "confidence",
+    "analyst_upside_%", "hist_win_rate", "hist_avg_return_%", "hist_trades",
+    "action", "confidence",
     "rsi", "day_%", "month_%", "revenue_$B", "institutional_%",
     "entry", "stop_loss", "target1", "target2", "risk_reward",
     "covered_call", "cash_secured_put",
@@ -44,6 +45,9 @@ def _flatten(rec: dict) -> dict:
         "quality_grade": rec.get("quality_grade"),
         "expected_gain_%": rec.get("expected_gain_%"),
         "analyst_upside_%": rec.get("analyst_upside_%"),
+        "hist_win_rate": rec.get("hist_win_rate"),
+        "hist_avg_return_%": rec.get("hist_avg_return_%"),
+        "hist_trades": rec.get("hist_trades"),
         "action": rec["action"],
         "confidence": rec["confidence"],
         "rsi": m.get("rsi"),

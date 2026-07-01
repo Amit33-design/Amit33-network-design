@@ -7,6 +7,9 @@ export interface Recommendation {
   quality_grade?: string;
   "expected_gain_%"?: number | null;
   "analyst_upside_%"?: number | null;
+  hist_win_rate?: number | null;
+  "hist_avg_return_%"?: number | null;
+  hist_trades?: number | null;
   subscores: Record<string, number>;
   weights: Record<string, number>;
   entry: number | null;

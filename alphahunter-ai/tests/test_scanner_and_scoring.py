@@ -45,6 +45,24 @@ def test_quality_grade_monotonic():
     assert grades == ["A", "B", "C", "D", "F"]
 
 
+def test_backtest_calibrated_fields_present(crash_snapshot):
+    hit = AlphaHunterScanner(require_all=False).evaluate(crash_snapshot)
+    rec = score_snapshot(crash_snapshot, hit, md=None)
+    # New backtest-calibration fields exist and are sane types.
+    assert "hist_win_rate" in rec and 0 <= rec["hist_win_rate"] <= 1
+    assert "hist_avg_return_%" in rec
+    assert "hist_trades" in rec and rec["hist_trades"] >= 0
+    assert rec["confidence"] in {"High", "Medium", "Low"}
+
+
+def test_confidence_bump_helper():
+    from backend.scoring.composite import _bump
+    assert _bump("Low", +1) == "Medium"
+    assert _bump("High", +1) == "High"      # clamps at top
+    assert _bump("Low", -1) == "Low"        # clamps at bottom
+    assert _bump("Medium", -1) == "Low"
+
+
 def test_weights_sum_to_one():
     from backend.config import settings
     assert abs(sum(settings.score_weights.values()) - 1.0) < 1e-9

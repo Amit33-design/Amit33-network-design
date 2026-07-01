@@ -90,6 +90,20 @@ class MarketData:
 
         return _cache.get_or_set(f"snap:{ticker}:{self.period}", _produce)
 
+    def history(self, ticker: str, period: str = "3y") -> pd.DataFrame | None:
+        """Longer daily history for backtesting a ticker's own setup (cached)."""
+        if yf is None:
+            return None
+
+        def _produce():
+            try:
+                h = yf.Ticker(ticker).history(period=period, interval="1d")
+                return h if (h is not None and not h.empty) else None
+            except Exception:
+                return None
+
+        return _cache.get_or_set(f"hist:{ticker}:{period}", _produce)
+
     def options_chain(self, ticker: str) -> dict[str, Any] | None:
         if yf is None:
             return None

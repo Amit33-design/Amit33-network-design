@@ -7,11 +7,41 @@ ideas, confidence, and a plain-English explanation citing score contributions.
 """
 from __future__ import annotations
 
+from backend.backtesting.engine import backtest_oversold
 from backend.config import settings
 from backend.options.analyzer import summarize_options
 from backend.scanners.base import ScanHit
 from backend.scoring import engines
 from backend.utils.market_data import MarketData, StockSnapshot
+
+_LEVELS = ["Low", "Medium", "High"]
+
+
+def _bump(level: str, delta: int) -> str:
+    i = max(0, min(len(_LEVELS) - 1, _LEVELS.index(level) + delta))
+    return _LEVELS[i]
+
+
+def _backtest_stats(snap: StockSnapshot, md: MarketData | None) -> dict:
+    """Historical bounce rate + avg forward return of this ticker's own setup.
+
+    Prefers a longer history (via md) for meaningful sample size; falls back to
+    the snapshot's own history. Returns zeros when there isn't enough data.
+    """
+    hist = None
+    if md is not None:
+        hist = md.history(snap.ticker)
+    if hist is None or getattr(hist, "empty", True):
+        hist = snap.history
+    try:
+        res = backtest_oversold(hist).as_dict()
+        return {
+            "hist_trades": res["trades"],
+            "hist_win_rate": res["win_rate"],
+            "hist_avg_return_%": res["avg_return_%"],
+        }
+    except Exception:
+        return {"hist_trades": 0, "hist_win_rate": 0.0, "hist_avg_return_%": 0.0}
 
 
 def _action_from_score(score: float) -> str:
@@ -76,13 +106,28 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
         (snap.target_mean_price - last) / last * 100.0
         if (snap.target_mean_price and last) else None
     )
+
+    # Calibrate confidence against how this ticker's oversold setup has actually
+    # played out historically (bounce rate + avg forward return).
+    bt = _backtest_stats(snap, md)
     conf = _confidence(hit, composite)
+    if bt["hist_trades"] >= 3:
+        if bt["hist_win_rate"] >= 0.6 and bt["hist_avg_return_%"] > 0:
+            conf = _bump(conf, +1)
+        elif bt["hist_win_rate"] < 0.4 or bt["hist_avg_return_%"] < 0:
+            conf = _bump(conf, -1)
     conf_mult = {"High": 0.85, "Medium": 0.6, "Low": 0.4}[conf]
     quality_mult = 0.7 + 0.6 * (by_name["fundamental"].score / 100.0)  # 0.7–1.3
     expected_gain = (round(analyst_upside * conf_mult * min(quality_mult, 1.0), 1)
                      if analyst_upside is not None else None)
 
     explanation = _build_explanation(snap.ticker, composite, weights, by_name, hit)
+    if bt["hist_trades"] >= 3:
+        explanation += (
+            f" Backtest: this setup fired {bt['hist_trades']}x historically, "
+            f"bounced {bt['hist_win_rate']*100:.0f}% of the time "
+            f"(avg {bt['hist_avg_return_%']:+.1f}% over the hold)."
+        )
 
     return {
         "ticker": snap.ticker,
@@ -92,6 +137,9 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
         "quality_grade": grade,
         "analyst_upside_%": round(analyst_upside, 1) if analyst_upside is not None else None,
         "expected_gain_%": expected_gain,
+        "hist_win_rate": bt["hist_win_rate"],
+        "hist_avg_return_%": bt["hist_avg_return_%"],
+        "hist_trades": bt["hist_trades"],
         "subscores": {n: round(by_name[n].score, 1) for n in weights},
         "weights": weights,
         "entry": entry,
