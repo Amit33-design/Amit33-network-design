@@ -110,6 +110,16 @@ def distance_from_52w_high(hist: pd.DataFrame) -> float | None:
     return float((closes.iloc[-1] - hi) / hi * 100.0)
 
 
+def distance_from_52w_low(hist: pd.DataFrame) -> float | None:
+    closes = _closes(hist).tail(252)
+    if not len(closes):
+        return None
+    lo = closes.min()
+    if lo == 0:
+        return None
+    return float((closes.iloc[-1] - lo) / lo * 100.0)
+
+
 def golden_cross(hist: pd.DataFrame) -> bool | None:
     """50-day SMA above 200-day SMA (bullish regime)."""
     s50, s200 = sma(hist, 50), sma(hist, 200)
@@ -141,5 +151,6 @@ def indicator_bundle(hist: pd.DataFrame) -> dict:
         "ret_120d": pct_return(hist, 120),
         "ret_252d": pct_return(hist, 252),
         "dist_52w_high": distance_from_52w_high(hist),
+        "dist_52w_low": distance_from_52w_low(hist),
         "golden_cross": golden_cross(hist),
     }

@@ -25,10 +25,14 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   (win≥60% & +avg) or down (win<40% or −avg) when ≥3 historical trades exist,
   the stat is woven into the reasoning, and shown as a "Hist. Win%" grid column.
 
+- [x] **Iter 3 — Catalyst & risk awareness.** New `scoring/risk.py` attaches a
+  `risk_flags` list to every recommendation: imminent earnings (≤N days),
+  crowded short interest, 52-week-low falling-knife test, above-target,
+  high leverage, negative FCF, small-cap/high-beta context, plus supportive
+  flags (strong-buy consensus, golden-cross). Added `dist_52w_low` indicator,
+  config knobs, a "Risk / Catalyst" grid column, and CSV output.
+
 ## Next (prioritized)
-- [ ] **Iter 3 — Catalyst & risk awareness.** Flag earnings within N days
-  (avoid pre-earnings landmines), recent analyst upgrades/downgrades, and
-  distance-to-52w-low support. Add a `risk_flags` list per recommendation.
 - [ ] **Iter 4 — Sector relative strength.** Rank each name vs its sector ETF
   and vs SPY; reward leaders in strong sectors. Add `rel_strength` score.
 - [ ] **Iter 5 — Position sizing & risk/reward gates.** Suggest size from ATR

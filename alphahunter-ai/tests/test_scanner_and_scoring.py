@@ -63,6 +63,29 @@ def test_confidence_bump_helper():
     assert _bump("Medium", -1) == "Low"
 
 
+def test_risk_flags_shape(crash_snapshot):
+    hit = AlphaHunterScanner(require_all=False).evaluate(crash_snapshot)
+    rec = score_snapshot(crash_snapshot, hit, md=None)
+    assert isinstance(rec["risk_flags"], list)
+    for f in rec["risk_flags"]:
+        assert set(f) == {"level", "text"}
+        assert f["level"] in {"warn", "info", "good"}
+
+
+def test_risk_flags_detects_leverage_and_earnings():
+    from backend.scoring.risk import compute_risk_flags
+    import datetime as dt
+    soon = int((dt.datetime.utcnow() + dt.timedelta(days=3)).timestamp())
+    info = {"debtToEquity": 450, "freeCashflow": -1e8, "earningsTimestamp": soon,
+            "recommendationKey": "strong_buy"}
+    flags = compute_risk_flags(info, {"dist_52w_low": 50, "golden_cross": False}, 100.0)
+    texts = " ".join(f["text"] for f in flags)
+    assert "high leverage" in texts
+    assert "negative free cash flow" in texts
+    assert "earnings in" in texts
+    assert any(f["level"] == "good" for f in flags)  # strong-buy consensus
+
+
 def test_weights_sum_to_one():
     from backend.config import settings
     assert abs(sum(settings.score_weights.values()) - 1.0) < 1e-9

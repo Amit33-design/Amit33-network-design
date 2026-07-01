@@ -29,6 +29,11 @@ class Settings(BaseSettings):
     volume_spike_ratio: float = 1.5
     institutional_ownership_min: float = 0.50
 
+    # Risk / catalyst awareness
+    earnings_window_days: int = 7          # flag earnings within this many days
+    high_short_interest: float = 0.10      # >10% of float = crowded short
+    near_52w_low_pct: float = 8.0          # within 8% of the 52-week low
+
     # Composite AI score weights (spec: 35/25/20/10/10)
     weight_technical: float = 0.35
     weight_fundamental: float = 0.25

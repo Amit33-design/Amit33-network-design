@@ -12,6 +12,7 @@ from backend.config import settings
 from backend.options.analyzer import summarize_options
 from backend.scanners.base import ScanHit
 from backend.scoring import engines
+from backend.scoring.risk import compute_risk_flags
 from backend.utils.market_data import MarketData, StockSnapshot
 
 _LEVELS = ["Low", "Medium", "High"]
@@ -140,6 +141,7 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
         "hist_win_rate": bt["hist_win_rate"],
         "hist_avg_return_%": bt["hist_avg_return_%"],
         "hist_trades": bt["hist_trades"],
+        "risk_flags": compute_risk_flags(snap.info, ind, last),
         "subscores": {n: round(by_name[n].score, 1) for n in weights},
         "weights": weights,
         "entry": entry,

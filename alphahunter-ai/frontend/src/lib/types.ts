@@ -10,6 +10,7 @@ export interface Recommendation {
   hist_win_rate?: number | null;
   "hist_avg_return_%"?: number | null;
   hist_trades?: number | null;
+  risk_flags?: { level: "warn" | "info" | "good"; text: string }[];
   subscores: Record<string, number>;
   weights: Record<string, number>;
   entry: number | null;

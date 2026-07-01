@@ -36,6 +36,13 @@ const columns: ColDef<Recommendation>[] = [
   { headerName: "Stop", field: "stop_loss", width: 90, valueFormatter: num },
   { headerName: "Target", field: "target1", width: 95, valueFormatter: num },
   { headerName: "R:R", field: "risk_reward", width: 80, valueFormatter: num },
+  { headerName: "Risk / Catalyst", width: 260, sortable: false,
+    valueGetter: (p) => (p.data?.risk_flags || []).map((f: any) => f.text).join(" · "),
+    cellStyle: (p) => {
+      const flags = p.data?.risk_flags || [];
+      const hasWarn = flags.some((f: any) => f.level === "warn");
+      return { color: hasWarn ? "#c0392b" : flags.length ? "#1b7f4b" : "#94a3b8", fontSize: "12px" };
+    } },
   { headerName: "Covered Call", field: "covered_call", width: 230 },
   { headerName: "CSP", field: "cash_secured_put", width: 230 },
   { headerName: "Why", field: "reasoning", width: 520, wrapText: true, autoHeight: true },
