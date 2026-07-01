@@ -12,6 +12,7 @@ from backend.config import settings
 from backend.options.analyzer import summarize_options
 from backend.scanners.base import ScanHit
 from backend.scoring import engines
+from backend.scoring.csp_signal import compute_csp_signal
 from backend.scoring.relative_strength import apply_rel_strength, compute_rel_strength
 from backend.scoring.risk import compute_risk_flags
 from backend.utils.market_data import MarketData, StockSnapshot
@@ -151,6 +152,10 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
         "hist_trades": bt["hist_trades"],
         "risk_flags": compute_risk_flags(snap.info, ind, last),
         "rel_strength": rs,
+        "csp_signal": compute_csp_signal(
+            ind.get("ret_1d"), ind.get("above_ema200"), analyst_upside,
+            bt, opt_metrics, last, atr,
+        ),
         "subscores": {n: round(by_name[n].score, 1) for n in weights},
         "weights": weights,
         "entry": entry,

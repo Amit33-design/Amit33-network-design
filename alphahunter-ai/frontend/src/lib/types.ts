@@ -17,6 +17,13 @@ export interface Recommendation {
     sector: string | null;
     sector_etf: string | null;
   } | null;
+  csp_signal?: {
+    active: boolean;
+    strength: "strong" | "moderate" | null;
+    suggested_strike: number | null;
+    idea: string | null;
+    reason: string;
+  } | null;
   subscores: Record<string, number>;
   weights: Record<string, number>;
   entry: number | null;

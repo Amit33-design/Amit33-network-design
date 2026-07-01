@@ -111,6 +111,38 @@ def test_rel_strength_with_fake_benchmarks(crash_snapshot):
     assert down.score < 50 and any("lagging" in f for f in down.factors)
 
 
+def test_csp_signal_fires_on_dip_with_upside_and_history():
+    from backend.scoring.csp_signal import compute_csp_signal
+    bt_good = {"hist_trades": 8, "hist_win_rate": 0.7, "hist_avg_return_%": 4.2}
+    sig = compute_csp_signal(-3.5, True, 25.0, bt_good, None, 100.0, 4.0)
+    assert sig["active"] is True and sig["strength"] == "strong"
+    assert sig["suggested_strike"] == 94.0        # 100 - 1.5*ATR
+    assert "bounced 70%" in sig["reason"]
+
+
+def test_csp_signal_blocked_without_dip_or_upside_or_history():
+    from backend.scoring.csp_signal import compute_csp_signal
+    bt = {"hist_trades": 0, "hist_win_rate": 0.0, "hist_avg_return_%": 0.0}
+    # No dip today -> inactive.
+    assert compute_csp_signal(-0.5, True, 30.0, bt, None, 100.0, 4.0)["active"] is False
+    # Dip but below EMA200 and no analyst upside -> inactive.
+    assert compute_csp_signal(-4.0, False, 2.0, bt, None, 100.0, 4.0)["active"] is False
+    # Dip with upside but history says dips don't bounce -> inactive.
+    bt_bad = {"hist_trades": 6, "hist_win_rate": 0.2, "hist_avg_return_%": -3.0}
+    blocked = compute_csp_signal(-4.0, True, 30.0, bt_bad, None, 100.0, 4.0)
+    assert blocked["active"] is False and "history is against it" in blocked["reason"]
+
+
+def test_csp_signal_in_payload(crash_snapshot):
+    hit = AlphaHunterScanner(require_all=False).evaluate(crash_snapshot)
+    rec = score_snapshot(crash_snapshot, hit, md=None)
+    sig = rec["csp_signal"]
+    assert set(sig) == {"active", "strength", "suggested_strike", "idea", "reason"}
+    # The crash fixture drops ~6% on the last day with an uptrend + upside, so
+    # the dip gate and upside gate both pass.
+    assert sig["active"] is True
+
+
 def test_risk_flags_detects_leverage_and_earnings():
     from backend.scoring.risk import compute_risk_flags
     import datetime as dt

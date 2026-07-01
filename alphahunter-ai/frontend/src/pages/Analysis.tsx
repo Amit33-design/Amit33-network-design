@@ -118,6 +118,35 @@ export default function Analysis() {
             </div>
           </div>
 
+          {/* CSP-on-dip signal */}
+          {data.csp_signal && (
+            <div className={`rounded-xl shadow-sm p-4 border ${
+              data.csp_signal.active
+                ? "bg-emerald-50 border-emerald-200"
+                : "bg-white border-slate-100"
+            }`}>
+              <div className="flex items-center gap-3 flex-wrap">
+                <span className={`font-bold ${data.csp_signal.active ? "text-emerald-700" : "text-slate-500"}`}>
+                  {data.csp_signal.active
+                    ? `💰 Cash-Secured Put opportunity (${data.csp_signal.strength})`
+                    : "Cash-Secured Put signal: not today"}
+                </span>
+                {data.csp_signal.active && data.csp_signal.suggested_strike != null && (
+                  <span className="text-sm font-semibold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
+                    suggested strike ≈ ${data.csp_signal.suggested_strike}
+                  </span>
+                )}
+                {data.dip_bounce?.dips >= 3 && (
+                  <span className="text-xs text-slate-500">
+                    history: {data.dip_bounce.dips} similar dips, {(data.dip_bounce.win_rate * 100).toFixed(0)}% bounced,
+                    avg {data.dip_bounce.avg_return >= 0 ? "+" : ""}{data.dip_bounce.avg_return}% in 10d
+                  </span>
+                )}
+              </div>
+              <div className="mt-1 text-sm text-slate-600">{data.csp_signal.reason}</div>
+            </div>
+          )}
+
           {/* Candlestick + Bollinger + EMAs + S/R + cycle shading + signals */}
           <div className="bg-white rounded-xl shadow-sm p-4">
             <div className="font-semibold text-ink mb-2">Price · candlesticks, Bollinger Bands, moving averages, support/resistance</div>

@@ -114,6 +114,58 @@ function levels(highs, lows, closes) {
   return { support, resistance };
 }
 
+// Historical down-day bounce stats: for every session that dropped <= dipPct,
+// how often was the close 10 sessions later higher, and by how much on average?
+function dipBounceStats(closes, dipPct = -2.0, holdDays = 10) {
+  const rets = [];
+  for (let i = 1; i < closes.length - holdDays; i++) {
+    const day = ((closes[i] - closes[i - 1]) / closes[i - 1]) * 100;
+    if (day <= dipPct) {
+      rets.push(((closes[i + holdDays] - closes[i]) / closes[i]) * 100);
+    }
+  }
+  if (!rets.length) return { dips: 0, win_rate: null, avg_return: null };
+  const wins = rets.filter((r) => r > 0).length;
+  return {
+    dips: rets.length,
+    win_rate: Math.round((wins / rets.length) * 100) / 100,
+    avg_return: Math.round((rets.reduce((a, b) => a + b, 0) / rets.length) * 10) / 10,
+  };
+}
+
+// CSP-on-dip: stock is down today, the chart still points up (above 200-day /
+// bullish cycle), and history says dips like this tend to bounce -> selling a
+// cash-secured put into the weakness collects elevated premium at a discount
+// strike. Returns an always-present, explainable signal object.
+function cspSignal(dayChange, last, s200, cyc, sr, a, bounce) {
+  const out = { active: false, strength: null, suggested_strike: null, reason: "" };
+  if (dayChange == null || dayChange > -2.0) {
+    out.reason = "no meaningful dip today";
+    return out;
+  }
+  const chartUp = (s200 != null && last > s200) || cyc.current === "bull";
+  if (!chartUp) {
+    out.reason = `down ${dayChange.toFixed(1)}% but chart lacks upside (below 200-day, bearish cycle)`;
+    return out;
+  }
+  if (bounce.dips >= 3 && (bounce.win_rate < 0.45 || bounce.avg_return < 0)) {
+    out.reason = `down ${dayChange.toFixed(1)}% in an uptrend, but similar dips bounced only ${(bounce.win_rate * 100).toFixed(0)}% of ${bounce.dips} times`;
+    return out;
+  }
+  const strong = bounce.dips >= 3 && bounce.win_rate >= 0.55 && bounce.avg_return > 0;
+  out.active = true;
+  out.strength = strong ? "strong" : "moderate";
+  const atrStrike = a != null ? last - 1.5 * a : null;
+  const supp = (sr.support || [])[0];
+  out.suggested_strike = Math.round(((supp != null && atrStrike != null && supp > atrStrike ? supp : atrStrike) ?? last * 0.95) * 100) / 100;
+  const bits = [`down ${dayChange.toFixed(1)}% today`, "uptrend intact"];
+  if (strong) bits.push(`similar dips bounced ${(bounce.win_rate * 100).toFixed(0)}% of ${bounce.dips} times (avg ${bounce.avg_return >= 0 ? "+" : ""}${bounce.avg_return}% in 10d)`);
+  else if (bounce.dips >= 3) bits.push(`dip history mixed (${(bounce.win_rate * 100).toFixed(0)}% of ${bounce.dips})`);
+  else bits.push("limited dip history");
+  out.reason = bits.join("; ");
+  return out;
+}
+
 // Recent crossover / breakout signals for the last ~90 sessions.
 function signals(dates, closes, s50, s200, macdS, rsis, bb) {
   const out = [];
@@ -165,6 +217,9 @@ function analyze(dates, o, h, l, c, v) {
   const cyc = cycles(dates, c);
   const sr = levels(h, l, c);
   const sigs = signals(dates, c, s50series, s200series, macdS, rsis, bb);
+  const dayChange = c.length >= 2 ? ((last - c[c.length - 2]) / c[c.length - 2]) * 100 : null;
+  const bounce = dipBounceStats(c);
+  const csp = cspSignal(dayChange, last, s200, cyc, sr, a, bounce);
   const hi52 = Math.max(...c.slice(-252)), lo52 = Math.min(...c.slice(-252));
   const ret = (n) => (c.length > n ? ((last - c[c.length - 1 - n]) / c[c.length - 1 - n]) * 100 : null);
   const avgVol = v.length >= 20 ? v.slice(-20).reduce((a, b) => a + b, 0) / 20 : null;
@@ -211,6 +266,8 @@ function analyze(dates, o, h, l, c, v) {
     cycle: cyc,
     levels: sr,
     signals: sigs,
+    csp_signal: csp,
+    dip_bounce: bounce,
     indicators: {
       rsi: rsi != null ? Math.round(rsi * 10) / 10 : null,
       macd: m.macd != null ? Math.round(m.macd * 100) / 100 : null,

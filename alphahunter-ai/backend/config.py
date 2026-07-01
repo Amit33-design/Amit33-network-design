@@ -34,6 +34,11 @@ class Settings(BaseSettings):
     high_short_interest: float = 0.10      # >10% of float = crowded short
     near_52w_low_pct: float = 8.0          # within 8% of the 52-week low
 
+    # CSP-on-dip signal (sell a cash-secured put into weakness on strong names)
+    csp_dip_day_pct: float = -2.0          # today's drop must be at least this
+    csp_min_hist_win: float = 0.55         # historical bounce rate for "strong"
+    csp_min_upside: float = 10.0           # analyst upside counts as potential
+
     # Composite AI score weights (spec: 35/25/20/10/10)
     weight_technical: float = 0.35
     weight_fundamental: float = 0.25

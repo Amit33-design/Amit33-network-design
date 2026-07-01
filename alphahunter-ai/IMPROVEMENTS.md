@@ -9,6 +9,15 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **CSP-on-dip buy signal.** New `scoring/csp_signal.py` + `api/ta.js`
+  equivalent: flags a cash-secured-put entry when the stock is down ≥2% today
+  AND the chart shows upside (above EMA200 / bullish cycle / ≥10% analyst
+  upside) AND historical dips of this kind bounced (setup backtest in the
+  scanner; per-ticker down-day forward-return stats in the Analysis tab).
+  Strength strong/moderate, suggested strike (support-aware or spot − 1.5·ATR),
+  explainable reason either way. Surfaced as a grid column, a mobile-card
+  badge, an Analysis-tab banner with dip-bounce history, and CSV columns.
+  Config knobs: CSP_DIP_DAY_PCT / CSP_MIN_HIST_WIN / CSP_MIN_UPSIDE.
 - [x] **Mobile-browser compatibility pass.** Opportunities renders a card list
   on phones (the wide AG Grid is desktop-only now); grid height is responsive
   (70vh). Fixed non-responsive grids (Portfolio summary, Backtest metrics),
