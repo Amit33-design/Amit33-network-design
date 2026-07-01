@@ -41,19 +41,100 @@ function rsiSeries(closes, period = 14) {
   return out;
 }
 
-function macd(closes) {
+function macdSeries(closes) {
   const e12 = ema(closes, 12), e26 = ema(closes, 26);
   const line = closes.map((_, i) => (e12[i] != null && e26[i] != null ? e12[i] - e26[i] : null));
   const valid = line.filter((x) => x != null);
   const sig = ema(valid, 9);
-  // align signal back to full length
   const pad = line.length - valid.length;
   const signal = line.map((_, i) => (i >= pad ? sig[i - pad] : null));
-  const last = line.length - 1;
+  const histS = line.map((_, i) => (line[i] != null && signal[i] != null ? line[i] - signal[i] : null));
+  return { line, signal, hist: histS };
+}
+
+function smaSeries(arr, n) {
+  return arr.map((_, i) => (i >= n - 1 ? arr.slice(i - n + 1, i + 1).reduce((a, b) => a + b, 0) / n : null));
+}
+
+function bollinger(closes, n = 20, mult = 2) {
+  const mid = smaSeries(closes, n);
+  const upper = [], lower = [];
+  for (let i = 0; i < closes.length; i++) {
+    if (i < n - 1) { upper.push(null); lower.push(null); continue; }
+    const win = closes.slice(i - n + 1, i + 1);
+    const m = mid[i];
+    const sd = Math.sqrt(win.reduce((a, b) => a + (b - m) ** 2, 0) / n);
+    upper.push(m + mult * sd);
+    lower.push(m - mult * sd);
+  }
+  return { mid, upper, lower };
+}
+
+// Bull/bear market cycle: regime = 50-day SMA above/below 200-day SMA. Segment
+// the series into phases and report the current one + past phases for shading.
+function cycles(dates, closes) {
+  const s50 = smaSeries(closes, 50);
+  const s200 = smaSeries(closes, 200);
+  const regime = closes.map((_, i) =>
+    s50[i] != null && s200[i] != null ? (s50[i] >= s200[i] ? "bull" : "bear") : null
+  );
+  const phases = [];
+  let cur = null;
+  regime.forEach((r, i) => {
+    if (r == null) return;
+    if (!cur || cur.type !== r) {
+      if (cur) cur.end = dates[i - 1];
+      cur = { type: r, start: dates[i], end: dates[dates.length - 1], startIdx: i };
+      phases.push(cur);
+    }
+  });
+  const last = phases[phases.length - 1] || null;
+  const daysIn = last ? closes.length - last.startIdx : null;
   return {
-    macd: line[last], signal: signal[last],
-    hist: line[last] != null && signal[last] != null ? line[last] - signal[last] : null,
+    current: last ? last.type : "indeterminate",
+    days_in_phase: daysIn,
+    since: last ? last.start : null,
+    phases: phases.map((p) => ({ type: p.type, start: p.start, end: p.end })),
   };
+}
+
+// Support/resistance from recent swing lows/highs (fractal-style) + pivots.
+function levels(highs, lows, closes) {
+  const N = Math.min(closes.length, 120);
+  const h = highs.slice(-N), l = lows.slice(-N), c = closes[closes.length - 1];
+  const swingHi = [], swingLo = [];
+  for (let i = 2; i < N - 2; i++) {
+    if (h[i] > h[i - 1] && h[i] > h[i - 2] && h[i] > h[i + 1] && h[i] > h[i + 2]) swingHi.push(h[i]);
+    if (l[i] < l[i - 1] && l[i] < l[i - 2] && l[i] < l[i + 1] && l[i] < l[i + 2]) swingLo.push(l[i]);
+  }
+  const resistance = [...new Set(swingHi.filter((x) => x > c).map((x) => Math.round(x * 100) / 100))]
+    .sort((a, b) => a - b).slice(0, 3);
+  const support = [...new Set(swingLo.filter((x) => x < c).map((x) => Math.round(x * 100) / 100))]
+    .sort((a, b) => b - a).slice(0, 3);
+  return { support, resistance };
+}
+
+// Recent crossover / breakout signals for the last ~90 sessions.
+function signals(dates, closes, s50, s200, macdS, rsis, bb) {
+  const out = [];
+  const start = Math.max(1, closes.length - 90);
+  for (let i = start; i < closes.length; i++) {
+    if (s50[i] != null && s200[i] != null && s50[i - 1] != null && s200[i - 1] != null) {
+      if (s50[i - 1] <= s200[i - 1] && s50[i] > s200[i]) out.push({ date: dates[i], type: "bull", label: "Golden cross (50>200)" });
+      if (s50[i - 1] >= s200[i - 1] && s50[i] < s200[i]) out.push({ date: dates[i], type: "bear", label: "Death cross (50<200)" });
+    }
+    if (macdS.line[i] != null && macdS.signal[i] != null && macdS.line[i - 1] != null && macdS.signal[i - 1] != null) {
+      if (macdS.line[i - 1] <= macdS.signal[i - 1] && macdS.line[i] > macdS.signal[i]) out.push({ date: dates[i], type: "bull", label: "MACD bullish cross" });
+      if (macdS.line[i - 1] >= macdS.signal[i - 1] && macdS.line[i] < macdS.signal[i]) out.push({ date: dates[i], type: "bear", label: "MACD bearish cross" });
+    }
+    if (rsis[i] != null && rsis[i - 1] != null) {
+      if (rsis[i - 1] < 30 && rsis[i] >= 30) out.push({ date: dates[i], type: "bull", label: "RSI back above 30 (oversold exit)" });
+      if (rsis[i - 1] > 70 && rsis[i] <= 70) out.push({ date: dates[i], type: "bear", label: "RSI back below 70" });
+    }
+    if (bb.upper[i] != null && closes[i] > bb.upper[i] && closes[i - 1] <= bb.upper[i - 1]) out.push({ date: dates[i], type: "bull", label: "Bollinger upper breakout" });
+    if (bb.lower[i] != null && closes[i] < bb.lower[i] && closes[i - 1] >= bb.lower[i - 1]) out.push({ date: dates[i], type: "bear", label: "Bollinger lower breakdown" });
+  }
+  return out.reverse().slice(0, 10);
 }
 
 function atr(highs, lows, closes, period = 14) {
@@ -75,9 +156,15 @@ function analyze(dates, o, h, l, c, v) {
   const e20 = ema(c, 20), e50 = ema(c, 50), e200 = ema(c, 200);
   const rsis = rsiSeries(c);
   const rsi = rsis[rsis.length - 1];
-  const m = macd(c);
+  const macdS = macdSeries(c);
+  const m = { macd: macdS.line[c.length - 1], signal: macdS.signal[c.length - 1], hist: macdS.hist[c.length - 1] };
+  const s50series = smaSeries(c, 50), s200series = smaSeries(c, 200);
   const s50 = smaLast(c, 50), s200 = smaLast(c, 200);
   const a = atr(h, l, c);
+  const bb = bollinger(c);
+  const cyc = cycles(dates, c);
+  const sr = levels(h, l, c);
+  const sigs = signals(dates, c, s50series, s200series, macdS, rsis, bb);
   const hi52 = Math.max(...c.slice(-252)), lo52 = Math.min(...c.slice(-252));
   const ret = (n) => (c.length > n ? ((last - c[c.length - 1 - n]) / c[c.length - 1 - n]) * 100 : null);
   const avgVol = v.length >= 20 ? v.slice(-20).reduce((a, b) => a + b, 0) / 20 : null;
@@ -110,6 +197,8 @@ function analyze(dates, o, h, l, c, v) {
   }
   if (distHigh != null && distHigh > -10) { score += 5; factors.push({ t: "bull", s: "Within 10% of 52-week high" }); }
   if (distLow != null && distLow < 8) { score += 4; factors.push({ t: "bull", s: "Near 52-week low (deep value/oversold)" }); }
+  if (cyc.current === "bull") { score += 4; factors.push({ t: "bull", s: `Bullish cycle (${cyc.days_in_phase}d)` }); }
+  else if (cyc.current === "bear") { score -= 4; factors.push({ t: "bear", s: `Bearish cycle (${cyc.days_in_phase}d)` }); }
   score = Math.max(0, Math.min(100, Math.round(score)));
   const recommendation =
     score >= 70 ? "Buy" : score >= 58 ? "Accumulate" : score >= 45 ? "Hold" : score >= 32 ? "Reduce" : "Sell";
@@ -119,6 +208,9 @@ function analyze(dates, o, h, l, c, v) {
     score,
     recommendation,
     factors,
+    cycle: cyc,
+    levels: sr,
+    signals: sigs,
     indicators: {
       rsi: rsi != null ? Math.round(rsi * 10) / 10 : null,
       macd: m.macd != null ? Math.round(m.macd * 100) / 100 : null,
@@ -135,10 +227,15 @@ function analyze(dates, o, h, l, c, v) {
     },
     chart: {
       dates,
+      open: o.map((x) => Math.round(x * 100) / 100),
+      high: h.map((x) => Math.round(x * 100) / 100),
+      low: l.map((x) => Math.round(x * 100) / 100),
       close: c.map((x) => Math.round(x * 100) / 100),
       volume: v,
       ema20: e20, ema50: e50, ema200: e200,
+      bb_upper: bb.upper, bb_mid: bb.mid, bb_lower: bb.lower,
       rsi: rsis.map((x) => (x != null ? Math.round(x * 10) / 10 : null)),
+      macd: macdS.line, macd_signal: macdS.signal, macd_hist: macdS.hist,
     },
   };
 }

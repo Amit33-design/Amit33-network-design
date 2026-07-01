@@ -9,6 +9,16 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Mobile Run Scan fix + advanced Technical Analysis (paid-app style).**
+  Run Scan renders a native anchor link (mobile popup-blockers reject
+  window.open from async callbacks) and the header is responsive (Run Scan
+  pinned visible, nav scrolls). `api/ta.js` now returns OHLC candles, Bollinger
+  Bands, MACD series, bull/bear **market-cycle detection** (50/200 regime
+  segmentation with current phase + days), swing-based **support/resistance**,
+  and a **recent-signals** feed (golden/death cross, MACD cross, RSI 30/70,
+  Bollinger breakouts). The Analysis tab renders candlesticks + BB + EMAs +
+  S/R lines + green/red cycle shading + ▲▼ signal markers, plus volume, MACD,
+  and RSI subplots, a cycle badge, and S/R + signals panels.
 - [x] **Single-ticker real-time Technical Analysis tab.** New `/analysis` page +
   `api/ta.js` serverless function: price chart with EMA20/50/200 overlays, RSI
   subplot, full indicator panel (RSI, MACD, ATR, multi-horizon returns, 52w
