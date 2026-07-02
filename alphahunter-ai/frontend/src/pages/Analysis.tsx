@@ -2,6 +2,7 @@ import { useState } from "react";
 import Plot from "react-plotly.js";
 import { api } from "../lib/api";
 import { ErrorBox, Loading } from "../components/Loading";
+import ChartExplainer from "../components/ChartExplainer";
 
 const RANGES = ["6mo", "1y", "2y", "5y"];
 
@@ -123,6 +124,14 @@ export default function Analysis() {
             )}
           </div>
 
+          {/* Thesis: the story behind the move */}
+          {data.thesis && (
+            <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-alpha">
+              <div className="font-semibold text-ink mb-1">📝 Thesis</div>
+              <div className="text-sm text-slate-700 leading-relaxed">{data.thesis}</div>
+            </div>
+          )}
+
           {/* Potential bottom */}
           {data.bottom && (
             <div className={`rounded-xl shadow-sm p-4 border ${
@@ -204,7 +213,25 @@ export default function Analysis() {
 
           {/* Candlestick + Bollinger + EMAs + S/R + cycle shading + signals */}
           <div className="bg-white rounded-xl shadow-sm p-4">
-            <div className="font-semibold text-ink mb-2">Price · candlesticks, Bollinger Bands, moving averages, support/resistance</div>
+            <div className="font-semibold text-ink mb-2">
+              Price · candlesticks, Bollinger Bands, moving averages, support/resistance
+              <ChartExplainer
+                title="the price chart"
+                points={[
+                  "Each candle is one day: green = closed higher than it opened, red = lower. The thin wicks are the day's full high-low range.",
+                  "The grey band is the Bollinger Band (20-day average ±2 standard deviations): price hugging the lower band = stretched to the downside; breaking the upper band = strong momentum.",
+                  "EMA50 (orange) and EMA200 (blue) are trend lines — price above the EMA200 means the long-term trend is up.",
+                  "Dashed green lines = support (buyers stepped in there before); dashed red = resistance (sellers capped it there).",
+                  "Green/red background shading = bullish/bearish market cycle (50-day vs 200-day trend).",
+                  "▲/▼ triangles mark crossover or breakout signals on the day they fired.",
+                ]}
+                current={
+                  ind?.sma200 != null
+                    ? `price is ${data.price > ind.sma200 ? "ABOVE" : "BELOW"} the 200-day average and the cycle is ${data.cycle?.current} (${data.cycle?.days_in_phase}d).`
+                    : null
+                }
+              />
+            </div>
             <Plot
               data={([
                 { type: "candlestick", x: ch.dates, open: ch.open, high: ch.high, low: ch.low, close: ch.close,
@@ -239,7 +266,22 @@ export default function Analysis() {
           <div className="grid md:grid-cols-2 gap-6">
             {/* Volume */}
             <div className="bg-white rounded-xl shadow-sm p-4">
-              <div className="font-semibold text-ink mb-2">Volume</div>
+              <div className="font-semibold text-ink mb-2">
+                Volume
+                <ChartExplainer
+                  title="volume"
+                  points={[
+                    "How many shares traded each day — green bars on up days, red on down days.",
+                    "A tall red bar on a big drop = heavy selling (possible capitulation, which often precedes a bottom).",
+                    "A tall green bar on a rally = conviction buying; rallies on weak volume are less trustworthy.",
+                  ]}
+                  current={
+                    ind?.last_volume != null && ind?.avg_volume != null
+                      ? `today traded ${(ind.last_volume / ind.avg_volume).toFixed(1)}x the 20-day average volume.`
+                      : null
+                  }
+                />
+              </div>
               <Plot
                 data={[{ type: "bar", x: ch.dates, y: ch.volume, name: "Volume",
                          marker: { color: ch.close.map((c: number, i: number) => (i > 0 && c >= ch.close[i - 1] ? "#1b7f4b" : "#c0392b")) } }]}
@@ -249,7 +291,22 @@ export default function Analysis() {
             </div>
             {/* MACD */}
             <div className="bg-white rounded-xl shadow-sm p-4">
-              <div className="font-semibold text-ink mb-2">MACD (12, 26, 9)</div>
+              <div className="font-semibold text-ink mb-2">
+                MACD (12, 26, 9)
+                <ChartExplainer
+                  title="MACD"
+                  points={[
+                    "MACD measures momentum: the dark line is the gap between the 12- and 26-day trends; the orange line is its 9-day average (the signal).",
+                    "MACD crossing ABOVE the signal = momentum turning up (bullish); crossing below = turning down.",
+                    "The green/red bars (histogram) show the gap between the two — shrinking red bars often precede a bullish cross.",
+                  ]}
+                  current={
+                    ind?.macd_hist != null
+                      ? `MACD histogram is ${ind.macd_hist >= 0 ? "positive (momentum up)" : "negative (momentum down)"} at ${ind.macd_hist}.`
+                      : null
+                  }
+                />
+              </div>
               <Plot
                 data={[
                   { type: "bar", x: ch.dates, y: ch.macd_hist, name: "Hist",
@@ -265,7 +322,23 @@ export default function Analysis() {
 
           {/* RSI */}
           <div className="bg-white rounded-xl shadow-sm p-4">
-            <div className="font-semibold text-ink mb-2">RSI (14)</div>
+            <div className="font-semibold text-ink mb-2">
+              RSI (14)
+              <ChartExplainer
+                title="RSI"
+                points={[
+                  "RSI (Relative Strength Index) measures how stretched the recent price action is, from 0 to 100.",
+                  "Below the green 30 line = oversold (selling likely overdone — bounce candidates live here).",
+                  "Above the red 70 line = overbought (rally stretched — pullback risk).",
+                  "Between 30-70 = neutral; the direction of RSI matters more than the level.",
+                ]}
+                current={
+                  ind?.rsi != null
+                    ? `RSI is ${ind.rsi} — ${ind.rsi < 30 ? "oversold" : ind.rsi > 70 ? "overbought" : "neutral"}.`
+                    : null
+                }
+              />
+            </div>
             <Plot
               data={[{ x: ch.dates, y: ch.rsi, type: "scatter", mode: "lines", name: "RSI", line: { color: "#1b7f4b" } }]}
               layout={{

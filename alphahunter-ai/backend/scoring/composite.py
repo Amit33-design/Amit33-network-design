@@ -161,6 +161,22 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
             f"bounced {bt['hist_win_rate']*100:.0f}% of the time "
             f"(avg {bt['hist_avg_return_%']:+.1f}% over the hold)."
         )
+    # Sector thesis: is the weakness group-driven (whole sector down together,
+    # the way memory names fall when DRAM pricing turns) or stock-specific?
+    if rs and rs.get("vs_sector") is not None:
+        vs = rs["vs_sector"]
+        sect = rs.get("sector") or "its sector"
+        if abs(vs) <= 5:
+            explanation += (f" Sector thesis: moving WITH {sect} "
+                            f"({vs:+.0f}pp vs {rs.get('sector_etf')}) — the decline is "
+                            f"group-driven, so a sector turn should lift it too.")
+        elif vs < -5:
+            explanation += (f" Sector thesis: lagging {sect} by {abs(vs):.0f}pp — the "
+                            f"weakness is stock-specific, not just the group; check for "
+                            f"company news before assuming a sector bounce fixes it.")
+        else:
+            explanation += (f" Sector thesis: outperforming {sect} by {vs:.0f}pp — a "
+                            f"relative leader in its group.")
 
     return {
         "ticker": snap.ticker,

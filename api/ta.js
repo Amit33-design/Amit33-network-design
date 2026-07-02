@@ -394,6 +394,73 @@ function analyze(dates, o, h, l, c, v) {
   };
 }
 
+// Build a plain-English thesis: is the move market-driven or stock-specific,
+// what does the trend/cycle say, and how have similar dips resolved?
+function buildThesis(t, out, spyCloses) {
+  const parts = [];
+  const day = out.day_change_pct;
+  const c = out.chart.close;
+  const monthRet = c.length > 21 ? ((c[c.length - 1] - c[c.length - 22]) / c[c.length - 22]) * 100 : null;
+
+  let spyDay = null, spyMonth = null;
+  if (spyCloses && spyCloses.length > 22) {
+    const m = spyCloses.length - 1;
+    spyDay = ((spyCloses[m] - spyCloses[m - 1]) / spyCloses[m - 1]) * 100;
+    spyMonth = ((spyCloses[m] - spyCloses[m - 22]) / spyCloses[m - 22]) * 100;
+  }
+
+  // Today's move: market-wide or specific to this name?
+  if (day != null && day <= -1.5) {
+    if (spyDay != null && spyDay <= -1.0) {
+      parts.push(`${t} is down ${day.toFixed(1)}% today alongside a broad market pullback ` +
+        `(S&P 500 ${spyDay.toFixed(1)}%) — much of the weakness is market-driven, not company news.`);
+    } else if (spyDay != null && spyDay > -0.3) {
+      parts.push(`${t} is down ${day.toFixed(1)}% today while the broader market is flat ` +
+        `(S&P 500 ${spyDay >= 0 ? "+" : ""}${spyDay.toFixed(1)}%) — this looks stock-specific ` +
+        `(sector rotation, downgrades, or company news), so check headlines before buying the dip.`);
+    } else if (spyDay != null) {
+      parts.push(`${t} is down ${day.toFixed(1)}% today, more than the market (S&P 500 ${spyDay.toFixed(1)}%) — ` +
+        `partly market weakness, partly its own.`);
+    }
+  } else if (day != null && day >= 1.5 && spyDay != null) {
+    parts.push(`${t} is up ${day.toFixed(1)}% today vs S&P 500 ${spyDay >= 0 ? "+" : ""}${spyDay.toFixed(1)}% — ` +
+      `${day > spyDay + 1 ? "outpacing the market (relative strength)" : "moving with the market"}.`);
+  }
+
+  // The last month vs the market: group/relative context.
+  if (monthRet != null && spyMonth != null) {
+    const spread = monthRet - spyMonth;
+    if (spread <= -8) {
+      parts.push(`Over the past month it has lagged the market by ${Math.abs(spread).toFixed(0)}pp ` +
+        `(${monthRet.toFixed(0)}% vs S&P ${spyMonth >= 0 ? "+" : ""}${spyMonth.toFixed(0)}%) — ` +
+        `the whole group/story is out of favor, the way memory names sell off together when DRAM pricing turns.`);
+    } else if (spread >= 8) {
+      parts.push(`Over the past month it has beaten the market by ${spread.toFixed(0)}pp — a leader, ` +
+        `and leaders tend to recover first when pressure lifts.`);
+    }
+  }
+
+  // Trend + cycle.
+  const above200 = out.indicators.sma200 != null && out.price > out.indicators.sma200;
+  if (out.cycle?.current === "bull" && above200) {
+    parts.push(`The primary trend is still up (bullish cycle for ${out.cycle.days_in_phase}d, price above the 200-day) — ` +
+      `dips inside an uptrend are typically buyable weakness rather than tops.`);
+  } else if (out.cycle?.current === "bear") {
+    parts.push(`The primary trend is down (bearish cycle for ${out.cycle.days_in_phase}d) — ` +
+      `bounces are counter-trend until the 50-day recrosses the 200-day.`);
+  }
+
+  // Historical dip behavior.
+  if (out.dip_bounce?.dips >= 3 && out.dip_bounce.win_rate != null) {
+    parts.push(`History: ${out.dip_bounce.dips} similar one-day dips resolved higher ` +
+      `${(out.dip_bounce.win_rate * 100).toFixed(0)}% of the time (avg ` +
+      `${out.dip_bounce.avg_return >= 0 ? "+" : ""}${out.dip_bounce.avg_return}% in 10 sessions).`);
+  }
+
+  parts.push(`Net: ${out.recommendation.toLowerCase()} at a technical score of ${out.score}/100.`);
+  return parts.join(" ");
+}
+
 export default async function handler(req, res) {
   const ticker = String(req.query?.ticker || req.body?.ticker || "").toUpperCase().trim();
   const range = ["6mo", "1y", "2y", "5y"].includes(req.query?.range) ? req.query.range : "1y";
@@ -420,6 +487,22 @@ export default async function handler(req, res) {
     if (c.length < 30) return res.status(422).json({ error: "insufficient history" });
 
     const out = analyze(dates, o, h, l, c, v);
+
+    // Market context for the thesis (best-effort; skipped for SPY itself).
+    let spyCloses = null;
+    if (ticker !== "SPY") {
+      try {
+        const sr2 = await fetch(CHART("SPY", "3mo"), {
+          headers: { "User-Agent": "Mozilla/5.0 (compatible; alphahunter-ai/1.0)" },
+        });
+        if (sr2.ok) {
+          const sj = await sr2.json();
+          spyCloses = (sj?.chart?.result?.[0]?.indicators?.quote?.[0]?.close || []).filter((x) => x != null);
+        }
+      } catch { /* thesis degrades gracefully */ }
+    }
+    const thesis = buildThesis(ticker, out, spyCloses);
+
     // NOTE: day change comes from the last two closes in analyze() —
     // meta.chartPreviousClose is the close before the RANGE start (i.e. the
     // 1y-ago close on a 1y chart), which once showed +82% as a "day" change.
@@ -428,6 +511,7 @@ export default async function handler(req, res) {
       name: meta.shortName || meta.longName || ticker,
       currency: meta.currency || "USD",
       range,
+      thesis,
       ...out,
     });
   } catch (e) {

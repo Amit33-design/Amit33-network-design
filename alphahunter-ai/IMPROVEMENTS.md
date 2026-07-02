@@ -9,6 +9,13 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Chart explainers + move thesis.** Every Analysis chart (price/candles,
+  volume, MACD, RSI) has a tap-to-open "ℹ️ what is this?" explainer — how to
+  read the graph plus a live "right now" line from the data. New 📝 Thesis card
+  narrates the move: market-driven vs stock-specific (ticker vs S&P day/month
+  spread — the "memory names all fall together" context), trend/cycle read,
+  historical dip behavior, and the net verdict. Scanner reasoning gains a
+  sector thesis sentence (group-driven vs stock-specific weakness vs leader).
 - [x] **Potential-bottom detector + multi-domain Dashboard + 9 AM ET cron.**
   Analysis tab: `api/ta.js` `bottomSignal()` scores classic bottoming tells
   (oversold RSI, bullish RSI divergence, 52w-low/support test, capitulation
