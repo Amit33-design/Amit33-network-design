@@ -427,17 +427,41 @@ function buildThesis(t, out, spyCloses) {
       `${day > spyDay + 1 ? "outpacing the market (relative strength)" : "moving with the market"}.`);
   }
 
-  // The last month vs the market: group/relative context.
+  // The last month vs the market: relative context from ITS OWN numbers.
   if (monthRet != null && spyMonth != null) {
     const spread = monthRet - spyMonth;
     if (spread <= -8) {
       parts.push(`Over the past month it has lagged the market by ${Math.abs(spread).toFixed(0)}pp ` +
         `(${monthRet.toFixed(0)}% vs S&P ${spyMonth >= 0 ? "+" : ""}${spyMonth.toFixed(0)}%) — ` +
-        `the whole group/story is out of favor, the way memory names sell off together when DRAM pricing turns.`);
+        `money is rotating away from this name, so it likely needs its own catalyst, not just a market bounce.`);
     } else if (spread >= 8) {
       parts.push(`Over the past month it has beaten the market by ${spread.toFixed(0)}pp — a leader, ` +
         `and leaders tend to recover first when pressure lifts.`);
     }
+  }
+
+  // Stock character — derived from this ticker's own profile so every thesis
+  // is specific: momentum phase, 52-week position, and typical volatility.
+  const ret6 = out.indicators.ret_6m;
+  const dHigh = out.indicators.dist_52w_high;   // % below 52w high (negative)
+  const dLow = out.indicators.dist_52w_low;     // % above 52w low
+  const atrPct = out.indicators.atr != null && out.price ? (out.indicators.atr / out.price) * 100 : null;
+  if (ret6 != null && ret6 > 50 && dHigh != null && dHigh <= -10) {
+    parts.push(`${t} is a high-momentum name (+${ret6.toFixed(0)}% over 6 months) digesting a big run — ` +
+      `pullbacks of this size are routine for it, not necessarily a broken story.`);
+  } else if (dHigh != null && dHigh > -8) {
+    parts.push(`It is trading within ${Math.abs(dHigh).toFixed(0)}% of its 52-week high — this is strength ` +
+      `being bought, not a stock in distress.`);
+  } else if (dLow != null && dLow < 12) {
+    parts.push(`It sits ${dLow.toFixed(0)}% above its 52-week low — a persistent downtrend / deeply ` +
+      `out-of-favor name that needs a real catalyst, so be selective about knife-catching.`);
+  } else if (dHigh != null && dHigh < -35) {
+    parts.push(`It is ${Math.abs(dHigh).toFixed(0)}% below its 52-week high — a deep drawdown where ` +
+      `sentiment, not fundamentals, often sets the price day to day.`);
+  }
+  if (atrPct != null && atrPct >= 4) {
+    parts.push(`Note: this is a high-volatility stock (average daily range ~${atrPct.toFixed(1)}% of price), ` +
+      `so a ${day != null ? Math.abs(day).toFixed(0) : "big"}% day is less unusual here than it would be for a mega-cap.`);
   }
 
   // Trend + cycle.
