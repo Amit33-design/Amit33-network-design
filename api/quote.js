@@ -65,9 +65,13 @@ function technicals(closes) {
   score = Math.max(0, Math.min(100, score));
   const rec =
     score >= 70 ? "Buy" : score >= 58 ? "Accumulate" : score >= 45 ? "Hold" : score >= 32 ? "Reduce" : "Sell";
+  const reason = factors.length
+    ? `${rec} — technical score ${Math.round(score)}/100: ${factors.slice(0, 4).join("; ")}`
+    : `${rec} — technical score ${Math.round(score)}/100`;
   return {
     score: Math.round(score),
     recommendation: rec,
+    reason,
     rsi: r != null ? Math.round(r) : null,
     momentum_6mo: mom6 != null ? Math.round(mom6 * 10) / 10 : null,
     dist_52w_high: distHigh != null ? Math.round(distHigh * 10) / 10 : null,

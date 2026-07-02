@@ -76,7 +76,7 @@ async function analyzePortfolioLive(
   const tickers = positions.map((p) => p.ticker.toUpperCase());
   let quotes: Record<
     string,
-    { price: number; name?: string; score?: number; recommendation?: string }
+    { price: number; name?: string; score?: number; recommendation?: string; reason?: string }
   > = {};
   let live = false;
   try {
@@ -127,6 +127,7 @@ async function analyzePortfolioLive(
       recommendation: rec
         ? rec.score >= 70 ? "Buy More" : rec.score >= 55 ? "Hold" : rec.score >= 40 ? "Reduce" : "Sell"
         : q?.recommendation ?? (price != null ? "Hold" : "no data"),
+      reason: rec ? rec.reasoning : q?.reason,
       covered_call: rec?.covered_call,
       cash_secured_put: rec?.cash_secured_put,
     };

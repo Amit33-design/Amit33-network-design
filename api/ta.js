@@ -339,9 +339,23 @@ function analyze(dates, o, h, l, c, v) {
   const recommendation =
     score >= 70 ? "Buy" : score >= 58 ? "Accumulate" : score >= 45 ? "Hold" : score >= 32 ? "Reduce" : "Sell";
 
+  // Plain-English reason for the verdict: the score bands, the bull/bear tally,
+  // and the strongest evidence on each side.
+  const bullF = factors.filter((f) => f.t === "bull").map((f) => f.s);
+  const bearF = factors.filter((f) => f.t === "bear").map((f) => f.s);
+  const band =
+    score >= 70 ? "strongly bullish (70+)" : score >= 58 ? "leaning bullish (58-69)"
+      : score >= 45 ? "mixed (45-57)" : score >= 32 ? "leaning bearish (32-44)" : "strongly bearish (<32)";
+  let verdict_reason =
+    `${recommendation} because the technical score is ${score}/100 — ${band}, ` +
+    `with ${bullF.length} bullish vs ${bearF.length} bearish signals.`;
+  if (bullF.length) verdict_reason += ` For it: ${bullF.slice(0, 3).join("; ")}.`;
+  if (bearF.length) verdict_reason += ` Against it: ${bearF.slice(0, 3).join("; ")}.`;
+
   return {
     price: last,
     day_change_pct: dayChange,
+    verdict_reason,
     score,
     recommendation,
     factors,

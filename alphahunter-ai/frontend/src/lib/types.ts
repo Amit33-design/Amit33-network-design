@@ -63,6 +63,7 @@ export interface PortfolioRow {
   scores?: Record<string, number>;
   overall_score?: number;
   recommendation?: string;
+  reason?: string;
   covered_call?: string | null;
   cash_secured_put?: string | null;
   error?: string;

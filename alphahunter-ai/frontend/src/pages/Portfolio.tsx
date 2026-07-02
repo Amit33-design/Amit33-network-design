@@ -151,7 +151,12 @@ export default function Portfolio() {
                           {p["gain_loss_%"] != null ? `${p["gain_loss_%"]}%` : "—"}
                         </td>
                         <td className="px-3 py-2">{p.overall_score ?? "—"}</td>
-                        <td className="px-3 py-2 font-medium">{p.recommendation ?? p.error}</td>
+                        <td className="px-3 py-2">
+                          <div className="font-medium">{p.recommendation ?? p.error}</div>
+                          {p.reason && (
+                            <div className="text-xs text-slate-400 max-w-md">{p.reason}</div>
+                          )}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

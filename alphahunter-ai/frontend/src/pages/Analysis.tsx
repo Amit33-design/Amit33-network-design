@@ -116,6 +116,11 @@ export default function Analysis() {
                 <div className="text-2xl font-bold" style={{ color: verdictColor }}>{data.recommendation}</div>
               </div>
             </div>
+            {data.verdict_reason && (
+              <div className="w-full mt-1 pt-2 border-t border-slate-100 text-sm text-slate-600">
+                <span className="font-semibold text-ink">Why: </span>{data.verdict_reason}
+              </div>
+            )}
           </div>
 
           {/* Potential bottom */}
