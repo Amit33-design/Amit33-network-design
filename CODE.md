@@ -112,8 +112,16 @@ each wired to the REST API via `src/lib/api.ts`. See `frontend/README.md`.
 
 **Daily scan workflow**: `.github/workflows/alphahunter-scan.yml` runs
 `python -m backend.run_daily` (gated to ~6 AM Pacific, like the legacy one) and
-commits dated `alphahunter-ai/results/alphahunter_<date>.{json,csv}`.
-`workflow_dispatch` accepts `limit` and `loose` inputs for manual runs.
+commits dated `alphahunter-ai/results/alphahunter_<date>.{json,csv}` + refreshes
+`frontend/public/snapshot.json`. `workflow_dispatch` accepts `limit`/`loose`.
+
+**Dashboard workflow**: `.github/workflows/dashboard.yml` runs
+`python -m backend.run_dashboard` (gated to **9 AM ET**), scoring the curated
+20-stock multi-domain watchlist (`backend/watchlist.py`, general non-oversold
+scorer `score_ticker_general`) and committing `frontend/public/dashboard.json`,
+which the Dashboard page renders grouped by domain (AI, Semis, FAANG, Energy,
+EV, Fintech, Software). Both scan workflows use a conflict-proof push
+(rebase -X theirs retry) since they share generated files.
 
 **Live deployment (Vercel)**: the frontend is deployed at
 **https://amit33-network-design.vercel.app** (Vercel project

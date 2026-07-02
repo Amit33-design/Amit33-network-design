@@ -1,0 +1,72 @@
+name: AlphaHunter Dashboard (9 AM ET)
+
+# Scores the curated multi-domain watchlist and commits
+# alphahunter-ai/frontend/public/dashboard.json, which the Dashboard renders.
+# Auto-deploys to Vercel on push.
+
+on:
+  schedule:
+    # GitHub cron is UTC and ignores DST. 9 AM ET = 13:00 UTC (EDT) / 14:00 UTC
+    # (EST). Trigger both and gate to the real 9 AM America/New_York in the job.
+    - cron: '0 13,14 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  dashboard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: alphahunter-ai
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Gate to 9 AM Eastern (manual runs always proceed)
+        id: gate
+        working-directory: .
+        run: |
+          HOUR=$(TZ=America/New_York date +%H)
+          echo "Eastern hour: $HOUR"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$HOUR" = "09" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Not 9 AM ET; skipping."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Python
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.gate.outputs.run == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Build the dashboard
+        if: steps.gate.outputs.run == 'true'
+        env:
+          PYTHONPATH: ${{ github.workspace }}/alphahunter-ai
+        run: python -m backend.run_dashboard
+
+      - name: Commit dashboard data
+        if: steps.gate.outputs.run == 'true'
+        working-directory: .
+        run: |
+          git config user.name  "alphahunter-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add alphahunter-ai/frontend/public/dashboard.json
+          git commit -m "Dashboard refresh $(TZ=America/New_York date +%F)" \
+            || { echo "No changes to commit"; exit 0; }
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then echo "pushed"; exit 0; fi
+            git fetch origin main
+            git rebase -X theirs origin/main || git rebase --abort
+            sleep $((attempt * 3))
+          done
+          echo "ERROR: could not push after retries"; exit 1

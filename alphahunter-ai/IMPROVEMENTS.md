@@ -9,6 +9,16 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Potential-bottom detector + multi-domain Dashboard + 9 AM ET cron.**
+  Analysis tab: `api/ta.js` `bottomSignal()` scores classic bottoming tells
+  (oversold RSI, bullish RSI divergence, 52w-low/support test, capitulation
+  volume + hammer candle, 20-EMA reclaim) → high/possible/low with factors,
+  shown as a "Potential bottom" card. Dashboard rebuilt as a curated 20-stock
+  board across domains (AI, Semis, FAANG, Energy, EV, Fintech, Software) via
+  `backend/watchlist.py` + `score_ticker_general` + `backend/run_dashboard.py`
+  writing `frontend/public/dashboard.json`, refreshed daily by the new
+  `.github/workflows/dashboard.yml` cron (9 AM ET), grouped by domain with
+  score/action/quality/RSI/day%.
 - [x] **CSP-on-dip buy signal.** New `scoring/csp_signal.py` + `api/ta.js`
   equivalent: flags a cash-secured-put entry when the stock is down ≥2% today
   AND the chart shows upside (above EMA200 / bullish cycle / ≥10% analyst

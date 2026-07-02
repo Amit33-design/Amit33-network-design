@@ -166,6 +166,56 @@ function cspSignal(dayChange, last, s200, cyc, sr, a, bounce) {
   return out;
 }
 
+// "Potential bottom" detector: how many classic bottoming tells are firing?
+// Combines oversold RSI, bullish RSI divergence (price lower-low but RSI
+// higher-low), proximity to 52-week low / support, capitulation-volume + a
+// long-lower-wick reversal candle, and a short-term MA reclaim.
+function bottomSignal(o, h, l, c, v, rsis, e20, sr) {
+  const n = c.length;
+  const last = c[n - 1];
+  let score = 0;
+  const factors = [];
+
+  const rsi = rsis[n - 1];
+  if (rsi != null && rsi < 30) { score += 25; factors.push({ t: "bull", s: `deeply oversold (RSI ${rsi.toFixed(0)})` }); }
+  else if (rsi != null && rsi < 40) { score += 12; factors.push({ t: "bull", s: `oversold (RSI ${rsi.toFixed(0)})` }); }
+
+  // Bullish RSI divergence over the last ~20 sessions.
+  const w = Math.min(20, n - 1);
+  const pMinIdx = c.lastIndexOf(Math.min(...c.slice(-w)));
+  const prevMinIdx = c.slice(0, n - Math.floor(w / 2)).lastIndexOf(Math.min(...c.slice(-2 * w, -Math.floor(w / 2))));
+  if (pMinIdx > prevMinIdx && prevMinIdx >= 0 && c[pMinIdx] < c[prevMinIdx] && rsis[pMinIdx] != null && rsis[prevMinIdx] != null && rsis[pMinIdx] > rsis[prevMinIdx]) {
+    score += 22; factors.push({ t: "bull", s: "bullish RSI divergence (price lower low, RSI higher low)" });
+  }
+
+  // Near the 52-week low or a support level.
+  const lo52 = Math.min(...c.slice(-252));
+  if (lo52 && (last - lo52) / lo52 < 0.08) { score += 15; factors.push({ t: "bull", s: "at/near 52-week low" }); }
+  const supp = (sr.support || [])[0];
+  if (supp && Math.abs(last - supp) / last < 0.04) { score += 10; factors.push({ t: "bull", s: `testing support ~$${supp}` }); }
+
+  // Capitulation volume + reversal (long lower wick) candle in last 3 days.
+  const avgV = v.slice(-20).reduce((a, b) => a + b, 0) / Math.min(20, v.length);
+  for (let i = n - 3; i < n; i++) {
+    if (i < 1) continue;
+    const body = Math.abs(c[i] - o[i]);
+    const lowerWick = Math.min(o[i], c[i]) - l[i];
+    if (v[i] > 1.8 * avgV && lowerWick > 1.5 * body && c[i] >= o[i]) {
+      score += 16; factors.push({ t: "bull", s: "capitulation volume + hammer reversal candle" });
+      break;
+    }
+  }
+
+  // Short-term reclaim: back above the 20-day EMA after being below it.
+  if (e20[n - 1] != null && e20[n - 2] != null && c[n - 2] < e20[n - 2] && last > e20[n - 1]) {
+    score += 12; factors.push({ t: "bull", s: "reclaimed 20-day EMA" });
+  }
+
+  score = Math.min(100, score);
+  const label = score >= 60 ? "high" : score >= 35 ? "possible" : "low";
+  return { score, likelihood: label, factors };
+}
+
 // Recent crossover / breakout signals for the last ~90 sessions.
 function signals(dates, closes, s50, s200, macdS, rsis, bb) {
   const out = [];
@@ -220,6 +270,7 @@ function analyze(dates, o, h, l, c, v) {
   const dayChange = c.length >= 2 ? ((last - c[c.length - 2]) / c[c.length - 2]) * 100 : null;
   const bounce = dipBounceStats(c);
   const csp = cspSignal(dayChange, last, s200, cyc, sr, a, bounce);
+  const bottom = bottomSignal(o, h, l, c, v, rsis, e20, sr);
   const hi52 = Math.max(...c.slice(-252)), lo52 = Math.min(...c.slice(-252));
   const ret = (n) => (c.length > n ? ((last - c[c.length - 1 - n]) / c[c.length - 1 - n]) * 100 : null);
   const avgVol = v.length >= 20 ? v.slice(-20).reduce((a, b) => a + b, 0) / 20 : null;
@@ -268,6 +319,7 @@ function analyze(dates, o, h, l, c, v) {
     signals: sigs,
     csp_signal: csp,
     dip_bounce: bounce,
+    bottom: bottom,
     indicators: {
       rsi: rsi != null ? Math.round(rsi * 10) / 10 : null,
       macd: m.macd != null ? Math.round(m.macd * 100) / 100 : null,

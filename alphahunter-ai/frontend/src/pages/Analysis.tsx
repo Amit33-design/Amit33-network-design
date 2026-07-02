@@ -118,6 +118,35 @@ export default function Analysis() {
             </div>
           </div>
 
+          {/* Potential bottom */}
+          {data.bottom && (
+            <div className={`rounded-xl shadow-sm p-4 border ${
+              data.bottom.likelihood === "high" ? "bg-emerald-50 border-emerald-200"
+                : data.bottom.likelihood === "possible" ? "bg-amber-50 border-amber-200"
+                : "bg-white border-slate-100"
+            }`}>
+              <div className="flex items-center gap-3 flex-wrap">
+                <span className="font-bold text-ink">🔻 Potential bottom</span>
+                <span className={`text-sm font-semibold px-2 py-0.5 rounded ${
+                  data.bottom.likelihood === "high" ? "bg-emerald-100 text-emerald-800"
+                    : data.bottom.likelihood === "possible" ? "bg-amber-100 text-amber-800"
+                    : "bg-slate-100 text-slate-600"
+                }`}>
+                  {data.bottom.likelihood} · {data.bottom.score}/100
+                </span>
+              </div>
+              {data.bottom.factors?.length > 0 ? (
+                <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                  {data.bottom.factors.map((f: any, i: number) => (
+                    <li key={i} className="text-alpha">▲ {f.s}</li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="mt-2 text-sm text-slate-500">No bottoming signals firing right now.</div>
+              )}
+            </div>
+          )}
+
           {/* CSP-on-dip signal */}
           {data.csp_signal && (
             <div className={`rounded-xl shadow-sm p-4 border ${

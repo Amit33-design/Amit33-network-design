@@ -198,6 +198,47 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
     }
 
 
+def score_ticker_general(snap: StockSnapshot, md: MarketData | None = None) -> dict:
+    """Score ANY ticker (no oversold gate) for the dashboard watchlist.
+
+    Reuses the same five engines + relative strength, so a mega-cap in a calm
+    uptrend gets a fair read. Returns a compact, dashboard-friendly record.
+    """
+    from backend.indicators import technical as ta
+
+    ind = ta.indicator_bundle(snap.history)
+    last = snap.last_close
+    subs = {
+        "technical": engines.technical_score(ind),
+        "fundamental": engines.fundamental_score(snap.info),
+        "options": engines.options_score(None),   # skip chain fetch for speed
+        "momentum": engines.momentum_score(ind),
+        "sentiment": engines.sentiment_score(snap.info, last),
+    }
+    rs = compute_rel_strength(snap, ind, md)
+    apply_rel_strength(subs["momentum"], rs)
+
+    weights = settings.score_weights
+    composite = round(sum(subs[n].score * w for n, w in weights.items()), 1)
+    analyst_upside = ((snap.target_mean_price - last) / last * 100.0
+                      if (snap.target_mean_price and last) else None)
+    return {
+        "ticker": snap.ticker,
+        "company": snap.info.get("shortName") or snap.info.get("longName") or snap.ticker,
+        "price": round(last, 2) if last else None,
+        "day_%": ind.get("ret_1d"),
+        "score": composite,
+        "action": _action_from_score(composite),
+        "quality_grade": engines.quality_grade(subs["fundamental"].score),
+        "rsi": round(ind["rsi"], 1) if ind.get("rsi") is not None else None,
+        "above_ema200": ind.get("above_ema200"),
+        "cycle": "bull" if ind.get("golden_cross") else "bear",
+        "analyst_upside_%": round(analyst_upside, 1) if analyst_upside is not None else None,
+        "rel_strength": rs,
+        "subscores": {n: round(subs[n].score, 1) for n in weights},
+    }
+
+
 def _build_explanation(ticker, composite, weights, by_name, hit: ScanHit) -> str:
     contribs = []
     for n, w in sorted(weights.items(), key=lambda kv: -kv[1]):
