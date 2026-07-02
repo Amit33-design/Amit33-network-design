@@ -132,10 +132,27 @@ export default function Analysis() {
                     : data.bottom.likelihood === "possible" ? "bg-amber-100 text-amber-800"
                     : "bg-slate-100 text-slate-600"
                 }`}>
-                  {data.bottom.likelihood} · {data.bottom.score}/100
+                  {data.bottom.likelihood === "high" ? "HIGH likelihood"
+                    : data.bottom.likelihood === "possible" ? "POSSIBLE"
+                    : "LOW likelihood"} · {data.bottom.score}/100
                 </span>
+                {data.bottom.firing != null && (
+                  <span className="text-xs text-slate-500">
+                    {data.bottom.firing} of {data.bottom.total} reversal tells firing
+                  </span>
+                )}
               </div>
-              {data.bottom.factors?.length > 0 ? (
+              {/* Full checklist: what's firing and what's missing */}
+              {data.bottom.checks?.length ? (
+                <ul className="mt-2 grid sm:grid-cols-2 gap-x-6 gap-y-1 text-sm">
+                  {data.bottom.checks.map((ch: any, i: number) => (
+                    <li key={i} className={`flex items-start gap-2 ${ch.ok ? "text-emerald-700" : "text-slate-400"}`}>
+                      <span>{ch.ok ? "✓" : "✗"}</span>
+                      <span>{ch.s}{ch.ok ? ` (+${ch.pts})` : ""}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : data.bottom.factors?.length > 0 ? (
                 <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
                   {data.bottom.factors.map((f: any, i: number) => (
                     <li key={i} className="text-alpha">▲ {f.s}</li>
@@ -144,6 +161,10 @@ export default function Analysis() {
               ) : (
                 <div className="mt-2 text-sm text-slate-500">No bottoming signals firing right now.</div>
               )}
+              <div className="mt-2 text-xs text-slate-400">
+                {data.bottom.explainer ??
+                  "Score sums classic reversal tells (oversold RSI, RSI divergence, 52-week-low/support test, capitulation candle, 20-EMA reclaim). <35 low · 35-59 possible · ≥60 high."}
+              </div>
             </div>
           )}
 

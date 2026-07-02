@@ -166,54 +166,84 @@ function cspSignal(dayChange, last, s200, cyc, sr, a, bounce) {
   return out;
 }
 
-// "Potential bottom" detector: how many classic bottoming tells are firing?
-// Combines oversold RSI, bullish RSI divergence (price lower-low but RSI
-// higher-low), proximity to 52-week low / support, capitulation-volume + a
-// long-lower-wick reversal candle, and a short-term MA reclaim.
+// "Potential bottom" detector: checks 6 classic bottoming tells and reports a
+// full checklist (firing AND not-firing, each with a reason), so the UI can
+// show exactly why the likelihood is what it is. Score = sum of firing tells:
+// <35 low, 35-59 possible, >=60 high.
 function bottomSignal(o, h, l, c, v, rsis, e20, sr) {
   const n = c.length;
   const last = c[n - 1];
   let score = 0;
-  const factors = [];
+  const checks = [];
+  const add = (ok, pts, onText, offText) => {
+    if (ok) score += pts;
+    checks.push({ ok, pts: ok ? pts : 0, max: pts, s: ok ? onText : offText });
+  };
 
   const rsi = rsis[n - 1];
-  if (rsi != null && rsi < 30) { score += 25; factors.push({ t: "bull", s: `deeply oversold (RSI ${rsi.toFixed(0)})` }); }
-  else if (rsi != null && rsi < 40) { score += 12; factors.push({ t: "bull", s: `oversold (RSI ${rsi.toFixed(0)})` }); }
+  add(
+    rsi != null && rsi < 40,
+    rsi != null && rsi < 30 ? 25 : 12,
+    rsi != null && rsi < 30 ? `deeply oversold (RSI ${rsi?.toFixed(0)})` : `oversold (RSI ${rsi?.toFixed(0)})`,
+    rsi != null ? `RSI not oversold (${rsi.toFixed(0)}, needs <40)` : "RSI unavailable"
+  );
 
   // Bullish RSI divergence over the last ~20 sessions.
   const w = Math.min(20, n - 1);
   const pMinIdx = c.lastIndexOf(Math.min(...c.slice(-w)));
   const prevMinIdx = c.slice(0, n - Math.floor(w / 2)).lastIndexOf(Math.min(...c.slice(-2 * w, -Math.floor(w / 2))));
-  if (pMinIdx > prevMinIdx && prevMinIdx >= 0 && c[pMinIdx] < c[prevMinIdx] && rsis[pMinIdx] != null && rsis[prevMinIdx] != null && rsis[pMinIdx] > rsis[prevMinIdx]) {
-    score += 22; factors.push({ t: "bull", s: "bullish RSI divergence (price lower low, RSI higher low)" });
-  }
+  const diverging = pMinIdx > prevMinIdx && prevMinIdx >= 0 && c[pMinIdx] < c[prevMinIdx]
+    && rsis[pMinIdx] != null && rsis[prevMinIdx] != null && rsis[pMinIdx] > rsis[prevMinIdx];
+  add(diverging, 22,
+    "bullish RSI divergence (price lower low, RSI higher low)",
+    "no bullish RSI divergence");
 
-  // Near the 52-week low or a support level.
+  // Near the 52-week low.
   const lo52 = Math.min(...c.slice(-252));
-  if (lo52 && (last - lo52) / lo52 < 0.08) { score += 15; factors.push({ t: "bull", s: "at/near 52-week low" }); }
+  const abovLow = lo52 ? ((last - lo52) / lo52) * 100 : null;
+  add(abovLow != null && abovLow < 8, 15,
+    "at/near 52-week low",
+    abovLow != null ? `${abovLow.toFixed(0)}% above 52-week low (needs <8%)` : "52w low unavailable");
+
+  // Testing a support level.
   const supp = (sr.support || [])[0];
-  if (supp && Math.abs(last - supp) / last < 0.04) { score += 10; factors.push({ t: "bull", s: `testing support ~$${supp}` }); }
+  add(supp != null && Math.abs(last - supp) / last < 0.04, 10,
+    `testing support ~$${supp}`,
+    supp != null ? `next support $${supp} not being tested` : "no support level below price");
 
   // Capitulation volume + reversal (long lower wick) candle in last 3 days.
   const avgV = v.slice(-20).reduce((a, b) => a + b, 0) / Math.min(20, v.length);
-  for (let i = n - 3; i < n; i++) {
-    if (i < 1) continue;
+  let hammer = false;
+  for (let i = Math.max(1, n - 3); i < n; i++) {
     const body = Math.abs(c[i] - o[i]);
     const lowerWick = Math.min(o[i], c[i]) - l[i];
-    if (v[i] > 1.8 * avgV && lowerWick > 1.5 * body && c[i] >= o[i]) {
-      score += 16; factors.push({ t: "bull", s: "capitulation volume + hammer reversal candle" });
-      break;
-    }
+    if (v[i] > 1.8 * avgV && lowerWick > 1.5 * body && c[i] >= o[i]) { hammer = true; break; }
   }
+  add(hammer, 16,
+    "capitulation volume + hammer reversal candle",
+    "no capitulation/hammer candle in last 3 days");
 
   // Short-term reclaim: back above the 20-day EMA after being below it.
-  if (e20[n - 1] != null && e20[n - 2] != null && c[n - 2] < e20[n - 2] && last > e20[n - 1]) {
-    score += 12; factors.push({ t: "bull", s: "reclaimed 20-day EMA" });
-  }
+  const reclaimed = e20[n - 1] != null && e20[n - 2] != null && c[n - 2] < e20[n - 2] && last > e20[n - 1];
+  add(reclaimed, 12,
+    "reclaimed 20-day EMA",
+    e20[n - 1] != null && last > e20[n - 1] ? "already above 20-day EMA (no fresh reclaim)" : "still below 20-day EMA");
 
   score = Math.min(100, score);
   const label = score >= 60 ? "high" : score >= 35 ? "possible" : "low";
-  return { score, likelihood: label, factors };
+  const firing = checks.filter((x) => x.ok).length;
+  return {
+    score,
+    likelihood: label,
+    firing,
+    total: checks.length,
+    checks,
+    explainer:
+      `Bottoming-evidence score: ${firing} of ${checks.length} classic reversal tells firing ` +
+      `(${score}/100). <35 = low, 35-59 = possible, >=60 = high likelihood the stock is forming a bottom.`,
+    // kept for backward compatibility with older frontends
+    factors: checks.filter((x) => x.ok).map((x) => ({ t: "bull", s: x.s })),
+  };
 }
 
 // Recent crossover / breakout signals for the last ~90 sessions.
@@ -311,6 +341,7 @@ function analyze(dates, o, h, l, c, v) {
 
   return {
     price: last,
+    day_change_pct: dayChange,
     score,
     recommendation,
     factors,
@@ -375,14 +406,14 @@ export default async function handler(req, res) {
     if (c.length < 30) return res.status(422).json({ error: "insufficient history" });
 
     const out = analyze(dates, o, h, l, c, v);
+    // NOTE: day change comes from the last two closes in analyze() —
+    // meta.chartPreviousClose is the close before the RANGE start (i.e. the
+    // 1y-ago close on a 1y chart), which once showed +82% as a "day" change.
     return res.status(200).json({
       ticker,
       name: meta.shortName || meta.longName || ticker,
       currency: meta.currency || "USD",
       range,
-      day_change_pct: meta.chartPreviousClose
-        ? ((out.price - meta.chartPreviousClose) / meta.chartPreviousClose) * 100
-        : null,
       ...out,
     });
   } catch (e) {
