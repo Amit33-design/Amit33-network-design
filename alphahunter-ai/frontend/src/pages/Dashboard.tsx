@@ -15,6 +15,7 @@ interface Stock {
   above_ema200: boolean | null;
   cycle: string;
   "analyst_upside_%": number | null;
+  spark?: number[];
 }
 interface Dash {
   as_of: string;
@@ -22,39 +23,82 @@ interface Dash {
   domains: Record<string, Stock[]>;
 }
 
-function Card({ label, value, accent }: { label: string; value: string; accent?: string }) {
+const scoreColor = (s: number) => (s >= 65 ? "#1b7f4b" : s >= 50 ? "#b7791f" : "#c0392b");
+
+function Sparkline({ data }: { data?: number[] }) {
+  if (!data || data.length < 2) return null;
+  const min = Math.min(...data), max = Math.max(...data);
+  const range = max - min || 1;
+  const pts = data
+    .map((v, i) => `${(i / (data.length - 1)) * 100},${28 - ((v - min) / range) * 26 - 1}`)
+    .join(" ");
+  const up = data[data.length - 1] >= data[0];
   return (
-    <div className="bg-white rounded-xl shadow-sm p-4">
-      <div className="text-xs uppercase tracking-wide text-slate-400">{label}</div>
-      <div className={`text-2xl font-bold mt-1 ${accent ?? "text-ink"}`}>{value}</div>
-    </div>
+    <svg viewBox="0 0 100 28" className="w-full h-7" preserveAspectRatio="none">
+      <polyline points={pts} fill="none" stroke={up ? "#1b7f4b" : "#c0392b"} strokeWidth="1.6" />
+    </svg>
   );
 }
 
 function StockCard({ s }: { s: Stock }) {
-  const scoreColor = s.score >= 65 ? "#1b7f4b" : s.score >= 50 ? "#b7791f" : "#c0392b";
+  const [open, setOpen] = useState(false);
+  const [thesis, setThesis] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function toggle() {
+    const next = !open;
+    setOpen(next);
+    if (next && !thesis && !loading) {
+      setLoading(true);
+      try {
+        const r = await fetch(`/api/thesis?ticker=${s.ticker}`);
+        const j = await r.json();
+        setThesis(j.thesis || "No thesis available right now.");
+      } catch {
+        setThesis("Live thesis unavailable — check your connection or try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
+
   return (
-    <div className="bg-white rounded-xl shadow-sm p-3">
+    <div
+      onClick={toggle}
+      className="bg-white rounded-xl shadow-sm p-3 cursor-pointer hover:shadow-md transition border-l-4"
+      style={{ borderLeftColor: scoreColor(s.score) }}
+    >
       <div className="flex items-center justify-between">
         <div>
           <span className="font-bold text-alpha">{s.ticker}</span>
           <span className="ml-1 text-xs text-slate-400">{s.cycle === "bull" ? "▲" : "▼"}</span>
         </div>
-        <span className="text-lg font-bold" style={{ color: scoreColor }}>{s.score}</span>
+        <span className="text-lg font-bold" style={{ color: scoreColor(s.score) }}>{s.score}</span>
       </div>
       <div className="text-xs text-slate-500 truncate">{s.company}</div>
+      <Sparkline data={s.spark} />
       <div className="mt-1 flex items-center justify-between text-xs">
-        <span>{s.price != null ? `$${s.price}` : "—"}</span>
-        <span className={(s["day_%"] ?? 0) >= 0 ? "text-alpha" : "text-red-600"}>
-          {s["day_%"] != null ? `${s["day_%"] >= 0 ? "+" : ""}${s["day_%"]}%` : ""}
+        <span className="font-medium">{s.price != null ? `$${s.price}` : "—"}</span>
+        <span className={(s["day_%"] ?? 0) >= 0 ? "text-alpha font-semibold" : "text-red-600 font-semibold"}>
+          {s["day_%"] != null ? `${s["day_%"] >= 0 ? "+" : ""}${Number(s["day_%"]).toFixed(1)}%` : ""}
         </span>
       </div>
       <div className="mt-1 flex items-center justify-between text-xs">
         <span className="text-slate-500">{s.action}</span>
         <span className="font-semibold" style={{ color: ["A", "B"].includes(s.quality_grade) ? "#1b7f4b" : "#64748b" }}>
-          {s.quality_grade} · RSI {s.rsi ?? "—"}
+          {s.quality_grade}{s.rsi != null ? ` · RSI ${Math.round(s.rsi)}` : ""}
         </span>
       </div>
+      {open && (
+        <div className="mt-2 pt-2 border-t border-slate-100 text-xs text-slate-600 leading-relaxed" onClick={(e) => e.stopPropagation()}>
+          {loading ? (
+            <span className="text-slate-400">Fetching live thesis…</span>
+          ) : (
+            <><span className="font-semibold text-ink">📝 Live thesis: </span>{thesis}</>
+          )}
+        </div>
+      )}
+      {!open && <div className="mt-1 text-[10px] text-slate-300">tap for live thesis</div>}
     </div>
   );
 }
@@ -79,6 +123,9 @@ export default function Dashboard() {
   const bullish = all.filter((s) => s.above_ema200 || s.score >= 60).length;
   const avg = all.length ? all.reduce((a, s) => a + s.score, 0) / all.length : 0;
   const regime = avg >= 60 ? "Risk-on" : avg >= 48 ? "Neutral" : "Risk-off";
+  const movers = [...all].filter((s) => s["day_%"] != null).sort((a, b) => (b["day_%"] ?? 0) - (a["day_%"] ?? 0));
+  const gainers = movers.slice(0, 3);
+  const losers = movers.slice(-3).reverse();
   const buckets = [0, 20, 40, 50, 60, 70, 80].map((b, i, arr) => {
     const hi = arr[i + 1] ?? 101;
     return { label: `${b}-${hi === 101 ? 100 : hi}`, count: all.filter((s) => s.score >= b && s.score < hi).length };
@@ -91,24 +138,52 @@ export default function Dashboard() {
         <span className="text-xs text-slate-400">as of {dash.as_of}</span>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <Card label="Tracked" value={String(dash.count)} />
-        <Card label="Bullish" value={String(bullish)} accent="text-alpha" />
-        <Card label="Avg Score" value={avg.toFixed(1)} />
-        <Card label="Market" value={regime}
+      {/* Summary tiles */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <Tile label="Tracked" value={String(dash.count)} />
+        <Tile label="Bullish" value={String(bullish)} accent="text-alpha" />
+        <Tile label="Avg Score" value={avg.toFixed(1)} />
+        <Tile label="Market" value={regime}
               accent={regime === "Risk-on" ? "text-alpha" : regime === "Risk-off" ? "text-red-600" : "text-amber-600"} />
       </div>
 
-      {Object.entries(dash.domains).map(([domain, stocks]) => (
-        stocks.length > 0 && (
+      {/* Top movers strip */}
+      <div className="bg-white rounded-xl shadow-sm p-3 mb-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+        <span className="text-xs uppercase tracking-wide text-slate-400">Today's movers</span>
+        {gainers.map((s) => (
+          <span key={s.ticker} className="font-semibold text-alpha">
+            {s.ticker} +{Number(s["day_%"]).toFixed(1)}%
+          </span>
+        ))}
+        <span className="text-slate-200">|</span>
+        {losers.map((s) => (
+          <span key={s.ticker} className="font-semibold text-red-600">
+            {s.ticker} {Number(s["day_%"]).toFixed(1)}%
+          </span>
+        ))}
+      </div>
+
+      {/* Domain sections */}
+      {Object.entries(dash.domains).map(([domain, stocks]) => {
+        if (!stocks.length) return null;
+        const domAvg = stocks.reduce((a, s) => a + s.score, 0) / stocks.length;
+        const leader = stocks[0];
+        return (
           <div key={domain} className="mb-6">
-            <div className="font-semibold text-ink mb-2">{domain}</div>
+            <div className="flex items-center gap-3 mb-2 flex-wrap">
+              <span className="font-semibold text-ink">{domain}</span>
+              <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
+                    style={{ backgroundColor: `${scoreColor(domAvg)}18`, color: scoreColor(domAvg) }}>
+                avg {domAvg.toFixed(0)}
+              </span>
+              <span className="text-xs text-slate-400">leader: {leader.ticker} ({leader.score})</span>
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
               {stocks.map((s) => <StockCard key={s.ticker} s={s} />)}
             </div>
           </div>
-        )
-      ))}
+        );
+      })}
 
       <div className="bg-white rounded-xl shadow-sm p-4 mt-2">
         <div className="font-semibold text-ink mb-2">Score distribution</div>
@@ -119,6 +194,15 @@ export default function Dashboard() {
           useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false }}
         />
       </div>
+    </div>
+  );
+}
+
+function Tile({ label, value, accent }: { label: string; value: string; accent?: string }) {
+  return (
+    <div className="bg-white rounded-xl shadow-sm p-4">
+      <div className="text-xs uppercase tracking-wide text-slate-400">{label}</div>
+      <div className={`text-2xl font-bold mt-1 ${accent ?? "text-ink"}`}>{value}</div>
     </div>
   );
 }

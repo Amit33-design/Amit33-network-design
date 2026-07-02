@@ -41,6 +41,9 @@ def main() -> None:
                 continue
             rec = score_ticker_general(snap, md)
             rec["domain"] = domain
+            # 30-day closes for the card sparkline.
+            closes = snap.history["Close"].dropna().tail(30)
+            rec["spark"] = [round(float(x), 2) for x in closes]
             rows.append(rec)
             total += 1
             print(f"  {domain:20} {t:6} score {rec['score']:5} {rec['action']}")

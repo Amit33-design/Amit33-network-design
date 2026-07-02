@@ -9,6 +9,13 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Real-time thesis API + Dashboard redesign.** New `api/thesis.js` —
+  compact per-stock thesis endpoint (`/api/thesis?ticker=X`: price, day move,
+  verdict, score, narrative; edge-cached 5 min) like a real trading app.
+  Dashboard: tap any stock card to fetch its live thesis inline; cards get
+  30-day sparklines (real closes from run_dashboard; placeholder until next
+  cron), score-colored left borders, a "Today's movers" strip (top gainers/
+  losers), and per-domain average-score chips + leader callouts.
 - [x] **Chart explainers + move thesis.** Every Analysis chart (price/candles,
   volume, MACD, RSI) has a tap-to-open "ℹ️ what is this?" explainer — how to
   read the graph plus a live "right now" line from the data. New 📝 Thesis card
