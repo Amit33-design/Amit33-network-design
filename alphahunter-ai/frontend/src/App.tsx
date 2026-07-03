@@ -2,6 +2,7 @@ import { NavLink, Navigate, Route, Routes } from "react-router-dom";
 import RunScanButton from "./components/RunScanButton";
 import Dashboard from "./pages/Dashboard";
 import Opportunities from "./pages/Opportunities";
+import Gainers from "./pages/Gainers";
 import Analysis from "./pages/Analysis";
 import Options from "./pages/Options";
 import Portfolio from "./pages/Portfolio";
@@ -9,6 +10,7 @@ import Backtest from "./pages/Backtest";
 
 const tabs = [
   { to: "/dashboard", label: "Dashboard" },
+  { to: "/gainers", label: "Top Gainers" },
   { to: "/opportunities", label: "Opportunities" },
   { to: "/analysis", label: "Analysis" },
   { to: "/options", label: "Options" },
@@ -51,6 +53,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/gainers" element={<Gainers />} />
           <Route path="/opportunities" element={<Opportunities />} />
           <Route path="/analysis" element={<Analysis />} />
           <Route path="/options" element={<Options />} />

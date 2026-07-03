@@ -95,8 +95,11 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   `MAX_RISK_PCT` of `ACCOUNT_SIZE`, plus `rr_pass` vs the `MIN_RISK_REWARD`
   floor — failures get a red R:R warn flag. Grid "Size" column + red R:R,
   mobile-card size line, CSV columns, config knobs, sizing-math test.
-- [ ] **Iter 6 — "Top Gainers" leaderboard view.** New frontend page ranking
-  by `expected_gain_pct` with quality grade, plus a sparkline per name.
+- [x] **Iter 6 — "Top Gainers" leaderboard view.** New /gainers page ranked by
+  `expected_gain_%` (realistic upside, not raw targets): podium top-3 cards
+  (grade, confidence, historical bounce rate, CSP badge), full leaderboard
+  table (exp. gain, analyst upside, quality, score, hist win%, warn flags),
+  and a "Quality A/B only" filter. Works offline from the snapshot.
 - [ ] **Iter 7 — Alerts.** Wire `alerts/engine.py` into the daily scan to push
   the top high-quality setups (Slack/Discord/email) when configured.
 - [ ] **Iter 8 — ML ranker.** Train a gradient-boosted model on historical
