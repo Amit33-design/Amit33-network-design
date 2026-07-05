@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Plot from "react-plotly.js";
 import { ErrorBox, Loading } from "../components/Loading";
 
@@ -124,7 +124,8 @@ export default function Dashboard() {
   const avg = all.length ? all.reduce((a, s) => a + s.score, 0) / all.length : 0;
   const regime = avg >= 60 ? "Risk-on" : avg >= 48 ? "Neutral" : "Risk-off";
   const movers = [...all].filter((s) => s["day_%"] != null).sort((a, b) => (b["day_%"] ?? 0) - (a["day_%"] ?? 0));
-  const gainers = movers.slice(0, 3);
+  const gainers = movers.filter((s) => (s["day_%"] ?? 0) > 0);
+  const topGainers = gainers.slice(0, 10);
   const losers = movers.slice(-3).reverse();
   const buckets = [0, 20, 40, 50, 60, 70, 80].map((b, i, arr) => {
     const hi = arr[i + 1] ?? 101;
@@ -147,41 +148,42 @@ export default function Dashboard() {
               accent={regime === "Risk-on" ? "text-alpha" : regime === "Risk-off" ? "text-red-600" : "text-amber-600"} />
       </div>
 
-      {/* Top movers strip */}
-      <div className="bg-white rounded-xl shadow-sm p-3 mb-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-        <span className="text-xs uppercase tracking-wide text-slate-400">Today's movers</span>
-        {gainers.map((s) => (
-          <span key={s.ticker} className="font-semibold text-alpha">
-            {s.ticker} +{Number(s["day_%"]).toFixed(1)}%
-          </span>
-        ))}
-        <span className="text-slate-200">|</span>
-        {losers.map((s) => (
-          <span key={s.ticker} className="font-semibold text-red-600">
-            {s.ticker} {Number(s["day_%"]).toFixed(1)}%
-          </span>
-        ))}
-      </div>
+      {/* Top Gainers — a collapsible section like the domains, open by default */}
+      <Section
+        title="🚀 Top Gainers"
+        subtitle={`${topGainers.length ? topGainers[0].ticker + " leads +" + Number(topGainers[0]["day_%"]).toFixed(1) + "% today" : ""}`}
+        badge={`${gainers.length} up`}
+        badgeColor="#1b7f4b"
+        defaultOpen
+      >
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          {topGainers.map((s) => <StockCard key={s.ticker} s={s} />)}
+        </div>
+        {losers.length > 0 && (
+          <div className="mt-3 text-xs text-slate-400">
+            Today's laggards: {losers.map((s) => `${s.ticker} ${Number(s["day_%"]).toFixed(1)}%`).join(" · ")}
+          </div>
+        )}
+      </Section>
 
-      {/* Domain sections */}
+      {/* Domain sections — each a click-to-expand dropdown */}
       {Object.entries(dash.domains).map(([domain, stocks]) => {
         if (!stocks.length) return null;
         const domAvg = stocks.reduce((a, s) => a + s.score, 0) / stocks.length;
         const leader = stocks[0];
         return (
-          <div key={domain} className="mb-6">
-            <div className="flex items-center gap-3 mb-2 flex-wrap">
-              <span className="font-semibold text-ink">{domain}</span>
-              <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
-                    style={{ backgroundColor: `${scoreColor(domAvg)}18`, color: scoreColor(domAvg) }}>
-                avg {domAvg.toFixed(0)}
-              </span>
-              <span className="text-xs text-slate-400">leader: {leader.ticker} ({leader.score})</span>
-            </div>
+          <Section
+            key={domain}
+            title={domain}
+            subtitle={`leader ${leader.ticker} (${leader.score})`}
+            badge={`avg ${domAvg.toFixed(0)}`}
+            badgeColor={scoreColor(domAvg)}
+            defaultOpen={false}
+          >
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
               {stocks.map((s) => <StockCard key={s.ticker} s={s} />)}
             </div>
-          </div>
+          </Section>
         );
       })}
 
@@ -203,6 +205,36 @@ function Tile({ label, value, accent }: { label: string; value: string; accent?:
     <div className="bg-white rounded-xl shadow-sm p-4">
       <div className="text-xs uppercase tracking-wide text-slate-400">{label}</div>
       <div className={`text-2xl font-bold mt-1 ${accent ?? "text-ink"}`}>{value}</div>
+    </div>
+  );
+}
+
+// Collapsible category section — click the header to expand/collapse.
+function Section({
+  title, subtitle, badge, badgeColor, defaultOpen, children,
+}: {
+  title: string; subtitle?: string; badge?: string; badgeColor?: string;
+  defaultOpen?: boolean; children: ReactNode;
+}) {
+  const [open, setOpen] = useState(!!defaultOpen);
+  return (
+    <div className="mb-3 bg-white rounded-xl shadow-sm overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition text-left"
+      >
+        <span className={`text-slate-400 transition-transform ${open ? "rotate-90" : ""}`}>▶</span>
+        <span className="font-semibold text-ink">{title}</span>
+        {badge && (
+          <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
+                style={{ backgroundColor: `${badgeColor ?? "#64748b"}18`, color: badgeColor ?? "#64748b" }}>
+            {badge}
+          </span>
+        )}
+        {subtitle && <span className="text-xs text-slate-400 hidden sm:inline">{subtitle}</span>}
+        <span className="ml-auto text-xs text-slate-400">{open ? "hide" : "show"}</span>
+      </button>
+      {open && <div className="px-4 pb-4">{children}</div>}
     </div>
   );
 }
