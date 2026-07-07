@@ -5,7 +5,16 @@
 > change how the repo works, **update this file in the same commit** so it
 > never goes stale.
 
-Last updated: 2026-06-30
+Last updated: 2026-07-07
+
+**Documentation set** (read in this order):
+1. **`CODE.md`** (this file) — the fast orientation + conventions memory.
+2. **`AGENTS.md`** — the working guide: how to add a signal/endpoint/page, the
+   definition-of-done checklist, the where-things-live index.
+3. **`docs/TECHNICAL.md`** — the deep reference: architecture, data flow, every
+   module, the scoring math, data contracts, signals catalog, CI/CD, gotchas.
+4. **`alphahunter-ai/IMPROVEMENTS.md`** — roadmap/changelog for the loop.
+5. **`alphahunter-ai/docs/ARCHITECTURE.md`** — backend module map + score math.
 
 ---
 
