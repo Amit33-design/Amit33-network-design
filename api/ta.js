@@ -283,6 +283,26 @@ function atr(highs, lows, closes, period = 14) {
   return sum / period;
 }
 
+// Weekly (higher-timeframe) trend from daily closes: last close of each
+// 5-day block vs a 10-week EMA. Confirms or contradicts the daily setup.
+function weeklyTrend(c) {
+  if (c.length < 60) return { trend: "flat", weekly_return_pct: null };
+  const weekly = [];
+  for (let i = c.length - 1; i >= 0; i -= 5) weekly.unshift(c[i]);
+  if (weekly.length < 12) return { trend: "flat", weekly_return_pct: null };
+  const k = 2 / 11;
+  let e = weekly[0];
+  const series = [e];
+  for (let i = 1; i < weekly.length; i++) { e = weekly[i] * k + e * (1 - k); series.push(e); }
+  const above = weekly[weekly.length - 1] > series[series.length - 1];
+  const rising = series[series.length - 1] > series[series.length - 3];
+  const trend = above && rising ? "up" : !above && !rising ? "down" : "flat";
+  const wret = weekly.length > 11
+    ? Math.round(((weekly[weekly.length - 1] - weekly[weekly.length - 11]) / weekly[weekly.length - 11]) * 1000) / 10
+    : null;
+  return { trend, weekly_return_pct: wret };
+}
+
 function analyze(dates, o, h, l, c, v) {
   const last = c[c.length - 1];
   const e20 = ema(c, 20), e50 = ema(c, 50), e200 = ema(c, 200);
@@ -335,6 +355,10 @@ function analyze(dates, o, h, l, c, v) {
   if (distLow != null && distLow < 8) { score += 4; factors.push({ t: "bull", s: "Near 52-week low (deep value/oversold)" }); }
   if (cyc.current === "bull") { score += 4; factors.push({ t: "bull", s: `Bullish cycle (${cyc.days_in_phase}d)` }); }
   else if (cyc.current === "bear") { score -= 4; factors.push({ t: "bear", s: `Bearish cycle (${cyc.days_in_phase}d)` }); }
+  // Multi-timeframe: weekly trend confirmation of the daily read.
+  const mtf = weeklyTrend(c);
+  if (mtf.trend === "up") { score += 5; factors.push({ t: "bull", s: "Weekly trend up (multi-timeframe confirmation)" }); }
+  else if (mtf.trend === "down") { score -= 6; factors.push({ t: "bear", s: "Weekly trend down (daily move is counter-trend)" }); }
   score = Math.max(0, Math.min(100, Math.round(score)));
   const recommendation =
     score >= 70 ? "Buy" : score >= 58 ? "Accumulate" : score >= 45 ? "Hold" : score >= 32 ? "Reduce" : "Sell";
@@ -365,6 +389,7 @@ function analyze(dates, o, h, l, c, v) {
     csp_signal: csp,
     dip_bounce: bounce,
     bottom: bottom,
+    mtf: mtf,
     indicators: {
       rsi: rsi != null ? Math.round(rsi * 10) / 10 : null,
       macd: m.macd != null ? Math.round(m.macd * 100) / 100 : null,
@@ -480,6 +505,12 @@ function buildThesis(t, out, spyCloses) {
       `${(out.dip_bounce.win_rate * 100).toFixed(0)}% of the time (avg ` +
       `${out.dip_bounce.avg_return >= 0 ? "+" : ""}${out.dip_bounce.avg_return}% in 10 sessions).`);
   }
+
+  // Multi-timeframe agreement.
+  if (out.mtf?.trend === "up")
+    parts.push(`The weekly (higher) timeframe also points up, confirming the daily read.`);
+  else if (out.mtf?.trend === "down")
+    parts.push(`The weekly timeframe is still down, so any daily strength is counter-trend — treat bounces cautiously.`);
 
   parts.push(`Net: ${out.recommendation.toLowerCase()} at a technical score of ${out.score}/100.`);
   return parts.join(" ");

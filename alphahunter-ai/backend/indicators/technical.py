@@ -128,10 +128,45 @@ def golden_cross(hist: pd.DataFrame) -> bool | None:
     return bool(s50 > s200)
 
 
+def weekly_trend(hist: pd.DataFrame) -> dict:
+    """Higher-timeframe (weekly) trend read, to confirm/contradict daily setups.
+
+    Approximates weekly closes by taking the last close of each 5-trading-day
+    block (robust to a non-datetime index), then reads a 10-week EMA:
+    - "up"   : weekly close above a rising 10-week EMA
+    - "down" : weekly close below a falling 10-week EMA
+    - "flat" : mixed / not enough history
+    Returns {weekly_trend, weekly_above_ema, weekly_ema_rising, weekly_return_%}.
+    """
+    closes = _closes(hist).dropna().tolist()
+    empty = {"weekly_trend": "flat", "weekly_above_ema": None,
+             "weekly_ema_rising": None, "weekly_return_%": None}
+    if len(closes) < 60:
+        return empty
+    # Last close of each 5-day block (oldest→newest).
+    weekly = closes[len(closes) % 5 :: 5] if len(closes) % 5 else closes[::5]
+    if len(weekly) < 12:
+        return empty
+    k = 2 / (10 + 1)
+    e = weekly[0]
+    series = [e]
+    for v in weekly[1:]:
+        e = v * k + e * (1 - k)
+        series.append(e)
+    last_w, last_e = weekly[-1], series[-1]
+    above = bool(last_w > last_e)
+    rising = bool(series[-1] > series[-3])
+    trend = "up" if (above and rising) else "down" if (not above and not rising) else "flat"
+    wret = round((weekly[-1] - weekly[-11]) / weekly[-11] * 100, 1) if len(weekly) > 11 else None
+    return {"weekly_trend": trend, "weekly_above_ema": above,
+            "weekly_ema_rising": rising, "weekly_return_%": wret}
+
+
 def indicator_bundle(hist: pd.DataFrame) -> dict:
     """All indicators the scanner + scoring layers consume, computed once."""
     macd_line, signal_line, macd_hist = macd(hist)
     return {
+        **{f"mtf_{k}": v for k, v in weekly_trend(hist).items()},
         "rsi": rsi(hist),
         "ema9": ema(hist, 9),
         "ema20": ema(hist, 20),

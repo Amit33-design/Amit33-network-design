@@ -108,8 +108,12 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   wired into alphahunter-scan.yml) and degrades to logging when unset. +2 tests.
 - [ ] **Iter 8 — ML ranker.** Train a gradient-boosted model on historical
   setups → forward returns; blend with the rule-based score.
-- [ ] **Iter 9 — Multi-timeframe confirmation.** Weekly + daily trend agreement
-  to cut false bounces.
+- [x] **Iter 9 — Multi-timeframe confirmation.** New `technical.weekly_trend()`
+  reads a higher-timeframe (10-week EMA) trend and folds agreement into the
+  momentum sub-score: weekly-up confirms the daily bounce (+6), weekly-down
+  flags counter-trend / false-bounce risk (−8). Surfaced as `mtf` in the
+  payload, a reasoning sentence, a "Weekly uptrend/downtrend" badge on the
+  Analysis tab, plus the same logic + thesis line in `api/ta.js`. +2 tests.
 - [ ] **Iter 10 — Backtest the full screen.** Portfolio-level backtest of the
   ranked list (top-N each day) with equity curve on the Backtest page.
 

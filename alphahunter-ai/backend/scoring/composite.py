@@ -94,6 +94,17 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
     rs = compute_rel_strength(snap, ind, md)
     apply_rel_strength(by_name["momentum"], rs)
 
+    # Multi-timeframe confirmation: does the WEEKLY trend agree with the daily
+    # bounce setup? Agreement raises conviction; a weekly downtrend is the
+    # classic "catching a falling knife" tell, so it gets a bounded haircut.
+    mtf_trend = ind.get("mtf_weekly_trend")
+    if mtf_trend == "up":
+        by_name["momentum"].score = min(100.0, by_name["momentum"].score + 6)
+        by_name["momentum"].factors.append("weekly trend confirms (higher-timeframe uptrend)")
+    elif mtf_trend == "down":
+        by_name["momentum"].score = max(0.0, by_name["momentum"].score - 8)
+        by_name["momentum"].factors.append("weekly trend contradicts (higher-timeframe downtrend — false-bounce risk)")
+
     weights = settings.score_weights
     composite = sum(by_name[n].score * w for n, w in weights.items())
     composite = round(composite, 1)
@@ -178,6 +189,12 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
             explanation += (f" Sector thesis: outperforming {sect} by {vs:.0f}pp — a "
                             f"relative leader in its group.")
 
+    # Multi-timeframe note in the reasoning.
+    if mtf_trend == "up":
+        explanation += " Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
+    elif mtf_trend == "down":
+        explanation += " Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+
     return {
         "ticker": snap.ticker,
         "company": snap.info.get("shortName") or snap.info.get("longName") or snap.ticker,
@@ -191,6 +208,11 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
         "hist_trades": bt["hist_trades"],
         "risk_flags": risk_flags,
         "rel_strength": rs,
+        "mtf": {
+            "weekly_trend": ind.get("mtf_weekly_trend"),
+            "weekly_return_%": ind.get("mtf_weekly_return_%"),
+            "confirms": mtf_trend == "up",
+        },
         "position": position,
         "rr_pass": rr_pass,
         "csp_signal": compute_csp_signal(

@@ -64,6 +64,14 @@ export default function Analysis() {
     </span>
   );
 
+  const mtfBadge = data?.mtf?.trend && data.mtf.trend !== "flat" && (
+    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+      data.mtf.trend === "up" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"
+    }`} title="Weekly (higher-timeframe) trend confirmation">
+      {data.mtf.trend === "up" ? "▲ Weekly uptrend" : "▼ Weekly downtrend"}
+    </span>
+  );
+
   return (
     <div>
       <h1 className="text-xl font-bold text-ink mb-4">Technical Analysis — one ticker, real-time</h1>
@@ -108,6 +116,7 @@ export default function Analysis() {
             </div>
             <div className="sm:ml-auto flex items-center gap-4 flex-wrap">
               {cycleBadge}
+              {mtfBadge}
               <div className="text-center">
                 <div className="text-xs uppercase tracking-wide text-slate-400">Score</div>
                 <div className="text-3xl font-bold" style={{ color: verdictColor }}>{data.score}</div>

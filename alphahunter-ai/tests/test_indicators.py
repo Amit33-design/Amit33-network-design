@@ -31,3 +31,26 @@ def test_short_history_is_none():
     empty = pd.DataFrame({"Close": [1.0, 2.0]})
     assert ta.ema(empty, 200) is None
     assert ta.rsi(empty) is None
+
+
+def test_weekly_trend_up_and_down():
+    import numpy as np, pandas as pd
+    from backend.indicators.technical import weekly_trend
+    idx = pd.date_range("2024-01-01", periods=200, freq="D")
+    up = pd.DataFrame({"Close": np.linspace(50, 150, 200)}, index=idx)
+    down = pd.DataFrame({"Close": np.linspace(150, 50, 200)}, index=idx)
+    assert weekly_trend(up)["weekly_trend"] == "up"
+    assert weekly_trend(down)["weekly_trend"] == "down"
+    # Short series degrades safely.
+    short = pd.DataFrame({"Close": [1, 2, 3]})
+    assert weekly_trend(short)["weekly_trend"] == "flat"
+
+
+def test_mtf_in_recommendation(crash_snapshot):
+    from backend.scanners.alphahunter import AlphaHunterScanner
+    from backend.scoring.composite import score_snapshot
+    hit = AlphaHunterScanner(require_all=False).evaluate(crash_snapshot)
+    rec = score_snapshot(crash_snapshot, hit, md=None)
+    assert "mtf" in rec
+    assert set(rec["mtf"]) == {"weekly_trend", "weekly_return_%", "confirms"}
+    assert rec["mtf"]["weekly_trend"] in {"up", "down", "flat"}

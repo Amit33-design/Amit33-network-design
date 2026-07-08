@@ -17,6 +17,7 @@ export interface Recommendation {
     sector: string | null;
     sector_etf: string | null;
   } | null;
+  mtf?: { weekly_trend: string | null; "weekly_return_%": number | null; confirms: boolean } | null;
   csp_signal?: {
     active: boolean;
     strength: "strong" | "moderate" | null;
