@@ -50,3 +50,53 @@ def send_alert(alert_type: str, title: str, message: str,
         delivered.append("log")
 
     return {"type": alert_type, "delivered_to": delivered, "tickers": tickers}
+
+
+def select_alert_worthy(recs: list[dict], limit: int = 5) -> list[dict]:
+    """The subset of a scan worth pushing: high-quality, high-conviction setups.
+
+    Keeps only A/B quality with High/Medium confidence and a passing risk/reward
+    (no R:R-below-floor flag), ranked by expected gain then score. Pure and
+    offline so it's unit-testable.
+    """
+    def ok(r: dict) -> bool:
+        if r.get("quality_grade") not in ("A", "B"):
+            return False
+        if r.get("confidence") not in ("High", "Medium"):
+            return False
+        if r.get("rr_pass") is False:
+            return False
+        return True
+
+    worthy = [r for r in recs if ok(r)]
+    worthy.sort(key=lambda r: (r.get("expected_gain_%") or 0, r.get("score") or 0), reverse=True)
+    return worthy[:limit]
+
+
+def format_digest(date: str, picks: list[dict]) -> str:
+    """Human-readable morning digest of the top setups (plain text / Slack md)."""
+    if not picks:
+        return f"AlphaHunter {date}: no high-conviction A/B setups today."
+    lines = [f"*AlphaHunter — top {len(picks)} setups for {date}*"]
+    for i, r in enumerate(picks, 1):
+        gain = r.get("expected_gain_%")
+        gain_s = f"+{gain}% exp" if gain is not None else "—"
+        csp = " 💰CSP" if (r.get("csp_signal") or {}).get("active") else ""
+        lines.append(
+            f"{i}. {r['ticker']} — score {r.get('score')} · {r.get('quality_grade')} · "
+            f"{r.get('action')} · {gain_s} · {r.get('confidence')} conf{csp}"
+        )
+    return "\n".join(lines)
+
+
+def send_scan_digest(date: str, recs: list[dict], limit: int = 5) -> dict:
+    """Push the day's best setups to the configured channels (or log)."""
+    picks = select_alert_worthy(recs, limit=limit)
+    message = format_digest(date, picks)
+    return send_alert(
+        "scan_digest",
+        f"AlphaHunter top setups — {date}",
+        message,
+        tickers=[r["ticker"] for r in picks],
+    )
+

@@ -100,8 +100,12 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   (grade, confidence, historical bounce rate, CSP badge), full leaderboard
   table (exp. gain, analyst upside, quality, score, hist win%, warn flags),
   and a "Quality A/B only" filter. Works offline from the snapshot.
-- [ ] **Iter 7 — Alerts.** Wire `alerts/engine.py` into the daily scan to push
-  the top high-quality setups (Slack/Discord/email) when configured.
+- [x] **Iter 7 — Alerts.** `run_daily` now pushes a morning digest of the top
+  high-conviction setups via `alerts.engine.send_scan_digest()`:
+  `select_alert_worthy()` keeps A/B quality + High/Medium confidence + passing
+  R:R, ranked by expected gain; `format_digest()` renders it. Delivers to
+  Slack/Discord webhooks (SLACK_WEBHOOK_URL / DISCORD_WEBHOOK_URL repo secrets,
+  wired into alphahunter-scan.yml) and degrades to logging when unset. +2 tests.
 - [ ] **Iter 8 — ML ranker.** Train a gradient-boosted model on historical
   setups → forward returns; blend with the rule-based score.
 - [ ] **Iter 9 — Multi-timeframe confirmation.** Weekly + daily trend agreement

@@ -18,6 +18,7 @@ from zoneinfo import ZoneInfo
 
 import pandas as pd
 
+from backend.alerts.engine import send_scan_digest
 from backend.scanners.runner import run_scan
 
 PACIFIC = ZoneInfo("America/Los_Angeles")
@@ -121,6 +122,12 @@ def main() -> None:
     if results:
         top = results[0]
         print(f"Top pick: {top['ticker']} score {top['score']} ({top['action']})")
+
+    # Push the day's best high-conviction setups to configured channels
+    # (Slack/Discord webhooks via env/secrets); logs and no-ops when unset.
+    outcome = send_scan_digest(today, results)
+    print(f"Alert digest delivered to: {', '.join(outcome['delivered_to'])} "
+          f"({len(outcome['tickers'])} setups)")
 
 
 if __name__ == "__main__":

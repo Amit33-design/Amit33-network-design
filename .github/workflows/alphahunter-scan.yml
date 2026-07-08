@@ -65,6 +65,10 @@ jobs:
         if: steps.gate.outputs.run == 'true'
         env:
           PYTHONPATH: ${{ github.workspace }}/alphahunter-ai
+          # Optional alert channels — set these repo secrets to receive a
+          # morning digest of the top setups; unset = digest is just logged.
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           ARGS=""
           if [ -n "${{ github.event.inputs.limit }}" ]; then
