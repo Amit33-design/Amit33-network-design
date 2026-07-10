@@ -8,13 +8,13 @@ from __future__ import annotations
 
 # Ordered so the dashboard renders domains in a sensible sequence.
 DOMAINS: dict[str, list[str]] = {
-    "AI": ["NVDA", "PLTR", "AI"],
-    "Semiconductors": ["AMD", "AVGO", "TSM", "MU"],
-    "FAANG / Mega-cap": ["AAPL", "MSFT", "GOOGL", "AMZN", "META"],
-    "Energy": ["XOM", "CVX", "FSLR"],
-    "EV / Auto": ["TSLA"],
-    "Fintech / Crypto": ["COIN", "HOOD"],
-    "Enterprise Software": ["CRM", "NOW"],
+    "AI": ["NVDA", "PLTR", "AI", "SMCI", "ARM"],
+    "Semiconductors": ["AMD", "AVGO", "TSM", "MU", "QCOM", "LRCX"],
+    "FAANG / Mega-cap": ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "NFLX"],
+    "Energy": ["XOM", "CVX", "FSLR", "ENPH"],
+    "EV / Auto": ["TSLA", "RIVN"],
+    "Fintech / Crypto": ["COIN", "HOOD", "SQ", "PYPL"],
+    "Enterprise Software": ["CRM", "NOW", "SNOW", "PANW"],
 }
 
 

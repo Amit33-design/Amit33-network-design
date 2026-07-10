@@ -76,6 +76,7 @@ function StockCard({ s }: { s: Stock }) {
         <span className="text-lg font-bold" style={{ color: scoreColor(s.score) }}>{s.score}</span>
       </div>
       <div className="text-xs text-slate-500 truncate">{s.company}</div>
+      {s.domain && <div className="text-[10px] text-purple-500 truncate">{s.domain}</div>}
       <Sparkline data={s.spark} />
       <div className="mt-1 flex items-center justify-between text-xs">
         <span className="font-medium">{s.price != null ? `$${s.price}` : "—"}</span>
@@ -131,6 +132,10 @@ export default function Dashboard() {
     const hi = arr[i + 1] ?? 101;
     return { label: `${b}-${hi === 101 ? 100 : hi}`, count: all.filter((s) => s.score >= b && s.score < hi).length };
   });
+  // The identifying system: the highest-conviction names across ALL domains,
+  // ranked by AI score (tie-broken by day strength). This is the "what looks
+  // best right now" board, independent of category.
+  const topPicks = [...all].sort((a, b) => b.score - a.score || (b["day_%"] ?? 0) - (a["day_%"] ?? 0)).slice(0, 8);
 
   return (
     <div>
@@ -147,6 +152,29 @@ export default function Dashboard() {
         <Tile label="Market" value={regime}
               accent={regime === "Risk-on" ? "text-alpha" : regime === "Risk-off" ? "text-red-600" : "text-amber-600"} />
       </div>
+
+      {/* Top Picks — cross-domain highest-conviction names by AI score */}
+      <Section
+        title="🏆 AlphaHunter Top Picks"
+        subtitle={topPicks.length ? `${topPicks[0].ticker} leads at score ${topPicks[0].score}` : ""}
+        badge={`best ${topPicks.length}`}
+        badgeColor="#7c3aed"
+        defaultOpen
+      >
+        <div className="text-xs text-slate-400 mb-3">
+          Highest AI-scored names across every domain right now — the system's best identifications, ranked by conviction.
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {topPicks.map((s, i) => (
+            <div key={s.ticker} className="relative">
+              <span className="absolute -top-2 -left-2 z-10 bg-purple-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow">
+                {i + 1}
+              </span>
+              <StockCard s={s} />
+            </div>
+          ))}
+        </div>
+      </Section>
 
       {/* Top Gainers — a collapsible section like the domains, open by default */}
       <Section
