@@ -55,6 +55,7 @@ def main() -> None:
     with open(OUT, "w") as f:
         json.dump({
             "generated_at": now.isoformat(),
+            "date": now.strftime("%Y-%m-%d"),
             "as_of": now.strftime("%Y-%m-%d %H:%M %Z"),
             "count": total,
             "domains": out_domains,

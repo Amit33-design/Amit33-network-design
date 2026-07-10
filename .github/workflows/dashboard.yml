@@ -6,9 +6,10 @@ name: AlphaHunter Dashboard (9 AM ET)
 
 on:
   schedule:
-    # GitHub cron is UTC and ignores DST. 9 AM ET = 13:00 UTC (EDT) / 14:00 UTC
-    # (EST). Trigger both and gate to the real 9 AM America/New_York in the job.
-    - cron: '0 13,14 * * *'
+    # Scheduled runs are often DELAYED under load, so fire several morning slots
+    # and gate on "already built today?" instead of a strict clock hour.
+    # 13:00/15:00/17:00 UTC ≈ 9/11/1 AM-PM ET.
+    - cron: '0 13,15,17 * * *'
   workflow_dispatch:
 
 permissions:
@@ -25,17 +26,20 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Gate to 9 AM Eastern (manual runs always proceed)
+      - name: Gate — run once per Eastern day (robust to cron delays)
         id: gate
         working-directory: .
         run: |
-          HOUR=$(TZ=America/New_York date +%H)
-          echo "Eastern hour: $HOUR"
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$HOUR" = "09" ]; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
+          TODAY=$(TZ=America/New_York date +%F)
+          DASH=alphahunter-ai/frontend/public/dashboard.json
+          DONE=$(python3 -c "import json;print(json.load(open('$DASH')).get('date',''))" 2>/dev/null || echo "")
+          echo "today(ET)=$TODAY  dashboard_date=$DONE  event=${{ github.event_name }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "manual dispatch -> run"; echo "run=true" >> "$GITHUB_OUTPUT"
+          elif [ "$DONE" != "$TODAY" ]; then
+            echo "no dashboard for today yet -> run"; echo "run=true" >> "$GITHUB_OUTPUT"
           else
-            echo "Not 9 AM ET; skipping."
-            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "already built today ($DONE) -> skip"; echo "run=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Set up Python
