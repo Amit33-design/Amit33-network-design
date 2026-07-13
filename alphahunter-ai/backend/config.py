@@ -44,6 +44,15 @@ class Settings(BaseSettings):
     max_risk_pct: float = 1.0              # risk per trade, % of account
     min_risk_reward: float = 1.5           # R:R floor; below it gets flagged
 
+    # Opportunity scan — a broader "best pullback/dip" screen so the
+    # Opportunities board is populated even in calm markets (the strict crash
+    # screen finds nothing when nothing is down 5% day + 20% month).
+    opp_month_drop: float = -8.0           # month return at/below this = pullback
+    opp_week_drop: float = -6.0            # OR week return at/below this
+    opp_rsi_max: float = 42.0              # OR RSI below this = oversold-ish
+    opp_max_scored: int = 40               # cap fully-scored candidates (cost)
+    opp_min_results: int = 15              # run the opp scan if strict yields < this
+
     # Composite AI score weights (spec: 35/25/20/10/10)
     weight_technical: float = 0.35
     weight_fundamental: float = 0.25

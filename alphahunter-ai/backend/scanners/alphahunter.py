@@ -151,3 +151,62 @@ class AlphaHunterScanner:
         if de is not None:
             bits.append(f"D/E {de:.0f}%")
         return ", ".join(bits) if bits else "solvency data n/a"
+
+
+class OpportunityScanner:
+    """Broader "best pullback/dip" screen so Opportunities is never empty.
+
+    Requires the >$1B USD quality floor, then flags any pullback signal
+    (month down, week down, OR oversold RSI). The composite score ranks them,
+    so quality dips float to the top even in a calm market. Lower conviction
+    than the strict crash screen — the score reflects that.
+    """
+    name = "opportunity"
+
+    def evaluate(self, snap: StockSnapshot) -> ScanHit | None:
+        ind = ta.indicator_bundle(snap.history)
+        last = snap.last_close
+        if last is None:
+            return None
+
+        revenue = snap.revenue
+        usd = snap.financial_currency == "USD"
+        if not (usd and revenue >= settings.revenue_floor):
+            return None
+
+        day = ind["ret_1d"]
+        week = ind["ret_5d"]
+        month = ind["ret_20d"]
+        rsi = ind["rsi"]
+        pullback = (
+            (month is not None and month <= settings.opp_month_drop)
+            or (week is not None and week <= settings.opp_week_drop)
+            or (rsi is not None and rsi < settings.opp_rsi_max)
+        )
+        if not pullback:
+            return None
+
+        criteria = [
+            Criterion("revenue_over_1b", True, f"revenue ${revenue/1e9:.2f}B"),
+            Criterion("pullback", True,
+                      f"month {month:.1f}%" if month is not None else "month n/a"),
+            Criterion("oversold_rsi", rsi is not None and rsi < settings.opp_rsi_max,
+                      f"RSI {rsi:.1f}" if rsi is not None else "RSI n/a"),
+            Criterion("above_ema200", bool(ind["above_ema200"]),
+                      "above EMA200" if ind["above_ema200"] else "below EMA200"),
+        ]
+        metrics = {
+            "price": round(last, 2),
+            "day_%": round(day, 1) if day is not None else None,
+            "week_%": round(week, 1) if week is not None else None,
+            "month_%": round(month, 1) if month is not None else None,
+            "rsi": round(rsi, 1) if rsi is not None else None,
+            "above_ema200": bool(ind["above_ema200"]),
+            "revenue_$B": round(revenue / 1e9, 2),
+            "target": snap.target_mean_price,
+            "profile": "opportunity",
+            "passed": [c.name for c in criteria if c.passed],
+            "failed": [c.name for c in criteria if not c.passed],
+            "indicators": ind,
+        }
+        return ScanHit(ticker=snap.ticker, metrics=metrics, criteria=criteria)

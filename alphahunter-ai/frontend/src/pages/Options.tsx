@@ -67,7 +67,17 @@ export default function Options() {
             </div>
           ))}
           {rows.length === 0 && (
-            <div className="text-slate-500">No option ideas in the current scan.</div>
+            <div className="md:col-span-2 lg:col-span-3 bg-white rounded-xl shadow-sm p-8 text-center">
+              <div className="text-4xl mb-2">🧾</div>
+              <div className="font-semibold text-ink">
+                No {kind === "coveredcalls" ? "covered-call" : "cash-secured-put"} ideas in the latest scan
+              </div>
+              <div className="text-sm text-slate-500 mt-1 max-w-md mx-auto">
+                Option ideas come from the daily scan's qualifying names. When the market is
+                calm the scan is thin — for a per-ticker cash-secured-put read, open the{" "}
+                <b>Analysis</b> tab and enter any symbol (the CSP-on-dip signal there works live).
+              </div>
+            </div>
           )}
         </div>
       )}

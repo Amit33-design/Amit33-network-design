@@ -186,3 +186,26 @@ def test_subscores_bounded(crash_snapshot):
                 engines.momentum_score(ind),
                 engines.sentiment_score(crash_snapshot.info, crash_snapshot.last_close)):
         assert 0 <= sub.score <= 100
+
+
+def test_opportunity_scanner_flags_pullback(crash_snapshot):
+    from backend.scanners.alphahunter import OpportunityScanner
+    hit = OpportunityScanner().evaluate(crash_snapshot)
+    # The crash fixture is a >$1B name deep in a pullback -> should qualify.
+    assert hit is not None
+    assert hit.metrics["profile"] == "opportunity"
+    assert "revenue_over_1b" in hit.metrics["passed"]
+
+
+def test_opportunity_scanner_skips_calm_large_cap():
+    from backend.scanners.alphahunter import OpportunityScanner
+    from backend.utils.market_data import StockSnapshot
+    import numpy as np, pandas as pd
+    # A steadily-rising >$1B name with no pullback and healthy RSI -> not a hit.
+    idx = pd.date_range("2024-01-01", periods=260, freq="D")
+    close = np.linspace(100, 160, 260)
+    hist = pd.DataFrame({"Open": close, "High": close * 1.01, "Low": close * 0.99,
+                         "Close": close, "Volume": [1_000_000] * 260}, index=idx)
+    snap = StockSnapshot(ticker="CALM", history=hist,
+                         info={"totalRevenue": 5e9, "financialCurrency": "USD"})
+    assert OpportunityScanner().evaluate(snap) is None

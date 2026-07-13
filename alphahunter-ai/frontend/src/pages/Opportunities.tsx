@@ -47,7 +47,23 @@ export default function Opportunities() {
         </div>
       </div>
       {snap && <SnapshotBanner />}
-      {loading ? <Loading /> : error ? <ErrorBox error={error} /> : <RecGrid rows={rows} />}
+      {loading ? (
+        <Loading />
+      ) : error ? (
+        <ErrorBox error={error} />
+      ) : rows.length === 0 ? (
+        <div className="bg-white rounded-xl shadow-sm p-8 text-center">
+          <div className="text-4xl mb-2">🌤️</div>
+          <div className="font-semibold text-ink">No matching setups right now</div>
+          <div className="text-sm text-slate-500 mt-1 max-w-md mx-auto">
+            The market is calm — nothing hit this screen in the latest scan. Try the{" "}
+            <b>oversold</b> or <b>breakouts</b> tabs, check the <b>Dashboard</b> Top Picks,
+            or analyze any ticker on the <b>Analysis</b> tab.
+          </div>
+        </div>
+      ) : (
+        <RecGrid rows={rows} />
+      )}
     </div>
   );
 }

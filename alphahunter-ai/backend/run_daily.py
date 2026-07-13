@@ -19,7 +19,8 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 
 from backend.alerts.engine import send_scan_digest
-from backend.scanners.runner import run_scan
+from backend.config import settings
+from backend.scanners.runner import run_opportunity_scan, run_scan
 
 PACIFIC = ZoneInfo("America/Los_Angeles")
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -96,6 +97,20 @@ def main() -> None:
         limit=args.limit,
         progress=lambda i, t, n: print(f"  ...{i}/{t} scanned, {n} hits"),
     )
+
+    # The strict crash screen finds nothing in a calm market. So the daily
+    # board is never empty, fall back to a broad "best pullback/dip" scan and
+    # merge in the top-scored opportunities (deduped, strict hits kept first).
+    if len(results) < settings.opp_min_results:
+        print(f"Strict scan yielded {len(results)}; running broad opportunity scan...")
+        opp = run_opportunity_scan(
+            limit=args.limit,
+            progress=lambda i, t, n: print(f"  ...opp {i}/{t} scanned, {n} candidates"),
+        )
+        seen = {r["ticker"] for r in results}
+        results.extend(r for r in opp if r["ticker"] not in seen)
+        results.sort(key=lambda r: r["score"], reverse=True)
+        print(f"Opportunity scan added {len(results) - len(seen)} names; {len(results)} total.")
 
     json_path = os.path.join(RESULTS_DIR, f"alphahunter_{today}.json")
     csv_path = os.path.join(RESULTS_DIR, f"alphahunter_{today}.csv")
