@@ -327,54 +327,84 @@ function analyze(dates, o, h, l, c, v) {
   const distHigh = hi52 ? ((last - hi52) / hi52) * 100 : null;
   const distLow = lo52 ? ((last - lo52) / lo52) * 100 : null;
 
-  let score = 50;
-  const factors = [];
+  // ================= TWO-LAYER VERDICT =================
+  // Layer 1 — LONG-TERM TREND decides the direction (Buy/Hold/Sell class).
+  // Built only from structural, slow-moving evidence: 200-day, 50/200 regime,
+  // weekly trend, market cycle, 6-12 month structure. A red week can't flip it.
+  const mtf = weeklyTrend(c);
+  const r6 = ret(126);
+  const r12 = ret(252);
+  let lt = 50;
+  const trendFactors = [];
   if (s200 != null) {
-    if (last > s200) { score += 12; factors.push({ t: "bull", s: "Price above 200-day SMA (primary uptrend)" }); }
-    else { score -= 10; factors.push({ t: "bear", s: "Price below 200-day SMA (primary downtrend)" }); }
+    if (last > s200) { lt += 15; trendFactors.push({ t: "bull", s: "Price above 200-day SMA (primary uptrend)" }); }
+    else { lt -= 15; trendFactors.push({ t: "bear", s: "Price below 200-day SMA (primary downtrend)" }); }
   }
   if (s50 != null && s200 != null) {
-    if (s50 > s200) { score += 6; factors.push({ t: "bull", s: "50-day above 200-day (golden-cross regime)" }); }
-    else { score -= 4; factors.push({ t: "bear", s: "50-day below 200-day (death-cross regime)" }); }
+    if (s50 > s200) { lt += 9; trendFactors.push({ t: "bull", s: "50-day above 200-day (golden-cross regime)" }); }
+    else { lt -= 9; trendFactors.push({ t: "bear", s: "50-day below 200-day (death-cross regime)" }); }
   }
+  if (mtf.trend === "up") { lt += 9; trendFactors.push({ t: "bull", s: "Weekly (10-week) trend rising" }); }
+  else if (mtf.trend === "down") { lt -= 9; trendFactors.push({ t: "bear", s: "Weekly (10-week) trend falling" }); }
+  if (cyc.current === "bull") { lt += 6; trendFactors.push({ t: "bull", s: `Bullish market cycle (${cyc.days_in_phase}d)` }); }
+  else if (cyc.current === "bear") { lt -= 6; trendFactors.push({ t: "bear", s: `Bearish market cycle (${cyc.days_in_phase}d)` }); }
+  if (r12 != null) {
+    if (r12 > 15) { lt += 7; trendFactors.push({ t: "bull", s: `+${r12.toFixed(0)}% over 12 months (long-term winner)` }); }
+    else if (r12 < -15) { lt -= 7; trendFactors.push({ t: "bear", s: `${r12.toFixed(0)}% over 12 months (long-term loser)` }); }
+  }
+  if (r6 != null) {
+    if (r6 > 10) { lt += 4; trendFactors.push({ t: "bull", s: `+${r6.toFixed(0)}% over 6 months` }); }
+    else if (r6 < -10) { lt -= 4; trendFactors.push({ t: "bear", s: `${r6.toFixed(0)}% over 6 months` }); }
+  }
+  if (distHigh != null && distHigh > -12 && (s200 == null || last > s200)) {
+    lt += 4; trendFactors.push({ t: "bull", s: "Consolidating near 52-week highs" });
+  }
+  lt = Math.max(0, Math.min(100, Math.round(lt)));
+  const ltDir = lt >= 60 ? "up" : lt <= 40 ? "down" : "mixed";
+
+  // Layer 2 — SHORT-TERM TIMING only tunes the entry WITHIN that direction.
+  // Oversold in an uptrend = dip entry (bullish!), overbought = wait; the
+  // same signals invert inside a downtrend (bounces there are exit windows).
+  let st = 50;
+  const timingFactors = [];
   if (rsi != null) {
-    if (rsi < 30) { score += 8; factors.push({ t: "bull", s: `Oversold (RSI ${rsi.toFixed(0)}) — bounce setup` }); }
-    else if (rsi > 70) { score -= 8; factors.push({ t: "bear", s: `Overbought (RSI ${rsi.toFixed(0)})` }); }
-    else factors.push({ t: "neutral", s: `RSI ${rsi.toFixed(0)} (neutral)` });
+    if (rsi < 35 && ltDir === "up") { st += 15; timingFactors.push({ t: "bull", s: `Oversold dip (RSI ${rsi.toFixed(0)}) inside an uptrend — favorable entry` }); }
+    else if (rsi < 35 && ltDir === "down") { st -= 4; timingFactors.push({ t: "bear", s: `Oversold (RSI ${rsi.toFixed(0)}) but the long-term trend is down — falling knife, not a dip` }); }
+    else if (rsi > 70) { st -= 10; timingFactors.push({ t: "neutral", s: `Extended (RSI ${rsi.toFixed(0)}) — better to wait for a pullback` }); }
+    else timingFactors.push({ t: "neutral", s: `RSI ${rsi.toFixed(0)} (neutral timing)` });
   }
   if (m.hist != null) {
-    if (m.hist > 0) { score += 6; factors.push({ t: "bull", s: "MACD above signal (momentum up)" }); }
-    else { score -= 6; factors.push({ t: "bear", s: "MACD below signal (momentum down)" }); }
+    if (m.hist > 0) { st += 6; timingFactors.push({ t: "bull", s: "MACD momentum turning up" }); }
+    else { st -= 6; timingFactors.push({ t: "bear", s: "MACD momentum still down" }); }
   }
-  const r6 = ret(126);
-  if (r6 != null) {
-    if (r6 > 0) { score += 6; factors.push({ t: "bull", s: `+${r6.toFixed(0)}% over 6 months` }); }
-    else { score -= 5; factors.push({ t: "bear", s: `${r6.toFixed(0)}% over 6 months` }); }
+  const w1 = ret(5);
+  if (w1 != null && w1 <= -5 && ltDir === "up") {
+    st += 6; timingFactors.push({ t: "bull", s: `Pulled back ${w1.toFixed(0)}% this week inside an uptrend` });
+  } else if (w1 != null && w1 >= 8 && ltDir === "down") {
+    st -= 6; timingFactors.push({ t: "bear", s: `+${w1.toFixed(0)}% bounce this week is counter-trend — rallies in downtrends fade` });
   }
-  if (distHigh != null && distHigh > -10) { score += 5; factors.push({ t: "bull", s: "Within 10% of 52-week high" }); }
-  if (distLow != null && distLow < 8) { score += 4; factors.push({ t: "bull", s: "Near 52-week low (deep value/oversold)" }); }
-  if (cyc.current === "bull") { score += 4; factors.push({ t: "bull", s: `Bullish cycle (${cyc.days_in_phase}d)` }); }
-  else if (cyc.current === "bear") { score -= 4; factors.push({ t: "bear", s: `Bearish cycle (${cyc.days_in_phase}d)` }); }
-  // Multi-timeframe: weekly trend confirmation of the daily read.
-  const mtf = weeklyTrend(c);
-  if (mtf.trend === "up") { score += 5; factors.push({ t: "bull", s: "Weekly trend up (multi-timeframe confirmation)" }); }
-  else if (mtf.trend === "down") { score -= 6; factors.push({ t: "bear", s: "Weekly trend down (daily move is counter-trend)" }); }
-  score = Math.max(0, Math.min(100, Math.round(score)));
-  const recommendation =
-    score >= 70 ? "Buy" : score >= 58 ? "Accumulate" : score >= 45 ? "Hold" : score >= 32 ? "Reduce" : "Sell";
+  if (distLow != null && distLow < 8 && ltDir !== "down") {
+    st += 4; timingFactors.push({ t: "bull", s: "Sitting on 52-week-low support" });
+  }
+  st = Math.max(0, Math.min(100, Math.round(st)));
 
-  // Plain-English reason for the verdict: the score bands, the bull/bear tally,
-  // and the strongest evidence on each side.
-  const bullF = factors.filter((f) => f.t === "bull").map((f) => f.s);
-  const bearF = factors.filter((f) => f.t === "bear").map((f) => f.s);
-  const band =
-    score >= 70 ? "strongly bullish (70+)" : score >= 58 ? "leaning bullish (58-69)"
-      : score >= 45 ? "mixed (45-57)" : score >= 32 ? "leaning bearish (32-44)" : "strongly bearish (<32)";
+  // Verdict: LONG-TERM decides the class; timing picks within it. A downtrend
+  // can never produce Buy, and an uptrend's dip can never produce Sell.
+  let recommendation;
+  if (ltDir === "up") recommendation = st >= 55 ? "Buy" : st >= 40 ? "Accumulate" : "Hold";
+  else if (ltDir === "down") recommendation = st >= 60 ? "Reduce" : st >= 40 ? "Reduce" : "Sell";
+  else recommendation = st >= 60 ? "Accumulate" : st >= 35 ? "Hold" : "Reduce";
+  const score = Math.round(0.7 * lt + 0.3 * st);
+
+  const factors = [...trendFactors, ...timingFactors];
+  const dirWord = ltDir === "up" ? "UP" : ltDir === "down" ? "DOWN" : "MIXED";
   let verdict_reason =
-    `${recommendation} because the technical score is ${score}/100 — ${band}, ` +
-    `with ${bullF.length} bullish vs ${bearF.length} bearish signals.`;
-  if (bullF.length) verdict_reason += ` For it: ${bullF.slice(0, 3).join("; ")}.`;
-  if (bearF.length) verdict_reason += ` Against it: ${bearF.slice(0, 3).join("; ")}.`;
+    `${recommendation} — driven by the LONG-TERM trend, which is ${dirWord} (trend score ${lt}/100), ` +
+    `not by this week's move. `;
+  const tf = trendFactors.slice(0, 3).map((f) => f.s);
+  if (tf.length) verdict_reason += `Structure: ${tf.join("; ")}. `;
+  const tm = timingFactors.slice(0, 2).map((f) => f.s);
+  if (tm.length) verdict_reason += `Timing (secondary): ${tm.join("; ")}.`;
 
   return {
     price: last,
@@ -382,6 +412,8 @@ function analyze(dates, o, h, l, c, v) {
     verdict_reason,
     score,
     recommendation,
+    trend: { score: lt, direction: ltDir, factors: trendFactors },
+    timing: { score: st, factors: timingFactors },
     factors,
     cycle: cyc,
     levels: sr,

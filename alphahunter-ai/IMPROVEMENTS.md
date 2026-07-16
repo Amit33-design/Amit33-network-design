@@ -9,6 +9,15 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Two-layer verdict: long-term trend decides, short-term only times.**
+  Rebuilt the Analysis + Portfolio verdict logic (api/ta.js, api/quote.js):
+  Layer 1 (trend score) uses only slow structure — 200-day, 50/200 regime,
+  weekly trend, market cycle, 6-12mo returns — and DECIDES the Buy/Hold/Sell
+  class; Layer 2 (timing score) uses RSI/MACD/weekly move and only tunes the
+  entry. Downtrends can never say Buy (a green week = counter-trend rally);
+  uptrend dips can never say Sell (oversold in an uptrend = entry). UI shows
+  "Long-term trend ▲ UP 74" + "Entry timing Good 65" chips and splits "Why
+  this signal" into trend vs timing columns; verdict_reason leads with trend.
 - [x] **Fetch resilience + setup-tier visibility.** `MarketData` now retries
   transient fetch failures (Yahoo 429s) with bounded exponential backoff via
   `with_retries()` — exceptions retry, clean empties (delisted) do NOT, so the

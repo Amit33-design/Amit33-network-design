@@ -117,10 +117,27 @@ export default function Analysis() {
             <div className="sm:ml-auto flex items-center gap-4 flex-wrap">
               {cycleBadge}
               {mtfBadge}
-              <div className="text-center">
-                <div className="text-xs uppercase tracking-wide text-slate-400">Score</div>
-                <div className="text-3xl font-bold" style={{ color: verdictColor }}>{data.score}</div>
-              </div>
+              {data.trend && (
+                <div className="text-center" title="Long-term structure: 200-day, 50/200 regime, weekly trend, 6-12mo returns. This decides the verdict.">
+                  <div className="text-xs uppercase tracking-wide text-slate-400">Long-term trend</div>
+                  <div className={`text-2xl font-bold ${
+                    data.trend.direction === "up" ? "text-alpha"
+                      : data.trend.direction === "down" ? "text-red-600" : "text-amber-600"
+                  }`}>
+                    {data.trend.direction === "up" ? "▲ UP" : data.trend.direction === "down" ? "▼ DOWN" : "◆ MIXED"}
+                    <span className="text-sm font-semibold text-slate-400"> {data.trend.score}</span>
+                  </div>
+                </div>
+              )}
+              {data.timing && (
+                <div className="text-center" title="Short-term entry timing (RSI, MACD, weekly move). Only tunes the entry — never flips the direction.">
+                  <div className="text-xs uppercase tracking-wide text-slate-400">Entry timing</div>
+                  <div className={`text-2xl font-bold ${data.timing.score >= 55 ? "text-alpha" : data.timing.score >= 40 ? "text-amber-600" : "text-red-600"}`}>
+                    {data.timing.score >= 55 ? "Good" : data.timing.score >= 40 ? "OK" : "Poor"}
+                    <span className="text-sm font-semibold text-slate-400"> {data.timing.score}</span>
+                  </div>
+                </div>
+              )}
               <div className="text-center">
                 <div className="text-xs uppercase tracking-wide text-slate-400">Signal</div>
                 <div className="text-2xl font-bold" style={{ color: verdictColor }}>{data.recommendation}</div>
@@ -408,17 +425,54 @@ export default function Analysis() {
 
           <div className="bg-white rounded-xl shadow-sm p-4">
             <div className="font-semibold text-ink mb-3">Why this signal</div>
-            <ul className="grid md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
-              {data.factors.map((f: any, i: number) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className={f.t === "bull" ? "text-alpha" : f.t === "bear" ? "text-red-600" : "text-slate-400"}>
-                    {f.t === "bull" ? "▲" : f.t === "bear" ? "▼" : "•"}
-                  </span>
-                  <span>{f.s}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-4 text-xs text-slate-400">Real-time technical read (price action only). Not financial advice.</div>
+            {data.trend && data.timing ? (
+              <div className="grid md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+                <div>
+                  <div className="text-xs uppercase tracking-wide text-slate-400 mb-2">
+                    Long-term trend — decides the verdict
+                  </div>
+                  <ul className="space-y-1.5">
+                    {data.trend.factors.map((f: any, i: number) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className={f.t === "bull" ? "text-alpha" : f.t === "bear" ? "text-red-600" : "text-slate-400"}>
+                          {f.t === "bull" ? "▲" : f.t === "bear" ? "▼" : "•"}
+                        </span>
+                        <span>{f.s}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <div className="text-xs uppercase tracking-wide text-slate-400 mb-2">
+                    Entry timing — tunes the entry, never flips the direction
+                  </div>
+                  <ul className="space-y-1.5">
+                    {data.timing.factors.map((f: any, i: number) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className={f.t === "bull" ? "text-alpha" : f.t === "bear" ? "text-red-600" : "text-slate-400"}>
+                          {f.t === "bull" ? "▲" : f.t === "bear" ? "▼" : "•"}
+                        </span>
+                        <span>{f.s}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              <ul className="grid md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                {data.factors.map((f: any, i: number) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className={f.t === "bull" ? "text-alpha" : f.t === "bear" ? "text-red-600" : "text-slate-400"}>
+                      {f.t === "bull" ? "▲" : f.t === "bear" ? "▼" : "•"}
+                    </span>
+                    <span>{f.s}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <div className="mt-4 text-xs text-slate-400">
+              The verdict follows the long-term structure; a red day or green week only changes the timing read. Not financial advice.
+            </div>
           </div>
         </div>
       )}

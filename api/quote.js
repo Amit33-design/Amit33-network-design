@@ -42,32 +42,46 @@ function technicals(closes) {
   const hi52 = Math.max(...closes.slice(-252));
   const distHigh = hi52 ? ((last - hi52) / hi52) * 100 : null;
 
-  // Score 0-100 from trend + RSI + momentum + 52w position.
-  let score = 50;
+  // Two-layer verdict: the LONG-TERM trend decides the Buy/Hold/Sell class
+  // (200-day, 50/200 regime, 6-month structure); short-term RSI only tunes
+  // the entry within it. A red week can't flip an uptrend name to Sell, and
+  // a one-week bounce can't make a downtrend name a Buy.
+  let lt = 50;
   const factors = [];
   if (s200 != null) {
-    if (last > s200) { score += 12; factors.push("above 200-day avg (uptrend)"); }
-    else { score -= 8; factors.push("below 200-day avg (downtrend)"); }
+    if (last > s200) { lt += 15; factors.push("above 200-day avg (long-term uptrend)"); }
+    else { lt -= 15; factors.push("below 200-day avg (long-term downtrend)"); }
   }
-  if (s50 != null && s200 != null && s50 > s200) { score += 6; factors.push("50/200 golden cross"); }
-  if (r != null) {
-    if (r < 30) { score += 8; factors.push(`oversold (RSI ${r.toFixed(0)})`); }
-    else if (r > 70) { score -= 8; factors.push(`overbought (RSI ${r.toFixed(0)})`); }
+  if (s50 != null && s200 != null) {
+    if (s50 > s200) { lt += 9; factors.push("50/200 golden cross"); }
+    else { lt -= 9; factors.push("50/200 death cross"); }
   }
   if (mom6 != null) {
-    if (mom6 > 0) { score += 8; factors.push(`+${mom6.toFixed(0)}% over 6mo`); }
-    else { score -= 6; factors.push(`${mom6.toFixed(0)}% over 6mo`); }
+    if (mom6 > 10) { lt += 7; factors.push(`+${mom6.toFixed(0)}% over 6mo`); }
+    else if (mom6 < -10) { lt -= 7; factors.push(`${mom6.toFixed(0)}% over 6mo`); }
   }
-  if (distHigh != null) {
-    if (distHigh > -10) { score += 6; factors.push("near 52-week high"); }
-    else if (distHigh < -50) { score -= 6; factors.push("deep below 52-week high"); }
+  if (distHigh != null && distHigh > -12 && (s200 == null || last > s200)) {
+    lt += 4; factors.push("consolidating near 52-week high");
   }
-  score = Math.max(0, Math.min(100, score));
-  const rec =
-    score >= 70 ? "Buy" : score >= 58 ? "Accumulate" : score >= 45 ? "Hold" : score >= 32 ? "Reduce" : "Sell";
+  lt = Math.max(0, Math.min(100, lt));
+  const ltDir = lt >= 60 ? "up" : lt <= 40 ? "down" : "mixed";
+
+  let st = 50;
+  if (r != null) {
+    if (r < 35 && ltDir === "up") { st += 15; factors.push(`oversold dip (RSI ${r.toFixed(0)}) in an uptrend — entry, not exit`); }
+    else if (r < 35 && ltDir === "down") { st -= 4; factors.push(`oversold (RSI ${r.toFixed(0)}) but trend is down — falling knife`); }
+    else if (r > 70) { st -= 10; factors.push(`extended (RSI ${r.toFixed(0)}) — wait for a pullback`); }
+  }
+  st = Math.max(0, Math.min(100, st));
+
+  let rec;
+  if (ltDir === "up") rec = st >= 55 ? "Buy" : st >= 40 ? "Accumulate" : "Hold";
+  else if (ltDir === "down") rec = st < 40 ? "Sell" : "Reduce";
+  else rec = st >= 60 ? "Accumulate" : st >= 35 ? "Hold" : "Reduce";
+  const score = Math.round(0.7 * lt + 0.3 * st);
   const reason = factors.length
-    ? `${rec} — technical score ${Math.round(score)}/100: ${factors.slice(0, 4).join("; ")}`
-    : `${rec} — technical score ${Math.round(score)}/100`;
+    ? `${rec} — long-term trend ${ltDir.toUpperCase()} (${Math.round(lt)}/100), timing ${Math.round(st)}/100: ${factors.slice(0, 4).join("; ")}`
+    : `${rec} — long-term trend ${ltDir.toUpperCase()}`;
   return {
     score: Math.round(score),
     recommendation: rec,
