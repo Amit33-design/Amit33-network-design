@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { api, isSnapshot } from "../lib/api";
 import type { Recommendation } from "../lib/types";
 import RecGrid from "../components/RecGrid";
@@ -7,12 +7,34 @@ import SnapshotBanner from "../components/SnapshotBanner";
 
 type Feed = "top" | "oversold" | "breakouts";
 
+function FilterSelect({
+  label, value, options, onChange,
+}: {
+  label: string; value: string; options: [string, string][]; onChange: (v: string) => void;
+}) {
+  return (
+    <label className="text-xs text-slate-500 flex items-center gap-1.5">
+      {label}
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="border rounded px-2 py-1 text-sm bg-white text-slate-700"
+      >
+        {options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+      </select>
+    </label>
+  );
+}
+
 export default function Opportunities() {
   const [feed, setFeed] = useState<Feed>("top");
   const [rows, setRows] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [snap, setSnap] = useState(false);
+  const [setup, setSetup] = useState("all");
+  const [quality, setQuality] = useState("all");
+  const [confidence, setConfidence] = useState("all");
 
   useEffect(() => {
     setLoading(true);
@@ -27,6 +49,16 @@ export default function Opportunities() {
       .catch((e) => setError(String(e)))
       .finally(() => setLoading(false));
   }, [feed]);
+
+  const filtered = useMemo(() => rows.filter((r) => {
+    const profile = (r.metrics as any)?.profile === "opportunity" ? "pullback" : "crash";
+    if (setup !== "all" && profile !== setup) return false;
+    if (quality === "ab" && !["A", "B"].includes(r.quality_grade ?? "")) return false;
+    if (quality === "a" && r.quality_grade !== "A") return false;
+    if (confidence === "high" && r.confidence !== "High") return false;
+    if (confidence === "hm" && !["High", "Medium"].includes(r.confidence)) return false;
+    return true;
+  }), [rows, setup, quality, confidence]);
 
   return (
     <div>
@@ -47,6 +79,22 @@ export default function Opportunities() {
         </div>
       </div>
       {snap && <SnapshotBanner />}
+
+      {/* Filter bar */}
+      {!loading && rows.length > 0 && (
+        <div className="bg-white rounded-lg shadow-sm px-3 py-2 mb-4 flex items-center gap-4 flex-wrap">
+          <FilterSelect label="Setup" value={setup} onChange={setSetup}
+            options={[["all", "All"], ["crash", "Crash dip"], ["pullback", "Pullback"]]} />
+          <FilterSelect label="Quality" value={quality} onChange={setQuality}
+            options={[["all", "All"], ["ab", "A / B"], ["a", "A only"]]} />
+          <FilterSelect label="Confidence" value={confidence} onChange={setConfidence}
+            options={[["all", "All"], ["hm", "High / Medium"], ["high", "High only"]]} />
+          <span className="ml-auto text-xs text-slate-400">
+            {filtered.length} of {rows.length} shown
+          </span>
+        </div>
+      )}
+
       {loading ? (
         <Loading />
       ) : error ? (
@@ -61,8 +109,16 @@ export default function Opportunities() {
             or analyze any ticker on the <b>Analysis</b> tab.
           </div>
         </div>
+      ) : filtered.length === 0 ? (
+        <div className="bg-white rounded-xl shadow-sm p-8 text-center">
+          <div className="text-4xl mb-2">🔍</div>
+          <div className="font-semibold text-ink">No names match these filters</div>
+          <div className="text-sm text-slate-500 mt-1">
+            {rows.length} names are in the scan — loosen the Setup / Quality / Confidence filters above.
+          </div>
+        </div>
       ) : (
-        <RecGrid rows={rows} />
+        <RecGrid rows={filtered} />
       )}
     </div>
   );

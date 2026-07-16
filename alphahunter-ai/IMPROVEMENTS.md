@@ -9,6 +9,12 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Opportunities filters + broader watchlist.** Filter bar on
+  Opportunities (Setup: crash dip/pullback · Quality: A/B · Confidence:
+  High/Medium) with live shown-count and a "loosen filters" empty-state;
+  filtering is client-side over the scan. Watchlist grows 30 → 40 with three
+  new domains: Healthcare/Pharma (LLY UNH JNJ PFE), Defense/Aerospace
+  (LMT RTX NOC), Retail/Consumer (WMT COST TGT).
 - [x] **Two-layer verdict: long-term trend decides, short-term only times.**
   Rebuilt the Analysis + Portfolio verdict logic (api/ta.js, api/quote.js):
   Layer 1 (trend score) uses only slow structure — 200-day, 50/200 regime,

@@ -15,6 +15,9 @@ DOMAINS: dict[str, list[str]] = {
     "EV / Auto": ["TSLA", "RIVN"],
     "Fintech / Crypto": ["COIN", "HOOD", "SQ", "PYPL"],
     "Enterprise Software": ["CRM", "NOW", "SNOW", "PANW"],
+    "Healthcare / Pharma": ["LLY", "UNH", "JNJ", "PFE"],
+    "Defense / Aerospace": ["LMT", "RTX", "NOC"],
+    "Retail / Consumer": ["WMT", "COST", "TGT"],
 }
 
 
