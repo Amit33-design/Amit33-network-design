@@ -9,6 +9,17 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Track record (accountability).** New `backend/performance.py` prices
+  each day's historical top-10 picks today (dated `results/*.json` history →
+  per-pick return since pick, win rate, avg return, best/worst; picks aged
+  <2 days excluded; pricing bounded + TTL-cached). run_daily writes
+  `frontend/public/performance.json` (guaranteed to exist) and the workflow
+  commits it. Dashboard gains a collapsible "📈 Track Record" section with
+  summary tiles + recent-picks table. Pure `summarize_picks` tested offline.
+- [x] **Fix empty Opportunities/Options + retire Backtest & Top Gainers tabs.**
+  OpportunityScanner broad pullback screen + run_daily fallback (verified live:
+  40 ranked names on 2026-07-16 after zero-hit strict scans); helpful
+  empty-states; removed tabs redirect to Dashboard.
 - [x] **Real-time thesis API + Dashboard redesign.** New `api/thesis.js` —
   compact per-stock thesis endpoint (`/api/thesis?ticker=X`: price, day move,
   verdict, score, narrative; edge-cached 5 min) like a real trading app.

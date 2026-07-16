@@ -104,8 +104,17 @@ function StockCard({ s }: { s: Stock }) {
   );
 }
 
+interface Perf {
+  generated?: string;
+  picks: { date: string; ticker: string; score?: number; action?: string;
+           entry: number; price: number; "return_%": number; days: number }[];
+  summary: { picks: number; win_rate: number; "avg_return_%": number;
+             best: any; worst: any } | null;
+}
+
 export default function Dashboard() {
   const [dash, setDash] = useState<Dash | null>(null);
+  const [perf, setPerf] = useState<Perf | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -115,6 +124,10 @@ export default function Dashboard() {
       .then(setDash)
       .catch((e) => setError(String(e)))
       .finally(() => setLoading(false));
+    fetch("/performance.json")
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setPerf)
+      .catch(() => setPerf(null));
   }, []);
 
   if (loading) return <Loading label="Loading dashboard…" />;
@@ -175,6 +188,50 @@ export default function Dashboard() {
           ))}
         </div>
       </Section>
+
+      {/* Track record — how past picks actually performed (accountability) */}
+      {perf?.summary && (
+        <Section
+          title="📈 Track Record"
+          subtitle={`since picks aged ≥2 days · updated ${perf.generated ?? ""}`}
+          badge={`${(perf.summary.win_rate * 100).toFixed(0)}% winners · avg ${perf.summary["avg_return_%"] >= 0 ? "+" : ""}${perf.summary["avg_return_%"]}%`}
+          badgeColor={perf.summary["avg_return_%"] >= 0 ? "#1b7f4b" : "#c0392b"}
+          defaultOpen={false}
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <Tile label="Picks judged" value={String(perf.summary.picks)} />
+            <Tile label="Win rate" value={`${(perf.summary.win_rate * 100).toFixed(0)}%`}
+                  accent={perf.summary.win_rate >= 0.5 ? "text-alpha" : "text-red-600"} />
+            <Tile label="Avg return" value={`${perf.summary["avg_return_%"] >= 0 ? "+" : ""}${perf.summary["avg_return_%"]}%`}
+                  accent={perf.summary["avg_return_%"] >= 0 ? "text-alpha" : "text-red-600"} />
+            <Tile label="Best pick" value={`${perf.summary.best?.ticker} +${perf.summary.best?.["return_%"]}%`} accent="text-alpha" />
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="text-slate-400 text-left">
+                <tr>{["Picked", "Ticker", "Action", "Entry", "Now", "Return", "Held"].map((h) => (
+                  <th key={h} className="px-2 py-1 whitespace-nowrap">{h}</th>))}
+                </tr>
+              </thead>
+              <tbody>
+                {perf.picks.slice(0, 15).map((p, i) => (
+                  <tr key={`${p.date}-${p.ticker}-${i}`} className="border-t">
+                    <td className="px-2 py-1 text-slate-400 whitespace-nowrap">{p.date}</td>
+                    <td className="px-2 py-1 font-semibold text-alpha">{p.ticker}</td>
+                    <td className="px-2 py-1">{p.action ?? "—"}</td>
+                    <td className="px-2 py-1">${p.entry}</td>
+                    <td className="px-2 py-1">${p.price}</td>
+                    <td className={`px-2 py-1 font-semibold ${p["return_%"] >= 0 ? "text-alpha" : "text-red-600"}`}>
+                      {p["return_%"] >= 0 ? "+" : ""}{p["return_%"]}%
+                    </td>
+                    <td className="px-2 py-1 text-slate-400">{p.days}d</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Section>
+      )}
 
       {/* Top Gainers — a collapsible section like the domains, open by default */}
       <Section

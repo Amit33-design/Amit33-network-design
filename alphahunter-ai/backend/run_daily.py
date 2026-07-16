@@ -138,6 +138,24 @@ def main() -> None:
         top = results[0]
         print(f"Top pick: {top['ticker']} score {top['score']} ({top['action']})")
 
+    # Track record: price past picks and publish the verifiable performance
+    # summary the Dashboard shows. Best-effort — never fails the scan.
+    perf_path = os.path.join(os.path.dirname(FRONTEND_SNAPSHOT), "performance.json")
+    try:
+        from backend.performance import write_performance_json
+        perf = write_performance_json(RESULTS_DIR, today, perf_path)
+        if perf.get("summary"):
+            s = perf["summary"]
+            print(f"Track record: {s['picks']} picks, {s['win_rate']*100:.0f}% winners, "
+                  f"avg {s['avg_return_%']:+.1f}%")
+        else:
+            print("Track record: not enough aged history yet.")
+    except Exception as e:  # pragma: no cover - CI only
+        print(f"Track record skipped: {e}")
+        if not os.path.exists(perf_path):  # keep the workflow's git add happy
+            with open(perf_path, "w") as f:
+                json.dump({"picks": [], "summary": None, "generated": today}, f)
+
     # Push the day's best high-conviction setups to configured channels
     # (Slack/Discord webhooks via env/secrets); logs and no-ops when unset.
     outcome = send_scan_digest(today, results)

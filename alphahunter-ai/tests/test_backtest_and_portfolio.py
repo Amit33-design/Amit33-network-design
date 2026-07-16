@@ -50,3 +50,31 @@ def test_alert_selection_and_digest():
 def test_alert_digest_empty():
     from backend.alerts.engine import format_digest
     assert "no high-conviction" in format_digest("2026-07-08", [])
+
+
+def test_performance_summary_offline():
+    from backend.performance import summarize_picks
+    history = [
+        ("2026-07-01", [
+            {"ticker": "AAA", "entry": 100.0, "score": 80, "action": "Buy"},
+            {"ticker": "BBB", "entry": 50.0, "score": 70, "action": "Accumulate"},
+        ]),
+        ("2026-07-15", [  # too fresh vs today=2026-07-16 -> excluded
+            {"ticker": "CCC", "entry": 10.0, "score": 60, "action": "Hold"},
+        ]),
+    ]
+    prices = {"AAA": 110.0, "BBB": 45.0, "CCC": 20.0}
+    out = summarize_picks(history, lambda t: prices.get(t), today="2026-07-16")
+    tickers = {p["ticker"] for p in out["picks"]}
+    assert tickers == {"AAA", "BBB"}          # CCC too fresh
+    s = out["summary"]
+    assert s["picks"] == 2
+    assert s["win_rate"] == 0.5               # AAA +10%, BBB -10%
+    assert s["avg_return_%"] == 0.0
+    assert s["best"]["ticker"] == "AAA" and s["worst"]["ticker"] == "BBB"
+
+
+def test_performance_empty_history():
+    from backend.performance import summarize_picks
+    out = summarize_picks([], lambda t: None, today="2026-07-16")
+    assert out == {"picks": [], "summary": None}
