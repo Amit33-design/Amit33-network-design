@@ -9,6 +9,13 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Fetch resilience + setup-tier visibility.** `MarketData` now retries
+  transient fetch failures (Yahoo 429s) with bounded exponential backoff via
+  `with_retries()` — exceptions retry, clean empties (delisted) do NOT, so the
+  scan doesn't slow down; knobs FETCH_RETRIES / FETCH_BACKOFF_SECONDS. The
+  Opportunities grid + mobile cards + daily CSV now show each name's setup
+  tier: "Crash dip" (strict screen, highest conviction) vs "Pullback" (broad
+  opportunity screen) with explanatory tooltips.
 - [x] **Track record (accountability).** New `backend/performance.py` prices
   each day's historical top-10 picks today (dated `results/*.json` history →
   per-pick return since pick, win rate, avg return, best/worst; picks aged

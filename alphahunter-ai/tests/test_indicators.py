@@ -54,3 +54,30 @@ def test_mtf_in_recommendation(crash_snapshot):
     assert "mtf" in rec
     assert set(rec["mtf"]) == {"weekly_trend", "weekly_return_%", "confirms"}
     assert rec["mtf"]["weekly_trend"] in {"up", "down", "flat"}
+
+
+def test_with_retries_recovers_from_transient_errors():
+    from backend.utils.market_data import with_retries
+    calls = {"n": 0}
+    def flaky():
+        calls["n"] += 1
+        if calls["n"] < 3:
+            raise ConnectionError("429 rate limited")
+        return "ok"
+    assert with_retries(flaky, attempts=3, backoff=0.0) == "ok"
+    assert calls["n"] == 3
+
+
+def test_with_retries_gives_up_and_does_not_retry_empty():
+    from backend.utils.market_data import with_retries
+    # Always raising -> None after the attempt budget.
+    def always_fails():
+        raise TimeoutError("nope")
+    assert with_retries(always_fails, attempts=2, backoff=0.0) is None
+    # A clean None (delisted ticker) is FINAL - must not burn retries.
+    calls = {"n": 0}
+    def empty():
+        calls["n"] += 1
+        return None
+    assert with_retries(empty, attempts=3, backoff=0.0) is None
+    assert calls["n"] == 1

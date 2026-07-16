@@ -7,8 +7,9 @@ the scoring and scanning code stays testable (you can construct a
 """
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Callable, TypeVar
 
 import pandas as pd
 
@@ -21,6 +22,31 @@ from backend.config import settings
 from backend.utils.cache import TTLCache
 
 _cache = TTLCache(ttl_seconds=settings.cache_ttl_seconds)
+
+T = TypeVar("T")
+
+
+def with_retries(
+    fn: Callable[[], T | None],
+    attempts: int | None = None,
+    backoff: float | None = None,
+) -> T | None:
+    """Run ``fn`` with bounded exponential backoff on EXCEPTIONS only.
+
+    Yahoo rate-limits (429s) surface as raised errors and deserve a retry;
+    a clean None/empty result means "no such data" (delisted ticker) and
+    retrying would just triple the scan time — so it's returned as-is.
+    """
+    attempts = attempts if attempts is not None else settings.fetch_retries
+    backoff = backoff if backoff is not None else settings.fetch_backoff_seconds
+    for i in range(max(1, attempts)):
+        try:
+            return fn()
+        except Exception:
+            if i >= attempts - 1:
+                return None
+            time.sleep(backoff * (2 ** i))
+    return None
 
 
 @dataclass
@@ -77,51 +103,46 @@ class MarketData:
         if yf is None:
             raise RuntimeError("yfinance is not installed; cannot fetch live data")
 
-        def _produce() -> StockSnapshot | None:
-            try:
-                t = yf.Ticker(ticker)
-                hist = t.history(period=self.period, interval="1d")
-                if hist is None or hist.empty:
-                    return None
-                info = t.info or {}
-                return StockSnapshot(ticker=ticker, history=hist, info=info)
-            except Exception:
-                return None
+        def _fetch() -> StockSnapshot | None:
+            t = yf.Ticker(ticker)
+            hist = t.history(period=self.period, interval="1d")
+            if hist is None or hist.empty:
+                return None                      # no data ≠ transient failure
+            info = t.info or {}
+            return StockSnapshot(ticker=ticker, history=hist, info=info)
 
-        return _cache.get_or_set(f"snap:{ticker}:{self.period}", _produce)
+        return _cache.get_or_set(
+            f"snap:{ticker}:{self.period}", lambda: with_retries(_fetch)
+        )
 
     def history(self, ticker: str, period: str = "3y") -> pd.DataFrame | None:
         """Longer daily history for backtesting a ticker's own setup (cached)."""
         if yf is None:
             return None
 
-        def _produce():
-            try:
-                h = yf.Ticker(ticker).history(period=period, interval="1d")
-                return h if (h is not None and not h.empty) else None
-            except Exception:
-                return None
+        def _fetch():
+            h = yf.Ticker(ticker).history(period=period, interval="1d")
+            return h if (h is not None and not h.empty) else None
 
-        return _cache.get_or_set(f"hist:{ticker}:{period}", _produce)
+        return _cache.get_or_set(
+            f"hist:{ticker}:{period}", lambda: with_retries(_fetch)
+        )
 
     def options_chain(self, ticker: str) -> dict[str, Any] | None:
         if yf is None:
             return None
 
-        def _produce() -> dict[str, Any] | None:
-            try:
-                t = yf.Ticker(ticker)
-                expiries = t.options
-                if not expiries:
-                    return None
-                near = t.option_chain(expiries[0])
-                return {
-                    "expiry": expiries[0],
-                    "expiries": list(expiries),
-                    "calls": near.calls,
-                    "puts": near.puts,
-                }
-            except Exception:
+        def _fetch() -> dict[str, Any] | None:
+            t = yf.Ticker(ticker)
+            expiries = t.options
+            if not expiries:
                 return None
+            near = t.option_chain(expiries[0])
+            return {
+                "expiry": expiries[0],
+                "expiries": list(expiries),
+                "calls": near.calls,
+                "puts": near.puts,
+            }
 
-        return _cache.get_or_set(f"opt:{ticker}", _produce)
+        return _cache.get_or_set(f"opt:{ticker}", lambda: with_retries(_fetch))

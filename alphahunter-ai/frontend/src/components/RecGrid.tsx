@@ -27,6 +27,15 @@ const columns: ColDef<Recommendation>[] = [
     valueFormatter: (p: any) => (p.value == null ? "—" : `${(p.value * 100).toFixed(0)}%`),
     cellStyle: (p) => ({ color: (p.value ?? 0) >= 0.6 ? "#1b7f4b" : (p.value ?? 1) < 0.4 ? "#c0392b" : "#334155" }) },
   { field: "action", width: 115 },
+  { headerName: "Setup", width: 110,
+    valueGetter: (p) => ((p.data?.metrics as any)?.profile === "opportunity" ? "Pullback" : "Crash dip"),
+    cellStyle: (p) => ({
+      color: (p.data?.metrics as any)?.profile === "opportunity" ? "#b7791f" : "#c0392b",
+      fontWeight: 600,
+    }),
+    tooltipValueGetter: (p) => ((p.data?.metrics as any)?.profile === "opportunity"
+      ? "Broad pullback screen: >$1B name down on the week/month or oversold — lower conviction tier"
+      : "Strict crash screen: down ≥5% day and ≥20% month — highest conviction tier") },
   { field: "confidence", width: 110 },
   { headerName: "RSI", width: 85, valueGetter: (p) => p.data?.metrics?.rsi, valueFormatter: num },
   { headerName: "Day %", width: 95, valueGetter: (p) => p.data?.metrics?.["day_%"], valueFormatter: pct },
@@ -84,7 +93,9 @@ function RecCard({ r }: { r: Recommendation }) {
         </div>
         <div className="text-right">
           <div className="text-xl font-bold" style={{ color: scoreColor }}>{r.score}</div>
-          <div className="text-xs text-slate-400">{r.action}</div>
+          <div className="text-xs text-slate-400">
+            {r.action} · {(m as any)?.profile === "opportunity" ? "pullback" : "crash dip"}
+          </div>
         </div>
       </div>
       <div className="mt-2 grid grid-cols-3 gap-2 text-sm">

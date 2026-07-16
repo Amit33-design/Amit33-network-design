@@ -64,6 +64,8 @@ class Settings(BaseSettings):
     cache_ttl_seconds: int = 900
     max_universe: int = 0          # 0 = uncapped
     request_sleep: float = 0.3
+    fetch_retries: int = 3         # attempts per fetch (exceptions only)
+    fetch_backoff_seconds: float = 1.5  # base backoff; doubles per attempt
 
     # Infrastructure (optional)
     database_url: str | None = None

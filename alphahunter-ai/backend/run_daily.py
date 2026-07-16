@@ -32,7 +32,7 @@ CSV_COLUMNS = [
     "ticker", "company", "score", "quality_grade", "expected_gain_%",
     "analyst_upside_%", "hist_win_rate", "hist_avg_return_%", "hist_trades",
     "rs_vs_spy", "rs_vs_sector", "sector",
-    "csp_signal", "csp_reason",
+    "csp_signal", "csp_reason", "profile",
     "risk_flags", "action", "confidence",
     "rsi", "day_%", "month_%", "revenue_$B", "institutional_%",
     "entry", "stop_loss", "target1", "target2", "risk_reward", "rr_pass",
@@ -59,6 +59,7 @@ def _flatten(rec: dict) -> dict:
         "csp_signal": (rec.get("csp_signal") or {}).get("strength")
                       if (rec.get("csp_signal") or {}).get("active") else None,
         "csp_reason": (rec.get("csp_signal") or {}).get("reason"),
+        "profile": m.get("profile") or "crash",
         "risk_flags": "; ".join(f["text"] for f in rec.get("risk_flags", [])),
         "action": rec["action"],
         "confidence": rec["confidence"],
