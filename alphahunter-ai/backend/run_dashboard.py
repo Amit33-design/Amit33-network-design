@@ -31,13 +31,15 @@ def main() -> None:
     now = dt.datetime.now(ET)
     out_domains: dict[str, list[dict]] = {}
     total = 0
+    missing: list[str] = []   # delisted/renamed watchlist tickers to prune
 
     for domain, tickers in DOMAINS.items():
         rows = []
         for t in tickers:
             snap = md.snapshot(t)
             if snap is None or snap.last_close is None:
-                print(f"  {t}: no data")
+                print(f"  {t}: no data (delisted/renamed? consider pruning from watchlist.py)")
+                missing.append(t)
                 continue
             rec = score_ticker_general(snap, md)
             rec["domain"] = domain
@@ -58,9 +60,12 @@ def main() -> None:
             "date": now.strftime("%Y-%m-%d"),
             "as_of": now.strftime("%Y-%m-%d %H:%M %Z"),
             "count": total,
+            "missing": missing,
             "domains": out_domains,
         }, f, indent=2, default=str)
     print(f"\nWrote {total} scored tickers across {len(out_domains)} domains -> {OUT}")
+    if missing:
+        print(f"WATCHLIST WARNING: no data for {', '.join(missing)} — prune or fix in backend/watchlist.py")
 
 
 if __name__ == "__main__":

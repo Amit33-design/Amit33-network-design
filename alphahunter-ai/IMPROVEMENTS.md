@@ -9,6 +9,11 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **2y default analysis range + watchlist validation (fixed dead SQ).**
+  Analysis defaults to a 2-year chart so the view matches the long-term
+  verdict logic. run_dashboard now reports tickers with no data (a `missing`
+  list in dashboard.json + a prune warning in logs) — which immediately caught
+  Block's SQ→XYZ ticker rename; watchlist fixed to XYZ.
 - [x] **Trading-app chart zoom.** Price chart gains 1M/3M/6M/1Y/All quick-range
   buttons, a mini range-slider overview, scroll/pinch zoom with drag-to-pan
   (no more distorted zoom boxes), y-axis auto-refit to the visible window,

@@ -8,7 +8,8 @@ const RANGES = ["6mo", "1y", "2y", "5y"];
 
 export default function Analysis() {
   const [ticker, setTicker] = useState("AAPL");
-  const [range, setRange] = useState("1y");
+  // 2y default so the chart shows the long-term structure the verdict uses.
+  const [range, setRange] = useState("2y");
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

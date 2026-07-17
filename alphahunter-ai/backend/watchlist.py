@@ -13,7 +13,7 @@ DOMAINS: dict[str, list[str]] = {
     "FAANG / Mega-cap": ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "NFLX"],
     "Energy": ["XOM", "CVX", "FSLR", "ENPH"],
     "EV / Auto": ["TSLA", "RIVN"],
-    "Fintech / Crypto": ["COIN", "HOOD", "SQ", "PYPL"],
+    "Fintech / Crypto": ["COIN", "HOOD", "XYZ", "PYPL"],  # XYZ = Block (ex-SQ)
     "Enterprise Software": ["CRM", "NOW", "SNOW", "PANW"],
     "Healthcare / Pharma": ["LLY", "UNH", "JNJ", "PFE"],
     "Defense / Aerospace": ["LMT", "RTX", "NOC"],
