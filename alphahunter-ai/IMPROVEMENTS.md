@@ -9,6 +9,11 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Trading-app chart zoom.** Price chart gains 1M/3M/6M/1Y/All quick-range
+  buttons, a mini range-slider overview, scroll/pinch zoom with drag-to-pan
+  (no more distorted zoom boxes), y-axis auto-refit to the visible window,
+  double-click reset, and a cleaned modebar. Volume/MACD/RSI subplots get
+  scroll-zoom + double-click reset. On-chart hint documents the controls.
 - [x] **Opportunities filters + broader watchlist.** Filter bar on
   Opportunities (Setup: crash dip/pullback · Quality: A/B · Confidence:
   High/Medium) with live shown-count and a "loosen filters" empty-state;

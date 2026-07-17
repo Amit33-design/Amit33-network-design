@@ -278,14 +278,40 @@ export default function Analysis() {
                   text: bearSig.map((s: any) => s.label), hoverinfo: "text+x" },
               ]) as any}
               layout={{
-                autosize: true, height: 460, margin: { l: 50, r: 10, t: 10, b: 30 },
-                legend: { orientation: "h", y: 1.1 }, xaxis: { rangeslider: { visible: false } },
-                yaxis: { title: { text: "Price" } }, shapes: [...cycleShapes, ...levelShapes],
+                autosize: true, height: 540, margin: { l: 50, r: 10, t: 30, b: 15 },
+                legend: { orientation: "h", y: 1.16, x: 0 },
+                // Trading-app zoom: quick-range buttons + mini overview slider;
+                // drag pans (no distorted zoom boxes), scroll/pinch zooms.
+                dragmode: "pan",
+                xaxis: {
+                  rangeslider: { visible: true, thickness: 0.07 },
+                  rangeselector: {
+                    x: 0, y: 1.06, yanchor: "bottom",
+                    bgcolor: "rgba(241,245,249,0.9)", activecolor: "#1b7f4b",
+                    font: { size: 11 },
+                    buttons: [
+                      { count: 1, label: "1M", step: "month", stepmode: "backward" },
+                      { count: 3, label: "3M", step: "month", stepmode: "backward" },
+                      { count: 6, label: "6M", step: "month", stepmode: "backward" },
+                      { count: 1, label: "1Y", step: "year", stepmode: "backward" },
+                      { step: "all", label: "All" },
+                    ],
+                  },
+                },
+                // Re-fit the y axis to whatever window is in view.
+                yaxis: { title: { text: "Price" }, autorange: true, fixedrange: false },
+                shapes: [...cycleShapes, ...levelShapes],
               } as any}
-              useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false }}
+              useResizeHandler style={{ width: "100%" }}
+              config={{
+                scrollZoom: true, displaylogo: false, displayModeBar: true,
+                modeBarButtonsToRemove: ["lasso2d", "select2d", "autoScale2d", "toImage"],
+                doubleClick: "reset",
+              } as any}
             />
             <div className="text-xs text-slate-400 mt-1">
               Green/red shading marks bullish/bearish cycles (50-day vs 200-day trend). Dashed lines = support (green) / resistance (red). ▲▼ = crossover/breakout signals.
+              <span className="hidden sm:inline"> Zoom: use the 1M/3M/6M/1Y buttons or the mini-slider below the chart; scroll/pinch to zoom, drag to pan, double-click to reset.</span>
             </div>
           </div>
 
@@ -312,7 +338,7 @@ export default function Analysis() {
                 data={[{ type: "bar", x: ch.dates, y: ch.volume, name: "Volume",
                          marker: { color: ch.close.map((c: number, i: number) => (i > 0 && c >= ch.close[i - 1] ? "#1b7f4b" : "#c0392b")) } }]}
                 layout={{ autosize: true, height: 220, margin: { l: 50, r: 10, t: 10, b: 30 }, yaxis: { title: { text: "Vol" } } }}
-                useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false }}
+                useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: true, doubleClick: "reset" } as any}
               />
             </div>
             {/* MACD */}
@@ -341,7 +367,7 @@ export default function Analysis() {
                   { x: ch.dates, y: ch.macd_signal, type: "scatter", mode: "lines", name: "Signal", line: { color: "#b7791f" } },
                 ]}
                 layout={{ autosize: true, height: 220, margin: { l: 50, r: 10, t: 10, b: 30 }, legend: { orientation: "h", y: 1.2 } }}
-                useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false }}
+                useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: true, doubleClick: "reset" } as any}
               />
             </div>
           </div>
@@ -372,7 +398,7 @@ export default function Analysis() {
                 shapes: [30, 70].map((y) => ({ type: "line", x0: ch.dates[0], x1: ch.dates[ch.dates.length - 1], y0: y, y1: y,
                   line: { color: y === 70 ? "#c0392b" : "#1b7f4b", width: 1, dash: "dot" } })),
               }}
-              useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false }}
+              useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: true, doubleClick: "reset" } as any}
             />
           </div>
 
