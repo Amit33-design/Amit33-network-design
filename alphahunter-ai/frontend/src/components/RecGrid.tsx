@@ -1,14 +1,29 @@
 import { AgGridReact } from "ag-grid-react";
+import { Link } from "react-router-dom";
 import type { ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import type { Recommendation } from "../lib/types";
 
+function TickerCell({ value }: { value?: string }) {
+  if (!value) return null;
+  return (
+    <Link
+      to={`/analysis?ticker=${value}`}
+      className="font-bold text-alpha hover:underline"
+      title={`Open the Analysis chart for ${value}`}
+    >
+      {value}
+    </Link>
+  );
+}
+
 const num = (p: any) => (p.value == null ? "—" : Number(p.value).toFixed(2));
 const pct = (p: any) => (p.value == null ? "—" : `${Number(p.value).toFixed(1)}%`);
 
 const columns: ColDef<Recommendation>[] = [
-  { field: "ticker", pinned: "left", width: 95, cellClass: "font-bold text-alpha" },
+  // Ticker links to the full Analysis chart for that symbol (client-side nav).
+  { field: "ticker", pinned: "left", width: 95, cellRenderer: TickerCell },
   { field: "company", width: 170 },
   { field: "score", headerName: "AI Score", width: 105, sort: "desc",
     cellClassRules: { "font-bold": () => true },
@@ -88,7 +103,9 @@ function RecCard({ r }: { r: Recommendation }) {
     <div className="bg-white rounded-xl shadow-sm p-4">
       <div className="flex items-center justify-between">
         <div>
-          <span className="font-bold text-alpha text-lg">{r.ticker}</span>
+          <Link to={`/analysis?ticker=${r.ticker}`} className="font-bold text-alpha text-lg hover:underline">
+            {r.ticker}
+          </Link>
           <span className="ml-2 text-sm text-slate-500">{r.company}</span>
         </div>
         <div className="text-right">

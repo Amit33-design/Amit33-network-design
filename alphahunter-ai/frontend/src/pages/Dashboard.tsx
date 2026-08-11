@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
+import { Link } from "react-router-dom";
 import Plot from "react-plotly.js";
 import { ErrorBox, Loading } from "../components/Loading";
 
@@ -70,7 +71,16 @@ function StockCard({ s }: { s: Stock }) {
     >
       <div className="flex items-center justify-between">
         <div>
-          <span className="font-bold text-alpha">{s.ticker}</span>
+          {/* Ticker opens the full Analysis chart for that symbol; the rest of
+              the card still taps to the inline live thesis. */}
+          <Link
+            to={`/analysis?ticker=${s.ticker}`}
+            onClick={(e) => e.stopPropagation()}
+            className="font-bold text-alpha hover:underline"
+            title={`Open the Analysis chart for ${s.ticker}`}
+          >
+            {s.ticker}
+          </Link>
           <span className="ml-1 text-xs text-slate-400">{s.cycle === "bull" ? "▲" : "▼"}</span>
         </div>
         <span className="text-lg font-bold" style={{ color: scoreColor(s.score) }}>{s.score}</span>
@@ -99,7 +109,18 @@ function StockCard({ s }: { s: Stock }) {
           )}
         </div>
       )}
-      {!open && <div className="mt-1 text-[10px] text-slate-300">tap for live thesis</div>}
+      {!open && (
+        <div className="mt-1 flex items-center justify-between text-[10px]">
+          <span className="text-slate-300">tap for live thesis</span>
+          <Link
+            to={`/analysis?ticker=${s.ticker}`}
+            onClick={(e) => e.stopPropagation()}
+            className="text-alpha hover:underline font-medium"
+          >
+            📈 chart
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

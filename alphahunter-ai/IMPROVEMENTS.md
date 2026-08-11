@@ -9,6 +9,13 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Click a ticker → its Analysis chart.** Tickers are now deep links
+  (`/analysis?ticker=X`) from the Dashboard cards (plus a "📈 chart" affordance,
+  with the rest of the card still tapping to the inline live thesis), the
+  Opportunities grid, and the mobile opportunity cards. Analysis reads the
+  `?ticker=` param, auto-runs on mount and on param change, and keeps the URL
+  in sync when you analyze manually — so chart views are shareable and the
+  back button works.
 - [x] **2y default analysis range + watchlist validation (fixed dead SQ).**
   Analysis defaults to a 2-year chart so the view matches the long-term
   verdict logic. run_dashboard now reports tickers with no data (a `missing`

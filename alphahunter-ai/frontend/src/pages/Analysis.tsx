@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Plot from "react-plotly.js";
 import { api } from "../lib/api";
 import { ErrorBox, Loading } from "../components/Loading";
@@ -7,7 +8,11 @@ import ChartExplainer from "../components/ChartExplainer";
 const RANGES = ["6mo", "1y", "2y", "5y"];
 
 export default function Analysis() {
-  const [ticker, setTicker] = useState("AAPL");
+  // ?ticker=NVDA deep-links straight to a symbol (Dashboard/Opportunities
+  // tickers link here), so the chart loads without retyping it.
+  const [params, setParams] = useSearchParams();
+  const linked = (params.get("ticker") || "").toUpperCase();
+  const [ticker, setTicker] = useState(linked || "AAPL");
   // 2y default so the chart shows the long-term structure the verdict uses.
   const [range, setRange] = useState("2y");
   const [data, setData] = useState<any>(null);
@@ -15,10 +20,13 @@ export default function Analysis() {
   const [error, setError] = useState("");
 
   async function run(sym = ticker, rng = range) {
+    const symbol = sym.toUpperCase();
     setLoading(true);
     setError("");
+    // Keep the URL in sync so the view is shareable and the back button works.
+    if (symbol && symbol !== linked) setParams({ ticker: symbol }, { replace: true });
     try {
-      setData(await api.technicalAnalysis(sym.toUpperCase(), rng));
+      setData(await api.technicalAnalysis(symbol, rng));
     } catch (e) {
       setError(String(e));
       setData(null);
@@ -26,6 +34,15 @@ export default function Analysis() {
       setLoading(false);
     }
   }
+
+  // Auto-analyze whatever symbol the URL points at (deep link from a ticker
+  // click elsewhere in the app), including when it changes while mounted.
+  useEffect(() => {
+    if (!linked) return;
+    setTicker(linked);
+    run(linked, range);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [linked]);
 
   const ind = data?.indicators;
   const ch = data?.chart;
