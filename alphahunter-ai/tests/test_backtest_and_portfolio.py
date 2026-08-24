@@ -78,3 +78,41 @@ def test_performance_empty_history():
     from backend.performance import summarize_picks
     out = summarize_picks([], lambda t: None, today="2026-07-16")
     assert out == {"picks": [], "summary": None}
+
+
+def test_performance_segments_by_quality_and_setup():
+    from backend.performance import summarize_picks
+    def rec(t, entry, grade, profile, score):
+        return {"ticker": t, "entry": entry, "score": score, "action": "Buy",
+                "quality_grade": grade, "confidence": "High",
+                "metrics": {"profile": profile}}
+    history = [("2026-07-01", [
+        # Three A-grade winners, three C-grade losers.
+        rec("AA1", 100, "A", None, 80), rec("AA2", 100, "A", None, 78),
+        rec("AA3", 100, "A", None, 76),
+        rec("CC1", 100, "C", "opportunity", 55), rec("CC2", 100, "C", "opportunity", 54),
+        rec("CC3", 100, "C", "opportunity", 53),
+        # A 2-pick cohort that must be dropped as too small to be meaningful.
+        rec("BB1", 100, "B", None, 65), rec("BB2", 100, "B", None, 64),
+    ])]
+    prices = {"AA1": 120, "AA2": 110, "AA3": 115,
+              "CC1": 80, "CC2": 90, "CC3": 85,
+              "BB1": 200, "BB2": 200}
+    out = summarize_picks(history, lambda t: prices.get(t), today="2026-07-20")
+    segs = out["segments"]
+    by_grade = {r["key"]: r for r in segs["quality_grade"]}
+    assert by_grade["A"]["win_rate"] == 1.0 and by_grade["A"]["avg_return_%"] == 15.0
+    assert by_grade["C"]["win_rate"] == 0.0 and by_grade["C"]["avg_return_%"] == -15.0
+    # B had only 2 picks -> excluded despite a spectacular (noisy) return.
+    assert "B" not in by_grade
+    # Best cohort is listed first.
+    assert segs["quality_grade"][0]["key"] == "A"
+    # Setup buckets group ALL picks (the B pair counts here even though it is
+    # too small for its own grade row), so assert the ordering invariant.
+    by_setup = {r["key"]: r for r in segs["setup"]}
+    assert by_setup["pullback"]["avg_return_%"] == -15.0   # the three C names
+    assert by_setup["crash dip"]["picks"] == 5             # three A + two B
+    assert by_setup["crash dip"]["avg_return_%"] > by_setup["pullback"]["avg_return_%"]
+    # Score bands: 80/78/76 split across the "80+" and "70+" bands (1 and 2
+    # picks), so both fall under the 3-pick minimum; only the C band survives.
+    assert {r["key"] for r in segs["score_band"]} == {"50+"}

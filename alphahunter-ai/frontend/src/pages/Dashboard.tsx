@@ -131,6 +131,40 @@ interface Perf {
            entry: number; price: number; "return_%": number; days: number }[];
   summary: { picks: number; win_rate: number; "avg_return_%": number;
              best: any; worst: any } | null;
+  segments?: Record<string, { key: string; picks: number; win_rate: number;
+                              "avg_return_%": number }[]>;
+}
+
+const SEGMENT_LABELS: Record<string, string> = {
+  quality_grade: "By quality grade",
+  setup: "By setup type",
+  confidence: "By confidence",
+  score_band: "By score band",
+};
+
+// Which cohorts actually made money — the feedback loop on our own signals.
+function SegmentTable({ title, rows }: { title: string; rows: any[] }) {
+  if (!rows?.length) return null;
+  return (
+    <div>
+      <div className="text-xs uppercase tracking-wide text-slate-400 mb-1">{title}</div>
+      <table className="w-full text-sm">
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.key} className="border-t first:border-0">
+              <td className="py-1 pr-2 font-medium">{r.key}</td>
+              <td className="py-1 pr-2 text-slate-400 text-xs">{r.picks}</td>
+              <td className="py-1 pr-2">{(r.win_rate * 100).toFixed(0)}%</td>
+              <td className={`py-1 text-right font-semibold ${
+                r["avg_return_%"] >= 0 ? "text-alpha" : "text-red-600"}`}>
+                {r["avg_return_%"] >= 0 ? "+" : ""}{r["avg_return_%"]}%
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default function Dashboard() {
@@ -227,6 +261,21 @@ export default function Dashboard() {
                   accent={perf.summary["avg_return_%"] >= 0 ? "text-alpha" : "text-red-600"} />
             <Tile label="Best pick" value={`${perf.summary.best?.ticker} +${perf.summary.best?.["return_%"]}%`} accent="text-alpha" />
           </div>
+          {perf.segments && Object.values(perf.segments).some((r) => r?.length) && (
+            <div className="mb-4">
+              <div className="text-sm font-semibold text-ink mb-2">
+                What's actually working
+                <span className="ml-2 text-xs font-normal text-slate-400">
+                  win rate &amp; avg return by cohort (groups under 3 picks hidden)
+                </span>
+              </div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4">
+                {Object.entries(perf.segments).map(([k, rows]) => (
+                  <SegmentTable key={k} title={SEGMENT_LABELS[k] ?? k} rows={rows} />
+                ))}
+              </div>
+            </div>
+          )}
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="text-slate-400 text-left">

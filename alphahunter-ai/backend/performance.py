@@ -62,6 +62,12 @@ def summarize_picks(
                 "ticker": r["ticker"],
                 "score": r.get("score"),
                 "action": r.get("action"),
+                # Attributes we segment performance by, so we learn which
+                # signals actually predict returns (see _segment below).
+                "quality_grade": r.get("quality_grade"),
+                "confidence": r.get("confidence"),
+                "setup": ("pullback" if (r.get("metrics") or {}).get("profile") == "opportunity"
+                          else "crash dip"),
                 "entry": round(float(entry), 2),
                 "price": round(float(cur), 2),
                 "return_%": round((cur - entry) / entry * 100, 1),
@@ -80,8 +86,49 @@ def summarize_picks(
         "best": max(picks, key=lambda p: p["return_%"]),
         "worst": min(picks, key=lambda p: p["return_%"]),
     }
+    segments = {
+        "quality_grade": _segment(picks, lambda p: p.get("quality_grade")),
+        "setup": _segment(picks, lambda p: p.get("setup")),
+        "confidence": _segment(picks, lambda p: p.get("confidence")),
+        "score_band": _segment(picks, _score_band),
+    }
     picks.sort(key=lambda p: (p["date"], -(p["score"] or 0)), reverse=True)
-    return {"picks": picks[:60], "summary": summary}
+    return {"picks": picks[:60], "summary": summary, "segments": segments}
+
+
+def _score_band(pick: dict) -> str | None:
+    s = pick.get("score")
+    if s is None:
+        return None
+    for lo in (80, 70, 60, 50):
+        if s >= lo:
+            return f"{lo}+"
+    return "<50"
+
+
+def _segment(picks: list[dict], key: Callable[[dict], str | None],
+             min_n: int = 3) -> list[dict]:
+    """Win rate / avg return grouped by an attribute, best cohort first.
+
+    Groups with fewer than ``min_n`` picks are dropped — a 100% win rate on
+    one pick is noise, and showing it would invite exactly the wrong lesson.
+    """
+    buckets: dict[str, list[float]] = {}
+    for p in picks:
+        k = key(p)
+        if k:
+            buckets.setdefault(str(k), []).append(p["return_%"])
+    rows = [
+        {
+            "key": k,
+            "picks": len(v),
+            "win_rate": round(sum(1 for x in v if x > 0) / len(v), 2),
+            "avg_return_%": round(sum(v) / len(v), 1),
+        }
+        for k, v in buckets.items() if len(v) >= min_n
+    ]
+    rows.sort(key=lambda r: r["avg_return_%"], reverse=True)
+    return rows
 
 
 def build_performance(results_dir: str, today: str) -> dict:

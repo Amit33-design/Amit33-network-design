@@ -9,6 +9,13 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Track-record segmentation — closing the feedback loop.** `performance.py`
+  now breaks realized results down by **quality grade, setup tier, confidence
+  and score band** (win rate + avg return per cohort, best first). Cohorts with
+  fewer than 3 picks are dropped so a 100%-on-one-pick fluke can't teach the
+  wrong lesson. Surfaced on the Dashboard's Track Record section as a
+  "What's actually working" grid — so scoring changes can be argued from
+  realized returns instead of intuition. +1 test (38 total).
 - [x] **Tradability floors (found via the track record).** The new track record
   exposed a real defect: a $0.05 warrant (PGYWW) scored 61 and lost 43%, and
   16 of 40 board names were under $5 (incl. $0.12/$0.19 warrants). Both
