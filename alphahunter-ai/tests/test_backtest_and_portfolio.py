@@ -116,3 +116,34 @@ def test_performance_segments_by_quality_and_setup():
     # Score bands: 80/78/76 split across the "80+" and "70+" bands (1 and 2
     # picks), so both fall under the 3-pick minimum; only the C band survives.
     assert {r["key"] for r in segs["score_band"]} == {"50+"}
+
+
+def test_performance_alpha_vs_benchmark():
+    from backend.performance import summarize_picks
+    history = [("2026-07-01", [
+        {"ticker": "WIN", "entry": 100.0, "score": 70, "quality_grade": "A"},
+        {"ticker": "LAG", "entry": 100.0, "score": 60, "quality_grade": "A"},
+        {"ticker": "DWN", "entry": 100.0, "score": 55, "quality_grade": "C"},
+    ])]
+    prices = {"WIN": 112.0, "LAG": 103.0, "DWN": 96.0}   # +12%, +3%, -4%
+    # The market rose 5% over the same window.
+    out = summarize_picks(history, lambda t: prices.get(t), today="2026-07-20",
+                          bench_return=lambda d: 5.0)
+    by_ticker = {p["ticker"]: p for p in out["picks"]}
+    assert by_ticker["WIN"]["alpha_%"] == 7.0     # +12 vs +5
+    assert by_ticker["LAG"]["alpha_%"] == -2.0    # a "winner" that LOST to SPY
+    assert by_ticker["DWN"]["alpha_%"] == -9.0
+    s = out["summary"]
+    assert s["benchmark"] == "SPY"
+    # Two of three picks were up, but only one actually beat the market.
+    assert s["win_rate"] == 0.67
+    assert s["beat_benchmark_rate"] == round(1 / 3, 2)
+    assert s["avg_alpha_%"] == round((7.0 - 2.0 - 9.0) / 3, 1)
+
+
+def test_performance_without_benchmark_omits_alpha():
+    from backend.performance import summarize_picks
+    history = [("2026-07-01", [{"ticker": "AAA", "entry": 100.0, "score": 70}])]
+    out = summarize_picks(history, lambda t: 110.0, today="2026-07-20")
+    assert "alpha_%" not in out["picks"][0]
+    assert "avg_alpha_%" not in out["summary"]

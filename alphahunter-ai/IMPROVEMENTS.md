@@ -9,6 +9,14 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Benchmark-relative track record (alpha vs SPY).** Raw returns were
+  misleading — the blended win rate fell to 38% / -1.6% as history aged, but
+  that number is meaningless without knowing what the market did. Every pick is
+  now also measured against SPY over its *own* holding window: per-pick
+  `benchmark_%` + `alpha_%`, summary `avg_alpha_%` / `beat_benchmark_rate`, and
+  an alpha column on every cohort in the segment tables (which now rank by
+  alpha, not raw return). The Dashboard headline leads with "% beat SPY" and a
+  "vs SPY" tile. +2 tests (40 total).
 - [x] **Track-record segmentation — closing the feedback loop.** `performance.py`
   now breaks realized results down by **quality grade, setup tier, confidence
   and score band** (win rate + avg return per cohort, best first). Cohorts with

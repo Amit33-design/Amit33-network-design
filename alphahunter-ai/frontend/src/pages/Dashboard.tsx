@@ -130,7 +130,8 @@ interface Perf {
   picks: { date: string; ticker: string; score?: number; action?: string;
            entry: number; price: number; "return_%": number; days: number }[];
   summary: { picks: number; win_rate: number; "avg_return_%": number;
-             best: any; worst: any } | null;
+             best: any; worst: any; "avg_alpha_%"?: number;
+             beat_benchmark_rate?: number; benchmark?: string } | null;
   segments?: Record<string, { key: string; picks: number; win_rate: number;
                               "avg_return_%": number }[]>;
 }
@@ -155,10 +156,17 @@ function SegmentTable({ title, rows }: { title: string; rows: any[] }) {
               <td className="py-1 pr-2 font-medium">{r.key}</td>
               <td className="py-1 pr-2 text-slate-400 text-xs">{r.picks}</td>
               <td className="py-1 pr-2">{(r.win_rate * 100).toFixed(0)}%</td>
-              <td className={`py-1 text-right font-semibold ${
+              <td className={`py-1 pr-2 text-right ${
                 r["avg_return_%"] >= 0 ? "text-alpha" : "text-red-600"}`}>
                 {r["avg_return_%"] >= 0 ? "+" : ""}{r["avg_return_%"]}%
               </td>
+              {r["avg_alpha_%"] != null && (
+                <td className={`py-1 text-right font-semibold ${
+                  r["avg_alpha_%"] >= 0 ? "text-alpha" : "text-red-600"}`}
+                    title="Average alpha vs SPY over the same holding window">
+                  {r["avg_alpha_%"] >= 0 ? "+" : ""}{r["avg_alpha_%"]}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
@@ -249,8 +257,10 @@ export default function Dashboard() {
         <Section
           title="📈 Track Record"
           subtitle={`since picks aged ≥2 days · updated ${perf.generated ?? ""}`}
-          badge={`${(perf.summary.win_rate * 100).toFixed(0)}% winners · avg ${perf.summary["avg_return_%"] >= 0 ? "+" : ""}${perf.summary["avg_return_%"]}%`}
-          badgeColor={perf.summary["avg_return_%"] >= 0 ? "#1b7f4b" : "#c0392b"}
+          badge={perf.summary["avg_alpha_%"] != null
+            ? `${((perf.summary.beat_benchmark_rate ?? 0) * 100).toFixed(0)}% beat ${perf.summary.benchmark ?? "SPY"} · alpha ${perf.summary["avg_alpha_%"] >= 0 ? "+" : ""}${perf.summary["avg_alpha_%"]}%`
+            : `${(perf.summary.win_rate * 100).toFixed(0)}% winners · avg ${perf.summary["avg_return_%"] >= 0 ? "+" : ""}${perf.summary["avg_return_%"]}%`}
+          badgeColor={(perf.summary["avg_alpha_%"] ?? perf.summary["avg_return_%"]) >= 0 ? "#1b7f4b" : "#c0392b"}
           defaultOpen={false}
         >
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
@@ -259,14 +269,20 @@ export default function Dashboard() {
                   accent={perf.summary.win_rate >= 0.5 ? "text-alpha" : "text-red-600"} />
             <Tile label="Avg return" value={`${perf.summary["avg_return_%"] >= 0 ? "+" : ""}${perf.summary["avg_return_%"]}%`}
                   accent={perf.summary["avg_return_%"] >= 0 ? "text-alpha" : "text-red-600"} />
-            <Tile label="Best pick" value={`${perf.summary.best?.ticker} +${perf.summary.best?.["return_%"]}%`} accent="text-alpha" />
+            {perf.summary["avg_alpha_%"] != null ? (
+              <Tile label={`vs ${perf.summary.benchmark ?? "SPY"}`}
+                    value={`${perf.summary["avg_alpha_%"] >= 0 ? "+" : ""}${perf.summary["avg_alpha_%"]}%`}
+                    accent={perf.summary["avg_alpha_%"] >= 0 ? "text-alpha" : "text-red-600"} />
+            ) : (
+              <Tile label="Best pick" value={`${perf.summary.best?.ticker} +${perf.summary.best?.["return_%"]}%`} accent="text-alpha" />
+            )}
           </div>
           {perf.segments && Object.values(perf.segments).some((r) => r?.length) && (
             <div className="mb-4">
               <div className="text-sm font-semibold text-ink mb-2">
                 What's actually working
                 <span className="ml-2 text-xs font-normal text-slate-400">
-                  win rate &amp; avg return by cohort (groups under 3 picks hidden)
+                  picks · win rate · avg return · alpha vs SPY (groups under 3 picks hidden)
                 </span>
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4">
