@@ -24,6 +24,43 @@ from backend.utils.market_data import StockSnapshot
 # Core crash criteria that must always hold for a name to be considered.
 CORE_CRITERIA = {"revenue_over_1b", "down_5pct_day", "down_20pct_month"}
 
+# 5-character US symbols ending in W/U/R are warrants, units and rights.
+# NOTE: "L" is deliberately NOT here — GOOGL is Alphabet, not a derivative —
+# and a plain "-" is a class share (BRK-B), so neither is excluded. The price
+# and liquidity floors below are the real defense; this is just belt-and-braces.
+_DERIVATIVE_SUFFIXES = ("W", "U", "R")
+_DERIVATIVE_DOT_SUFFIXES = (".WS", ".W", ".U", ".R", ".RT", ".UN")
+
+
+def is_derivative_ticker(ticker: str) -> bool:
+    """True for warrants / units / rights (e.g. OPENW, PGYWW, ABC.WS)."""
+    t = (ticker or "").upper()
+    if t.endswith(_DERIVATIVE_DOT_SUFFIXES):
+        return True
+    return len(t) == 5 and t.endswith(_DERIVATIVE_SUFFIXES)
+
+
+def tradability_reason(snap: StockSnapshot, ind: dict) -> str | None:
+    """Why this name is untradeable for our purposes, or None if it's fine.
+
+    Penny stocks and thin names dominate percentage screens but can't be
+    entered or exited at the quoted price, so they are excluded outright
+    rather than merely scored down.
+    """
+    if settings.exclude_derivative_tickers and is_derivative_ticker(snap.ticker):
+        return "derivative ticker (warrant/unit/right)"
+    last = snap.last_close
+    if last is None or last < settings.min_price:
+        return f"price ${last:.2f} below ${settings.min_price:.0f} floor" if last else "no price"
+    avg_vol = ind.get("avg_volume_20")
+    if avg_vol is not None:
+        dollar_vol = avg_vol * last
+        if dollar_vol < settings.min_dollar_volume:
+            return (f"thin liquidity (${dollar_vol/1e6:.1f}M/day < "
+                    f"${settings.min_dollar_volume/1e6:.0f}M)")
+    return None
+
+
 
 class AlphaHunterScanner:
     name = "alphahunter"
@@ -35,6 +72,8 @@ class AlphaHunterScanner:
         ind = ta.indicator_bundle(snap.history)
         last = snap.last_close
         if last is None:
+            return None
+        if tradability_reason(snap, ind):
             return None
 
         day_change = ind["ret_1d"]
@@ -167,6 +206,9 @@ class OpportunityScanner:
         ind = ta.indicator_bundle(snap.history)
         last = snap.last_close
         if last is None:
+            return None
+
+        if tradability_reason(snap, ind):
             return None
 
         revenue = snap.revenue

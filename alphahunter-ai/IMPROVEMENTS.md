@@ -9,6 +9,13 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Tradability floors (found via the track record).** The new track record
+  exposed a real defect: a $0.05 warrant (PGYWW) scored 61 and lost 43%, and
+  16 of 40 board names were under $5 (incl. $0.12/$0.19 warrants). Both
+  scanners now hard-exclude, before scoring, any name under `MIN_PRICE` ($5),
+  under `MIN_DOLLAR_VOLUME` ($5M/day avg), or with a warrant/unit/right
+  ticker — `GOOGL` and `BRK-B` are explicitly protected from the symbol
+  heuristic. Explainable via `tradability_reason()`; +2 tests.
 - [x] **Click a ticker → its Analysis chart.** Tickers are now deep links
   (`/analysis?ticker=X`) from the Dashboard cards (plus a "📈 chart" affordance,
   with the rest of the card still tapping to the inline live thesis), the

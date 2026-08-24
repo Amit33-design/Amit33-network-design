@@ -213,6 +213,7 @@ bb_upper/mid/lower, rsi, macd/macd_signal/macd_hist } }`.
 
 | Signal | Where | Meaning |
 |---|---|---|
+| **Tradability floors** | both scanners | Hard exclusion before scoring: price < `MIN_PRICE`, avg daily $ volume < `MIN_DOLLAR_VOLUME`, or a warrant/unit/right ticker. Keeps penny names off the board. |
 | **Composite score / action** | scan + dashboard | Weighted 5-engine 0-100 → Buy/Accumulate/Hold/Reduce/Sell. |
 | **quality_grade** | scan + dashboard | A–F from the fundamental sub-score. |
 | **expected_gain_%** | scan, Top Gainers | Realistic upside = analyst upside × confidence × quality. |

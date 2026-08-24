@@ -209,3 +209,49 @@ def test_opportunity_scanner_skips_calm_large_cap():
     snap = StockSnapshot(ticker="CALM", history=hist,
                          info={"totalRevenue": 5e9, "financialCurrency": "USD"})
     assert OpportunityScanner().evaluate(snap) is None
+
+
+def _snap(ticker, price, volume=2_000_000):
+    """Build a >$1B pullback-shaped snapshot at a given price/volume."""
+    import numpy as np, pandas as pd
+    from backend.utils.market_data import StockSnapshot
+    idx = pd.date_range("2024-01-01", periods=260, freq="D")
+    # Downtrend into a pullback so the opportunity screen would otherwise fire.
+    close = np.linspace(price * 1.4, price, 260)
+    hist = pd.DataFrame({"Open": close, "High": close * 1.01, "Low": close * 0.99,
+                         "Close": close, "Volume": [volume] * 260}, index=idx)
+    return StockSnapshot(ticker=ticker, history=hist,
+                         info={"totalRevenue": 5e9, "financialCurrency": "USD"})
+
+
+def test_tradability_excludes_penny_warrants_and_thin_names():
+    from backend.scanners.alphahunter import OpportunityScanner, tradability_reason
+    from backend.indicators import technical as ta
+    sc = OpportunityScanner()
+
+    # Penny stock -> excluded on price.
+    penny = _snap("LESL", 0.57)
+    assert "below" in tradability_reason(penny, ta.indicator_bundle(penny.history))
+    assert sc.evaluate(penny) is None
+
+    # Warrant ticker -> excluded on symbol shape even at a normal price.
+    warrant = _snap("PGYWW", 40.0)
+    assert "derivative" in tradability_reason(warrant, ta.indicator_bundle(warrant.history))
+    assert sc.evaluate(warrant) is None
+
+    # Priced fine but barely trades ($40 x 1k shares = $40k/day) -> excluded.
+    thin = _snap("THIN", 40.0, volume=1_000)
+    assert "thin liquidity" in tradability_reason(thin, ta.indicator_bundle(thin.history))
+    assert sc.evaluate(thin) is None
+
+
+def test_tradability_allows_normal_liquid_names():
+    from backend.scanners.alphahunter import OpportunityScanner, tradability_reason
+    from backend.indicators import technical as ta
+    ok = _snap("MU", 120.0, volume=5_000_000)
+    assert tradability_reason(ok, ta.indicator_bundle(ok.history)) is None
+    assert OpportunityScanner().evaluate(ok) is not None
+    # Class shares and 5-letter names must not be mistaken for derivatives.
+    for sym in ("GOOGL", "BRK-B"):
+        s = _snap(sym, 200.0, volume=3_000_000)
+        assert tradability_reason(s, ta.indicator_bundle(s.history)) is None

@@ -44,6 +44,12 @@ class Settings(BaseSettings):
     max_risk_pct: float = 1.0              # risk per trade, % of account
     min_risk_reward: float = 1.5           # R:R floor; below it gets flagged
 
+    # Tradability floors — keep penny stocks, warrants/units and illiquid
+    # names out of every screen (a $0.05 warrant once scored 61 and lost 43%).
+    min_price: float = 5.0                 # minimum share price
+    min_dollar_volume: float = 5_000_000   # minimum avg daily $ volume (20d)
+    exclude_derivative_tickers: bool = True  # warrants / units / rights
+
     # Opportunity scan — a broader "best pullback/dip" screen so the
     # Opportunities board is populated even in calm markets (the strict crash
     # screen finds nothing when nothing is down 5% day + 20% month).
