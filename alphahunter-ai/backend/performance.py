@@ -190,6 +190,11 @@ def build_performance(results_dir: str, today: str) -> dict:
     # against what simply holding the market would have returned since.
     bench_return = None
     bench_hist = md.history(BENCHMARK, period="1y")
+    if bench_hist is None or getattr(bench_hist, "empty", True):
+        # A single rate-limited fetch shouldn't silently drop alpha for the
+        # whole report, so fall back to the (separately cached) snapshot.
+        snap = md.snapshot(BENCHMARK)
+        bench_hist = snap.history if snap is not None else None
     if bench_hist is not None and not bench_hist.empty:
         closes = bench_hist["Close"].dropna()
         by_date = {str(idx.date()): float(v) for idx, v in closes.items()}
@@ -206,6 +211,10 @@ def build_performance(results_dir: str, today: str) -> dict:
                     return None
                 base = by_date[nxt[0]]
             return (latest - base) / base * 100 if base else None
+
+    if bench_return is None:
+        print(f"Track record: {BENCHMARK} benchmark unavailable — "
+              f"reporting raw returns without alpha.")
 
     out = summarize_picks(history, price_of, today, bench_return=bench_return)
     out["generated"] = today

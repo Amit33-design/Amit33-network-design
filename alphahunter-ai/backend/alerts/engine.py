@@ -53,30 +53,42 @@ def send_alert(alert_type: str, title: str, message: str,
 
 
 def select_alert_worthy(recs: list[dict], limit: int = 5) -> list[dict]:
-    """The subset of a scan worth pushing: high-quality, high-conviction setups.
+    """The subset of a scan worth pushing, chosen from realized results.
 
-    Keeps only A/B quality with High/Medium confidence and a passing risk/reward
-    (no R:R-below-floor flag), ranked by expected gain then score. Pure and
-    offline so it's unit-testable.
+    Calibrated against the track record (405 aged picks, 2026-08-24), which
+    showed the previous A/B + High/Medium-confidence filter was selecting on
+    attributes that do not predict returns:
+
+        score band   80+: 100% win, +19.9%   |  70+: 42%, -1.4%
+                     60+:  30% win,  -3.5%
+        grade          A: +0.5%  B: -7.1%  C: -3.8%  D: -3.0%
+        confidence  High: -1.1%  Medium: -3.6%  Low: +0.7%
+
+    So: score is strongly predictive, grade A is the only non-negative grade,
+    B was the WORST cohort, and confidence is inverted/noise. We now gate on
+    score >= ALERT_MIN_SCORE and grade A, drop the confidence gate entirely,
+    keep the risk/reward gate, and rank by score rather than expected gain.
+    Pure and offline so it stays unit-testable.
     """
     def ok(r: dict) -> bool:
-        if r.get("quality_grade") not in ("A", "B"):
+        if (r.get("score") or 0) < settings.alert_min_score:
             return False
-        if r.get("confidence") not in ("High", "Medium"):
+        if r.get("quality_grade") != "A":
             return False
         if r.get("rr_pass") is False:
             return False
         return True
 
     worthy = [r for r in recs if ok(r)]
-    worthy.sort(key=lambda r: (r.get("expected_gain_%") or 0, r.get("score") or 0), reverse=True)
+    worthy.sort(key=lambda r: (r.get("score") or 0, r.get("expected_gain_%") or 0),
+                reverse=True)
     return worthy[:limit]
 
 
 def format_digest(date: str, picks: list[dict]) -> str:
     """Human-readable morning digest of the top setups (plain text / Slack md)."""
     if not picks:
-        return f"AlphaHunter {date}: no high-conviction A/B setups today."
+        return f"AlphaHunter {date}: no A-grade setups above the score gate today."
     lines = [f"*AlphaHunter — top {len(picks)} setups for {date}*"]
     for i, r in enumerate(picks, 1):
         gain = r.get("expected_gain_%")

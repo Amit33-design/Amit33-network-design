@@ -50,6 +50,10 @@ class Settings(BaseSettings):
     min_dollar_volume: float = 5_000_000   # minimum avg daily $ volume (20d)
     exclude_derivative_tickers: bool = True  # warrants / units / rights
 
+    # Alert digest — gates calibrated from the realized track record
+    # (score is predictive; confidence was not, grade B underperformed).
+    alert_min_score: float = 70.0
+
     # Opportunity scan — a broader "best pullback/dip" screen so the
     # Opportunities board is populated even in calm markets (the strict crash
     # screen finds nothing when nothing is down 5% day + 20% month).

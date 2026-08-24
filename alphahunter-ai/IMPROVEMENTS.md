@@ -9,6 +9,16 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Recalibrated the alert gates from realized results.** The first
+  segmented track record (405 aged picks) showed the digest was filtering on
+  attributes that don't predict returns: grade **B was the WORST cohort
+  (-7.1%)** yet was allowed, and **confidence was inverted** (Low +0.7% beat
+  High -1.1% and Medium -3.6%) yet gated. Meanwhile **score was strongly
+  predictive** (80+: 100% win / +19.9%; 60+: 30% / -3.5%). `select_alert_worthy`
+  now gates on **score ≥ ALERT_MIN_SCORE (70) AND grade A**, drops the
+  confidence gate, keeps the R:R gate, and ranks by score. Also hardened the
+  SPY benchmark (snapshot fallback + explicit log) after it silently failed to
+  load, leaving alpha empty on the first segmented report.
 - [x] **Benchmark-relative track record (alpha vs SPY).** Raw returns were
   misleading — the blended win rate fell to 38% / -1.6% as history aged, but
   that number is meaningless without knowing what the market did. Every pick is
