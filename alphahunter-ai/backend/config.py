@@ -50,9 +50,16 @@ class Settings(BaseSettings):
     min_dollar_volume: float = 5_000_000   # minimum avg daily $ volume (20d)
     exclude_derivative_tickers: bool = True  # warrants / units / rights
 
-    # Alert digest — gates calibrated from the realized track record
-    # (score is predictive; confidence was not, grade B underperformed).
-    alert_min_score: float = 70.0
+    # Alert digest — gates calibrated from realized ALPHA vs SPY, not raw
+    # return. Measured 2026-08-25 over 414 aged picks:
+    #   score 60+: alpha -2.8%   70+: alpha -1.7%   80+: alpha +19.0%
+    #   grade A: +0.5%   B: -6.9%   C: -2.4%   D: -3.6%
+    # Alpha rises monotonically with the score band and ONLY the 80+ cohort
+    # actually beats the market, so a 70 gate was still pushing names that
+    # lag SPY. Raised to 80: far fewer alerts, but only for the one cohort
+    # with demonstrated edge. (Caveat: 80+ is 12 picks — thin. Revisit as the
+    # sample grows; `grade_x_score` in performance.json tracks this cohort.)
+    alert_min_score: float = 80.0
 
     # Opportunity scan — a broader "best pullback/dip" screen so the
     # Opportunities board is populated even in calm markets (the strict crash

@@ -9,6 +9,16 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Alpha landed — and it says only the top cohort beats the market.**
+  With the benchmark fix live, 414 aged picks measure **-1.6% average alpha vs
+  SPY, with only 39% beating the index**: the board as a whole does NOT
+  outperform simply holding the market. Alpha rises monotonically with the
+  score band — **60+: -2.8%, 70+: -1.7%, 80+: +19.0%** — and grade A (+0.5%) is
+  the only non-negative grade (B: -6.9%). Acted on it: the alert gate moved
+  **70 → 80** so alerts fire only for the one cohort with demonstrated edge,
+  added a `grade_x_score` cohort so the gate can be tuned against the exact
+  intersection it selects, and the Dashboard now shows an explicit warning
+  that the board has not beaten the index. Caveat recorded: 80+ is 12 picks.
 - [x] **Retuned the score weights from realized returns (+28% predictive lift).**
   New `backend/analyze_signals.py` reconstructs forward returns offline from the
   committed scan history (1,489 samples) and correlates every signal against

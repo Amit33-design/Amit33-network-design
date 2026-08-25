@@ -109,6 +109,9 @@ def summarize_picks(
         "setup": _segment(picks, lambda p: p.get("setup")),
         "confidence": _segment(picks, lambda p: p.get("confidence")),
         "score_band": _segment(picks, _score_band),
+        # The intersection the alert gate actually selects, so the gate can be
+        # tuned against the cohort it really produces rather than two marginals.
+        "grade_x_score": _segment(picks, _grade_and_band),
     }
     picks.sort(key=lambda p: (p["date"], -(p["score"] or 0)), reverse=True)
     return {"picks": picks[:60], "summary": summary, "segments": segments}
@@ -132,6 +135,11 @@ def _score_band(pick: dict) -> str | None:
         if s >= lo:
             return f"{lo}+"
     return "<50"
+
+
+def _grade_and_band(pick: dict) -> str | None:
+    g, b = pick.get("quality_grade"), _score_band(pick)
+    return f"{g} · {b}" if g and b else None
 
 
 def _segment(picks: list[dict], key: Callable[[dict], str | None],

@@ -138,6 +138,7 @@ interface Perf {
 
 const SEGMENT_LABELS: Record<string, string> = {
   quality_grade: "By quality grade",
+  grade_x_score: "By grade × score band",
   setup: "By setup type",
   confidence: "By confidence",
   score_band: "By score band",
@@ -277,6 +278,15 @@ export default function Dashboard() {
               <Tile label="Best pick" value={`${perf.summary.best?.ticker} +${perf.summary.best?.["return_%"]}%`} accent="text-alpha" />
             )}
           </div>
+          {perf.summary["avg_alpha_%"] != null && perf.summary["avg_alpha_%"] < 0 && (
+            <div className="mb-4 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm text-amber-900">
+              <b>Read this before acting.</b> Across all {perf.summary.picks} judged picks the
+              average result is <b>{perf.summary["avg_alpha_%"]}% vs {perf.summary.benchmark ?? "SPY"}</b>,
+              and only {((perf.summary.beat_benchmark_rate ?? 0) * 100).toFixed(0)}% beat the index —
+              so the board as a whole has <b>not</b> outperformed simply holding the market.
+              The cohort table below shows where the edge actually is (the highest score band).
+            </div>
+          )}
           {perf.segments && Object.values(perf.segments).some((r) => r?.length) && (
             <div className="mb-4">
               <div className="text-sm font-semibold text-ink mb-2">

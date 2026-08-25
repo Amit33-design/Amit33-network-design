@@ -23,7 +23,7 @@ def test_portfolio_position_dataclass():
 
 
 def test_alert_selection_uses_score_and_grade_a():
-    """Gates calibrated from realized results: score >= 70 AND grade A.
+    """Gates calibrated from realized ALPHA: score >= 80 AND grade A.
 
     The old filter (A/B grade + High/Medium confidence) selected on attributes
     the track record showed were not predictive — grade B was the worst cohort
@@ -33,10 +33,14 @@ def test_alert_selection_uses_score_and_grade_a():
     recs = [
         {"ticker": "AAA", "quality_grade": "A", "confidence": "High",
          "rr_pass": True, "expected_gain_%": 12, "score": 82, "action": "Buy"},
-        # Grade A, score above the gate, but LOW confidence -> still included,
+        # Grade A, above the gate, but LOW confidence -> still included,
         # because confidence proved non-predictive.
         {"ticker": "LOWC", "quality_grade": "A", "confidence": "Low",
-         "rr_pass": True, "expected_gain_%": 30, "score": 75, "action": "Buy"},
+         "rr_pass": True, "expected_gain_%": 30, "score": 85, "action": "Buy"},
+        # Grade A but in the 70s — that band realized NEGATIVE alpha vs SPY,
+        # so it must no longer qualify for an alert.
+        {"ticker": "MID", "quality_grade": "A", "confidence": "High",
+         "rr_pass": True, "expected_gain_%": 45, "score": 75, "action": "Buy"},
         # Grade B was the worst realized cohort -> excluded even at a high score.
         {"ticker": "BBB", "quality_grade": "B", "confidence": "High",
          "rr_pass": True, "expected_gain_%": 40, "score": 88, "action": "Buy"},
@@ -49,12 +53,13 @@ def test_alert_selection_uses_score_and_grade_a():
     ]
     picks = select_alert_worthy(recs, limit=5)
     # Ranked by SCORE (the predictive variable), not expected gain.
-    assert [p["ticker"] for p in picks] == ["AAA", "LOWC"]
+    assert [p["ticker"] for p in picks] == ["LOWC", "AAA"]   # 85 then 82
     digest = format_digest("2026-08-24", picks)
     assert "AAA" in digest and "BBB" not in digest and "LOWS" not in digest
+    assert "MID" not in digest          # 70s band lags the market -> no alert
     out = send_scan_digest("2026-08-24", recs)
     assert out["delivered_to"] == ["log"]
-    assert out["tickers"] == ["AAA", "LOWC"]
+    assert out["tickers"] == ["LOWC", "AAA"]
 
 
 def test_alert_digest_empty():
