@@ -9,6 +9,16 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Retuned the score weights from realized returns (+28% predictive lift).**
+  New `backend/analyze_signals.py` reconstructs forward returns offline from the
+  committed scan history (1,489 samples) and correlates every signal against
+  them. Result: **sentiment was the STRONGEST predictor (r=+0.216) at only 10%
+  weight**, while **options (20% weight) was near-useless (r=+0.057)** and
+  **momentum was NEGATIVE (r=-0.044)**. Weights moved 35/25/20/10/10 →
+  **35 technical / 25 fundamental / 25 sentiment / 10 options / 5 momentum**,
+  lifting composite-vs-forward-return correlation from **+0.101 to +0.130 on a
+  HELD-OUT later half** (not just in-sample). Deliberately moderate — ~2 months
+  in one regime. Re-runnable any time to re-justify the weights.
 - [x] **Fixed the empty alpha: benchmark now reuses the scan's warm cache.**
   Root cause found — `relative_strength` fetches SPY at `period="6mo"` for
   every scored name during the scan, so that TTL key is warm, but

@@ -138,7 +138,7 @@ Confirmation signals (all required when `require_all=True`):
 ### 3.4 The composite AI score
 
 ```
-score = 0.35·technical + 0.25·fundamental + 0.20·options + 0.10·momentum + 0.10·sentiment
+score = 0.35·technical + 0.25·fundamental + 0.25·sentiment + 0.10·options + 0.05·momentum
 ```
 
 Each engine starts at a neutral **50** and adds/subtracts bounded points for

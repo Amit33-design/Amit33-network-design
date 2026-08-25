@@ -63,12 +63,21 @@ class Settings(BaseSettings):
     opp_max_scored: int = 40               # cap fully-scored candidates (cost)
     opp_min_results: int = 15              # run the opp scan if strict yields < this
 
-    # Composite AI score weights (spec: 35/25/20/10/10)
+    # Composite AI score weights. Originally 35/25/20/10/10 by spec; retuned
+    # from realized forward returns (1,489 samples reconstructed from the
+    # committed scan history — see backend/analyze_signals.py):
+    #   sentiment r=+0.216  technical r=+0.103  fundamental r=+0.064
+    #   options   r=+0.057  momentum  r=-0.044
+    # Sentiment was the strongest predictor at only 10% weight, while options
+    # (20%) was near-useless and momentum was slightly NEGATIVE. Reweighting
+    # lifts the composite's correlation with forward return from +0.101 to
+    # +0.130 on a HELD-OUT later half, so it is not purely in-sample fitting.
+    # Deliberately moderate: ~2 months in one market regime is thin evidence.
     weight_technical: float = 0.35
     weight_fundamental: float = 0.25
-    weight_options: float = 0.20
-    weight_momentum: float = 0.10
-    weight_sentiment: float = 0.10
+    weight_options: float = 0.10
+    weight_momentum: float = 0.05
+    weight_sentiment: float = 0.25
 
     # Data / caching
     cache_ttl_seconds: int = 900

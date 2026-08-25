@@ -85,8 +85,10 @@ down ≥5% day + down ≥20% month, adds RSI<35, volume>150% avg, above EMA200,
 positive FCF, institutional ownership>50%, no-bankruptcy-risk check. Every
 criterion records pass/fail + detail (explainable).
 
-**Composite AI score** = 35% technical + 25% fundamental + 20% options +
-10% momentum + 10% sentiment → 0-100. Weights in `.env`/`config.py`, must sum
+**Composite AI score** = 35% technical + 25% fundamental + 25% sentiment +
+10% options + 5% momentum → 0-100. (Retuned from realized forward returns —
+see `backend/analyze_signals.py`; sentiment was the strongest predictor while
+options/momentum were near-zero/negative.) Weights in `.env`/`config.py`, must sum
 to 1.0 (enforced by a test).
 
 **Module map** — see `alphahunter-ai/docs/ARCHITECTURE.md`. Quick version:
