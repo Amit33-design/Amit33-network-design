@@ -188,29 +188,43 @@ def build_performance(results_dir: str, today: str) -> dict:
 
     # Benchmark: SPY closes indexed by date, so each pick can be measured
     # against what simply holding the market would have returned since.
-    bench_return = None
-    bench_hist = md.history(BENCHMARK, period="1y")
+    #
+    # Order matters. relative_strength already fetches SPY at period="6mo"
+    # for every scored name during the scan, so that key is warm in the TTL
+    # cache and costs nothing. Asking for "1y" was a DIFFERENT cache key,
+    # forcing a fresh fetch at the end of a run that had already made
+    # hundreds of requests — exactly when Yahoo rate-limits — and alpha came
+    # back silently empty. Try the warm key first.
+    bench_hist = None
+    for period in ("6mo", "1y"):
+        bench_hist = md.history(BENCHMARK, period=period)
+        if bench_hist is not None and not getattr(bench_hist, "empty", True):
+            break
     if bench_hist is None or getattr(bench_hist, "empty", True):
-        # A single rate-limited fetch shouldn't silently drop alpha for the
-        # whole report, so fall back to the (separately cached) snapshot.
-        snap = md.snapshot(BENCHMARK)
-        bench_hist = snap.history if snap is not None else None
-    if bench_hist is not None and not bench_hist.empty:
-        closes = bench_hist["Close"].dropna()
-        by_date = {str(idx.date()): float(v) for idx, v in closes.items()}
-        latest = float(closes.iloc[-1])
-        dates_sorted = sorted(by_date)
+        snap = md.snapshot(BENCHMARK)          # last resort
+        bench_hist = getattr(snap, "history", None) if snap is not None else None
 
-        def bench_return(date_str: str) -> float | None:
-            # Pick dates can be weekends/holidays; use the next session on or
-            # after the pick date so the window matches the pick's holding.
-            base = by_date.get(date_str)
-            if base is None:
-                nxt = [d for d in dates_sorted if d >= date_str]
-                if not nxt:
-                    return None
-                base = by_date[nxt[0]]
-            return (latest - base) / base * 100 if base else None
+    bench_return = None
+    if bench_hist is not None and not getattr(bench_hist, "empty", True):
+        closes = bench_hist["Close"].dropna()
+        try:
+            by_date = {str(idx.date()): float(v) for idx, v in closes.items()}
+        except AttributeError:                 # non-datetime index
+            by_date = {}
+        if by_date:
+            latest = float(closes.iloc[-1])
+            dates_sorted = sorted(by_date)
+
+            def bench_return(date_str: str) -> float | None:
+                # Pick dates can be weekends/holidays; use the next session on
+                # or after the pick date so the window matches the holding.
+                base = by_date.get(date_str)
+                if base is None:
+                    nxt = [d for d in dates_sorted if d >= date_str]
+                    if not nxt:
+                        return None
+                    base = by_date[nxt[0]]
+                return (latest - base) / base * 100 if base else None
 
     if bench_return is None:
         print(f"Track record: {BENCHMARK} benchmark unavailable — "

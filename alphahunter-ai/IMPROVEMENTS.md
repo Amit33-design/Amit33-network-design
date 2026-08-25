@@ -9,6 +9,15 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Fixed the empty alpha: benchmark now reuses the scan's warm cache.**
+  Root cause found — `relative_strength` fetches SPY at `period="6mo"` for
+  every scored name during the scan, so that TTL key is warm, but
+  `build_performance` asked for `"1y"`: a *different* cache key, forcing a
+  fresh fetch at the end of a run that had already made hundreds of requests,
+  exactly when Yahoo rate-limits. Alpha silently came back empty. It now tries
+  the warm `"6mo"` key first, then `"1y"`, then a snapshot fallback, and is
+  hardened against a non-datetime index. Locked in by a regression test that
+  asserts `"6mo"` is requested first and no `"1y"` fetch follows.
 - [x] **Recalibrated the alert gates from realized results.** The first
   segmented track record (405 aged picks) showed the digest was filtering on
   attributes that don't predict returns: grade **B was the WORST cohort

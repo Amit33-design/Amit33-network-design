@@ -157,3 +157,49 @@ def test_performance_without_benchmark_omits_alpha():
     out = summarize_picks(history, lambda t: 110.0, today="2026-07-20")
     assert "alpha_%" not in out["picks"][0]
     assert "avg_alpha_%" not in out["summary"]
+
+
+def test_build_performance_prefers_warm_6mo_benchmark(tmp_path, monkeypatch):
+    """The SPY fetch must reuse the cache key the scan already warmed.
+
+    Regression guard: asking for period="1y" was a different TTL-cache key
+    than relative_strength's "6mo", so it triggered a fresh fetch at the end
+    of a long run and got rate-limited — alpha came back silently empty.
+    """
+    import json as _json
+    import pandas as pd
+    import backend.utils.market_data as md_mod
+    from backend.performance import build_performance
+
+    results = tmp_path / "results"
+    results.mkdir()
+    (results / "alphahunter_2026-07-01.json").write_text(_json.dumps({
+        "date": "2026-07-01",
+        "results": [{"ticker": "AAA", "entry": 100.0, "score": 75,
+                     "quality_grade": "A", "action": "Buy"}],
+    }))
+
+    idx = pd.date_range("2026-06-25", periods=40, freq="D")
+    spy = pd.DataFrame({"Close": [100.0 + i for i in range(40)]}, index=idx)
+    asked: list[str] = []
+
+    class FakeMD:
+        def history(self, ticker, period="3y"):
+            asked.append(period)
+            return spy if period == "6mo" else None   # only "6mo" is warm
+        def snapshot(self, ticker):
+            class S:  # priced well above entry
+                last_close = 130.0
+            return S()
+
+    monkeypatch.setattr(md_mod, "MarketData", FakeMD)
+    out = build_performance(str(results), "2026-07-20")
+
+    assert asked[0] == "6mo"          # warm key tried FIRST
+    assert "1y" not in asked          # and it succeeded, so no extra fetch
+    s = out["summary"]
+    assert s["benchmark"] == "SPY"
+    assert s["avg_alpha_%"] is not None
+    # AAA returned +30%; SPY rose from 106 (2026-07-01) to 139 (~+31%),
+    # so this "winner" actually trailed the market — exactly what alpha is for.
+    assert s["avg_alpha_%"] < 0
