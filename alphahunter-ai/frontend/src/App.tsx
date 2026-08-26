@@ -1,5 +1,6 @@
 import { NavLink, Navigate, Route, Routes } from "react-router-dom";
 import RunScanButton from "./components/RunScanButton";
+import TickerSearch from "./components/TickerSearch";
 import Dashboard from "./pages/Dashboard";
 import Opportunities from "./pages/Opportunities";
 import Analysis from "./pages/Analysis";
@@ -24,7 +25,8 @@ export default function App() {
           </div>
           {/* Run Scan is kept next to the logo so it's always visible/tappable
               on mobile, even when the nav wraps or scrolls. */}
-          <div className="ml-auto order-2 md:order-3">
+          <div className="ml-auto order-2 md:order-3 flex items-center gap-2">
+            <TickerSearch />
             <RunScanButton />
           </div>
           <nav className="order-3 md:order-2 w-full md:w-auto flex gap-1 overflow-x-auto no-scrollbar">

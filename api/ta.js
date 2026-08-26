@@ -303,7 +303,56 @@ function weeklyTrend(c) {
   return { trend, weekly_return_pct: wret };
 }
 
-function analyze(dates, o, h, l, c, v) {
+
+// Trade plan — the actionable half of an analysis: where to get in, where the
+// idea is wrong, where to take profit, and how big to size it. ATR-based so
+// the stop adapts to each stock's own volatility, then widened to sit just
+// under real support when support is close (a stop inside the noise band gets
+// taken out by normal wiggle). Only offered when the long-term trend is not
+// against you — a plan for a downtrend name would be false precision.
+function tradePlan(last, a, sr, ltDir, recommendation, accountSize, riskPct) {
+  if (!a || !last) return null;
+  if (ltDir === "down") {
+    return { actionable: false,
+             note: "No long plan: the long-term trend is down. Wait for the weekly trend and the 200-day to turn up." };
+  }
+  let stop = last - 1.5 * a;
+  const support = (sr.support || []).find((x) => x < last);
+  // If support sits just below the ATR stop, tuck the stop under it instead.
+  if (support != null && support < last && support > stop - a) {
+    stop = Math.min(stop, support - 0.25 * a);
+  }
+  const risk = last - stop;
+  if (!(risk > 0)) return null;
+  const target1 = last + 2 * risk;                       // 2R
+  const resistance = (sr.resistance || []).find((x) => x > last);
+  const target2 = resistance != null && resistance > target1
+    ? resistance : last + 3 * risk;                      // 3R or the next wall
+  const rr = (target1 - last) / risk;
+
+  const budget = (accountSize || 25000) * ((riskPct || 1) / 100);
+  const shares = Math.floor(budget / risk);
+  const r2 = (x) => Math.round(x * 100) / 100;
+  return {
+    actionable: true,
+    entry: r2(last),
+    stop: r2(stop),
+    target1: r2(target1),
+    target2: r2(target2),
+    risk_per_share: r2(risk),
+    risk_reward: Math.round(rr * 100) / 100,
+    stop_pct: Math.round((risk / last) * 1000) / 10,
+    shares,
+    position_value: r2(shares * last),
+    risk_amount: r2(shares * risk),
+    basis: `${riskPct || 1}% of $${(accountSize || 25000).toLocaleString()} risked at $${r2(risk)}/share`,
+    note: recommendation === "Buy" || recommendation === "Accumulate"
+      ? "Trend supports a long; size so the stop costs no more than your risk budget."
+      : "Trend is mixed — treat as a watch-list plan, not a signal to buy today.",
+  };
+}
+
+function analyze(dates, o, h, l, c, v, accountSize, riskPct) {
   const last = c[c.length - 1];
   const e20 = ema(c, 20), e50 = ema(c, 50), e200 = ema(c, 200);
   const rsis = rsiSeries(c);
@@ -406,10 +455,13 @@ function analyze(dates, o, h, l, c, v) {
   const tm = timingFactors.slice(0, 2).map((f) => f.s);
   if (tm.length) verdict_reason += `Timing (secondary): ${tm.join("; ")}.`;
 
+  const plan = tradePlan(last, a, sr, ltDir, recommendation, accountSize, riskPct);
+
   return {
     price: last,
     day_change_pct: dayChange,
     verdict_reason,
+    trade_plan: plan,
     score,
     recommendation,
     trend: { score: lt, direction: ltDir, factors: trendFactors },
@@ -573,7 +625,11 @@ export default async function handler(req, res) {
     });
     if (c.length < 30) return res.status(422).json({ error: "insufficient history" });
 
-    const out = analyze(dates, o, h, l, c, v);
+    // Position sizing inputs are per-user, so they ride on the query string
+    // (the UI persists them locally); sane defaults when absent.
+    const accountSize = Number(req.query?.account) > 0 ? Number(req.query.account) : 25000;
+    const riskPct = Number(req.query?.risk) > 0 ? Number(req.query.risk) : 1;
+    const out = analyze(dates, o, h, l, c, v, accountSize, riskPct);
 
     // Market context for the thesis (best-effort; skipped for SPY itself).
     let spyCloses = null;

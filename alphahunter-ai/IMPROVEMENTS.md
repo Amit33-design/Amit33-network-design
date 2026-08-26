@@ -9,6 +9,15 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Trade plan + global ticker search (pro-app feel).** Analysis now answers
+  "how do I trade this?", not just "is it good?": a **🎯 Trade plan** card with
+  entry, ATR-based stop (widened under nearby support so normal volatility
+  doesn't stop you out), 2R target 1, resistance-aware target 2, R:R, and
+  **position size from YOUR account and risk %** (persisted locally, editable
+  inline, recomputed live). It deliberately refuses to produce a long plan when
+  the long-term trend is down — false precision would be worse than nothing.
+  Plus a **global ticker search in the header**: jump to any symbol's chart
+  from anywhere in the app.
 - [x] **Alpha landed — and it says only the top cohort beats the market.**
   With the benchmark fix live, 414 aged picks measure **-1.6% average alpha vs
   SPY, with only 39% beating the index**: the board as a whole does NOT

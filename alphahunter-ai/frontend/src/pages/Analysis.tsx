@@ -15,6 +15,15 @@ export default function Analysis() {
   const [ticker, setTicker] = useState(linked || "AAPL");
   // 2y default so the chart shows the long-term structure the verdict uses.
   const [range, setRange] = useState("2y");
+  // Position sizing is per-user; persist it so the plan is yours, not a demo.
+  const [account, setAccount] = useState<number>(() => {
+    const v = Number(localStorage.getItem("alphahunter.account"));
+    return v > 0 ? v : 25000;
+  });
+  const [riskPct, setRiskPct] = useState<number>(() => {
+    const v = Number(localStorage.getItem("alphahunter.riskPct"));
+    return v > 0 ? v : 1;
+  });
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -26,7 +35,7 @@ export default function Analysis() {
     // Keep the URL in sync so the view is shareable and the back button works.
     if (symbol && symbol !== linked) setParams({ ticker: symbol }, { replace: true });
     try {
-      setData(await api.technicalAnalysis(symbol, rng));
+      setData(await api.technicalAnalysis(symbol, rng, account, riskPct));
     } catch (e) {
       setError(String(e));
       setData(null);
@@ -167,6 +176,64 @@ export default function Analysis() {
               </div>
             )}
           </div>
+
+          {/* Trade plan — the actionable half: entry, invalidation, targets, size */}
+          {data.trade_plan && (
+            <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-alpha">
+              <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+                <div className="font-semibold text-ink">🎯 Trade plan</div>
+                <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <label className="flex items-center gap-1">
+                    Account $
+                    <input type="number" min={100} step={1000} value={account}
+                           onChange={(e) => {
+                             const v = Number(e.target.value) || 0;
+                             setAccount(v);
+                             localStorage.setItem("alphahunter.account", String(v));
+                           }}
+                           onBlur={() => data && run()}
+                           className="border rounded px-2 py-1 w-24" />
+                  </label>
+                  <label className="flex items-center gap-1">
+                    Risk %
+                    <input type="number" min={0.1} max={10} step={0.1} value={riskPct}
+                           onChange={(e) => {
+                             const v = Number(e.target.value) || 0;
+                             setRiskPct(v);
+                             localStorage.setItem("alphahunter.riskPct", String(v));
+                           }}
+                           onBlur={() => data && run()}
+                           className="border rounded px-2 py-1 w-16" />
+                  </label>
+                </div>
+              </div>
+
+              {data.trade_plan.actionable ? (
+                <>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-sm">
+                    <PlanCell label="Entry" value={`$${data.trade_plan.entry}`} />
+                    <PlanCell label="Stop" value={`$${data.trade_plan.stop}`} sub={`-${data.trade_plan.stop_pct}%`} tone="red" />
+                    <PlanCell label="Target 1" value={`$${data.trade_plan.target1}`} sub="2R" tone="green" />
+                    <PlanCell label="Target 2" value={`$${data.trade_plan.target2}`} tone="green" />
+                    <PlanCell label="R:R" value={`${data.trade_plan.risk_reward}:1`}
+                              tone={data.trade_plan.risk_reward >= 2 ? "green" : "amber"} />
+                    <PlanCell label="Size" value={`${data.trade_plan.shares} sh`}
+                              sub={`$${Math.round(data.trade_plan.position_value).toLocaleString()}`} />
+                  </div>
+                  <div className="mt-2 text-xs text-slate-500">
+                    Risking <b>${Math.round(data.trade_plan.risk_amount).toLocaleString()}</b> ({data.trade_plan.basis}).
+                    {" "}{data.trade_plan.note}
+                  </div>
+                </>
+              ) : (
+                <div className="text-sm text-slate-600">{data.trade_plan.note}</div>
+              )}
+              <div className="mt-2 text-xs text-slate-400">
+                Stop is 1.5×ATR below entry, widened under nearby support so normal volatility
+                doesn't take you out. Not financial advice.
+              </div>
+            </div>
+          )}
 
           {/* Thesis: the story behind the move */}
           {data.thesis && (
@@ -532,5 +599,18 @@ function Row({ k, v }: { k: string; v: any }) {
     </>
   );
 }
+function PlanCell({ label, value, sub, tone }:
+  { label: string; value: string; sub?: string; tone?: "red" | "green" | "amber" }) {
+  const color = tone === "red" ? "text-red-600" : tone === "green" ? "text-alpha"
+    : tone === "amber" ? "text-amber-600" : "text-ink";
+  return (
+    <div>
+      <div className="text-[10px] uppercase tracking-wide text-slate-400">{label}</div>
+      <div className={`font-bold ${color}`}>{value}</div>
+      {sub && <div className="text-[10px] text-slate-400">{sub}</div>}
+    </div>
+  );
+}
+
 const fmt = (x: any) => (x == null ? "—" : `$${Number(x).toFixed(2)}`);
 const pct = (x: any) => (x == null ? "—" : `${x >= 0 ? "+" : ""}${Number(x).toFixed(1)}%`);

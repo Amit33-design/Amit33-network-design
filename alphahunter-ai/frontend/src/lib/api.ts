@@ -182,8 +182,12 @@ export const api = {
   csp: (limit = 25) =>
     scanWithFallback(`/options/csp?limit=${limit}`, (r) => !!r.cash_secured_put),
   // Real-time deep technical analysis for a single ticker (Analysis tab).
-  technicalAnalysis: (ticker: string, range = "1y") =>
-    get<any>(`/api/ta?ticker=${encodeURIComponent(ticker)}&range=${range}`, true),
+  technicalAnalysis: (ticker: string, range = "1y", account?: number, risk?: number) =>
+    get<any>(
+      `/api/ta?ticker=${encodeURIComponent(ticker)}&range=${range}` +
+        (account ? `&account=${account}` : "") + (risk ? `&risk=${risk}` : ""),
+      true
+    ),
   morning: () => get<any>(`/report/morning`),
   backtest: (ticker: string, hold = 10) =>
     get<any>(`/backtest/${encodeURIComponent(ticker)}?hold_days=${hold}`),
