@@ -9,6 +9,16 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Corrected the alert gate using the intersection data (80 → 70).** The
+  `grade_x_score` cohort exposed a reasoning error in the previous cycle: the
+  gate was raised to 80 because the *marginal* 70+ band showed -1.7% alpha —
+  but that marginal mixes grades, and the gate also requires grade A. The real
+  cohort is **A · 70+ : +0.5% alpha over 149 picks** (positive, robust n), while
+  **B · 70+ (-6.9%)** and **C · 70+ (-7.4%)** were what dragged the marginal
+  down. Gate restored to 70; **A · 80+ (+18.2%, 12 picks)** is now a
+  ⭐ HIGH CONVICTION *label* rather than a gate, since 12 picks is too thin to
+  gate on. Lesson recorded in code: tune a gate against the cohort it actually
+  selects, never a marginal that conflates the other gates.
 - [x] **Trade plan + global ticker search (pro-app feel).** Analysis now answers
   "how do I trade this?", not just "is it good?": a **🎯 Trade plan** card with
   entry, ATR-based stop (widened under nearby support so normal volatility

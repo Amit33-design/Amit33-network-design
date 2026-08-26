@@ -50,16 +50,28 @@ class Settings(BaseSettings):
     min_dollar_volume: float = 5_000_000   # minimum avg daily $ volume (20d)
     exclude_derivative_tickers: bool = True  # warrants / units / rights
 
-    # Alert digest — gates calibrated from realized ALPHA vs SPY, not raw
-    # return. Measured 2026-08-25 over 414 aged picks:
-    #   score 60+: alpha -2.8%   70+: alpha -1.7%   80+: alpha +19.0%
-    #   grade A: +0.5%   B: -6.9%   C: -2.4%   D: -3.6%
-    # Alpha rises monotonically with the score band and ONLY the 80+ cohort
-    # actually beats the market, so a 70 gate was still pushing names that
-    # lag SPY. Raised to 80: far fewer alerts, but only for the one cohort
-    # with demonstrated edge. (Caveat: 80+ is 12 picks — thin. Revisit as the
-    # sample grows; `grade_x_score` in performance.json tracks this cohort.)
-    alert_min_score: float = 80.0
+    # Alert digest gate, calibrated from realized ALPHA vs SPY.
+    #
+    # CORRECTION (2026-08-26): this was briefly raised to 80 on the strength of
+    # the *marginal* score band (70+ overall showed -1.7% alpha). That was a
+    # reasoning error — the marginal mixes grades, and the gate also requires
+    # grade A. The grade x score intersection tells a different story:
+    #
+    #   A · 80+ : 12 picks, 100% win, alpha +18.2%
+    #   A · 70+ : 149 picks, 57% win, alpha  +0.5%   <- positive, and robust n
+    #   A · 60+ : 109 picks, 43% win, alpha  -0.7%
+    #   B · 70+ :  43 picks, 37% win, alpha  -6.9%   <- what dragged 70+ down
+    #   C · 70+ :   6 picks, 50% win, alpha  -7.4%
+    #
+    # With grade A already required, the cohort a 70 gate actually produces is
+    # A · 70+, which is positive over 149 picks — far more evidence than the
+    # 12-pick A · 80+ band. So 70 is restored; picks are still ranked by score,
+    # so any 80+ names lead the digest and are labelled high-conviction.
+    # Lesson recorded: tune a gate against the cohort it really selects, never
+    # against a marginal that conflates the other gates.
+    alert_min_score: float = 70.0
+    # Score at/above which a pick is called out as high conviction in alerts.
+    alert_high_conviction_score: float = 80.0
 
     # Opportunity scan — a broader "best pullback/dip" screen so the
     # Opportunities board is populated even in calm markets (the strict crash

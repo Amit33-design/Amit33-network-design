@@ -23,7 +23,10 @@ def test_portfolio_position_dataclass():
 
 
 def test_alert_selection_uses_score_and_grade_a():
-    """Gates calibrated from realized ALPHA: score >= 80 AND grade A.
+    """Gates calibrated from realized ALPHA: score >= 70 AND grade A.
+
+    The gate is tuned against the cohort it actually selects (A · 70+, which
+    realized +0.5% alpha over 149 picks), not the grade-conflated 70+ marginal.
 
     The old filter (A/B grade + High/Medium confidence) selected on attributes
     the track record showed were not predictive — grade B was the worst cohort
@@ -37,8 +40,7 @@ def test_alert_selection_uses_score_and_grade_a():
         # because confidence proved non-predictive.
         {"ticker": "LOWC", "quality_grade": "A", "confidence": "Low",
          "rr_pass": True, "expected_gain_%": 30, "score": 85, "action": "Buy"},
-        # Grade A but in the 70s — that band realized NEGATIVE alpha vs SPY,
-        # so it must no longer qualify for an alert.
+        # Grade A in the 70s -> qualifies (A · 70+ is the positive-alpha cohort).
         {"ticker": "MID", "quality_grade": "A", "confidence": "High",
          "rr_pass": True, "expected_gain_%": 45, "score": 75, "action": "Buy"},
         # Grade B was the worst realized cohort -> excluded even at a high score.
@@ -46,20 +48,22 @@ def test_alert_selection_uses_score_and_grade_a():
          "rr_pass": True, "expected_gain_%": 40, "score": 88, "action": "Buy"},
         # Grade A but below the score gate -> excluded.
         {"ticker": "LOWS", "quality_grade": "A", "confidence": "High",
-         "rr_pass": True, "expected_gain_%": 50, "score": 64, "action": "Buy"},
+         "rr_pass": True, "expected_gain_%": 50, "score": 64, "action": "Buy"},   # below gate
         # Fails risk/reward -> excluded.
         {"ticker": "RRX", "quality_grade": "A", "confidence": "High",
          "rr_pass": False, "expected_gain_%": 50, "score": 90, "action": "Buy"},
     ]
     picks = select_alert_worthy(recs, limit=5)
     # Ranked by SCORE (the predictive variable), not expected gain.
-    assert [p["ticker"] for p in picks] == ["LOWC", "AAA"]   # 85 then 82
+    assert [p["ticker"] for p in picks] == ["LOWC", "AAA", "MID"]  # 85, 82, 75
     digest = format_digest("2026-08-24", picks)
     assert "AAA" in digest and "BBB" not in digest and "LOWS" not in digest
-    assert "MID" not in digest          # 70s band lags the market -> no alert
+    # 80+ names are flagged as standouts; the 70s name is included but plain.
+    assert "HIGH CONVICTION" in digest
+    assert digest.count("HIGH CONVICTION") == 2      # LOWC (85) and AAA (82)
     out = send_scan_digest("2026-08-24", recs)
     assert out["delivered_to"] == ["log"]
-    assert out["tickers"] == ["LOWC", "AAA"]
+    assert out["tickers"] == ["LOWC", "AAA", "MID"]
 
 
 def test_alert_digest_empty():

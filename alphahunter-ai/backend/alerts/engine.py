@@ -53,21 +53,22 @@ def send_alert(alert_type: str, title: str, message: str,
 
 
 def select_alert_worthy(recs: list[dict], limit: int = 5) -> list[dict]:
-    """The subset of a scan worth pushing, chosen from realized results.
+    """The subset of a scan worth pushing, chosen from realized ALPHA vs SPY.
 
-    Calibrated against the track record (405 aged picks, 2026-08-24), which
-    showed the previous A/B + High/Medium-confidence filter was selecting on
-    attributes that do not predict returns:
+    Two lessons from the track record are baked in here.
 
-        score band   80+: 100% win, +19.9%   |  70+: 42%, -1.4%
-                     60+:  30% win,  -3.5%
-        grade          A: +0.5%  B: -7.1%  C: -3.8%  D: -3.0%
-        confidence  High: -1.1%  Medium: -3.6%  Low: +0.7%
+    1. Gate on what predicts returns. The original A/B-grade +
+       High/Medium-confidence filter selected on attributes that don't:
+       grade B was the worst cohort and confidence was inverted (Low beat
+       High). Score is the predictive variable, so it gates; confidence
+       doesn't gate at all.
 
-    So: score is strongly predictive, grade A is the only non-negative grade,
-    B was the WORST cohort, and confidence is inverted/noise. We now gate on
-    score >= ALERT_MIN_SCORE and grade A, drop the confidence gate entirely,
-    keep the risk/reward gate, and rank by score rather than expected gain.
+    2. Tune the gate against the cohort it ACTUALLY selects. The 70+ score
+       band looks bad on its own (-1.7% alpha) but that marginal mixes
+       grades. Since grade A is also required, the real cohort is A · 70+:
+       +0.5% alpha over 149 picks. A · 80+ is stronger still (+18.2%) but
+       only 12 picks, so it is used as a conviction LABEL rather than a gate.
+
     Pure and offline so it stays unit-testable.
     """
     def ok(r: dict) -> bool:
@@ -94,9 +95,13 @@ def format_digest(date: str, picks: list[dict]) -> str:
         gain = r.get("expected_gain_%")
         gain_s = f"+{gain}% exp" if gain is not None else "—"
         csp = " 💰CSP" if (r.get("csp_signal") or {}).get("active") else ""
+        # Flag the band with far stronger realized alpha so the reader can tell
+        # a standout from a merely-qualifying pick at a glance.
+        tier = ("⭐ HIGH CONVICTION "
+                if (r.get("score") or 0) >= settings.alert_high_conviction_score else "")
         lines.append(
-            f"{i}. {r['ticker']} — score {r.get('score')} · {r.get('quality_grade')} · "
-            f"{r.get('action')} · {gain_s} · {r.get('confidence')} conf{csp}"
+            f"{i}. {tier}{r['ticker']} — score {r.get('score')} · {r.get('quality_grade')} · "
+            f"{r.get('action')} · {gain_s}{csp}"
         )
     return "\n".join(lines)
 
