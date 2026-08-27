@@ -9,6 +9,13 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Personal watchlist (⭐).** Star any ticker from the Analysis page and it
+  appears in a **"⭐ My Watchlist"** section at the top of the Dashboard with
+  live price, day move, score and verdict pulled per-symbol from `/api/thesis`,
+  a link to each chart, and one-click removal. Storage is `localStorage` via a
+  small `lib/watchlist.ts`, with a change event so the star, the table and other
+  tabs stay in sync — entirely client-side, so it works on the static deploy
+  with no backend. Includes an empty state that explains how to add names.
 - [x] **Corrected the alert gate using the intersection data (80 → 70).** The
   `grade_x_score` cohort exposed a reasoning error in the previous cycle: the
   gate was raised to 80 because the *marginal* 70+ band showed -1.7% alpha —

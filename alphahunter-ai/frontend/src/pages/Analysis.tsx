@@ -4,6 +4,7 @@ import Plot from "react-plotly.js";
 import { api } from "../lib/api";
 import { ErrorBox, Loading } from "../components/Loading";
 import ChartExplainer from "../components/ChartExplainer";
+import { isWatched, toggleWatchlist, onWatchlistChange } from "../lib/watchlist";
 
 const RANGES = ["6mo", "1y", "2y", "5y"];
 
@@ -24,6 +25,7 @@ export default function Analysis() {
     const v = Number(localStorage.getItem("alphahunter.riskPct"));
     return v > 0 ? v : 1;
   });
+  const [watched, setWatched] = useState(false);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -52,6 +54,12 @@ export default function Analysis() {
     run(linked, range);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [linked]);
+
+  useEffect(() => {
+    const sync = () => setWatched(data?.ticker ? isWatched(data.ticker) : false);
+    sync();
+    return onWatchlistChange(sync);
+  }, [data?.ticker]);
 
   const ind = data?.indicators;
   const ch = data?.chart;
@@ -131,8 +139,18 @@ export default function Analysis() {
           {/* Verdict header */}
           <div className="bg-white rounded-xl shadow-sm p-4 flex flex-wrap items-center gap-4">
             <div>
-              <div className="text-2xl font-bold text-ink">
-                {data.ticker} <span className="text-base font-normal text-slate-500">{data.name}</span>
+              <div className="text-2xl font-bold text-ink flex items-center gap-2">
+                {data.ticker}
+                <button
+                  onClick={() => setWatched(toggleWatchlist(data.ticker))}
+                  title={watched ? "Remove from watchlist" : "Add to watchlist"}
+                  aria-label={watched ? "Remove from watchlist" : "Add to watchlist"}
+                  className={`text-xl leading-none transition ${
+                    watched ? "text-amber-400" : "text-slate-300 hover:text-amber-400"}`}
+                >
+                  {watched ? "★" : "☆"}
+                </button>
+                <span className="text-base font-normal text-slate-500">{data.name}</span>
               </div>
               <div className="text-lg">
                 ${Number(data.price).toFixed(2)}{" "}

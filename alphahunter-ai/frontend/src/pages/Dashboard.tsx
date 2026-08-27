@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import Plot from "react-plotly.js";
 import { ErrorBox, Loading } from "../components/Loading";
+import { getWatchlist, removeFromWatchlist, onWatchlistChange } from "../lib/watchlist";
 
 interface Stock {
   ticker: string;
@@ -176,6 +177,109 @@ function SegmentTable({ title, rows }: { title: string; rows: any[] }) {
   );
 }
 
+
+interface WatchRow {
+  ticker: string;
+  name?: string;
+  price?: number;
+  day_change_pct?: number;
+  score?: number;
+  verdict?: string;
+  error?: boolean;
+}
+
+// Personal watchlist — starred tickers with live quotes/verdicts pulled from
+// /api/thesis. Entirely client-side so it works on the static deploy.
+function WatchlistSection() {
+  const [tickers, setTickers] = useState<string[]>(getWatchlist);
+  const [rows, setRows] = useState<WatchRow[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => onWatchlistChange(() => setTickers(getWatchlist())), []);
+
+  useEffect(() => {
+    if (!tickers.length) { setRows([]); return; }
+    let cancelled = false;
+    setLoading(true);
+    Promise.all(
+      tickers.map(async (t): Promise<WatchRow> => {
+        try {
+          const r = await fetch(`/api/thesis?ticker=${encodeURIComponent(t)}`);
+          if (!r.ok) throw new Error("no data");
+          const j = await r.json();
+          return { ticker: t, name: j.name, price: j.price,
+                   day_change_pct: j.day_change_pct, score: j.score, verdict: j.verdict };
+        } catch {
+          return { ticker: t, error: true };
+        }
+      })
+    ).then((res) => { if (!cancelled) setRows(res); })
+     .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [tickers.join(",")]);
+
+  const up = rows.filter((r) => (r.day_change_pct ?? 0) > 0).length;
+
+  return (
+    <Section
+      title="⭐ My Watchlist"
+      subtitle={tickers.length ? `${up} of ${rows.length} up today` : ""}
+      badge={tickers.length ? `${tickers.length}` : "empty"}
+      badgeColor="#b7791f"
+      defaultOpen={tickers.length > 0}
+    >
+      {!tickers.length ? (
+        <div className="text-sm text-slate-500">
+          No saved tickers yet. Search any symbol in the header, then tap the
+          <span className="text-amber-400 font-bold"> ☆ </span>
+          next to its name on the Analysis page to track it here.
+        </div>
+      ) : (
+        <>
+          {loading && <div className="text-xs text-slate-400 mb-2">Refreshing live quotes…</div>}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="text-slate-400 text-left">
+                <tr>{["Ticker", "Price", "Today", "Score", "Verdict", ""].map((h) => (
+                  <th key={h} className="px-2 py-1 whitespace-nowrap font-normal">{h}</th>))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.ticker} className="border-t">
+                    <td className="px-2 py-1.5">
+                      <Link to={`/analysis?ticker=${r.ticker}`} className="font-bold text-alpha hover:underline">
+                        {r.ticker}
+                      </Link>
+                      {r.name && <span className="ml-2 text-xs text-slate-400 hidden sm:inline">{r.name}</span>}
+                    </td>
+                    <td className="px-2 py-1.5">{r.price != null ? `$${r.price}` : "—"}</td>
+                    <td className={`px-2 py-1.5 font-semibold ${
+                      (r.day_change_pct ?? 0) >= 0 ? "text-alpha" : "text-red-600"}`}>
+                      {r.day_change_pct != null
+                        ? `${r.day_change_pct >= 0 ? "+" : ""}${r.day_change_pct.toFixed(2)}%` : "—"}
+                    </td>
+                    <td className="px-2 py-1.5 font-semibold"
+                        style={{ color: r.score != null ? scoreColor(r.score) : "#94a3b8" }}>
+                      {r.score ?? "—"}
+                    </td>
+                    <td className="px-2 py-1.5">{r.error ? "no data" : r.verdict ?? "—"}</td>
+                    <td className="px-2 py-1.5 text-right">
+                      <button onClick={() => removeFromWatchlist(r.ticker)}
+                              title={`Remove ${r.ticker}`}
+                              className="text-slate-300 hover:text-red-500">✕</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+    </Section>
+  );
+}
+
 export default function Dashboard() {
   const [dash, setDash] = useState<Dash | null>(null);
   const [perf, setPerf] = useState<Perf | null>(null);
@@ -229,6 +333,8 @@ export default function Dashboard() {
         <Tile label="Market" value={regime}
               accent={regime === "Risk-on" ? "text-alpha" : regime === "Risk-off" ? "text-red-600" : "text-amber-600"} />
       </div>
+
+      <WatchlistSection />
 
       {/* Top Picks — cross-domain highest-conviction names by AI score */}
       <Section
