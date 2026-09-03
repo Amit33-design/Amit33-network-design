@@ -9,6 +9,19 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Validated the last unvalidated signals — and found a real defect.**
+  Extended `analyze_signals.py` to measure every boolean signal (risk flags,
+  CSP, R:R) as forward return WITH vs WITHOUT, over 1,845 samples. Findings:
+  **R:R was mechanically ~1.33 for every pick** (stop 1.5·ATR vs target
+  2.0·ATR ⇒ 2.0/1.5), so 67% scored exactly 1.33, **99.3% failed the 1.5
+  floor**, and the alert gate was discarding nearly everything on an artifact
+  (the 12 that "passed" realized **-12.6% vs -5.5%**). Fixed: R:R is now
+  measured to the **analyst target** so it varies per stock, and it no longer
+  gates alerts. Also: **"trades above analyst target" is the worst cohort
+  (-16.9% vs -5.2%, -11.7pp)** → now excludes a name from alerts;
+  **high beta (-2.3pp)** promoted to a warning; **CSP "strong" (+4.2pp,
+  n=124)** and **near-52w-low (+2.7pp, n=562)** and **earnings-soon (+0.9 to
+  +4.8pp)** were *positive*, so those mislabelled "warnings" are now "info".
 - [x] **Personal watchlist (⭐).** Star any ticker from the Analysis page and it
   appears in a **"⭐ My Watchlist"** section at the top of the Dashboard with
   live price, day move, score and verdict pulled per-symbol from `/api/thesis`,

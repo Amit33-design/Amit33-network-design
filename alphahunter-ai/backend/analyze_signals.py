@@ -54,6 +54,9 @@ def load_samples(results_dir: str = RESULTS_DIR) -> list[dict]:
             "forward_%": (later[last] - entry) / entry * 100,
             "score": r.get("score"), "subscores": r.get("subscores") or {},
             "expected_gain_%": r.get("expected_gain_%"),
+            "risk_flags": r.get("risk_flags") or [],
+            "csp_signal": r.get("csp_signal") or {},
+            "rr_pass": r.get("rr_pass"),
         })
     return samples
 
@@ -71,6 +74,46 @@ def correlation(xs: list[float], ys: list[float]) -> float | None:
 
 def weighted(subscores: dict, weights: dict[str, float]) -> float:
     return sum(subscores.get(k, 50.0) * w for k, w in weights.items())
+
+
+def flag_spreads(samples: list[dict], min_n: int = 10) -> list[dict]:
+    """Mean forward return WITH vs WITHOUT each boolean signal.
+
+    Covers the parts of the payload that aren't numeric sub-scores — risk
+    flags, the CSP signal, the R:R gate — so every claim the product makes can
+    be checked against realized returns rather than assumed.
+    """
+    def prefix(text: str) -> str:
+        return text.split("(")[0].strip()
+
+    names: set[str] = set()
+    for s in samples:
+        for f in s.get("risk_flags") or []:
+            names.add(prefix(f.get("text", "")))
+
+    tests: list[tuple[str, Callable[[dict], bool]]] = [
+        (n, (lambda s, n=n: any(prefix(f.get("text", "")) == n
+                                for f in (s.get("risk_flags") or []))))
+        for n in sorted(names) if n and not n.startswith("R:R")
+    ]
+    tests += [
+        ("csp_signal active", lambda s: (s.get("csp_signal") or {}).get("active") is True),
+        ("csp_signal strong", lambda s: (s.get("csp_signal") or {}).get("strength") == "strong"),
+        ("rr_pass", lambda s: s.get("rr_pass") is True),
+    ]
+
+    rows = []
+    for name, pred in tests:
+        with_ = [s["forward_%"] for s in samples if pred(s)]
+        without = [s["forward_%"] for s in samples if not pred(s)]
+        if len(with_) < min_n or not without:
+            continue
+        mw, mo = sum(with_) / len(with_), sum(without) / len(without)
+        rows.append({"signal": name, "n": len(with_),
+                     "with_%": round(mw, 2), "without_%": round(mo, 2),
+                     "spread_pp": round(mw - mo, 2)})
+    rows.sort(key=lambda r: r["spread_pp"], reverse=True)
+    return rows
 
 
 def main() -> None:
@@ -99,6 +142,13 @@ def main() -> None:
         full = correlation([weighted(s["subscores"], w) for s in samples], fwd)
         out = correlation([weighted(s["subscores"], w) for s in held], fwd_held)
         print(f"  {name:12} r={full:+.4f} | held-out r={out:+.4f}")
+
+    rows = flag_spreads(samples)
+    if rows:
+        print("\n=== boolean signals: forward return WITH vs WITHOUT (n>=10) ===")
+        for r in rows:
+            print(f"  {r['signal']:32} n={r['n']:4}  with={r['with_%']:+6.2f}%  "
+                  f"without={r['without_%']:+6.2f}%  spread={r['spread_pp']:+6.2f}pp")
 
 
 if __name__ == "__main__":

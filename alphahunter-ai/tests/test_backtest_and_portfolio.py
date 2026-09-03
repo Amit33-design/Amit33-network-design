@@ -49,21 +49,30 @@ def test_alert_selection_uses_score_and_grade_a():
         # Grade A but below the score gate -> excluded.
         {"ticker": "LOWS", "quality_grade": "A", "confidence": "High",
          "rr_pass": True, "expected_gain_%": 50, "score": 64, "action": "Buy"},   # below gate
-        # Fails risk/reward -> excluded.
+        # rr_pass False no longer excludes: R:R was mechanically ~1.33 for
+        # every pick, so the floor rejected 99.3% on an artifact.
         {"ticker": "RRX", "quality_grade": "A", "confidence": "High",
          "rr_pass": False, "expected_gain_%": 50, "score": 90, "action": "Buy"},
+        # "trades above analyst target" WAS the worst realized cohort
+        # (-16.9% vs -5.2%), so it is excluded.
+        {"ticker": "OVER", "quality_grade": "A", "confidence": "High",
+         "rr_pass": True, "expected_gain_%": 50, "score": 95, "action": "Buy",
+         "risk_flags": [{"level": "warn",
+                         "text": "trades above analyst target — worst realized cohort"}]},
     ]
     picks = select_alert_worthy(recs, limit=5)
     # Ranked by SCORE (the predictive variable), not expected gain.
-    assert [p["ticker"] for p in picks] == ["LOWC", "AAA", "MID"]  # 85, 82, 75
+    # RRX (90) now qualifies; OVER (95) is excluded by the above-target flag.
+    assert [p["ticker"] for p in picks] == ["RRX", "LOWC", "AAA", "MID"]
     digest = format_digest("2026-08-24", picks)
     assert "AAA" in digest and "BBB" not in digest and "LOWS" not in digest
     # 80+ names are flagged as standouts; the 70s name is included but plain.
     assert "HIGH CONVICTION" in digest
-    assert digest.count("HIGH CONVICTION") == 2      # LOWC (85) and AAA (82)
+    assert "OVER" not in digest
+    assert digest.count("HIGH CONVICTION") == 3      # RRX 90, LOWC 85, AAA 82
     out = send_scan_digest("2026-08-24", recs)
     assert out["delivered_to"] == ["log"]
-    assert out["tickers"] == ["LOWC", "AAA", "MID"]
+    assert out["tickers"] == ["RRX", "LOWC", "AAA", "MID"]
 
 
 def test_alert_digest_empty():

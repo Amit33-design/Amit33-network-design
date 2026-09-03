@@ -76,7 +76,17 @@ def select_alert_worthy(recs: list[dict], limit: int = 5) -> list[dict]:
             return False
         if r.get("quality_grade") != "A":
             return False
-        if r.get("rr_pass") is False:
+        # NOT gated on rr_pass. Risk/reward was mechanically ~1.33 for every
+        # pick (stop 1.5*ATR vs target 2.0*ATR), so the 1.5 floor rejected
+        # 99.3% of candidates on an artifact rather than a property of the
+        # stock; the handful that "passed" realized -12.6% vs -5.5% for the
+        # rest. R:R is now measured to the analyst target so it varies, but it
+        # stays out of the gate until fresh data shows it predicts anything.
+        #
+        # Gated instead on the strongest negative flag found in 1,845 samples:
+        # "trades above analyst target" realized -16.9% vs -5.2% (-11.7pp).
+        if any(f.get("text", "").startswith("trades above analyst target")
+               for f in (r.get("risk_flags") or [])):
             return False
         return True
 

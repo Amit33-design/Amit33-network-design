@@ -116,7 +116,15 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
     target1 = round(last + 2.0 * atr, 2) if (last and atr) else None
     target2 = snap.target_mean_price
     risk = (entry - stop) if (entry and stop) else None
-    reward = (target1 - entry) if (entry and target1) else None
+    # Risk/reward must be measured to a target that VARIES per stock. Measuring
+    # to target1 made it mechanically constant — stop is 1.5*ATR and target1 is
+    # 2.0*ATR, so rr was always 2.0/1.5 = 1.33 regardless of the name. Across
+    # 2,081 historical picks 67% scored exactly 1.33 and 99.3% failed the 1.5
+    # floor, so the metric carried no information and the gate built on it
+    # discarded nearly everything. Prefer the analyst target (real, per-stock
+    # upside); fall back to the ATR target only when no target exists.
+    upside_target = target2 if (target2 and entry and target2 > entry) else target1
+    reward = (upside_target - entry) if (entry and upside_target) else None
     rr = round(reward / risk, 2) if (risk and reward and risk > 0) else None
 
     # Position sizing: risk a fixed % of the account per trade against the
