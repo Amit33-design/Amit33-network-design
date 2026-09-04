@@ -9,6 +9,16 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Dark terminal theme (the visible half of the redesign).** The previous
+  design pass was real but invisible — tokens, numerals and hairlines changed
+  almost nothing on screen. This one is unmistakable: the app is now a **dark
+  trading console by default**, with a ☾/☀ toggle in the header and the choice
+  persisted per device. Themes are CSS variables, so one `data-theme` attribute
+  reskins everything (no duplicated classes). Charts, sparklines, AG Grid
+  (quartz-dark) and every Plotly surface follow the theme. **Dark chart series
+  validated with the palette checker** — the obvious GitHub-style greens/blues
+  FAILED the lightness band and normal-vision floor; the shipped set
+  (#31a05c/#e2574c/#a06ef0/#3a86c8) passes every hard check.
 - [x] **Enterprise design system.** Replaced ad-hoc utility classes with real
   tokens in `tailwind.config.js` (surface/line/ink hierarchies, gain/loss/warn/
   info semantics, elevation, radii, Inter + JetBrains Mono) and a base layer

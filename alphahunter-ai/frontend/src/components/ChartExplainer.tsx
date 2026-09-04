@@ -17,7 +17,7 @@ export default function ChartExplainer({
     <span className="inline-block align-middle">
       <button
         onClick={() => setOpen(!open)}
-        className="ml-2 text-xs px-2 py-0.5 rounded-full border border-slate-300 text-ink-secondary hover:bg-surface-sunken"
+        className="ml-2 text-xs px-2 py-0.5 rounded-full border border-line-strong text-ink-secondary hover:bg-surface-sunken"
         title={`What does the ${title} chart mean?`}
       >
         ℹ️ what is this?

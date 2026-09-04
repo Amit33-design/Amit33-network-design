@@ -1,6 +1,7 @@
 import { NavLink, Navigate, Route, Routes } from "react-router-dom";
 import RunScanButton from "./components/RunScanButton";
 import TickerSearch from "./components/TickerSearch";
+import ThemeToggle from "./components/ThemeToggle";
 import Dashboard from "./pages/Dashboard";
 import Opportunities from "./pages/Opportunities";
 import Analysis from "./pages/Analysis";
@@ -48,6 +49,7 @@ export default function App() {
 
             <div className="ml-auto flex items-center gap-2">
               <TickerSearch />
+              <ThemeToggle />
               <RunScanButton />
             </div>
           </div>

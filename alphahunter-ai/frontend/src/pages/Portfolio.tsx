@@ -72,7 +72,7 @@ export default function Portfolio() {
         {data && (
           <span
             className={`text-xs px-2 py-1 rounded ${
-              live ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
+              live ? "bg-gain-soft text-gain" : "bg-warn-soft text-warn"
             }`}
           >
             {live ? "● Live prices" : "● Snapshot prices"}
@@ -101,7 +101,7 @@ export default function Portfolio() {
             </button>
             <button
               onClick={save}
-              className="border border-slate-300 text-ink px-3 py-2 rounded font-medium hover:bg-surface-sunken"
+              className="border border-line-strong text-ink px-3 py-2 rounded font-medium hover:bg-surface-sunken"
             >
               Save
             </button>

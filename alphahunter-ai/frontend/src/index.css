@@ -2,10 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------------------------------------------------------------------
+   Theme tokens as CSS variables. Dark is the default — a trading console is
+   read for hours in a dim room, and dark is the convention users expect from
+   professional terminals. Light stays available via [data-theme="light"].
+   Values are RGB triples so Tailwind's `/opacity` modifiers keep working.
+   Dark chart series validated with the dataviz palette checker (lightness
+   band, chroma floor, normal-vision ΔE, contrast: all PASS).
+--------------------------------------------------------------------------- */
+:root {
+  --surface-page: 12 17 16;
+  --surface: 21 27 25;
+  --surface-sunken: 16 22 20;
+  --surface-raised: 27 34 31;
+  --surface-inverse: 8 12 11;
+
+  --line: 35 44 41;
+  --line-strong: 47 58 54;
+  --line-inverse: 35 44 41;
+
+  --ink: 230 235 232;
+  --ink-secondary: 154 168 162;
+  --ink-muted: 108 122 116;
+  --ink-inverse: 230 235 232;
+
+  --brand: 49 160 92;
+  --brand-strong: 62 190 110;
+  --brand-soft: 20 46 32;
+
+  --gain: 49 160 92;      --gain-soft: 18 43 30;
+  --loss: 226 87 76;      --loss-soft: 56 24 22;
+  --warn: 217 164 65;     --warn-soft: 54 42 18;
+  --info: 58 134 200;     --info-soft: 16 36 54;
+
+  --series-1: 49 160 92;
+  --series-2: 226 87 76;
+  --series-3: 160 110 240;
+  --series-4: 58 134 200;
+
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --surface-page: 247 247 245;
+  --surface: 255 255 255;
+  --surface-sunken: 242 242 239;
+  --surface-raised: 255 255 255;
+  --surface-inverse: 13 27 22;
+
+  --line: 230 230 225;
+  --line-strong: 211 211 204;
+  --line-inverse: 29 51 41;
+
+  --ink: 20 32 27;
+  --ink-secondary: 91 102 96;
+  --ink-muted: 138 147 141;
+  --ink-inverse: 244 246 245;
+
+  --brand: 27 127 75;
+  --brand-strong: 11 61 46;
+  --brand-soft: 232 243 237;
+
+  --gain: 27 127 75;      --gain-soft: 232 243 237;
+  --loss: 192 57 43;      --loss-soft: 251 236 234;
+  --warn: 183 121 31;     --warn-soft: 253 244 227;
+  --info: 31 95 166;      --info-soft: 233 240 248;
+
+  --series-1: 27 127 75;
+  --series-2: 192 57 43;
+  --series-3: 109 40 217;
+  --series-4: 31 95 166;
+
+  color-scheme: light;
+}
+
 @layer base {
-  html {
-    -webkit-text-size-adjust: 100%;
-  }
+  html { -webkit-text-size-adjust: 100%; }
 
   body {
     @apply bg-surface-page text-ink antialiased;
@@ -13,54 +85,36 @@
   }
 
   /* Financial figures must align down a column: tabular, lining numerals
-     everywhere numbers appear. This one rule is most of what separates a
-     spreadsheet-grade UI from a web page. */
+     wherever numbers appear. */
   table, .num, input[type="number"] {
     font-variant-numeric: tabular-nums lining-nums;
   }
 
-  /* Visible, consistent keyboard focus — required for enterprise a11y review. */
   :focus-visible {
     @apply outline-none ring-2 ring-brand/50 ring-offset-1 ring-offset-surface;
   }
-
-  ::selection {
-    @apply bg-brand/15;
-  }
+  ::selection { @apply bg-brand/25; }
 }
 
 @layer components {
-  /* Panel: the single card primitive. Hairline border + whisper shadow. */
-  .panel {
-    @apply bg-surface border border-line rounded-panel shadow-panel;
-  }
-  /* Small caps label used above every metric and table column. */
+  .panel { @apply bg-surface border border-line rounded-panel shadow-panel; }
   .label-eyebrow {
     @apply text-2xs font-medium uppercase tracking-wider text-ink-muted;
   }
-  /* Dense data table shared by every tabular view. */
-  .table-data {
-    @apply w-full text-sm;
-  }
+  .table-data { @apply w-full text-sm; }
   .table-data thead th {
     @apply label-eyebrow text-left font-medium px-3 py-2 bg-surface-sunken
            border-y border-line whitespace-nowrap;
   }
-  .table-data tbody td {
-    @apply px-3 py-2 border-b border-line/70;
-  }
-  .table-data tbody tr:hover {
-    @apply bg-surface-sunken/60;
-  }
+  .table-data tbody td { @apply px-3 py-2 border-b border-line/70; }
+  .table-data tbody tr:hover { @apply bg-surface-sunken/60; }
 }
 
-/* Horizontally scrollable nav on mobile without a visible scrollbar. */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Slim, unobtrusive scrollbars inside data regions. */
 .thin-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
 .thin-scroll::-webkit-scrollbar-thumb {
-  background: #d3d3cc; border-radius: 4px;
+  background: rgb(var(--line-strong)); border-radius: 4px;
 }
 .thin-scroll::-webkit-scrollbar-track { background: transparent; }

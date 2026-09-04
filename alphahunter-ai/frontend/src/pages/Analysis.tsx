@@ -6,6 +6,7 @@ import { ErrorBox, Loading } from "../components/Loading";
 import ChartExplainer from "../components/ChartExplainer";
 import PeerComparison from "../components/PeerComparison";
 import { isWatched, toggleWatchlist, onWatchlistChange } from "../lib/watchlist";
+import { chartColors, plotTheme, getTheme, onThemeChange } from "../lib/theme";
 
 const RANGES = ["6mo", "1y", "2y", "5y"];
 
@@ -27,6 +28,7 @@ export default function Analysis() {
     return v > 0 ? v : 1;
   });
   const [watched, setWatched] = useState(false);
+  const [theme, setTheme] = useState(getTheme);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -56,6 +58,8 @@ export default function Analysis() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [linked]);
 
+  useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
+
   useEffect(() => {
     const sync = () => setWatched(data?.ticker ? isWatched(data.ticker) : false);
     sync();
@@ -64,23 +68,24 @@ export default function Analysis() {
 
   const ind = data?.indicators;
   const ch = data?.chart;
-  const verdictColor = data?.score >= 70 ? "#1b7f4b" : data?.score >= 45 ? "#b7791f" : "#c0392b";
+    const C = chartColors(theme);
+  const verdictColor = data?.score >= 70 ? C.gain : data?.score >= 45 ? "#d9a441" : C.loss;
 
   // Cycle shading (bull=green, bear=red) as background rects across each phase.
   const cycleShapes = (data?.cycle?.phases || []).map((p: any) => ({
     type: "rect", xref: "x", yref: "paper", x0: p.start, x1: p.end, y0: 0, y1: 1,
-    fillcolor: p.type === "bull" ? "rgba(27,127,75,0.06)" : "rgba(192,57,43,0.06)",
+    fillcolor: p.type === "bull" ? "rgba(49,160,92,0.07)" : "rgba(226,87,76,0.07)",
     line: { width: 0 }, layer: "below",
   }));
   // Support (green) / resistance (red) horizontal lines.
   const levelShapes = [
     ...(data?.levels?.support || []).map((y: number) => ({
       type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: y, y1: y,
-      line: { color: "#1b7f4b", width: 1, dash: "dash" },
+      line: { color: C.gain, width: 1, dash: "dash" },
     })),
     ...(data?.levels?.resistance || []).map((y: number) => ({
       type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: y, y1: y,
-      line: { color: "#c0392b", width: 1, dash: "dash" },
+      line: { color: C.loss, width: 1, dash: "dash" },
     })),
   ];
 
@@ -92,8 +97,8 @@ export default function Analysis() {
 
   const cycleBadge = data?.cycle && (
     <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-      data.cycle.current === "bull" ? "bg-emerald-50 text-emerald-700"
-        : data.cycle.current === "bear" ? "bg-red-50 text-red-700" : "bg-slate-100 text-ink-secondary"
+      data.cycle.current === "bull" ? "bg-gain-soft text-gain"
+        : data.cycle.current === "bear" ? "bg-loss-soft text-loss" : "bg-surface-sunken text-ink-secondary"
     }`}>
       {data.cycle.current === "bull" ? "▲ Bullish cycle" : data.cycle.current === "bear" ? "▼ Bearish cycle" : "Neutral"}
       {data.cycle.days_in_phase != null && ` · ${data.cycle.days_in_phase}d`}
@@ -102,7 +107,7 @@ export default function Analysis() {
 
   const mtfBadge = data?.mtf?.trend && data.mtf.trend !== "flat" && (
     <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-      data.mtf.trend === "up" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"
+      data.mtf.trend === "up" ? "bg-gain-soft text-gain" : "bg-loss-soft text-loss"
     }`} title="Weekly (higher-timeframe) trend confirmation">
       {data.mtf.trend === "up" ? "▲ Weekly uptrend" : "▼ Weekly downtrend"}
     </span>
@@ -147,7 +152,7 @@ export default function Analysis() {
                   title={watched ? "Remove from watchlist" : "Add to watchlist"}
                   aria-label={watched ? "Remove from watchlist" : "Add to watchlist"}
                   className={`text-xl leading-none transition ${
-                    watched ? "text-amber-400" : "text-slate-300 hover:text-amber-400"}`}
+                    watched ? "text-warn" : "text-ink-muted hover:text-warn"}`}
                 >
                   {watched ? "★" : "☆"}
                 </button>
@@ -267,16 +272,16 @@ export default function Analysis() {
           {/* Potential bottom */}
           {data.bottom && (
             <div className={`rounded-xl shadow-sm p-4 border ${
-              data.bottom.likelihood === "high" ? "bg-emerald-50 border-emerald-200"
-                : data.bottom.likelihood === "possible" ? "bg-amber-50 border-amber-200"
+              data.bottom.likelihood === "high" ? "bg-gain-soft border-gain/30"
+                : data.bottom.likelihood === "possible" ? "bg-warn-soft border-warn/30"
                 : "bg-white border-line"
             }`}>
               <div className="flex items-center gap-3 flex-wrap">
                 <span className="font-bold text-ink">🔻 Potential bottom</span>
                 <span className={`text-sm font-semibold px-2 py-0.5 rounded ${
-                  data.bottom.likelihood === "high" ? "bg-emerald-100 text-emerald-800"
-                    : data.bottom.likelihood === "possible" ? "bg-amber-100 text-amber-800"
-                    : "bg-slate-100 text-ink-secondary"
+                  data.bottom.likelihood === "high" ? "bg-gain-soft text-gain"
+                    : data.bottom.likelihood === "possible" ? "bg-warn-soft text-warn"
+                    : "bg-surface-sunken text-ink-secondary"
                 }`}>
                   {data.bottom.likelihood === "high" ? "HIGH likelihood"
                     : data.bottom.likelihood === "possible" ? "POSSIBLE"
@@ -292,7 +297,7 @@ export default function Analysis() {
               {data.bottom.checks?.length ? (
                 <ul className="mt-2 grid sm:grid-cols-2 gap-x-6 gap-y-1 text-sm">
                   {data.bottom.checks.map((ch: any, i: number) => (
-                    <li key={i} className={`flex items-start gap-2 ${ch.ok ? "text-emerald-700" : "text-ink-muted"}`}>
+                    <li key={i} className={`flex items-start gap-2 ${ch.ok ? "text-gain" : "text-ink-muted"}`}>
                       <span>{ch.ok ? "✓" : "✗"}</span>
                       <span>{ch.s}{ch.ok ? ` (+${ch.pts})` : ""}</span>
                     </li>
@@ -318,17 +323,17 @@ export default function Analysis() {
           {data.csp_signal && (
             <div className={`rounded-xl shadow-sm p-4 border ${
               data.csp_signal.active
-                ? "bg-emerald-50 border-emerald-200"
+                ? "bg-gain-soft border-gain/30"
                 : "bg-white border-line"
             }`}>
               <div className="flex items-center gap-3 flex-wrap">
-                <span className={`font-bold ${data.csp_signal.active ? "text-emerald-700" : "text-ink-secondary"}`}>
+                <span className={`font-bold ${data.csp_signal.active ? "text-gain" : "text-ink-secondary"}`}>
                   {data.csp_signal.active
                     ? `💰 Cash-Secured Put opportunity (${data.csp_signal.strength})`
                     : "Cash-Secured Put signal: not today"}
                 </span>
                 {data.csp_signal.active && data.csp_signal.suggested_strike != null && (
-                  <span className="text-sm font-semibold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
+                  <span className="text-sm font-semibold text-gain bg-emerald-100 px-2 py-0.5 rounded">
                     suggested strike ≈ ${data.csp_signal.suggested_strike}
                   </span>
                 )}
@@ -367,23 +372,24 @@ export default function Analysis() {
             <Plot
               data={([
                 { type: "candlestick", x: ch.dates, open: ch.open, high: ch.high, low: ch.low, close: ch.close,
-                  name: "Price", increasing: { line: { color: "#1b7f4b" } }, decreasing: { line: { color: "#c0392b" } } },
+                  name: "Price", increasing: { line: { color: C.gain } }, decreasing: { line: { color: C.loss } } },
                 { x: ch.dates, y: ch.bb_upper, type: "scatter", mode: "lines", name: "BB upper",
-                  line: { color: "#94a3b8", width: 1 } },
+                  line: { color: C.recessive, width: 1 } },
                 { x: ch.dates, y: ch.bb_lower, type: "scatter", mode: "lines", name: "BB lower",
-                  line: { color: "#94a3b8", width: 1 }, fill: "tonexty", fillcolor: "rgba(148,163,184,0.08)" },
-                { x: ch.dates, y: ch.ema50, type: "scatter", mode: "lines", name: "EMA50", line: { color: "#b7791f", width: 1 } },
-                { x: ch.dates, y: ch.ema200, type: "scatter", mode: "lines", name: "EMA200", line: { color: "#1f5fa6", width: 1.5 } },
+                  line: { color: "#94a3b8", width: 1 }, fill: "tonexty", fillcolor: "rgba(120,130,125,0.10)" },
+                { x: ch.dates, y: ch.ema50, type: "scatter", mode: "lines", name: "EMA50", line: { color: C.series[2], width: 1.5 } },
+                { x: ch.dates, y: ch.ema200, type: "scatter", mode: "lines", name: "EMA200", line: { color: C.series[3], width: 1.5 } },
                 { x: bullSig.map((s: any) => s.date), y: bullSig.map((s: any) => closeByDate[s.date]),
                   type: "scatter", mode: "markers", name: "Bull signal",
-                  marker: { symbol: "triangle-up", size: 11, color: "#1b7f4b" },
+                  marker: { symbol: "triangle-up", size: 11, color: C.gain },
                   text: bullSig.map((s: any) => s.label), hoverinfo: "text+x" },
                 { x: bearSig.map((s: any) => s.date), y: bearSig.map((s: any) => closeByDate[s.date]),
                   type: "scatter", mode: "markers", name: "Bear signal",
-                  marker: { symbol: "triangle-down", size: 11, color: "#c0392b" },
+                  marker: { symbol: "triangle-down", size: 11, color: C.loss },
                   text: bearSig.map((s: any) => s.label), hoverinfo: "text+x" },
               ]) as any}
               layout={{
+                ...plotTheme(theme),
                 autosize: true, height: 540, margin: { l: 50, r: 10, t: 30, b: 15 },
                 legend: { orientation: "h", y: 1.16, x: 0 },
                 // Trading-app zoom: quick-range buttons + mini overview slider;
@@ -393,7 +399,7 @@ export default function Analysis() {
                   rangeslider: { visible: true, thickness: 0.07 },
                   rangeselector: {
                     x: 0, y: 1.06, yanchor: "bottom",
-                    bgcolor: "rgba(241,245,249,0.9)", activecolor: "#1b7f4b",
+                    bgcolor: "rgba(127,127,127,0.12)", activecolor: C.gain,
                     font: { size: 11 },
                     buttons: [
                       { count: 1, label: "1M", step: "month", stepmode: "backward" },
@@ -442,8 +448,8 @@ export default function Analysis() {
               </div>
               <Plot
                 data={[{ type: "bar", x: ch.dates, y: ch.volume, name: "Volume",
-                         marker: { color: ch.close.map((c: number, i: number) => (i > 0 && c >= ch.close[i - 1] ? "#1b7f4b" : "#c0392b")) } }]}
-                layout={{ autosize: true, height: 220, margin: { l: 50, r: 10, t: 10, b: 30 }, yaxis: { title: { text: "Vol" } } }}
+                         marker: { color: ch.close.map((c: number, i: number) => (i > 0 && c >= ch.close[i - 1] ? C.gain : C.loss)) } }]}
+                layout={{ ...plotTheme(theme), autosize: true, height: 220, margin: { l: 50, r: 10, t: 10, b: 30 }, yaxis: { title: { text: "Vol" } } }}
                 useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: true, doubleClick: "reset" } as any}
               />
             </div>
@@ -468,11 +474,11 @@ export default function Analysis() {
               <Plot
                 data={[
                   { type: "bar", x: ch.dates, y: ch.macd_hist, name: "Hist",
-                    marker: { color: ch.macd_hist.map((h: number) => (h >= 0 ? "#1b7f4b" : "#c0392b")) } },
-                  { x: ch.dates, y: ch.macd, type: "scatter", mode: "lines", name: "MACD", line: { color: "#0b3d2e" } },
-                  { x: ch.dates, y: ch.macd_signal, type: "scatter", mode: "lines", name: "Signal", line: { color: "#b7791f" } },
+                    marker: { color: ch.macd_hist.map((h: number) => (h >= 0 ? C.gain : C.loss)) } },
+                  { x: ch.dates, y: ch.macd, type: "scatter", mode: "lines", name: "MACD", line: { color: C.series[3] } },
+                  { x: ch.dates, y: ch.macd_signal, type: "scatter", mode: "lines", name: "Signal", line: { color: C.series[2] } },
                 ]}
-                layout={{ autosize: true, height: 220, margin: { l: 50, r: 10, t: 10, b: 30 }, legend: { orientation: "h", y: 1.2 } }}
+                layout={{ ...plotTheme(theme), autosize: true, height: 220, margin: { l: 50, r: 10, t: 10, b: 30 }, legend: { orientation: "h", y: 1.2 } }}
                 useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: true, doubleClick: "reset" } as any}
               />
             </div>
@@ -498,11 +504,12 @@ export default function Analysis() {
               />
             </div>
             <Plot
-              data={[{ x: ch.dates, y: ch.rsi, type: "scatter", mode: "lines", name: "RSI", line: { color: "#1b7f4b" } }]}
+              data={[{ x: ch.dates, y: ch.rsi, type: "scatter", mode: "lines", name: "RSI", line: { color: C.series[0] } }]}
               layout={{
+                ...plotTheme(theme),
                 autosize: true, height: 200, margin: { l: 50, r: 10, t: 10, b: 30 }, yaxis: { range: [0, 100] },
                 shapes: [30, 70].map((y) => ({ type: "line", x0: ch.dates[0], x1: ch.dates[ch.dates.length - 1], y0: y, y1: y,
-                  line: { color: y === 70 ? "#c0392b" : "#1b7f4b", width: 1, dash: "dot" } })),
+                  line: { color: y === 70 ? C.loss : C.gain, width: 1, dash: "dot" } })),
               }}
               useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: true, doubleClick: "reset" } as any}
             />

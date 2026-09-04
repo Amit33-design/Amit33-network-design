@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import type { ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+import { useEffect, useState } from "react";
 import type { Recommendation } from "../lib/types";
+import { chartColors, getTheme, onThemeChange } from "../lib/theme";
 
 function TickerCell({ value }: { value?: string }) {
   if (!value) return null;
@@ -18,6 +20,8 @@ function TickerCell({ value }: { value?: string }) {
   );
 }
 
+const C = () => chartColors();
+
 const num = (p: any) => (p.value == null ? "—" : Number(p.value).toFixed(2));
 const pct = (p: any) => (p.value == null ? "—" : `${Number(p.value).toFixed(1)}%`);
 
@@ -27,25 +31,25 @@ const columns: ColDef<Recommendation>[] = [
   { field: "company", width: 170 },
   { field: "score", headerName: "AI Score", width: 105, sort: "desc",
     cellClassRules: { "font-bold": () => true },
-    cellStyle: (p) => ({ color: p.value >= 70 ? "#1b7f4b" : p.value >= 50 ? "#b7791f" : "#c0392b" }) },
+    cellStyle: (p) => ({ color: p.value >= 70 ? C().gain : p.value >= 50 ? "#d9a441" : C().loss }) },
   { field: "quality_grade", headerName: "Quality", width: 95,
     cellStyle: (p) => ({
       fontWeight: 700,
-      color: ["A", "B"].includes(p.value) ? "#1b7f4b" : p.value === "C" ? "#b7791f" : "#c0392b",
+      color: ["A", "B"].includes(p.value) ? C().gain : p.value === "C" ? "#d9a441" : C().loss,
     }) },
   { headerName: "Exp. Gain", field: "expected_gain_%", width: 110,
     valueFormatter: pct,
-    cellStyle: { fontWeight: 700, color: "#1b7f4b" } },
+    cellStyle: () => ({ fontWeight: 700, color: C().gain }) },
   { headerName: "Analyst Upside", field: "analyst_upside_%", width: 130, valueFormatter: pct },
   { headerName: "Hist. Win%", width: 110,
     valueGetter: (p) => (p.data?.hist_trades ? p.data.hist_win_rate : null),
     valueFormatter: (p: any) => (p.value == null ? "—" : `${(p.value * 100).toFixed(0)}%`),
-    cellStyle: (p) => ({ color: (p.value ?? 0) >= 0.6 ? "#1b7f4b" : (p.value ?? 1) < 0.4 ? "#c0392b" : "#334155" }) },
+    cellStyle: (p) => ({ color: (p.value ?? 0) >= 0.6 ? C().gain : (p.value ?? 1) < 0.4 ? C().loss : C().ink }) },
   { field: "action", width: 115 },
   { headerName: "Setup", width: 110,
     valueGetter: (p) => ((p.data?.metrics as any)?.profile === "opportunity" ? "Pullback" : "Crash dip"),
     cellStyle: (p) => ({
-      color: (p.data?.metrics as any)?.profile === "opportunity" ? "#b7791f" : "#c0392b",
+      color: (p.data?.metrics as any)?.profile === "opportunity" ? "#d9a441" : C().loss,
       fontWeight: 600,
     }),
     tooltipValueGetter: (p) => ((p.data?.metrics as any)?.profile === "opportunity"
@@ -60,7 +64,7 @@ const columns: ColDef<Recommendation>[] = [
   { headerName: "Stop", field: "stop_loss", width: 90, valueFormatter: num },
   { headerName: "Target", field: "target1", width: 95, valueFormatter: num },
   { headerName: "R:R", field: "risk_reward", width: 80, valueFormatter: num,
-    cellStyle: (p) => ({ color: p.data?.rr_pass === false ? "#c0392b" : "#334155",
+    cellStyle: (p) => ({ color: p.data?.rr_pass === false ? C().loss : C().ink,
                          fontWeight: p.data?.rr_pass === false ? 700 : 400 }) },
   { headerName: "Size", width: 130, sortable: false,
     valueGetter: (p) => p.data?.position
@@ -70,7 +74,7 @@ const columns: ColDef<Recommendation>[] = [
   { headerName: "RS vs SPY", width: 110,
     valueGetter: (p) => p.data?.rel_strength?.vs_spy ?? null,
     valueFormatter: (p: any) => (p.value == null ? "—" : `${p.value >= 0 ? "+" : ""}${p.value}pp`),
-    cellStyle: (p) => ({ color: (p.value ?? 0) > 0 ? "#1b7f4b" : (p.value ?? 0) < 0 ? "#c0392b" : "#334155" }) },
+    cellStyle: (p) => ({ color: (p.value ?? 0) > 0 ? C().gain : (p.value ?? 0) < 0 ? C().loss : C().ink }) },
   { headerName: "Sector", width: 150, valueGetter: (p) => p.data?.rel_strength?.sector ?? "—" },
   { headerName: "CSP Signal", width: 150, sortable: false,
     valueGetter: (p) => {
@@ -80,7 +84,7 @@ const columns: ColDef<Recommendation>[] = [
     },
     tooltipValueGetter: (p) => p.data?.csp_signal?.reason ?? "",
     cellStyle: (p) => ({
-      color: p.data?.csp_signal?.active ? "#047857" : "#94a3b8",
+      color: p.data?.csp_signal?.active ? C().gain : C().axis,
       fontWeight: p.data?.csp_signal?.active ? 700 : 400,
     }) },
   { headerName: "Risk / Catalyst", width: 260, sortable: false,
@@ -88,7 +92,7 @@ const columns: ColDef<Recommendation>[] = [
     cellStyle: (p) => {
       const flags = p.data?.risk_flags || [];
       const hasWarn = flags.some((f: any) => f.level === "warn");
-      return { color: hasWarn ? "#c0392b" : flags.length ? "#1b7f4b" : "#94a3b8", fontSize: "12px" };
+      return { color: hasWarn ? C().loss : flags.length ? C().gain : C().axis, fontSize: "12px" };
     } },
   { headerName: "Covered Call", field: "covered_call", width: 230 },
   { headerName: "CSP", field: "cash_secured_put", width: 230 },
@@ -97,7 +101,7 @@ const columns: ColDef<Recommendation>[] = [
 
 function RecCard({ r }: { r: Recommendation }) {
   const m = r.metrics || {};
-  const scoreColor = r.score >= 70 ? "#1b7f4b" : r.score >= 50 ? "#b7791f" : "#c0392b";
+  const scoreColor = r.score >= 70 ? C().gain : r.score >= 50 ? "#d9a441" : C().loss;
   const warn = (r.risk_flags || []).some((f) => f.level === "warn");
   return (
     <div className="panel p-4">
@@ -117,7 +121,7 @@ function RecCard({ r }: { r: Recommendation }) {
       </div>
       <div className="mt-2 grid grid-cols-3 gap-2 text-sm">
         <Cell k="Quality" v={r.quality_grade ?? "—"} />
-        <Cell k="Exp. Gain" v={r["expected_gain_%"] != null ? `${r["expected_gain_%"]}%` : "—"} accent="#1b7f4b" />
+        <Cell k="Exp. Gain" v={r["expected_gain_%"] != null ? `${r["expected_gain_%"]}%` : "—"} accent={C().gain} />
         <Cell k="Conf." v={r.confidence} />
         <Cell k="Day" v={m["day_%"] != null ? `${m["day_%"]}%` : "—"} />
         <Cell k="Month" v={m["month_%"] != null ? `${m["month_%"]}%` : "—"} />
@@ -131,7 +135,7 @@ function RecCard({ r }: { r: Recommendation }) {
         </div>
       )}
       {r.csp_signal?.active && (
-        <div className="mt-2 text-xs font-semibold text-emerald-700 bg-emerald-50 rounded px-2 py-1">
+        <div className="mt-2 text-xs font-semibold text-gain bg-gain-soft rounded px-2 py-1">
           💰 CSP {r.csp_signal.strength}
           {r.csp_signal.suggested_strike != null ? ` · strike ≈ $${r.csp_signal.suggested_strike}` : ""}
         </div>
@@ -162,10 +166,15 @@ function Cell({ k, v, accent }: { k: string; v: any; accent?: string }) {
 }
 
 export default function RecGrid({ rows }: { rows: Recommendation[] }) {
+  const [theme, setTheme] = useState(getTheme);
+  useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
   return (
     <>
       {/* Desktop / tablet: full AG Grid */}
-      <div className="ag-theme-quartz hidden md:block" style={{ width: "100%", height: "70vh", minHeight: 420 }}>
+      <div
+        className={`${theme === "dark" ? "ag-theme-quartz-dark" : "ag-theme-quartz"} hidden md:block`}
+        style={{ width: "100%", height: "70vh", minHeight: 420 }}
+      >
         <AgGridReact<Recommendation>
           rowData={rows}
           columnDefs={columns}

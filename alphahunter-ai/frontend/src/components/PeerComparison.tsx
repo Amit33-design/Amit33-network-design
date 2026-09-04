@@ -56,7 +56,7 @@ export default function PeerComparison({ ticker }: { ticker: string }) {
         {data.standing && (
           <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
             data.standing.verdict === "lagging its peers"
-              ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-700"}`}>
+              ? "bg-loss-soft text-loss" : "bg-gain-soft text-gain"}`}>
             #{data.standing.rank} of {data.standing.of} on 6-month return ·{" "}
             {data.standing.verdict}
           </span>
@@ -78,7 +78,7 @@ export default function PeerComparison({ ticker }: { ticker: string }) {
                 {rows.map((r) => {
                   const isSubject = r.ticker === data.ticker;
                   return (
-                    <tr key={r.ticker} className={`border-t ${isSubject ? "bg-amber-50/60" : ""}`}>
+                    <tr key={r.ticker} className={`border-t ${isSubject ? "bg-warn-soft/50" : ""}`}>
                       <td className="px-2 py-1.5 whitespace-nowrap">
                         <Link to={`/analysis?ticker=${r.ticker}`}
                               className={`font-bold hover:underline ${isSubject ? "text-ink" : "text-brand"}`}>

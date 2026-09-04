@@ -26,7 +26,7 @@ export default function Options() {
     <div>
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h1 className="text-xl font-semibold tracking-tight text-ink">Options Income</h1>
-        <div className="flex gap-1 bg-white rounded-lg p-1 shadow-sm">
+        <div className="flex gap-1 panel p-1">
           <button
             onClick={() => setKind("coveredcalls")}
             className={`px-3 py-1 rounded text-sm ${

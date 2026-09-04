@@ -18,7 +18,7 @@ function FilterSelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="border rounded px-2 py-1 text-sm bg-white text-ink"
+        className="border rounded px-2 py-1 text-sm bg-surface text-ink"
       >
         {options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
       </select>
@@ -64,7 +64,7 @@ export default function Opportunities() {
     <div>
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h1 className="text-xl font-semibold tracking-tight text-ink">Opportunities</h1>
-        <div className="flex gap-1 bg-white rounded-lg p-1 shadow-sm">
+        <div className="flex gap-1 panel p-1">
           {(["top", "oversold", "breakouts"] as Feed[]).map((f) => (
             <button
               key={f}
@@ -82,7 +82,7 @@ export default function Opportunities() {
 
       {/* Filter bar */}
       {!loading && rows.length > 0 && (
-        <div className="bg-white rounded-lg shadow-sm px-3 py-2 mb-4 flex items-center gap-4 flex-wrap">
+        <div className="panel px-3 py-2 mb-4 flex items-center gap-4 flex-wrap">
           <FilterSelect label="Setup" value={setup} onChange={setSetup}
             options={[["all", "All"], ["crash", "Crash dip"], ["pullback", "Pullback"]]} />
           <FilterSelect label="Quality" value={quality} onChange={setQuality}

@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import Plot from "react-plotly.js";
 import { ErrorBox } from "../components/Loading";
 import { getWatchlist, removeFromWatchlist, onWatchlistChange } from "../lib/watchlist";
-import { StatTile, Badge, Delta, SkeletonPanel, EmptyState, CHART } from "../components/ui";
+import { StatTile, Badge, Delta, SkeletonPanel, EmptyState } from "../components/ui";
+import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 
 interface Stock {
   ticker: string;
@@ -26,7 +27,10 @@ interface Dash {
   domains: Record<string, Stock[]>;
 }
 
-const scoreColor = (s: number) => (s >= 65 ? "#1b7f4b" : s >= 50 ? "#b7791f" : "#c0392b");
+const scoreColor = (s: number) => {
+  const c = chartColors();
+  return s >= 65 ? c.gain : s >= 50 ? "#d9a441" : c.loss;
+};
 const scoreTone = (s: number): "gain" | "warn" | "loss" =>
   s >= 65 ? "gain" : s >= 50 ? "warn" : "loss";
 
@@ -40,7 +44,7 @@ function Sparkline({ data }: { data?: number[] }) {
   const up = data[data.length - 1] >= data[0];
   return (
     <svg viewBox="0 0 100 28" className="w-full h-7" preserveAspectRatio="none">
-      <polyline points={pts} fill="none" stroke={up ? "#1b7f4b" : "#c0392b"} strokeWidth="1.6" />
+      <polyline points={pts} fill="none" stroke={up ? chartColors().gain : chartColors().loss} strokeWidth="1.6" />
     </svg>
   );
 }
@@ -284,6 +288,9 @@ export default function Dashboard() {
   const [perf, setPerf] = useState<Perf | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [theme, setTheme] = useState(getTheme);
+
+  useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
 
   useEffect(() => {
     fetch("/dashboard.json")
@@ -363,7 +370,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {topPicks.map((s, i) => (
             <div key={s.ticker} className="relative">
-              <span className="absolute -top-2 -left-2 z-10 bg-purple-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow">
+              <span className="absolute -top-2 -left-2 z-10 bg-series-3 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow">
                 {i + 1}
               </span>
               <StockCard s={s} />
@@ -400,7 +407,7 @@ export default function Dashboard() {
             )}
           </div>
           {perf.summary["avg_alpha_%"] != null && perf.summary["avg_alpha_%"] < 0 && (
-            <div className="mb-4 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm text-amber-900">
+            <div className="mb-4 rounded-lg bg-warn-soft border border-warn/30 p-3 text-sm text-ink">
               <b>Read this before acting.</b> Across all {perf.summary.picks} judged picks the
               average result is <b>{perf.summary["avg_alpha_%"]}% vs {perf.summary.benchmark ?? "SPY"}</b>,
               and only {((perf.summary.beat_benchmark_rate ?? 0) * 100).toFixed(0)}% beat the index —
@@ -492,12 +499,11 @@ export default function Dashboard() {
       <div className="bg-white rounded-xl shadow-sm p-4 mt-2">
         <div className="font-semibold text-ink mb-2">Score distribution</div>
         <Plot
-          data={[{ type: "bar", x: buckets.map((b) => b.label), y: buckets.map((b) => b.count), marker: { color: CHART.series[0] } }]}
+          data={[{ type: "bar", x: buckets.map((b) => b.label), y: buckets.map((b) => b.count), marker: { color: chartColors(theme).series[0] } }]}
           layout={{ autosize: true, height: 260, margin: { l: 44, r: 12, t: 8, b: 40 },
-                    font: { family: "Inter, system-ui, sans-serif", size: 11, color: "#5b6660" },
-                    paper_bgcolor: "transparent", plot_bgcolor: "transparent",
-                    xaxis: { title: { text: "Composite score" }, gridcolor: CHART.grid, zeroline: false },
-                    yaxis: { title: { text: "Instruments" }, gridcolor: CHART.grid, zeroline: false } }}
+                    ...plotTheme(theme),
+                    xaxis: { ...plotTheme(theme).xaxis, title: { text: "Composite score" } },
+                    yaxis: { ...plotTheme(theme).yaxis, title: { text: "Instruments" } } } as any}
           useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false }}
         />
       </div>
