@@ -1,8 +1,9 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import Plot from "react-plotly.js";
-import { ErrorBox, Loading } from "../components/Loading";
+import { ErrorBox } from "../components/Loading";
 import { getWatchlist, removeFromWatchlist, onWatchlistChange } from "../lib/watchlist";
+import { StatTile, Badge, Delta, SkeletonPanel, EmptyState, CHART } from "../components/ui";
 
 interface Stock {
   ticker: string;
@@ -26,6 +27,8 @@ interface Dash {
 }
 
 const scoreColor = (s: number) => (s >= 65 ? "#1b7f4b" : s >= 50 ? "#b7791f" : "#c0392b");
+const scoreTone = (s: number): "gain" | "warn" | "loss" =>
+  s >= 65 ? "gain" : s >= 50 ? "warn" : "loss";
 
 function Sparkline({ data }: { data?: number[] }) {
   if (!data || data.length < 2) return null;
@@ -67,7 +70,7 @@ function StockCard({ s }: { s: Stock }) {
   return (
     <div
       onClick={toggle}
-      className="bg-white rounded-xl shadow-sm p-3 cursor-pointer hover:shadow-md transition border-l-4"
+      className="panel p-3 cursor-pointer hover:shadow-raised transition-shadow border-l-[3px]"
       style={{ borderLeftColor: scoreColor(s.score) }}
     >
       <div className="flex items-center justify-between">
@@ -77,34 +80,32 @@ function StockCard({ s }: { s: Stock }) {
           <Link
             to={`/analysis?ticker=${s.ticker}`}
             onClick={(e) => e.stopPropagation()}
-            className="font-bold text-alpha hover:underline"
+            className="font-semibold text-brand hover:underline"
             title={`Open the Analysis chart for ${s.ticker}`}
           >
             {s.ticker}
           </Link>
-          <span className="ml-1 text-xs text-slate-400">{s.cycle === "bull" ? "▲" : "▼"}</span>
+          <span className="ml-1 text-2xs text-ink-muted">{s.cycle === "bull" ? "▲" : "▼"}</span>
         </div>
-        <span className="text-lg font-bold" style={{ color: scoreColor(s.score) }}>{s.score}</span>
+        <span className="text-lg font-semibold num" style={{ color: scoreColor(s.score) }}>{s.score}</span>
       </div>
-      <div className="text-xs text-slate-500 truncate">{s.company}</div>
-      {s.domain && <div className="text-[10px] text-purple-500 truncate">{s.domain}</div>}
+      <div className="text-xs text-ink-secondary truncate">{s.company}</div>
+      {s.domain && <div className="text-2xs text-ink-muted truncate">{s.domain}</div>}
       <Sparkline data={s.spark} />
       <div className="mt-1 flex items-center justify-between text-xs">
-        <span className="font-medium">{s.price != null ? `$${s.price}` : "—"}</span>
-        <span className={(s["day_%"] ?? 0) >= 0 ? "text-alpha font-semibold" : "text-red-600 font-semibold"}>
-          {s["day_%"] != null ? `${s["day_%"] >= 0 ? "+" : ""}${Number(s["day_%"]).toFixed(1)}%` : ""}
-        </span>
+        <span className="font-medium num">{s.price != null ? `$${s.price}` : "—"}</span>
+        <Delta value={s["day_%"]} digits={1} />
       </div>
       <div className="mt-1 flex items-center justify-between text-xs">
-        <span className="text-slate-500">{s.action}</span>
-        <span className="font-semibold" style={{ color: ["A", "B"].includes(s.quality_grade) ? "#1b7f4b" : "#64748b" }}>
+        <span className="text-ink-secondary">{s.action}</span>
+        <Badge tone={["A", "B"].includes(s.quality_grade) ? "gain" : "neutral"}>
           {s.quality_grade}{s.rsi != null ? ` · RSI ${Math.round(s.rsi)}` : ""}
-        </span>
+        </Badge>
       </div>
       {open && (
-        <div className="mt-2 pt-2 border-t border-slate-100 text-xs text-slate-600 leading-relaxed" onClick={(e) => e.stopPropagation()}>
+        <div className="mt-2 pt-2 border-t border-line text-xs text-ink-secondary leading-relaxed" onClick={(e) => e.stopPropagation()}>
           {loading ? (
-            <span className="text-slate-400">Fetching live thesis…</span>
+            <span className="text-ink-muted">Fetching live thesis…</span>
           ) : (
             <><span className="font-semibold text-ink">📝 Live thesis: </span>{thesis}</>
           )}
@@ -112,13 +113,13 @@ function StockCard({ s }: { s: Stock }) {
       )}
       {!open && (
         <div className="mt-1 flex items-center justify-between text-[10px]">
-          <span className="text-slate-300">tap for live thesis</span>
+          <span className="text-ink-muted">Tap for live thesis</span>
           <Link
             to={`/analysis?ticker=${s.ticker}`}
             onClick={(e) => e.stopPropagation()}
-            className="text-alpha hover:underline font-medium"
+            className="text-brand hover:underline font-medium"
           >
-            📈 chart
+            Chart →
           </Link>
         </div>
       )}
@@ -150,21 +151,21 @@ function SegmentTable({ title, rows }: { title: string; rows: any[] }) {
   if (!rows?.length) return null;
   return (
     <div>
-      <div className="text-xs uppercase tracking-wide text-slate-400 mb-1">{title}</div>
-      <table className="w-full text-sm">
+      <div className="label-eyebrow mb-1">{title}</div>
+      <table className="w-full text-sm num">
         <tbody>
           {rows.map((r) => (
-            <tr key={r.key} className="border-t first:border-0">
+            <tr key={r.key} className="border-t border-line first:border-0">
               <td className="py-1 pr-2 font-medium">{r.key}</td>
-              <td className="py-1 pr-2 text-slate-400 text-xs">{r.picks}</td>
+              <td className="py-1 pr-2 text-ink-muted text-xs">{r.picks}</td>
               <td className="py-1 pr-2">{(r.win_rate * 100).toFixed(0)}%</td>
               <td className={`py-1 pr-2 text-right ${
-                r["avg_return_%"] >= 0 ? "text-alpha" : "text-red-600"}`}>
+                r["avg_return_%"] >= 0 ? "text-gain" : "text-loss"}`}>
                 {r["avg_return_%"] >= 0 ? "+" : ""}{r["avg_return_%"]}%
               </td>
               {r["avg_alpha_%"] != null && (
                 <td className={`py-1 text-right font-semibold ${
-                  r["avg_alpha_%"] >= 0 ? "text-alpha" : "text-red-600"}`}
+                  r["avg_alpha_%"] >= 0 ? "text-gain" : "text-loss"}`}
                     title="Average alpha vs SPY over the same holding window">
                   {r["avg_alpha_%"] >= 0 ? "+" : ""}{r["avg_alpha_%"]}
                 </td>
@@ -229,45 +230,43 @@ function WatchlistSection() {
       defaultOpen={tickers.length > 0}
     >
       {!tickers.length ? (
-        <div className="text-sm text-slate-500">
-          No saved tickers yet. Search any symbol in the header, then tap the
-          <span className="text-amber-400 font-bold"> ☆ </span>
-          next to its name on the Analysis page to track it here.
-        </div>
+        <EmptyState
+          icon="☆"
+          title="No saved tickers yet"
+          hint={<>Search any symbol in the header, then tap the ☆ beside its name on the
+                Analysis page to track it here.</>}
+        />
       ) : (
         <>
-          {loading && <div className="text-xs text-slate-400 mb-2">Refreshing live quotes…</div>}
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="text-slate-400 text-left">
+          {loading && <div className="text-2xs text-ink-muted mb-2">Refreshing live quotes…</div>}
+          <div className="overflow-x-auto thin-scroll -mx-4">
+            <table className="table-data">
+              <thead>
                 <tr>{["Ticker", "Price", "Today", "Score", "Verdict", ""].map((h) => (
-                  <th key={h} className="px-2 py-1 whitespace-nowrap font-normal">{h}</th>))}
+                  <th key={h}>{h}</th>))}
                 </tr>
               </thead>
               <tbody>
                 {rows.map((r) => (
-                  <tr key={r.ticker} className="border-t">
-                    <td className="px-2 py-1.5">
-                      <Link to={`/analysis?ticker=${r.ticker}`} className="font-bold text-alpha hover:underline">
+                  <tr key={r.ticker}>
+                    <td>
+                      <Link to={`/analysis?ticker=${r.ticker}`} className="font-semibold text-brand hover:underline">
                         {r.ticker}
                       </Link>
-                      {r.name && <span className="ml-2 text-xs text-slate-400 hidden sm:inline">{r.name}</span>}
+                      {r.name && <span className="ml-2 text-xs text-ink-muted hidden sm:inline">{r.name}</span>}
                     </td>
-                    <td className="px-2 py-1.5">{r.price != null ? `$${r.price}` : "—"}</td>
-                    <td className={`px-2 py-1.5 font-semibold ${
-                      (r.day_change_pct ?? 0) >= 0 ? "text-alpha" : "text-red-600"}`}>
-                      {r.day_change_pct != null
-                        ? `${r.day_change_pct >= 0 ? "+" : ""}${r.day_change_pct.toFixed(2)}%` : "—"}
+                    <td className="num">{r.price != null ? `$${r.price}` : "—"}</td>
+                    <td><Delta value={r.day_change_pct} /></td>
+                    <td>
+                      {r.score != null
+                        ? <Badge tone={scoreTone(r.score)}>{r.score}</Badge>
+                        : <span className="text-ink-muted">—</span>}
                     </td>
-                    <td className="px-2 py-1.5 font-semibold"
-                        style={{ color: r.score != null ? scoreColor(r.score) : "#94a3b8" }}>
-                      {r.score ?? "—"}
-                    </td>
-                    <td className="px-2 py-1.5">{r.error ? "no data" : r.verdict ?? "—"}</td>
-                    <td className="px-2 py-1.5 text-right">
+                    <td className="text-ink-secondary">{r.error ? "No data" : r.verdict ?? "—"}</td>
+                    <td className="text-right">
                       <button onClick={() => removeFromWatchlist(r.ticker)}
-                              title={`Remove ${r.ticker}`}
-                              className="text-slate-300 hover:text-red-500">✕</button>
+                              title={`Remove ${r.ticker}`} aria-label={`Remove ${r.ticker}`}
+                              className="text-ink-muted hover:text-loss transition-colors">✕</button>
                     </td>
                   </tr>
                 ))}
@@ -298,7 +297,16 @@ export default function Dashboard() {
       .catch(() => setPerf(null));
   }, []);
 
-  if (loading) return <Loading label="Loading dashboard…" />;
+  if (loading) {
+    return (
+      <div className="space-y-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {Array.from({ length: 4 }).map((_, i) => <SkeletonPanel key={i} rows={1} />)}
+        </div>
+        <SkeletonPanel rows={5} />
+      </div>
+    );
+  }
   if (error || !dash) return <ErrorBox error={error || "no data"} />;
 
   const all = Object.values(dash.domains).flat();
@@ -320,18 +328,23 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-        <h1 className="text-xl font-bold text-ink">Dashboard — {dash.count} stocks across domains</h1>
-        <span className="text-xs text-slate-400">as of {dash.as_of}</span>
+      <div className="flex items-end justify-between mb-5 flex-wrap gap-3">
+        <div>
+          <div className="label-eyebrow">Market overview</div>
+          <h1 className="text-xl font-semibold tracking-tight text-ink">Dashboard</h1>
+        </div>
+        <div className="text-xs text-ink-muted num">
+          {dash.count} instruments · as of {dash.as_of}
+        </div>
       </div>
 
-      {/* Summary tiles */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-        <Tile label="Tracked" value={String(dash.count)} />
-        <Tile label="Bullish" value={String(bullish)} accent="text-alpha" />
-        <Tile label="Avg Score" value={avg.toFixed(1)} />
-        <Tile label="Market" value={regime}
-              accent={regime === "Risk-on" ? "text-alpha" : regime === "Risk-off" ? "text-red-600" : "text-amber-600"} />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+        <StatTile label="Instruments tracked" value={dash.count} />
+        <StatTile label="Bullish" value={bullish} tone="gain"
+                  sub={`${Math.round((bullish / Math.max(all.length, 1)) * 100)}% of universe`} />
+        <StatTile label="Average score" value={avg.toFixed(1)} sub="0–100 composite" />
+        <StatTile label="Market regime" value={regime}
+                  tone={regime === "Risk-on" ? "gain" : regime === "Risk-off" ? "loss" : "warn"} />
       </div>
 
       <WatchlistSection />
@@ -371,17 +384,19 @@ export default function Dashboard() {
           defaultOpen={false}
         >
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-            <Tile label="Picks judged" value={String(perf.summary.picks)} />
-            <Tile label="Win rate" value={`${(perf.summary.win_rate * 100).toFixed(0)}%`}
-                  accent={perf.summary.win_rate >= 0.5 ? "text-alpha" : "text-red-600"} />
-            <Tile label="Avg return" value={`${perf.summary["avg_return_%"] >= 0 ? "+" : ""}${perf.summary["avg_return_%"]}%`}
-                  accent={perf.summary["avg_return_%"] >= 0 ? "text-alpha" : "text-red-600"} />
+            <StatTile label="Picks judged" value={perf.summary.picks} />
+            <StatTile label="Win rate" value={`${(perf.summary.win_rate * 100).toFixed(0)}%`}
+                      tone={perf.summary.win_rate >= 0.5 ? "gain" : "loss"} />
+            <StatTile label="Avg return" value={`${perf.summary["avg_return_%"] >= 0 ? "+" : ""}${perf.summary["avg_return_%"]}%`}
+                      tone={perf.summary["avg_return_%"] >= 0 ? "gain" : "loss"} />
             {perf.summary["avg_alpha_%"] != null ? (
-              <Tile label={`vs ${perf.summary.benchmark ?? "SPY"}`}
-                    value={`${perf.summary["avg_alpha_%"] >= 0 ? "+" : ""}${perf.summary["avg_alpha_%"]}%`}
-                    accent={perf.summary["avg_alpha_%"] >= 0 ? "text-alpha" : "text-red-600"} />
+              <StatTile label={`Alpha vs ${perf.summary.benchmark ?? "SPY"}`}
+                        value={`${perf.summary["avg_alpha_%"] >= 0 ? "+" : ""}${perf.summary["avg_alpha_%"]}%`}
+                        sub="excess return, same window"
+                        tone={perf.summary["avg_alpha_%"] >= 0 ? "gain" : "loss"} />
             ) : (
-              <Tile label="Best pick" value={`${perf.summary.best?.ticker} +${perf.summary.best?.["return_%"]}%`} accent="text-alpha" />
+              <StatTile label="Best pick" value={`${perf.summary.best?.ticker}`}
+                        sub={`+${perf.summary.best?.["return_%"]}%`} tone="gain" />
             )}
           </div>
           {perf.summary["avg_alpha_%"] != null && perf.summary["avg_alpha_%"] < 0 && (
@@ -477,9 +492,12 @@ export default function Dashboard() {
       <div className="bg-white rounded-xl shadow-sm p-4 mt-2">
         <div className="font-semibold text-ink mb-2">Score distribution</div>
         <Plot
-          data={[{ type: "bar", x: buckets.map((b) => b.label), y: buckets.map((b) => b.count), marker: { color: "#1b7f4b" } }]}
-          layout={{ autosize: true, height: 280, margin: { l: 40, r: 10, t: 10, b: 40 },
-                    xaxis: { title: { text: "AI score" } }, yaxis: { title: { text: "count" } } }}
+          data={[{ type: "bar", x: buckets.map((b) => b.label), y: buckets.map((b) => b.count), marker: { color: CHART.series[0] } }]}
+          layout={{ autosize: true, height: 260, margin: { l: 44, r: 12, t: 8, b: 40 },
+                    font: { family: "Inter, system-ui, sans-serif", size: 11, color: "#5b6660" },
+                    paper_bgcolor: "transparent", plot_bgcolor: "transparent",
+                    xaxis: { title: { text: "Composite score" }, gridcolor: CHART.grid, zeroline: false },
+                    yaxis: { title: { text: "Instruments" }, gridcolor: CHART.grid, zeroline: false } }}
           useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false }}
         />
       </div>
@@ -487,14 +505,6 @@ export default function Dashboard() {
   );
 }
 
-function Tile({ label, value, accent }: { label: string; value: string; accent?: string }) {
-  return (
-    <div className="bg-white rounded-xl shadow-sm p-4">
-      <div className="text-xs uppercase tracking-wide text-slate-400">{label}</div>
-      <div className={`text-2xl font-bold mt-1 ${accent ?? "text-ink"}`}>{value}</div>
-    </div>
-  );
-}
 
 // Collapsible category section — click the header to expand/collapse.
 function Section({
@@ -505,23 +515,26 @@ function Section({
 }) {
   const [open, setOpen] = useState(!!defaultOpen);
   return (
-    <div className="mb-3 bg-white rounded-xl shadow-sm overflow-hidden">
+    <section className="mb-3 panel overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition text-left"
+        aria-expanded={open}
+        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-surface-sunken/60 transition-colors text-left"
       >
-        <span className={`text-slate-400 transition-transform ${open ? "rotate-90" : ""}`}>▶</span>
-        <span className="font-semibold text-ink">{title}</span>
+        <span className={`text-ink-muted text-xs transition-transform duration-150 ${open ? "rotate-90" : ""}`}>▶</span>
+        <span className="text-sm font-semibold text-ink">{title}</span>
         {badge && (
-          <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
-                style={{ backgroundColor: `${badgeColor ?? "#64748b"}18`, color: badgeColor ?? "#64748b" }}>
+          <span className="rounded-full border px-2 py-0.5 text-2xs font-medium num"
+                style={{ backgroundColor: `${badgeColor ?? "#8a938d"}14`,
+                         color: badgeColor ?? "#5b6660",
+                         borderColor: `${badgeColor ?? "#8a938d"}33` }}>
             {badge}
           </span>
         )}
-        {subtitle && <span className="text-xs text-slate-400 hidden sm:inline">{subtitle}</span>}
-        <span className="ml-auto text-xs text-slate-400">{open ? "hide" : "show"}</span>
+        {subtitle && <span className="text-xs text-ink-muted hidden sm:inline truncate">{subtitle}</span>}
+        <span className="ml-auto text-2xs text-ink-muted">{open ? "Hide" : "Show"}</span>
       </button>
-      {open && <div className="px-4 pb-4">{children}</div>}
-    </div>
+      {open && <div className="px-4 pb-4 pt-1 border-t border-line">{children}</div>}
+    </section>
   );
 }

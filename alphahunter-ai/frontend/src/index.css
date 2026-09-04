@@ -2,16 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-slate-50 text-slate-800;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface-page text-ink antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Financial figures must align down a column: tabular, lining numerals
+     everywhere numbers appear. This one rule is most of what separates a
+     spreadsheet-grade UI from a web page. */
+  table, .num, input[type="number"] {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  /* Visible, consistent keyboard focus — required for enterprise a11y review. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand/50 ring-offset-1 ring-offset-surface;
+  }
+
+  ::selection {
+    @apply bg-brand/15;
+  }
+}
+
+@layer components {
+  /* Panel: the single card primitive. Hairline border + whisper shadow. */
+  .panel {
+    @apply bg-surface border border-line rounded-panel shadow-panel;
+  }
+  /* Small caps label used above every metric and table column. */
+  .label-eyebrow {
+    @apply text-2xs font-medium uppercase tracking-wider text-ink-muted;
+  }
+  /* Dense data table shared by every tabular view. */
+  .table-data {
+    @apply w-full text-sm;
+  }
+  .table-data thead th {
+    @apply label-eyebrow text-left font-medium px-3 py-2 bg-surface-sunken
+           border-y border-line whitespace-nowrap;
+  }
+  .table-data tbody td {
+    @apply px-3 py-2 border-b border-line/70;
+  }
+  .table-data tbody tr:hover {
+    @apply bg-surface-sunken/60;
+  }
 }
 
 /* Horizontally scrollable nav on mobile without a visible scrollbar. */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Slim, unobtrusive scrollbars inside data regions. */
+.thin-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: #d3d3cc; border-radius: 4px;
 }
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+.thin-scroll::-webkit-scrollbar-track { background: transparent; }

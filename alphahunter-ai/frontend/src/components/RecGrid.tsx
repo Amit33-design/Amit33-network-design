@@ -10,7 +10,7 @@ function TickerCell({ value }: { value?: string }) {
   return (
     <Link
       to={`/analysis?ticker=${value}`}
-      className="font-bold text-alpha hover:underline"
+      className="font-bold text-brand hover:underline"
       title={`Open the Analysis chart for ${value}`}
     >
       {value}
@@ -100,17 +100,17 @@ function RecCard({ r }: { r: Recommendation }) {
   const scoreColor = r.score >= 70 ? "#1b7f4b" : r.score >= 50 ? "#b7791f" : "#c0392b";
   const warn = (r.risk_flags || []).some((f) => f.level === "warn");
   return (
-    <div className="bg-white rounded-xl shadow-sm p-4">
+    <div className="panel p-4">
       <div className="flex items-center justify-between">
         <div>
-          <Link to={`/analysis?ticker=${r.ticker}`} className="font-bold text-alpha text-lg hover:underline">
+          <Link to={`/analysis?ticker=${r.ticker}`} className="font-bold text-brand text-lg hover:underline">
             {r.ticker}
           </Link>
-          <span className="ml-2 text-sm text-slate-500">{r.company}</span>
+          <span className="ml-2 text-sm text-ink-secondary">{r.company}</span>
         </div>
         <div className="text-right">
           <div className="text-xl font-bold" style={{ color: scoreColor }}>{r.score}</div>
-          <div className="text-xs text-slate-400">
+          <div className="text-xs text-ink-muted">
             {r.action} · {(m as any)?.profile === "opportunity" ? "pullback" : "crash dip"}
           </div>
         </div>
@@ -124,10 +124,10 @@ function RecCard({ r }: { r: Recommendation }) {
         <Cell k="RSI" v={m.rsi != null ? Number(m.rsi).toFixed(0) : "—"} />
       </div>
       {r.position && (
-        <div className="mt-1 text-xs text-slate-500">
+        <div className="mt-1 text-xs text-ink-secondary">
           Size: {r.position.shares} sh (~${Math.round(r.position.value).toLocaleString()},
           risking ${Math.round(r.position["risk_$"])})
-          {r.rr_pass === false && <span className="text-red-600 font-semibold"> · R:R below floor</span>}
+          {r.rr_pass === false && <span className="text-loss font-semibold"> · R:R below floor</span>}
         </div>
       )}
       {r.csp_signal?.active && (
@@ -137,17 +137,17 @@ function RecCard({ r }: { r: Recommendation }) {
         </div>
       )}
       {r.rel_strength?.vs_spy != null && (
-        <div className={`mt-1 text-xs ${r.rel_strength.vs_spy >= 0 ? "text-alpha" : "text-red-600"}`}>
+        <div className={`mt-1 text-xs ${r.rel_strength.vs_spy >= 0 ? "text-brand" : "text-loss"}`}>
           {r.rel_strength.vs_spy >= 0 ? "▲" : "▼"} {Math.abs(r.rel_strength.vs_spy)}pp vs SPY (3mo)
           {r.rel_strength.sector ? ` · ${r.rel_strength.sector}` : ""}
         </div>
       )}
       {(r.risk_flags || []).length > 0 && (
-        <div className={`mt-2 text-xs ${warn ? "text-red-600" : "text-alpha"}`}>
+        <div className={`mt-2 text-xs ${warn ? "text-loss" : "text-brand"}`}>
           {(r.risk_flags || []).map((f) => f.text).join(" · ")}
         </div>
       )}
-      <div className="mt-2 text-xs text-slate-500">{r.reasoning}</div>
+      <div className="mt-2 text-xs text-ink-secondary">{r.reasoning}</div>
     </div>
   );
 }
@@ -155,7 +155,7 @@ function RecCard({ r }: { r: Recommendation }) {
 function Cell({ k, v, accent }: { k: string; v: any; accent?: string }) {
   return (
     <div>
-      <div className="text-[10px] uppercase tracking-wide text-slate-400">{k}</div>
+      <div className="text-[10px] uppercase tracking-wide text-ink-muted">{k}</div>
       <div className="font-semibold" style={accent ? { color: accent } : undefined}>{v}</div>
     </div>
   );
@@ -176,7 +176,7 @@ export default function RecGrid({ rows }: { rows: Recommendation[] }) {
       </div>
       {/* Mobile: scrollable card list (the wide grid is unusable on phones) */}
       <div className="md:hidden space-y-3">
-        {rows.length === 0 && <div className="text-slate-500">No matches.</div>}
+        {rows.length === 0 && <div className="text-ink-secondary">No matches.</div>}
         {rows.map((r) => <RecCard key={r.ticker} r={r} />)}
       </div>
     </>

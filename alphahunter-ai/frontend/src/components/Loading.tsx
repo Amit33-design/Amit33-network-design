@@ -1,6 +1,6 @@
 export function Loading({ label = "Scanning the market…" }: { label?: string }) {
   return (
-    <div className="flex items-center gap-3 text-slate-500 py-10">
+    <div className="flex items-center gap-3 text-ink-secondary py-10">
       <div className="h-4 w-4 rounded-full border-2 border-alpha border-t-transparent animate-spin" />
       {label}
     </div>

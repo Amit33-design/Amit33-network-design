@@ -17,13 +17,13 @@ export default function ChartExplainer({
     <span className="inline-block align-middle">
       <button
         onClick={() => setOpen(!open)}
-        className="ml-2 text-xs px-2 py-0.5 rounded-full border border-slate-300 text-slate-500 hover:bg-slate-100"
+        className="ml-2 text-xs px-2 py-0.5 rounded-full border border-slate-300 text-ink-secondary hover:bg-surface-sunken"
         title={`What does the ${title} chart mean?`}
       >
         ℹ️ what is this?
       </button>
       {open && (
-        <div className="mt-2 rounded-lg bg-slate-50 border border-slate-200 p-3 text-sm text-slate-600 text-left">
+        <div className="mt-2 rounded-lg bg-surface-sunken border border-line p-3 text-sm text-ink-secondary text-left">
           <div className="font-semibold text-ink mb-1">How to read {title}</div>
           <ul className="list-disc pl-5 space-y-1">
             {points.map((p, i) => (
@@ -31,7 +31,7 @@ export default function ChartExplainer({
             ))}
           </ul>
           {current && (
-            <div className="mt-2 pt-2 border-t border-slate-200">
+            <div className="mt-2 pt-2 border-t border-line">
               <span className="font-semibold text-ink">Right now: </span>
               {current}
             </div>

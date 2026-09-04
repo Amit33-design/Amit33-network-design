@@ -28,7 +28,7 @@ export default function RunScanButton() {
   }
 
   const cls =
-    "px-3 py-1.5 rounded text-sm font-semibold bg-white text-ink hover:bg-slate-100 disabled:opacity-60 whitespace-nowrap";
+    "px-3 py-1.5 rounded text-sm font-semibold bg-white text-ink hover:bg-surface-sunken disabled:opacity-60 whitespace-nowrap";
 
   // Once we know there's no token, show a native link that opens reliably on
   // mobile and desktop.

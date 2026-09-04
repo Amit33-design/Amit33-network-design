@@ -68,7 +68,7 @@ export default function Portfolio() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-bold text-ink">Portfolio Analyzer</h1>
+        <h1 className="text-xl font-semibold tracking-tight text-ink">Portfolio Analyzer</h1>
         {data && (
           <span
             className={`text-xs px-2 py-1 rounded ${
@@ -81,8 +81,8 @@ export default function Portfolio() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-xl shadow-sm p-4">
-          <div className="text-sm text-slate-500 mb-2">
+        <div className="panel p-4">
+          <div className="text-sm text-ink-secondary mb-2">
             Holdings — <code>TICKER, qty, cost basis</code> per line:
           </div>
           <textarea
@@ -95,19 +95,19 @@ export default function Portfolio() {
             <button
               onClick={analyze}
               disabled={loading}
-              className="bg-alpha text-white px-4 py-2 rounded font-medium disabled:opacity-50"
+              className="bg-brand text-white px-4 py-2 rounded font-medium disabled:opacity-50"
             >
               {loading ? "Analyzing…" : "Analyze (live)"}
             </button>
             <button
               onClick={save}
-              className="border border-slate-300 text-slate-700 px-3 py-2 rounded font-medium hover:bg-slate-50"
+              className="border border-slate-300 text-ink px-3 py-2 rounded font-medium hover:bg-surface-sunken"
             >
               Save
             </button>
           </div>
           {savedAt && (
-            <div className="mt-2 text-xs text-slate-400">
+            <div className="mt-2 text-xs text-ink-muted">
               Saved on this device · {savedAt}
             </div>
           )}
@@ -122,13 +122,13 @@ export default function Portfolio() {
                 <Stat
                   label="Gain / Loss"
                   value={`$${data.summary.gain_loss.toLocaleString()} (${data.summary["gain_loss_%"]}%)`}
-                  accent={data.summary.gain_loss >= 0 ? "text-alpha" : "text-red-600"}
+                  accent={data.summary.gain_loss >= 0 ? "text-brand" : "text-loss"}
                 />
                 <Stat label="Positions" value={String(data.summary.positions)} />
               </div>
-              <div className="bg-white rounded-xl shadow-sm overflow-x-auto">
+              <div className="panel overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="text-slate-400 text-left bg-slate-50">
+                  <thead className="text-ink-muted text-left bg-surface-sunken">
                     <tr>
                       {["Ticker", "Price", "Value", "G/L %", "Score", "Recommendation"].map((h) => (
                         <th key={h} className="px-3 py-2">{h}</th>
@@ -138,14 +138,14 @@ export default function Portfolio() {
                   <tbody>
                     {data.positions.map((p) => (
                       <tr key={p.ticker} className="border-t">
-                        <td className="px-3 py-2 font-semibold text-alpha">{p.ticker}</td>
+                        <td className="px-3 py-2 font-semibold text-brand">{p.ticker}</td>
                         <td className="px-3 py-2">{p.price != null ? `$${p.price}` : "—"}</td>
                         <td className="px-3 py-2">
                           {p.market_value != null ? `$${p.market_value.toLocaleString()}` : "—"}
                         </td>
                         <td
                           className={`px-3 py-2 ${
-                            (p["gain_loss_%"] ?? 0) >= 0 ? "text-alpha" : "text-red-600"
+                            (p["gain_loss_%"] ?? 0) >= 0 ? "text-brand" : "text-loss"
                           }`}
                         >
                           {p["gain_loss_%"] != null ? `${p["gain_loss_%"]}%` : "—"}
@@ -154,7 +154,7 @@ export default function Portfolio() {
                         <td className="px-3 py-2">
                           <div className="font-medium">{p.recommendation ?? p.error}</div>
                           {p.reason && (
-                            <div className="text-xs text-slate-400 max-w-md">{p.reason}</div>
+                            <div className="text-xs text-ink-muted max-w-md">{p.reason}</div>
                           )}
                         </td>
                       </tr>
@@ -162,7 +162,7 @@ export default function Portfolio() {
                   </tbody>
                 </table>
               </div>
-              <div className="mt-2 text-xs text-slate-400">
+              <div className="mt-2 text-xs text-ink-muted">
                 {live
                   ? "Live prices + an on-the-go technical Buy/Hold/Sell (trend, RSI, momentum, 52-week position) for every holding. Full AlphaHunter score shown when the ticker is in the latest scan."
                   : "Live quotes unavailable — showing snapshot prices. Recommendation shown for scanned tickers."}
@@ -177,8 +177,8 @@ export default function Portfolio() {
 
 function Stat({ label, value, accent }: { label: string; value: string; accent?: string }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm p-3">
-      <div className="text-xs uppercase tracking-wide text-slate-400">{label}</div>
+    <div className="panel p-3">
+      <div className="text-xs uppercase tracking-wide text-ink-muted">{label}</div>
       <div className={`text-lg font-bold ${accent ?? "text-ink"}`}>{value}</div>
     </div>
   );

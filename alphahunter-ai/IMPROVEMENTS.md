@@ -9,6 +9,18 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Enterprise design system.** Replaced ad-hoc utility classes with real
+  tokens in `tailwind.config.js` (surface/line/ink hierarchies, gain/loss/warn/
+  info semantics, elevation, radii, Inter + JetBrains Mono) and a base layer
+  that turns on **tabular lining numerals everywhere numbers appear** — the
+  single change that makes financial columns align like a terminal. New
+  `components/ui.tsx` primitives (Panel, StatTile, Badge, Delta, Skeleton,
+  EmptyState) so every page shares one type/spacing/elevation scale. Sticky
+  dark app chrome with an underline-rail active nav, refined search, and a
+  footer disclaimer. Content-shaped skeletons replace spinners.
+  **Chart palette validated with the dataviz checker**: the old EMA50 amber
+  failed the normal-vision floor against the red candles (ΔE 14.1 < 15), so
+  the categorical order is now green/red/violet/blue — all hard checks PASS.
 - [x] **Sector peer comparison (+ proof the R:R fix works).** New
   `api/peers.js` returns the ticker alongside 4 genuine competitors (static,
   auditable peer groups) with price, day/1M/6M return, RSI, distance from the

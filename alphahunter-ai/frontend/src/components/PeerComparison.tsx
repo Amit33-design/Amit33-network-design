@@ -17,7 +17,7 @@ interface PeersResp {
 const pct = (x?: number | null) =>
   x == null ? "—" : `${x >= 0 ? "+" : ""}${x}%`;
 const tone = (x?: number | null) =>
-  x == null ? "text-slate-400" : x >= 0 ? "text-alpha" : "text-red-600";
+  x == null ? "text-ink-muted" : x >= 0 ? "text-brand" : "text-loss";
 
 // Sector peers — a name down 20% means something very different when its whole
 // group is down 20% than when the group is flat.
@@ -40,7 +40,7 @@ export default function PeerComparison({ ticker }: { ticker: string }) {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl shadow-sm p-4 text-sm text-slate-400">
+      <div className="panel p-4 text-sm text-ink-muted">
         Loading sector peers…
       </div>
     );
@@ -50,7 +50,7 @@ export default function PeerComparison({ ticker }: { ticker: string }) {
   const rows = [data.subject, ...(data.peers || [])].filter(Boolean) as PeerRow[];
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-4">
+    <div className="panel p-4">
       <div className="flex items-center gap-3 flex-wrap mb-2">
         <div className="font-semibold text-ink">🏳️ Sector peers</div>
         {data.standing && (
@@ -64,12 +64,12 @@ export default function PeerComparison({ ticker }: { ticker: string }) {
       </div>
 
       {data.note ? (
-        <div className="text-sm text-slate-500">{data.note}</div>
+        <div className="text-sm text-ink-secondary">{data.note}</div>
       ) : (
         <>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="text-slate-400 text-left">
+              <thead className="text-ink-muted text-left">
                 <tr>{["", "Price", "Today", "1M", "6M", "RSI", "From 52w high", "Trend"].map((h) => (
                   <th key={h} className="px-2 py-1 font-normal whitespace-nowrap">{h}</th>))}
                 </tr>
@@ -81,18 +81,18 @@ export default function PeerComparison({ ticker }: { ticker: string }) {
                     <tr key={r.ticker} className={`border-t ${isSubject ? "bg-amber-50/60" : ""}`}>
                       <td className="px-2 py-1.5 whitespace-nowrap">
                         <Link to={`/analysis?ticker=${r.ticker}`}
-                              className={`font-bold hover:underline ${isSubject ? "text-ink" : "text-alpha"}`}>
+                              className={`font-bold hover:underline ${isSubject ? "text-ink" : "text-brand"}`}>
                           {r.ticker}
                         </Link>
-                        {isSubject && <span className="ml-1 text-[10px] text-slate-400">(this stock)</span>}
+                        {isSubject && <span className="ml-1 text-[10px] text-ink-muted">(this stock)</span>}
                       </td>
                       <td className="px-2 py-1.5">{r.price != null ? `$${r.price}` : "—"}</td>
                       <td className={`px-2 py-1.5 ${tone(r.day_change_pct)}`}>{pct(r.day_change_pct)}</td>
                       <td className={`px-2 py-1.5 ${tone(r.ret_1m)}`}>{pct(r.ret_1m)}</td>
                       <td className={`px-2 py-1.5 font-semibold ${tone(r.ret_6m)}`}>{pct(r.ret_6m)}</td>
                       <td className="px-2 py-1.5">{r.rsi ?? "—"}</td>
-                      <td className="px-2 py-1.5 text-slate-500">{pct(r.from_52w_high)}</td>
-                      <td className={`px-2 py-1.5 ${r.trend === "up" ? "text-alpha" : "text-red-600"}`}>
+                      <td className="px-2 py-1.5 text-ink-secondary">{pct(r.from_52w_high)}</td>
+                      <td className={`px-2 py-1.5 ${r.trend === "up" ? "text-brand" : "text-loss"}`}>
                         {r.trend === "up" ? "▲ up" : r.trend === "down" ? "▼ down" : "—"}
                       </td>
                     </tr>
@@ -102,7 +102,7 @@ export default function PeerComparison({ ticker }: { ticker: string }) {
             </table>
           </div>
           {data.standing && (
-            <div className="mt-2 text-xs text-slate-500">
+            <div className="mt-2 text-xs text-ink-secondary">
               6-month return is{" "}
               <b className={tone(data.standing.vs_peer_median_pp)}>
                 {pct(data.standing.vs_peer_median_pp)}

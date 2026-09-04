@@ -17,17 +17,20 @@ export default function TickerSearch() {
 
   return (
     <form onSubmit={go} className="relative">
+      <span className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2
+                       text-ink-inverse/40 text-sm">⌕</span>
       <input
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder="Search ticker…"
         aria-label="Search any ticker"
-        className="w-32 sm:w-44 bg-white/10 text-white placeholder-slate-300 rounded px-3 py-1.5 text-sm
-                   focus:outline-none focus:ring-2 focus:ring-alpha focus:bg-white/20 uppercase"
+        className="w-32 sm:w-48 bg-white/10 text-ink-inverse placeholder-ink-inverse/40
+                   rounded-md border border-white/10 pl-8 pr-7 py-1.5 text-sm uppercase
+                   focus-visible:ring-brand/60 focus:bg-white/[0.15] transition-colors"
       />
       {q && (
         <button type="submit"
-                className="absolute right-1 top-1/2 -translate-y-1/2 text-xs text-alpha font-semibold px-1.5">
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 text-xs text-brand font-semibold">
           →
         </button>
       )}

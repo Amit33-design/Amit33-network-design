@@ -93,7 +93,7 @@ export default function Analysis() {
   const cycleBadge = data?.cycle && (
     <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
       data.cycle.current === "bull" ? "bg-emerald-50 text-emerald-700"
-        : data.cycle.current === "bear" ? "bg-red-50 text-red-700" : "bg-slate-100 text-slate-600"
+        : data.cycle.current === "bear" ? "bg-red-50 text-red-700" : "bg-slate-100 text-ink-secondary"
     }`}>
       {data.cycle.current === "bull" ? "▲ Bullish cycle" : data.cycle.current === "bear" ? "▼ Bearish cycle" : "Neutral"}
       {data.cycle.days_in_phase != null && ` · ${data.cycle.days_in_phase}d`}
@@ -110,24 +110,24 @@ export default function Analysis() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-ink mb-4">Technical Analysis — one ticker, real-time</h1>
+      <h1 className="text-xl font-semibold tracking-tight text-ink mb-4">Technical Analysis — one ticker, real-time</h1>
 
-      <div className="bg-white rounded-xl shadow-sm p-4 flex flex-wrap items-end gap-3 mb-6">
+      <div className="panel p-4 flex flex-wrap items-end gap-3 mb-6">
         <label className="text-sm">
-          <div className="text-slate-400 mb-1">Ticker</div>
+          <div className="text-ink-muted mb-1">Ticker</div>
           <input value={ticker} onChange={(e) => setTicker(e.target.value)}
                  onKeyDown={(e) => e.key === "Enter" && run()}
                  className="border rounded px-3 py-2 w-36 font-mono uppercase" placeholder="AAPL" />
         </label>
         <label className="text-sm">
-          <div className="text-slate-400 mb-1">Range</div>
+          <div className="text-ink-muted mb-1">Range</div>
           <select value={range} onChange={(e) => { setRange(e.target.value); if (data) run(ticker, e.target.value); }}
                   className="border rounded px-3 py-2">
             {RANGES.map((r) => <option key={r} value={r}>{r}</option>)}
           </select>
         </label>
         <button onClick={() => run()} disabled={loading}
-                className="bg-alpha text-white px-5 py-2 rounded font-medium disabled:opacity-50">
+                className="bg-brand text-white px-5 py-2 rounded font-medium disabled:opacity-50">
           {loading ? "Analyzing…" : "Analyze"}
         </button>
       </div>
@@ -138,7 +138,7 @@ export default function Analysis() {
       {data && !loading && ch && (
         <div className="space-y-6">
           {/* Verdict header */}
-          <div className="bg-white rounded-xl shadow-sm p-4 flex flex-wrap items-center gap-4">
+          <div className="panel p-4 flex flex-wrap items-center gap-4">
             <div>
               <div className="text-2xl font-bold text-ink flex items-center gap-2">
                 {data.ticker}
@@ -151,11 +151,11 @@ export default function Analysis() {
                 >
                   {watched ? "★" : "☆"}
                 </button>
-                <span className="text-base font-normal text-slate-500">{data.name}</span>
+                <span className="text-base font-normal text-ink-secondary">{data.name}</span>
               </div>
               <div className="text-lg">
                 ${Number(data.price).toFixed(2)}{" "}
-                <span className={data.day_change_pct >= 0 ? "text-alpha" : "text-red-600"}>
+                <span className={data.day_change_pct >= 0 ? "text-brand" : "text-loss"}>
                   {data.day_change_pct != null ? `${data.day_change_pct >= 0 ? "+" : ""}${data.day_change_pct.toFixed(2)}%` : ""}
                 </span>
               </div>
@@ -165,32 +165,32 @@ export default function Analysis() {
               {mtfBadge}
               {data.trend && (
                 <div className="text-center" title="Long-term structure: 200-day, 50/200 regime, weekly trend, 6-12mo returns. This decides the verdict.">
-                  <div className="text-xs uppercase tracking-wide text-slate-400">Long-term trend</div>
+                  <div className="text-xs uppercase tracking-wide text-ink-muted">Long-term trend</div>
                   <div className={`text-2xl font-bold ${
-                    data.trend.direction === "up" ? "text-alpha"
-                      : data.trend.direction === "down" ? "text-red-600" : "text-amber-600"
+                    data.trend.direction === "up" ? "text-brand"
+                      : data.trend.direction === "down" ? "text-loss" : "text-amber-600"
                   }`}>
                     {data.trend.direction === "up" ? "▲ UP" : data.trend.direction === "down" ? "▼ DOWN" : "◆ MIXED"}
-                    <span className="text-sm font-semibold text-slate-400"> {data.trend.score}</span>
+                    <span className="text-sm font-semibold text-ink-muted"> {data.trend.score}</span>
                   </div>
                 </div>
               )}
               {data.timing && (
                 <div className="text-center" title="Short-term entry timing (RSI, MACD, weekly move). Only tunes the entry — never flips the direction.">
-                  <div className="text-xs uppercase tracking-wide text-slate-400">Entry timing</div>
-                  <div className={`text-2xl font-bold ${data.timing.score >= 55 ? "text-alpha" : data.timing.score >= 40 ? "text-amber-600" : "text-red-600"}`}>
+                  <div className="text-xs uppercase tracking-wide text-ink-muted">Entry timing</div>
+                  <div className={`text-2xl font-bold ${data.timing.score >= 55 ? "text-brand" : data.timing.score >= 40 ? "text-amber-600" : "text-loss"}`}>
                     {data.timing.score >= 55 ? "Good" : data.timing.score >= 40 ? "OK" : "Poor"}
-                    <span className="text-sm font-semibold text-slate-400"> {data.timing.score}</span>
+                    <span className="text-sm font-semibold text-ink-muted"> {data.timing.score}</span>
                   </div>
                 </div>
               )}
               <div className="text-center">
-                <div className="text-xs uppercase tracking-wide text-slate-400">Signal</div>
+                <div className="text-xs uppercase tracking-wide text-ink-muted">Signal</div>
                 <div className="text-2xl font-bold" style={{ color: verdictColor }}>{data.recommendation}</div>
               </div>
             </div>
             {data.verdict_reason && (
-              <div className="w-full mt-1 pt-2 border-t border-slate-100 text-sm text-slate-600">
+              <div className="w-full mt-1 pt-2 border-t border-line text-sm text-ink-secondary">
                 <span className="font-semibold text-ink">Why: </span>{data.verdict_reason}
               </div>
             )}
@@ -198,10 +198,10 @@ export default function Analysis() {
 
           {/* Trade plan — the actionable half: entry, invalidation, targets, size */}
           {data.trade_plan && (
-            <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-alpha">
+            <div className="panel p-4 border-l-4 border-alpha">
               <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
                 <div className="font-semibold text-ink">🎯 Trade plan</div>
-                <div className="flex items-center gap-2 text-xs text-slate-500">
+                <div className="flex items-center gap-2 text-xs text-ink-secondary">
                   <label className="flex items-center gap-1">
                     Account $
                     <input type="number" min={100} step={1000} value={account}
@@ -239,15 +239,15 @@ export default function Analysis() {
                     <PlanCell label="Size" value={`${data.trade_plan.shares} sh`}
                               sub={`$${Math.round(data.trade_plan.position_value).toLocaleString()}`} />
                   </div>
-                  <div className="mt-2 text-xs text-slate-500">
+                  <div className="mt-2 text-xs text-ink-secondary">
                     Risking <b>${Math.round(data.trade_plan.risk_amount).toLocaleString()}</b> ({data.trade_plan.basis}).
                     {" "}{data.trade_plan.note}
                   </div>
                 </>
               ) : (
-                <div className="text-sm text-slate-600">{data.trade_plan.note}</div>
+                <div className="text-sm text-ink-secondary">{data.trade_plan.note}</div>
               )}
-              <div className="mt-2 text-xs text-slate-400">
+              <div className="mt-2 text-xs text-ink-muted">
                 Stop is 1.5×ATR below entry, widened under nearby support so normal volatility
                 doesn't take you out. Not financial advice.
               </div>
@@ -256,9 +256,9 @@ export default function Analysis() {
 
           {/* Thesis: the story behind the move */}
           {data.thesis && (
-            <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-alpha">
+            <div className="panel p-4 border-l-4 border-alpha">
               <div className="font-semibold text-ink mb-1">📝 Thesis</div>
-              <div className="text-sm text-slate-700 leading-relaxed">{data.thesis}</div>
+              <div className="text-sm text-ink leading-relaxed">{data.thesis}</div>
             </div>
           )}
 
@@ -269,21 +269,21 @@ export default function Analysis() {
             <div className={`rounded-xl shadow-sm p-4 border ${
               data.bottom.likelihood === "high" ? "bg-emerald-50 border-emerald-200"
                 : data.bottom.likelihood === "possible" ? "bg-amber-50 border-amber-200"
-                : "bg-white border-slate-100"
+                : "bg-white border-line"
             }`}>
               <div className="flex items-center gap-3 flex-wrap">
                 <span className="font-bold text-ink">🔻 Potential bottom</span>
                 <span className={`text-sm font-semibold px-2 py-0.5 rounded ${
                   data.bottom.likelihood === "high" ? "bg-emerald-100 text-emerald-800"
                     : data.bottom.likelihood === "possible" ? "bg-amber-100 text-amber-800"
-                    : "bg-slate-100 text-slate-600"
+                    : "bg-slate-100 text-ink-secondary"
                 }`}>
                   {data.bottom.likelihood === "high" ? "HIGH likelihood"
                     : data.bottom.likelihood === "possible" ? "POSSIBLE"
                     : "LOW likelihood"} · {data.bottom.score}/100
                 </span>
                 {data.bottom.firing != null && (
-                  <span className="text-xs text-slate-500">
+                  <span className="text-xs text-ink-secondary">
                     {data.bottom.firing} of {data.bottom.total} reversal tells firing
                   </span>
                 )}
@@ -292,7 +292,7 @@ export default function Analysis() {
               {data.bottom.checks?.length ? (
                 <ul className="mt-2 grid sm:grid-cols-2 gap-x-6 gap-y-1 text-sm">
                   {data.bottom.checks.map((ch: any, i: number) => (
-                    <li key={i} className={`flex items-start gap-2 ${ch.ok ? "text-emerald-700" : "text-slate-400"}`}>
+                    <li key={i} className={`flex items-start gap-2 ${ch.ok ? "text-emerald-700" : "text-ink-muted"}`}>
                       <span>{ch.ok ? "✓" : "✗"}</span>
                       <span>{ch.s}{ch.ok ? ` (+${ch.pts})` : ""}</span>
                     </li>
@@ -301,13 +301,13 @@ export default function Analysis() {
               ) : data.bottom.factors?.length > 0 ? (
                 <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
                   {data.bottom.factors.map((f: any, i: number) => (
-                    <li key={i} className="text-alpha">▲ {f.s}</li>
+                    <li key={i} className="text-brand">▲ {f.s}</li>
                   ))}
                 </ul>
               ) : (
-                <div className="mt-2 text-sm text-slate-500">No bottoming signals firing right now.</div>
+                <div className="mt-2 text-sm text-ink-secondary">No bottoming signals firing right now.</div>
               )}
-              <div className="mt-2 text-xs text-slate-400">
+              <div className="mt-2 text-xs text-ink-muted">
                 {data.bottom.explainer ??
                   "Score sums classic reversal tells (oversold RSI, RSI divergence, 52-week-low/support test, capitulation candle, 20-EMA reclaim). <35 low · 35-59 possible · ≥60 high."}
               </div>
@@ -319,10 +319,10 @@ export default function Analysis() {
             <div className={`rounded-xl shadow-sm p-4 border ${
               data.csp_signal.active
                 ? "bg-emerald-50 border-emerald-200"
-                : "bg-white border-slate-100"
+                : "bg-white border-line"
             }`}>
               <div className="flex items-center gap-3 flex-wrap">
-                <span className={`font-bold ${data.csp_signal.active ? "text-emerald-700" : "text-slate-500"}`}>
+                <span className={`font-bold ${data.csp_signal.active ? "text-emerald-700" : "text-ink-secondary"}`}>
                   {data.csp_signal.active
                     ? `💰 Cash-Secured Put opportunity (${data.csp_signal.strength})`
                     : "Cash-Secured Put signal: not today"}
@@ -333,18 +333,18 @@ export default function Analysis() {
                   </span>
                 )}
                 {data.dip_bounce?.dips >= 3 && (
-                  <span className="text-xs text-slate-500">
+                  <span className="text-xs text-ink-secondary">
                     history: {data.dip_bounce.dips} similar dips, {(data.dip_bounce.win_rate * 100).toFixed(0)}% bounced,
                     avg {data.dip_bounce.avg_return >= 0 ? "+" : ""}{data.dip_bounce.avg_return}% in 10d
                   </span>
                 )}
               </div>
-              <div className="mt-1 text-sm text-slate-600">{data.csp_signal.reason}</div>
+              <div className="mt-1 text-sm text-ink-secondary">{data.csp_signal.reason}</div>
             </div>
           )}
 
           {/* Candlestick + Bollinger + EMAs + S/R + cycle shading + signals */}
-          <div className="bg-white rounded-xl shadow-sm p-4">
+          <div className="panel p-4">
             <div className="font-semibold text-ink mb-2">
               Price · candlesticks, Bollinger Bands, moving averages, support/resistance
               <ChartExplainer
@@ -415,7 +415,7 @@ export default function Analysis() {
                 doubleClick: "reset",
               } as any}
             />
-            <div className="text-xs text-slate-400 mt-1">
+            <div className="text-xs text-ink-muted mt-1">
               Green/red shading marks bullish/bearish cycles (50-day vs 200-day trend). Dashed lines = support (green) / resistance (red). ▲▼ = crossover/breakout signals.
               <span className="hidden sm:inline"> Zoom: use the 1M/3M/6M/1Y buttons or the mini-slider below the chart; scroll/pinch to zoom, drag to pan, double-click to reset.</span>
             </div>
@@ -423,7 +423,7 @@ export default function Analysis() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Volume */}
-            <div className="bg-white rounded-xl shadow-sm p-4">
+            <div className="panel p-4">
               <div className="font-semibold text-ink mb-2">
                 Volume
                 <ChartExplainer
@@ -448,7 +448,7 @@ export default function Analysis() {
               />
             </div>
             {/* MACD */}
-            <div className="bg-white rounded-xl shadow-sm p-4">
+            <div className="panel p-4">
               <div className="font-semibold text-ink mb-2">
                 MACD (12, 26, 9)
                 <ChartExplainer
@@ -479,7 +479,7 @@ export default function Analysis() {
           </div>
 
           {/* RSI */}
-          <div className="bg-white rounded-xl shadow-sm p-4">
+          <div className="panel p-4">
             <div className="font-semibold text-ink mb-2">
               RSI (14)
               <ChartExplainer
@@ -510,7 +510,7 @@ export default function Analysis() {
 
           <div className="grid md:grid-cols-3 gap-6">
             {/* Indicators */}
-            <div className="bg-white rounded-xl shadow-sm p-4">
+            <div className="panel p-4">
               <div className="font-semibold text-ink mb-3">Indicators</div>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                 <Row k="RSI (14)" v={ind.rsi} />
@@ -528,45 +528,45 @@ export default function Analysis() {
               </div>
             </div>
             {/* Levels */}
-            <div className="bg-white rounded-xl shadow-sm p-4">
+            <div className="panel p-4">
               <div className="font-semibold text-ink mb-3">Support &amp; Resistance</div>
               <div className="text-sm">
-                <div className="text-red-600 font-medium mb-1">Resistance</div>
+                <div className="text-loss font-medium mb-1">Resistance</div>
                 {(data.levels?.resistance || []).length
                   ? data.levels.resistance.map((r: number) => <div key={r} className="pl-2">${r}</div>)
-                  : <div className="pl-2 text-slate-400">— none above price —</div>}
-                <div className="text-alpha font-medium mt-3 mb-1">Support</div>
+                  : <div className="pl-2 text-ink-muted">— none above price —</div>}
+                <div className="text-brand font-medium mt-3 mb-1">Support</div>
                 {(data.levels?.support || []).length
                   ? data.levels.support.map((s: number) => <div key={s} className="pl-2">${s}</div>)
-                  : <div className="pl-2 text-slate-400">— none below price —</div>}
+                  : <div className="pl-2 text-ink-muted">— none below price —</div>}
               </div>
             </div>
             {/* Signals + factors */}
-            <div className="bg-white rounded-xl shadow-sm p-4">
+            <div className="panel p-4">
               <div className="font-semibold text-ink mb-3">Recent signals</div>
               <ul className="space-y-1.5 text-sm">
                 {(data.signals || []).length ? data.signals.map((s: any, i: number) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className={s.type === "bull" ? "text-alpha" : "text-red-600"}>{s.type === "bull" ? "▲" : "▼"}</span>
-                    <span><span className="text-slate-400">{s.date}</span> — {s.label}</span>
+                    <span className={s.type === "bull" ? "text-brand" : "text-loss"}>{s.type === "bull" ? "▲" : "▼"}</span>
+                    <span><span className="text-ink-muted">{s.date}</span> — {s.label}</span>
                   </li>
-                )) : <li className="text-slate-400">No crossovers in the last 90 days.</li>}
+                )) : <li className="text-ink-muted">No crossovers in the last 90 days.</li>}
               </ul>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm p-4">
+          <div className="panel p-4">
             <div className="font-semibold text-ink mb-3">Why this signal</div>
             {data.trend && data.timing ? (
               <div className="grid md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
                 <div>
-                  <div className="text-xs uppercase tracking-wide text-slate-400 mb-2">
+                  <div className="text-xs uppercase tracking-wide text-ink-muted mb-2">
                     Long-term trend — decides the verdict
                   </div>
                   <ul className="space-y-1.5">
                     {data.trend.factors.map((f: any, i: number) => (
                       <li key={i} className="flex items-start gap-2">
-                        <span className={f.t === "bull" ? "text-alpha" : f.t === "bear" ? "text-red-600" : "text-slate-400"}>
+                        <span className={f.t === "bull" ? "text-brand" : f.t === "bear" ? "text-loss" : "text-ink-muted"}>
                           {f.t === "bull" ? "▲" : f.t === "bear" ? "▼" : "•"}
                         </span>
                         <span>{f.s}</span>
@@ -575,13 +575,13 @@ export default function Analysis() {
                   </ul>
                 </div>
                 <div>
-                  <div className="text-xs uppercase tracking-wide text-slate-400 mb-2">
+                  <div className="text-xs uppercase tracking-wide text-ink-muted mb-2">
                     Entry timing — tunes the entry, never flips the direction
                   </div>
                   <ul className="space-y-1.5">
                     {data.timing.factors.map((f: any, i: number) => (
                       <li key={i} className="flex items-start gap-2">
-                        <span className={f.t === "bull" ? "text-alpha" : f.t === "bear" ? "text-red-600" : "text-slate-400"}>
+                        <span className={f.t === "bull" ? "text-brand" : f.t === "bear" ? "text-loss" : "text-ink-muted"}>
                           {f.t === "bull" ? "▲" : f.t === "bear" ? "▼" : "•"}
                         </span>
                         <span>{f.s}</span>
@@ -594,7 +594,7 @@ export default function Analysis() {
               <ul className="grid md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
                 {data.factors.map((f: any, i: number) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className={f.t === "bull" ? "text-alpha" : f.t === "bear" ? "text-red-600" : "text-slate-400"}>
+                    <span className={f.t === "bull" ? "text-brand" : f.t === "bear" ? "text-loss" : "text-ink-muted"}>
                       {f.t === "bull" ? "▲" : f.t === "bear" ? "▼" : "•"}
                     </span>
                     <span>{f.s}</span>
@@ -602,7 +602,7 @@ export default function Analysis() {
                 ))}
               </ul>
             )}
-            <div className="mt-4 text-xs text-slate-400">
+            <div className="mt-4 text-xs text-ink-muted">
               The verdict follows the long-term structure; a red day or green week only changes the timing read. Not financial advice.
             </div>
           </div>
@@ -615,20 +615,20 @@ export default function Analysis() {
 function Row({ k, v }: { k: string; v: any }) {
   return (
     <>
-      <div className="text-slate-500">{k}</div>
+      <div className="text-ink-secondary">{k}</div>
       <div className="text-right font-medium">{v ?? "—"}</div>
     </>
   );
 }
 function PlanCell({ label, value, sub, tone }:
   { label: string; value: string; sub?: string; tone?: "red" | "green" | "amber" }) {
-  const color = tone === "red" ? "text-red-600" : tone === "green" ? "text-alpha"
+  const color = tone === "red" ? "text-loss" : tone === "green" ? "text-brand"
     : tone === "amber" ? "text-amber-600" : "text-ink";
   return (
     <div>
-      <div className="text-[10px] uppercase tracking-wide text-slate-400">{label}</div>
+      <div className="text-[10px] uppercase tracking-wide text-ink-muted">{label}</div>
       <div className={`font-bold ${color}`}>{value}</div>
-      {sub && <div className="text-[10px] text-slate-400">{sub}</div>}
+      {sub && <div className="text-[10px] text-ink-muted">{sub}</div>}
     </div>
   );
 }

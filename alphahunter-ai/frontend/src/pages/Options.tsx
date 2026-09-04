@@ -25,12 +25,12 @@ export default function Options() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-        <h1 className="text-xl font-bold text-ink">Options Income</h1>
+        <h1 className="text-xl font-semibold tracking-tight text-ink">Options Income</h1>
         <div className="flex gap-1 bg-white rounded-lg p-1 shadow-sm">
           <button
             onClick={() => setKind("coveredcalls")}
             className={`px-3 py-1 rounded text-sm ${
-              kind === "coveredcalls" ? "bg-alpha text-white" : "text-slate-600"
+              kind === "coveredcalls" ? "bg-brand text-white" : "text-ink-secondary"
             }`}
           >
             Covered Calls
@@ -38,7 +38,7 @@ export default function Options() {
           <button
             onClick={() => setKind("csp")}
             className={`px-3 py-1 rounded text-sm ${
-              kind === "csp" ? "bg-alpha text-white" : "text-slate-600"
+              kind === "csp" ? "bg-brand text-white" : "text-ink-secondary"
             }`}
           >
             Cash-Secured Puts
@@ -54,25 +54,25 @@ export default function Options() {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {rows.map((r) => (
-            <div key={r.ticker} className="bg-white rounded-xl shadow-sm p-4">
+            <div key={r.ticker} className="panel p-4">
               <div className="flex justify-between items-baseline">
-                <span className="font-bold text-alpha text-lg">{r.ticker}</span>
-                <span className="text-sm text-slate-500">Score {r.score.toFixed(0)}</span>
+                <span className="font-bold text-brand text-lg">{r.ticker}</span>
+                <span className="text-sm text-ink-secondary">Score {r.score.toFixed(0)}</span>
               </div>
-              <div className="text-sm text-slate-600 mt-1">{r.company}</div>
-              <div className="mt-3 text-sm bg-slate-50 rounded p-2">
+              <div className="text-sm text-ink-secondary mt-1">{r.company}</div>
+              <div className="mt-3 text-sm bg-surface-sunken rounded p-2">
                 {kind === "coveredcalls" ? r.covered_call : r.cash_secured_put}
               </div>
-              <div className="mt-2 text-xs text-slate-400">{r.confidence} confidence</div>
+              <div className="mt-2 text-xs text-ink-muted">{r.confidence} confidence</div>
             </div>
           ))}
           {rows.length === 0 && (
-            <div className="md:col-span-2 lg:col-span-3 bg-white rounded-xl shadow-sm p-8 text-center">
+            <div className="md:col-span-2 lg:col-span-3 panel p-8 text-center">
               <div className="text-4xl mb-2">🧾</div>
               <div className="font-semibold text-ink">
                 No {kind === "coveredcalls" ? "covered-call" : "cash-secured-put"} ideas in the latest scan
               </div>
-              <div className="text-sm text-slate-500 mt-1 max-w-md mx-auto">
+              <div className="text-sm text-ink-secondary mt-1 max-w-md mx-auto">
                 Option ideas come from the daily scan's qualifying names. When the market is
                 calm the scan is thin — for a per-ticker cash-secured-put read, open the{" "}
                 <b>Analysis</b> tab and enter any symbol (the CSP-on-dip signal there works live).
