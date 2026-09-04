@@ -9,6 +9,15 @@ Conventions: keep `pytest` green and offline; surface every new signal with its
 inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
 
 ## Done
+- [x] **Sector peer comparison (+ proof the R:R fix works).** New
+  `api/peers.js` returns the ticker alongside 4 genuine competitors (static,
+  auditable peer groups) with price, day/1M/6M return, RSI, distance from the
+  52-week high and trend, plus a **standing** ("#2 of 5 on 6-month return ·
+  above peer median") and the spread vs the peer median. Rendered as a
+  "🏳️ Sector peers" table on Analysis with the subject row highlighted and
+  every peer clickable — so a 20% drawdown reads as a *sector* story or a
+  *company* story rather than an unqualified number. Also added a regression
+  test proving R:R now varies with analyst upside (it was pinned at 1.33).
 - [x] **Validated the last unvalidated signals — and found a real defect.**
   Extended `analyze_signals.py` to measure every boolean signal (risk flags,
   CSP, R:R) as forward return WITH vs WITHOUT, over 1,845 samples. Findings:

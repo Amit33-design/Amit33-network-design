@@ -4,6 +4,7 @@ import Plot from "react-plotly.js";
 import { api } from "../lib/api";
 import { ErrorBox, Loading } from "../components/Loading";
 import ChartExplainer from "../components/ChartExplainer";
+import PeerComparison from "../components/PeerComparison";
 import { isWatched, toggleWatchlist, onWatchlistChange } from "../lib/watchlist";
 
 const RANGES = ["6mo", "1y", "2y", "5y"];
@@ -260,6 +261,8 @@ export default function Analysis() {
               <div className="text-sm text-slate-700 leading-relaxed">{data.thesis}</div>
             </div>
           )}
+
+          {data.ticker && <PeerComparison ticker={data.ticker} />}
 
           {/* Potential bottom */}
           {data.bottom && (

@@ -255,3 +255,32 @@ def test_tradability_allows_normal_liquid_names():
     for sym in ("GOOGL", "BRK-B"):
         s = _snap(sym, 200.0, volume=3_000_000)
         assert tradability_reason(s, ta.indicator_bundle(s.history)) is None
+
+
+def test_risk_reward_varies_with_analyst_target(crash_snapshot):
+    """R:R must reflect the stock, not the formula.
+
+    It used to be measured to target1 = last + 2*ATR against a stop of
+    last - 1.5*ATR, making it the constant 2.0/1.5 = 1.33 for every name
+    (67% of 2,081 historical picks scored exactly 1.33). It is now measured
+    to the analyst target, so two stocks with the same volatility but
+    different upside get different R:R.
+    """
+    import copy
+    hit = AlphaHunterScanner(require_all=False).evaluate(crash_snapshot)
+
+    lo = copy.deepcopy(crash_snapshot)
+    lo.info["targetMeanPrice"] = crash_snapshot.last_close * 1.10   # +10% upside
+    hi = copy.deepcopy(crash_snapshot)
+    hi.info["targetMeanPrice"] = crash_snapshot.last_close * 1.80   # +80% upside
+
+    rr_lo = score_snapshot(lo, hit, md=None)["risk_reward"]
+    rr_hi = score_snapshot(hi, hit, md=None)["risk_reward"]
+    assert rr_lo is not None and rr_hi is not None
+    assert rr_hi > rr_lo, "more analyst upside must mean more reward per unit risk"
+    assert rr_lo != 1.33 or rr_hi != 1.33, "R:R must no longer be pinned at 1.33"
+
+    # And with no analyst target it falls back safely rather than crashing.
+    none_t = copy.deepcopy(crash_snapshot)
+    none_t.info.pop("targetMeanPrice", None)
+    assert score_snapshot(none_t, hit, md=None)["risk_reward"] is not None
