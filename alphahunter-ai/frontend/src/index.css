@@ -118,3 +118,35 @@
   background: rgb(var(--line-strong)); border-radius: 4px;
 }
 .thin-scroll::-webkit-scrollbar-track { background: transparent; }
+
+/* AG Grid: quartz ships its own blue-grey palette, which clashes with our
+   green-tinted surfaces. Re-point its theme variables at our design tokens so
+   the grid belongs to the same design system in both themes. */
+.ag-theme-quartz,
+.ag-theme-quartz-dark {
+  --ag-background-color: rgb(var(--surface));
+  --ag-foreground-color: rgb(var(--ink));
+  --ag-secondary-foreground-color: rgb(var(--ink-secondary));
+  --ag-header-background-color: rgb(var(--surface-sunken));
+  --ag-header-foreground-color: rgb(var(--ink-secondary));
+  --ag-border-color: rgb(var(--line));
+  --ag-row-border-color: rgb(var(--line) / 0.7);
+  --ag-odd-row-background-color: rgb(var(--surface));
+  --ag-row-hover-color: rgb(var(--surface-sunken));
+  --ag-selected-row-background-color: rgb(var(--brand) / 0.14);
+  --ag-control-panel-background-color: rgb(var(--surface-sunken));
+  --ag-input-focus-border-color: rgb(var(--brand));
+  --ag-range-selection-border-color: rgb(var(--brand));
+  --ag-checkbox-checked-color: rgb(var(--brand));
+  --ag-font-size: 13px;
+  --ag-grid-size: 6px;
+  --ag-border-radius: 10px;
+  --ag-wrapper-border-radius: 10px;
+}
+/* Column headers read as labels, matching .label-eyebrow elsewhere. */
+.ag-theme-quartz .ag-header-cell-text,
+.ag-theme-quartz-dark .ag-header-cell-text {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+}
+.ag-theme-quartz .ag-cell,
+.ag-theme-quartz-dark .ag-cell { font-variant-numeric: tabular-nums lining-nums; }

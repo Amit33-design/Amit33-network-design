@@ -96,7 +96,10 @@ const columns: ColDef<Recommendation>[] = [
     } },
   { headerName: "Covered Call", field: "covered_call", width: 230 },
   { headerName: "CSP", field: "cash_secured_put", width: 230 },
-  { headerName: "Why", field: "reasoning", width: 520, wrapText: true, autoHeight: true },
+  // Single-line: wrapText + autoHeight here made every row ~450px tall, so only
+  // two rows fit on screen. Full text lives in the tooltip / mobile card.
+  { headerName: "Why", field: "reasoning", width: 420,
+    tooltipValueGetter: (p) => p.data?.reasoning ?? "" },
 ];
 
 function RecCard({ r }: { r: Recommendation }) {
@@ -178,7 +181,11 @@ export default function RecGrid({ rows }: { rows: Recommendation[] }) {
         <AgGridReact<Recommendation>
           rowData={rows}
           columnDefs={columns}
-          defaultColDef={{ sortable: true, filter: true, resizable: true }}
+          defaultColDef={{ sortable: true, filter: true, resizable: true,
+                           tooltipValueGetter: (p) => (p.value == null ? "" : String(p.value)) }}
+          rowHeight={38}
+          headerHeight={38}
+          tooltipShowDelay={300}
           pagination
           paginationPageSize={25}
         />
