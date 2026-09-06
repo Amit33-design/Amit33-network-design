@@ -1,0 +1,42 @@
+{
+  "samples": 1750,
+  "train": 856,
+  "test": 894,
+  "split_date": "2026-08-09",
+  "baseline_rank_ic": -0.0527,
+  "ridge_rank_ic": -0.0109,
+  "gbm_rank_ic": 0.0338,
+  "ridge_coefficients": {
+    "technical": 1.5809,
+    "fundamental": 0.3979,
+    "options": -0.2087,
+    "momentum": -0.883,
+    "sentiment": 2.2045,
+    "expected_gain_%": 0.8034
+  },
+  "ridge_intercept": -7.4753,
+  "feature_means": {
+    "technical": 59.7407,
+    "fundamental": 59.5794,
+    "options": 65.9229,
+    "momentum": 47.0257,
+    "sentiment": 69.1939,
+    "expected_gain_%": 32.0141
+  },
+  "feature_scales": {
+    "technical": 11.0197,
+    "fundamental": 23.6019,
+    "options": 7.6585,
+    "momentum": 15.7735,
+    "sentiment": 12.8216,
+    "expected_gain_%": 25.3382
+  },
+  "rank_ic_standard_error": 0.0335,
+  "noise_floor": 0.067,
+  "baseline_significant": false,
+  "ridge_significant": false,
+  "gbm_significant": false,
+  "ships": false,
+  "verdict": "nothing ships: on 894 held-out rows the composite scores IC -0.0527, ridge -0.0109, GBM 0.0338 \u2014 all inside the +/-0.067 noise floor, so none of them demonstrably ranks future returns on this window",
+  "caveat": "Forward returns are reconstructed from re-appearances in the scan history, so the horizon varies per row and the sample is biased toward names that keep screening. Treat these ICs as a filter for obviously-bad ideas, not as a measurement of live performance."
+}

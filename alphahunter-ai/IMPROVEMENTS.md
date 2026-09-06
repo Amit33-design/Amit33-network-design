@@ -287,8 +287,30 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   R:R, ranked by expected gain; `format_digest()` renders it. Delivers to
   Slack/Discord webhooks (SLACK_WEBHOOK_URL / DISCORD_WEBHOOK_URL repo secrets,
   wired into alphahunter-scan.yml) and degrades to logging when unset. +2 tests.
-- [ ] **Iter 8 — ML ranker.** Train a gradient-boosted model on historical
-  setups → forward returns; blend with the rule-based score.
+- [x] **Iter 8 — ML ranker — built, evaluated, and deliberately NOT shipped.**
+  New `backend/ml_ranker.py` fits a ridge regression (explainable: a
+  prediction decomposes exactly into coefficient x standardized feature, and
+  `explain()` renders those as plain-English reasons) plus a gradient-boosted
+  model as a yardstick, trains on the **earlier half** of the scan history and
+  scores on the **later half it has never seen**, using rank IC — the right
+  metric for a ranker, which only has to order names correctly.
+
+  **Result on 894 held-out rows: nothing ships.** The composite score scored
+  IC **-0.053**, ridge **-0.011**, GBM **+0.034**, against a noise floor of
+  **±0.067** (2 standard errors at this sample size). None of them
+  demonstrably ranks future returns on this window — including, notably, the
+  shipped composite score.
+
+  The first version of the ship gate would have shipped the ridge model,
+  because it "beat the baseline" (-0.011 vs -0.053). Being *less wrong than a
+  backwards ruler* is not an edge. The gate now requires the model to rank the
+  right way up, clear the noise floor, and beat the incumbent — and there is a
+  regression test built from exactly that failure shape.
+
+  Caveat recorded in the output itself: forward returns are reconstructed from
+  re-appearances in the scan history, so the horizon varies per row and the
+  sample is biased toward names that keep screening. Re-run
+  `python -m backend.ml_ranker` as history accumulates.
 - [x] **Iter 9 — Multi-timeframe confirmation.** New `technical.weekly_trend()`
   reads a higher-timeframe (10-week EMA) trend and folds agreement into the
   momentum sub-score: weekly-up confirms the daily bounce (+6), weekly-down
