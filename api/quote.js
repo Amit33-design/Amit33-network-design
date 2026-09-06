@@ -32,6 +32,19 @@ function rsi(closes, period = 14) {
   return 100 - 100 / (1 + rs);
 }
 
+// Average true range, approximated from closes alone (the chart payload we
+// keep is close-only). Close-to-close movement understates a real ATR
+// slightly, which is the safe direction: exit levels come out a little
+// tighter rather than a little wider than the stock's real range.
+function atrFromCloses(closes, period = 14) {
+  if (closes.length < period + 1) return null;
+  let sum = 0;
+  for (let i = closes.length - period; i < closes.length; i++) {
+    sum += Math.abs(closes[i] - closes[i - 1]);
+  }
+  return sum / period;
+}
+
 function technicals(closes) {
   const last = closes[closes.length - 1];
   const s50 = sma(closes, 50);
@@ -87,6 +100,9 @@ function technicals(closes) {
     recommendation: rec,
     reason,
     rsi: r != null ? Math.round(r) : null,
+    // Exposed so the client can size exit levels to the stock's own
+    // volatility instead of applying one flat percentage to everything.
+    atr: (() => { const a = atrFromCloses(closes); return a == null ? null : Math.round(a * 100) / 100; })(),
     momentum_6mo: mom6 != null ? Math.round(mom6 * 10) / 10 : null,
     dist_52w_high: distHigh != null ? Math.round(distHigh * 10) / 10 : null,
     factors,

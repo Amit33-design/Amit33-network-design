@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import type { PortfolioResponse } from "../lib/types";
 import { ErrorBox } from "../components/Loading";
+import { buildPlan, checkExit, tradingDaysBetween, ACTION_LABEL,
+         type ExitAction } from "../lib/exitRules";
 
 const STORAGE_KEY = "alphahunter.portfolio";
-const SAMPLE = `AAPL, 10, 150
-MSFT, 5, 320
+// The 4th field (buy date) is optional and drives the time-stop. Without it a
+// position can still hit its target or stop, it just never goes "stale".
+const SAMPLE = `AAPL, 10, 150, 2026-08-20
+MSFT, 5, 320, 2026-08-25
 NVDA, 8, 95
 PLTR, 12, 90`;
 
@@ -16,6 +20,10 @@ export default function Portfolio() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [savedAt, setSavedAt] = useState<string>("");
+  // ticker -> buy date, kept from the textarea so the time-stop can be applied
+  // to the API's response (which does not echo the date back).
+  const [buyDates, setBuyDates] = useState<Record<string, string>>({});
+  const [atrs, setAtrs] = useState<Record<string, number>>({});
 
   // Load saved holdings on first mount.
   useEffect(() => {
@@ -37,8 +45,11 @@ export default function Portfolio() {
       .map((l) => l.trim())
       .filter(Boolean)
       .map((l) => {
-        const [ticker, qty, cost] = l.split(/[,\t]/).map((s) => s.trim());
-        return { ticker: ticker.toUpperCase(), quantity: Number(qty), cost_basis: Number(cost) };
+        const [ticker, qty, cost, date] = l.split(/[,\t]/).map((s) => s.trim());
+        return {
+          ticker: ticker.toUpperCase(), quantity: Number(qty), cost_basis: Number(cost),
+          buy_date: date && /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : undefined,
+        };
       })
       .filter((p) => p.ticker && p.quantity > 0);
   }
@@ -53,9 +64,30 @@ export default function Portfolio() {
     setLoading(true);
     setError("");
     try {
-      const { data, live } = await api.importPortfolio(parse());
+      const holdings = parse();
+      setBuyDates(Object.fromEntries(
+        holdings.filter((h) => h.buy_date).map((h) => [h.ticker, h.buy_date as string])));
+      const { data, live } = await api.importPortfolio(holdings);
       setData(data);
       setLive(live);
+
+      // ATR per holding, so exit levels scale to each stock rather than
+      // applying one flat percentage to everything. Best-effort: without it
+      // the plan falls back to fixed percentages.
+      try {
+        const r = await fetch("/api/quote", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tickers: holdings.map((h) => h.ticker) }),
+        });
+        if (r.ok) {
+          const j = await r.json();
+          const next: Record<string, number> = {};
+          for (const [t, q] of Object.entries<any>(j.quotes || {})) {
+            if (q?.atr) next[t] = q.atr;
+          }
+          setAtrs(next);
+        }
+      } catch { /* exits still work on fixed percentages */ }
       // Auto-save on every successful analyze so holdings persist.
       save();
     } catch (e) {
@@ -83,7 +115,9 @@ export default function Portfolio() {
       <div className="grid md:grid-cols-3 gap-6">
         <div className="panel p-4">
           <div className="text-sm text-ink-secondary mb-2">
-            Holdings — <code>TICKER, qty, cost basis</code> per line:
+            Holdings — <code>TICKER, qty, cost basis</code> per line.{" "}
+            Add a <code>buy date</code> (<code>YYYY-MM-DD</code>) as a 4th field
+            and the position also gets a time stop.
           </div>
           <textarea
             value={text}
@@ -130,7 +164,7 @@ export default function Portfolio() {
                 <table className="w-full text-sm">
                   <thead className="text-ink-muted text-left bg-surface-sunken">
                     <tr>
-                      {["Ticker", "Price", "Value", "G/L %", "Score", "Recommendation"].map((h) => (
+                      {["Ticker", "Price", "Value", "G/L %", "Exit signal", "Score", "Recommendation"].map((h) => (
                         <th key={h} className="px-3 py-2">{h}</th>
                       ))}
                     </tr>
@@ -149,6 +183,9 @@ export default function Portfolio() {
                           }`}
                         >
                           {p["gain_loss_%"] != null ? `${p["gain_loss_%"]}%` : "—"}
+                        </td>
+                        <td className="px-3 py-2 align-top">
+                          <ExitCell row={p} buyDate={buyDates[p.ticker]} atr={atrs[p.ticker]} />
                         </td>
                         <td className="px-3 py-2">{p.overall_score ?? "—"}</td>
                         <td className="px-3 py-2">
@@ -171,6 +208,39 @@ export default function Portfolio() {
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+const EXIT_TONE: Record<ExitAction, string> = {
+  take_profit: "bg-gain-soft text-gain border-gain/30",
+  sell: "bg-loss-soft text-loss border-loss/30",
+  close_stale: "bg-warn-soft text-warn border-warn/30",
+  hold: "bg-surface-sunken text-ink-secondary border-line",
+};
+
+// Turns "I own this at $X" into "sell it / hold it, and here is why". The
+// product could always say Buy and never Sell; this is the other half.
+function ExitCell({ row, buyDate, atr }: { row: any; buyDate?: string; atr?: number }) {
+  const entry = row.cost_basis ?? row.entry;
+  const price = row.price;
+  if (!entry || price == null) return <span className="text-ink-muted">—</span>;
+
+  const plan = buildPlan(entry, { atr });
+  const daysHeld = buyDate ? tradingDaysBetween(buyDate) : 0;
+  const out = checkExit(plan, price, { daysHeld });
+
+  return (
+    <div className="min-w-[13rem]">
+      <span className={`inline-block rounded border px-2 py-0.5 text-2xs font-bold tracking-wide ${EXIT_TONE[out.action]}`}>
+        {ACTION_LABEL[out.action]}
+      </span>
+      <div className="mt-1 text-xs text-ink-secondary">{out.reason}</div>
+      {!buyDate && (
+        <div className="mt-0.5 text-2xs text-ink-muted">
+          add a buy date (4th field) to enable the time stop
+        </div>
+      )}
     </div>
   );
 }
