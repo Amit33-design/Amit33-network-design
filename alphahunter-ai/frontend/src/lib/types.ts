@@ -1,5 +1,11 @@
 // Mirrors the backend StockRecommendation payload (scoring/composite.py).
 export interface Recommendation {
+  /** Where to get out: stop, take-profit and the day count after which the
+   *  setup is stale. Mirrors backend/exit_rules.py. */
+  exit_plan?: {
+    entry: number; target: number; stop: number;
+    horizon_days: number; target_pct: number; stop_pct: number;
+  } | null;
   ticker: string;
   company: string;
   score: number;

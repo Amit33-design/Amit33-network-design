@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import type { ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Recommendation } from "../lib/types";
 import { chartColors, getTheme, onThemeChange } from "../lib/theme";
 
@@ -25,11 +25,16 @@ const C = () => chartColors();
 const num = (p: any) => (p.value == null ? "—" : Number(p.value).toFixed(2));
 const pct = (p: any) => (p.value == null ? "—" : `${Number(p.value).toFixed(1)}%`);
 
-const columns: ColDef<Recommendation>[] = [
+// `sortBy` decides which column opens sorted. The composite AI score was
+// hardcoded as the sort, which quietly re-ordered the growth feed by a score
+// tuned for oversold bounces — the exact thing the growth ranking exists to
+// avoid.
+const buildColumns = (sortBy: "score" | "growth_score"): ColDef<Recommendation>[] => [
   // Ticker links to the full Analysis chart for that symbol (client-side nav).
   { field: "ticker", pinned: "left", width: 95, cellRenderer: TickerCell },
   { field: "company", width: 170 },
-  { field: "score", headerName: "AI Score", width: 105, sort: "desc",
+  { field: "score", headerName: "AI Score", width: 105,
+    sort: sortBy === "score" ? "desc" : null,
     cellClassRules: { "font-bold": () => true },
     cellStyle: (p) => ({ color: p.value >= 70 ? C().gain : p.value >= 50 ? "#d9a441" : C().loss }) },
   { field: "quality_grade", headerName: "Quality", width: 95,
@@ -47,22 +52,62 @@ const columns: ColDef<Recommendation>[] = [
     cellStyle: (p) => ({ color: (p.value ?? 0) >= 0.6 ? C().gain : (p.value ?? 1) < 0.4 ? C().loss : C().ink }) },
   { field: "action", width: 115 },
   { headerName: "Setup", width: 110,
-    valueGetter: (p) => ((p.data?.metrics as any)?.profile === "opportunity" ? "Pullback" : "Crash dip"),
-    cellStyle: (p) => ({
-      color: (p.data?.metrics as any)?.profile === "opportunity" ? "#d9a441" : C().loss,
-      fontWeight: 600,
-    }),
-    tooltipValueGetter: (p) => ((p.data?.metrics as any)?.profile === "opportunity"
-      ? "Broad pullback screen: >$1B name down on the week/month or oversold — lower conviction tier"
-      : "Strict crash screen: down ≥5% day and ≥20% month — highest conviction tier") },
+    valueGetter: (p) => {
+      const profile = (p.data?.metrics as any)?.profile;
+      // "growth" rows come from a completely different screen. Without this
+      // they fell through to the else-branch and were labelled "Crash dip",
+      // which is the opposite of what they are.
+      return profile === "growth" ? "Growth"
+           : profile === "opportunity" ? "Pullback" : "Crash dip";
+    },
+    cellStyle: (p) => {
+      const profile = (p.data?.metrics as any)?.profile;
+      return {
+        color: profile === "growth" ? C().gain
+             : profile === "opportunity" ? "#d9a441" : C().loss,
+        fontWeight: 600,
+      };
+    },
+    tooltipValueGetter: (p) => {
+      const profile = (p.data?.metrics as any)?.profile;
+      return profile === "growth"
+        ? "Growth screen: revenue growth, uptrend above the 200-day, near the 52-week high, beating SPY — and not overheated"
+        : profile === "opportunity"
+        ? "Broad pullback screen: >$1B name down on the week/month or oversold — lower conviction tier"
+        : "Strict crash screen: down ≥5% day and ≥20% month — highest conviction tier";
+    } },
+  { headerName: "Growth", width: 100,
+    sort: sortBy === "growth_score" ? "desc" : null,
+    comparator: (a, b) => (a ?? -1) - (b ?? -1),
+    valueGetter: (p) => (p.data?.metrics as any)?.growth_score ?? null,
+    valueFormatter: (p: any) => (p.value == null ? "—" : Number(p.value).toFixed(1)),
+    cellStyle: (p) => ({ color: (p.value ?? 0) >= 85 ? C().gain : C().ink,
+                         fontWeight: (p.value ?? 0) >= 85 ? 700 : 400 }) },
+  { headerName: "Rev growth", width: 115,
+    valueGetter: (p) => (p.data?.metrics as any)?.revenue_growth ?? null,
+    valueFormatter: (p: any) => (p.value == null ? "—" : `${(p.value * 100).toFixed(0)}%`),
+    cellStyle: (p) => ({ color: (p.value ?? 0) > 0 ? C().gain : C().ink }) },
   { field: "confidence", width: 110 },
   { headerName: "RSI", width: 85, valueGetter: (p) => p.data?.metrics?.rsi, valueFormatter: num },
   { headerName: "Day %", width: 95, valueGetter: (p) => p.data?.metrics?.["day_%"], valueFormatter: pct },
   { headerName: "Month %", width: 100, valueGetter: (p) => p.data?.metrics?.["month_%"], valueFormatter: pct },
   { headerName: "Rev $B", width: 100, valueGetter: (p) => p.data?.metrics?.["revenue_$B"], valueFormatter: num },
   { headerName: "Entry", field: "entry", width: 90, valueFormatter: num },
-  { headerName: "Stop", field: "stop_loss", width: 90, valueFormatter: num },
-  { headerName: "Target", field: "target1", width: 95, valueFormatter: num },
+  // These show the EXIT PLAN when there is one, falling back to the legacy
+  // ATR levels. The grid and the dashboard cards were quoting different
+  // stop/target numbers for the same ticker, which is worse than either.
+  { headerName: "Stop", width: 90,
+    valueGetter: (p) => p.data?.exit_plan?.stop ?? p.data?.stop_loss ?? null,
+    valueFormatter: num,
+    cellStyle: () => ({ color: C().loss }) },
+  { headerName: "Take profit", width: 110,
+    valueGetter: (p) => p.data?.exit_plan?.target ?? p.data?.target1 ?? null,
+    valueFormatter: num,
+    cellStyle: () => ({ color: C().gain }) },
+  { headerName: "Review in", width: 100,
+    valueGetter: (p) => p.data?.exit_plan?.horizon_days ?? null,
+    valueFormatter: (p: any) => (p.value == null ? "—" : `${p.value}d`),
+    tooltipValueGetter: () => "Trading days after which the setup is stale and the capital is better used elsewhere" },
   { headerName: "R:R", field: "risk_reward", width: 80, valueFormatter: num,
     cellStyle: (p) => ({ color: p.data?.rr_pass === false ? C().loss : C().ink,
                          fontWeight: p.data?.rr_pass === false ? 700 : 400 }) },
@@ -168,9 +213,12 @@ function Cell({ k, v, accent }: { k: string; v: any; accent?: string }) {
   );
 }
 
-export default function RecGrid({ rows }: { rows: Recommendation[] }) {
+export default function RecGrid(
+  { rows, sortBy = "score" }: { rows: Recommendation[]; sortBy?: "score" | "growth_score" },
+) {
   const [theme, setTheme] = useState(getTheme);
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
+  const columns = useMemo(() => buildColumns(sortBy), [sortBy]);
   return (
     <>
       {/* Desktop / tablet: full AG Grid */}

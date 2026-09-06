@@ -5,7 +5,7 @@ import RecGrid from "../components/RecGrid";
 import { ErrorBox, Loading } from "../components/Loading";
 import SnapshotBanner from "../components/SnapshotBanner";
 
-type Feed = "top" | "oversold" | "breakouts";
+type Feed = "growth" | "top" | "oversold" | "breakouts";
 
 function FilterSelect({
   label, value, options, onChange,
@@ -27,7 +27,7 @@ function FilterSelect({
 }
 
 export default function Opportunities() {
-  const [feed, setFeed] = useState<Feed>("top");
+  const [feed, setFeed] = useState<Feed>("growth");
   const [rows, setRows] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -40,7 +40,10 @@ export default function Opportunities() {
     setLoading(true);
     setError("");
     const call =
-      feed === "top" ? api.marketTop : feed === "oversold" ? api.oversold : api.breakouts;
+      feed === "growth" ? api.growth
+      : feed === "top" ? api.marketTop
+      : feed === "oversold" ? api.oversold
+      : api.breakouts;
     call(100)
       .then((r) => {
         setRows(r.results);
@@ -65,7 +68,7 @@ export default function Opportunities() {
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h1 className="text-xl font-semibold tracking-tight text-ink">Opportunities</h1>
         <div className="flex gap-1 panel p-1">
-          {(["top", "oversold", "breakouts"] as Feed[]).map((f) => (
+          {(["growth", "top", "oversold", "breakouts"] as Feed[]).map((f) => (
             <button
               key={f}
               onClick={() => setFeed(f)}
@@ -78,10 +81,19 @@ export default function Opportunities() {
           ))}
         </div>
       </div>
-      {snap && <SnapshotBanner />}
+      {snap && feed !== "growth" && <SnapshotBanner />}
+      {feed === "growth" && (
+        <div className="panel px-3 py-2 mb-4 text-xs text-ink-secondary">
+          A different screen from the other three: these are growing businesses
+          whose stock is <b>already working</b> — revenue growth, an uptrend above
+          the 200-day, near the 52-week high and beating SPY. The other tabs look
+          for names that <b>fell</b>. Sorted by growth score; overheated names are
+          excluded rather than ranked highly.
+        </div>
+      )}
 
       {/* Filter bar */}
-      {!loading && rows.length > 0 && (
+      {!loading && rows.length > 0 && feed !== "growth" && (
         <div className="panel px-3 py-2 mb-4 flex items-center gap-4 flex-wrap">
           <FilterSelect label="Setup" value={setup} onChange={setSetup}
             options={[["all", "All"], ["crash", "Crash dip"], ["pullback", "Pullback"]]} />
@@ -118,7 +130,7 @@ export default function Opportunities() {
           </div>
         </div>
       ) : (
-        <RecGrid rows={filtered} />
+        <RecGrid rows={filtered} sortBy={feed === "growth" ? "growth_score" : "score"} />
       )}
     </div>
   );

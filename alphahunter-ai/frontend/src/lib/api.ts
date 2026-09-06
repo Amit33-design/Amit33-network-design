@@ -170,7 +170,18 @@ export async function runScan(): Promise<{
   }
 }
 
+/** Growth leaders. Served from the committed growth.json rather than the
+ *  scan API — the growth screen runs in CI and has no live backend route, and
+ *  reading the file keeps it working on the static deploy. */
+async function growthFeed(limit = 100) {
+  const r = await fetch("/growth.json");
+  if (!r.ok) throw new Error("growth screen has not run yet");
+  const j = await r.json();
+  return { results: (j.results || []).slice(0, limit), live: false };
+}
+
 export const api = {
+  growth: (limit = 100) => growthFeed(limit),
   marketTop: (limit = 50) => scanWithFallback(`/market/top?limit=${limit}`),
   oversold: (limit = 50) =>
     scanWithFallback(`/market/oversold?limit=${limit}`,
