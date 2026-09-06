@@ -71,8 +71,8 @@
       "target1": 209.06,
       "target2": 281.39212,
       "risk_reward": 3.84,
-      "covered_call": "Sell 2026-09-11 $172 call ~$6.90 (246% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $170 put ~$6.85 (245% ann.)",
+      "covered_call": "Sell 2026-09-11 $172 call ~$6.90 (295% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $170 put ~$6.85 (294% ann.)",
       "confidence": "High",
       "criteria_passed": [
         "revenue_over_1b",
@@ -101,7 +101,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "CRDO scored 77.9/100. Setup: revenue $1.59B. Contributions \u2014 technical 66/100 (x0.35 = 23.1); fundamental 100/100 (x0.25 = 25.0); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 52/100 (x0.05 = 2.6). Key drivers: oversold (RSI 34); below EMA200; positive free cash flow; strong net margin (34%); strong-buy consensus (1.32); 65% upside to target; rich CSP yield (245% ann.); wide bid/ask (illiquid); positive 1y trend (27%); positive 6m trend. Backtest: this setup fired 5x historically, bounced 80% of the time (avg +19.2% over the hold). Sector thesis: lagging Technology by 32pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "CRDO scored 77.9/100. Setup: revenue $1.59B. Contributions \u2014 technical 66/100 (x0.35 = 23.1); fundamental 100/100 (x0.25 = 25.0); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 52/100 (x0.05 = 2.6). Key drivers: oversold (RSI 34); below EMA200; positive free cash flow; strong net margin (34%); strong-buy consensus (1.32); 65% upside to target; rich CSP yield (294% ann.); wide bid/ask (illiquid); positive 1y trend (27%); positive 6m trend. Backtest: this setup fired 5x historically, bounced 80% of the time (avg +19.2% over the hold). Sector thesis: lagging Technology by 32pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "VIK",
@@ -172,8 +172,8 @@
       "target1": 91.87,
       "target2": 110.57143,
       "risk_reward": 5.45,
-      "covered_call": "Sell 2026-09-18 $90 call ~$0.80 (26% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $85 put ~$1.80 (59% ann.)",
+      "covered_call": "Sell 2026-09-18 $90 call ~$0.80 (28% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $85 put ~$1.80 (64% ann.)",
       "confidence": "High",
       "criteria_passed": [
         "revenue_over_1b",
@@ -200,7 +200,106 @@
         ],
         "failed": []
       },
-      "reasoning": "VIK scored 77.5/100. Setup: revenue $6.97B. Contributions \u2014 technical 80/100 (x0.35 = 28.0); fundamental 83/100 (x0.25 = 20.8); sentiment 76/100 (x0.25 = 19.0); options 68/100 (x0.10 = 6.8); momentum 58/100 (x0.05 = 2.9). Key drivers: oversold (RSI 31); above EMA200 (uptrend intact); positive free cash flow; strong net margin (19%); strong-buy consensus (1.45); 29% upside to target; rich CSP yield (59% ann.); wide bid/ask (illiquid); positive 1y trend (36%); positive 6m trend. Sector thesis: moving WITH Consumer Cyclical (-3pp vs XLY) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "VIK scored 77.5/100. Setup: revenue $6.97B. Contributions \u2014 technical 80/100 (x0.35 = 28.0); fundamental 83/100 (x0.25 = 20.8); sentiment 76/100 (x0.25 = 19.0); options 68/100 (x0.10 = 6.8); momentum 58/100 (x0.05 = 2.9). Key drivers: oversold (RSI 31); above EMA200 (uptrend intact); positive free cash flow; strong net margin (19%); strong-buy consensus (1.45); 29% upside to target; rich CSP yield (64% ann.); wide bid/ask (illiquid); positive 1y trend (36%); positive 6m trend. Sector thesis: moving WITH Consumer Cyclical (-3pp vs XLY) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+    },
+    {
+      "ticker": "VSXY",
+      "company": "Victorias Secret & Co.",
+      "score": 74.2,
+      "action": "Accumulate",
+      "quality_grade": "A",
+      "analyst_upside_%": 22.6,
+      "expected_gain_%": 13.5,
+      "hist_win_rate": 0.5,
+      "hist_avg_return_%": -2.38,
+      "hist_trades": 6,
+      "risk_flags": [
+        {
+          "level": "warn",
+          "text": "high short interest (18%)"
+        },
+        {
+          "level": "warn",
+          "text": "high beta (2.1)"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": -2.9,
+        "vs_sector": 1.5,
+        "sector": "Consumer Cyclical",
+        "sector_etf": "XLY"
+      },
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 4.2,
+        "confirms": true
+      },
+      "position": {
+        "shares": 37,
+        "value": 2795.72,
+        "risk_$": 249.01,
+        "basis": "1.0% of $25,000 at $6.73/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": false,
+        "strength": null,
+        "suggested_strike": null,
+        "idea": null,
+        "reason": "no meaningful dip today"
+      },
+      "subscores": {
+        "technical": 74.0,
+        "fundamental": 83.0,
+        "options": 70.0,
+        "momentum": 72.0,
+        "sentiment": 68.0
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 75.56,
+      "stop_loss": 68.83,
+      "target1": 84.53,
+      "target2": 92.6,
+      "risk_reward": 2.53,
+      "covered_call": "Sell 2026-09-18 $80 call ~$1.40 (56% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $75 put ~$2.95 (120% ann.)",
+      "confidence": "Medium",
+      "criteria_passed": [
+        "revenue_over_1b",
+        "pullback",
+        "oversold_rsi",
+        "above_ema200"
+      ],
+      "criteria_failed": [],
+      "metrics": {
+        "price": 75.56,
+        "day_%": 2.6,
+        "week_%": -14.0,
+        "month_%": -23.3,
+        "rsi": 35.2,
+        "above_ema200": true,
+        "revenue_$B": 6.91,
+        "target": 92.6,
+        "profile": "opportunity",
+        "passed": [
+          "revenue_over_1b",
+          "pullback",
+          "oversold_rsi",
+          "above_ema200"
+        ],
+        "failed": []
+      },
+      "reasoning": "VSXY scored 74.2/100. Setup: revenue $6.91B. Contributions \u2014 technical 74/100 (x0.35 = 25.9); fundamental 83/100 (x0.25 = 20.8); sentiment 68/100 (x0.25 = 17.0); options 70/100 (x0.10 = 7.0); momentum 72/100 (x0.05 = 3.6). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; high ROE (47%); buy consensus (2.18); 23% upside to target; rich CSP yield (120% ann.); positive 1y trend (194%); positive 6m trend. Backtest: this setup fired 6x historically, bounced 50% of the time (avg -2.4% over the hold). Sector thesis: moving WITH Consumer Cyclical (+2pp vs XLY) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "AGX",
@@ -263,8 +362,8 @@
       "target1": 479.22,
       "target2": 667.8,
       "risk_reward": 5.44,
-      "covered_call": "Sell 2026-09-18 $420 call ~$21.00 (141% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $410 put ~$18.50 (127% ann.)",
+      "covered_call": "Sell 2026-09-18 $420 call ~$21.00 (153% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $410 put ~$18.50 (137% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -293,7 +392,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "AGX scored 73.5/100. Setup: revenue $1.19B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 100/100 (x0.25 = 25.0); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: oversold (RSI 31); below EMA200; positive free cash flow; strong net margin (15%); buy consensus (2.00); 60% upside to target; rich CSP yield (127% ann.); wide bid/ask (illiquid); positive 1y trend (77%); sharp recent pullback (bounce setup). Sector thesis: lagging Industrials by 30pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "AGX scored 73.5/100. Setup: revenue $1.19B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 100/100 (x0.25 = 25.0); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: oversold (RSI 31); below EMA200; positive free cash flow; strong net margin (15%); buy consensus (2.00); 60% upside to target; rich CSP yield (137% ann.); wide bid/ask (illiquid); positive 1y trend (77%); sharp recent pullback (bounce setup). Sector thesis: lagging Industrials by 30pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "BURL",
@@ -356,8 +455,8 @@
       "target1": 288.77,
       "target2": 364.75,
       "risk_reward": 5.66,
-      "covered_call": "Sell 2026-09-11 $268 call ~$5.10 (117% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $265 put ~$4.60 (106% ann.)",
+      "covered_call": "Sell 2026-09-11 $268 call ~$5.10 (140% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $265 put ~$4.60 (127% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -386,12 +485,12 @@
           "above_ema200"
         ]
       },
-      "reasoning": "BURL scored 73.5/100. Setup: revenue $12.21B. Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 93/100 (x0.25 = 23.2); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 24/100 (x0.05 = 1.2). Key drivers: deeply oversold (RSI 24); below EMA200; positive free cash flow; high gross margin (44%); strong-buy consensus (1.79); 37% upside to target; rich CSP yield (106% ann.); wide bid/ask (illiquid); negative 1y trend (-12%); lagging SPY by -24pp (3mo). Sector thesis: lagging Consumer Cyclical by 19pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "BURL scored 73.5/100. Setup: revenue $12.21B. Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 93/100 (x0.25 = 23.2); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 24/100 (x0.05 = 1.2). Key drivers: deeply oversold (RSI 24); below EMA200; positive free cash flow; high gross margin (44%); strong-buy consensus (1.79); 37% upside to target; rich CSP yield (127% ann.); wide bid/ask (illiquid); negative 1y trend (-12%); lagging SPY by -24pp (3mo). Sector thesis: lagging Consumer Cyclical by 19pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "CIEN",
       "company": "Ciena Corporation",
-      "score": 72.8,
+      "score": 73.5,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 57.0,
@@ -432,7 +531,7 @@
       },
       "subscores": {
         "technical": 60.0,
-        "fundamental": 97.0,
+        "fundamental": 100.0,
         "options": 62.0,
         "momentum": 46.0,
         "sentiment": 76.0
@@ -449,8 +548,8 @@
       "target1": 373.56,
       "target2": 504.12775,
       "risk_reward": 4.65,
-      "covered_call": "Sell 2026-09-11 $322 call ~$9.45 (179% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $320 put ~$13.55 (258% ann.)",
+      "covered_call": "Sell 2026-09-11 $322 call ~$9.45 (215% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $320 put ~$13.55 (309% ann.)",
       "confidence": "High",
       "criteria_passed": [
         "revenue_over_1b",
@@ -467,7 +566,7 @@
         "month_%": -22.2,
         "rsi": 33.9,
         "above_ema200": false,
-        "revenue_$B": 6.02,
+        "revenue_$B": 5.57,
         "target": 504.12775,
         "profile": "opportunity",
         "passed": [
@@ -479,7 +578,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "CIEN scored 72.8/100. Setup: revenue $6.02B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 97/100 (x0.25 = 24.2); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: oversold (RSI 34); below EMA200; positive free cash flow; high gross margin (44%); buy consensus (1.85); 57% upside to target; rich CSP yield (258% ann.); wide bid/ask (illiquid); positive 1y trend (175%); sharp recent pullback (bounce setup). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +4.0% over the hold). Sector thesis: lagging Technology by 30pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "CIEN scored 73.5/100. Setup: revenue $5.57B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 100/100 (x0.25 = 25.0); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: oversold (RSI 34); below EMA200; positive free cash flow; high gross margin (43%); buy consensus (1.85); 57% upside to target; rich CSP yield (309% ann.); wide bid/ask (illiquid); positive 1y trend (175%); sharp recent pullback (bounce setup). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +4.0% over the hold). Sector thesis: lagging Technology by 30pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "YETI",
@@ -546,8 +645,8 @@
       "target1": 43.91,
       "target2": 54.53333,
       "risk_reward": 5.94,
-      "covered_call": "Sell 2026-09-18 $42 call ~$0.65 (45% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $40 put ~$0.78 (54% ann.)",
+      "covered_call": "Sell 2026-09-18 $42 call ~$0.65 (48% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $40 put ~$0.78 (59% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -576,7 +675,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "YETI scored 71.2/100. Setup: revenue $1.94B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 99/100 (x0.25 = 24.8); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: oversold (RSI 31); below EMA200; positive free cash flow; high gross margin (59%); buy consensus (1.88); 34% upside to target; rich CSP yield (54% ann.); wide bid/ask (illiquid); positive 1y trend (13%); positive 6m trend. Sector thesis: lagging Consumer Cyclical by 16pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "YETI scored 71.2/100. Setup: revenue $1.94B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 99/100 (x0.25 = 24.8); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: oversold (RSI 31); below EMA200; positive free cash flow; high gross margin (59%); buy consensus (1.88); 34% upside to target; rich CSP yield (59% ann.); wide bid/ask (illiquid); positive 1y trend (13%); positive 6m trend. Sector thesis: lagging Consumer Cyclical by 16pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "DY",
@@ -643,8 +742,8 @@
       "target1": 335.63,
       "target2": 520.36365,
       "risk_reward": 8.29,
-      "covered_call": "Sell 2026-09-18 $310 call ~$5.70 (53% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $300 put ~$10.30 (96% ann.)",
+      "covered_call": "Sell 2026-09-18 $310 call ~$5.70 (58% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $300 put ~$10.30 (104% ann.)",
       "confidence": "High",
       "criteria_passed": [
         "revenue_over_1b",
@@ -673,7 +772,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "DY scored 70.2/100. Setup: revenue $6.88B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 79/100 (x0.25 = 19.8); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: oversold (RSI 29); below EMA200; positive free cash flow; high ROE (19%); strong-buy consensus (1.09); 73% upside to target; rich CSP yield (96% ann.); wide bid/ask (illiquid); positive 1y trend (18%); sharp recent pullback (bounce setup). Backtest: this setup fired 3x historically, bounced 100% of the time (avg +8.3% over the hold). Sector thesis: lagging Industrials by 34pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "DY scored 70.2/100. Setup: revenue $6.88B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 79/100 (x0.25 = 19.8); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: oversold (RSI 29); below EMA200; positive free cash flow; high ROE (19%); strong-buy consensus (1.09); 73% upside to target; rich CSP yield (104% ann.); wide bid/ask (illiquid); positive 1y trend (18%); sharp recent pullback (bounce setup). Backtest: this setup fired 3x historically, bounced 100% of the time (avg +8.3% over the hold). Sector thesis: lagging Industrials by 34pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "TPR",
@@ -740,8 +839,8 @@
       "target1": 130.7,
       "target2": 167.4,
       "risk_reward": 7.05,
-      "covered_call": "Sell 2026-09-11 $123 call ~$1.70 (85% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $122 put ~$1.82 (91% ann.)",
+      "covered_call": "Sell 2026-09-11 $123 call ~$1.70 (102% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $122 put ~$1.82 (109% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -770,7 +869,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "TPR scored 68.8/100. Setup: revenue $8.00B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 81/100 (x0.25 = 20.2); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: oversold (RSI 33); below EMA200; positive free cash flow; strong net margin (19%); strong-buy consensus (1.77); 37% upside to target; rich CSP yield (91% ann.); wide bid/ask (illiquid); positive 1y trend (17%); lagging SPY by -18pp (3mo). Sector thesis: lagging Consumer Cyclical by 13pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "TPR scored 68.8/100. Setup: revenue $8.00B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 81/100 (x0.25 = 20.2); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: oversold (RSI 33); below EMA200; positive free cash flow; strong net margin (19%); strong-buy consensus (1.77); 37% upside to target; rich CSP yield (109% ann.); wide bid/ask (illiquid); positive 1y trend (17%); lagging SPY by -18pp (3mo). Sector thesis: lagging Consumer Cyclical by 13pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "GIII",
@@ -841,8 +940,8 @@
       "target1": 30.08,
       "target2": 37.33333,
       "risk_reward": 5.48,
-      "covered_call": "Sell 2026-09-18 $30 call ~$0.10 (10% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $25 put ~$0.17 (20% ann.)",
+      "covered_call": "Sell 2026-09-18 $30 call ~$0.10 (11% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $25 put ~$0.17 (21% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -871,110 +970,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "GIII scored 68.2/100. Setup: revenue $2.85B. Contributions \u2014 technical 74/100 (x0.35 = 25.9); fundamental 63/100 (x0.25 = 15.8); sentiment 76/100 (x0.25 = 19.0); options 52/100 (x0.10 = 5.2); momentum 46/100 (x0.05 = 2.3). Key drivers: deeply oversold (RSI 21); below EMA200; high gross margin (41%); shrinking revenue; strong-buy consensus (1.67); 35% upside to target; solid CSP yield (20% ann.); wide bid/ask (illiquid); positive 1y trend (1%); positive 6m trend. Sector thesis: lagging Consumer Cyclical by 19pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
-    },
-    {
-      "ticker": "VSXY",
-      "company": "Victorias Secret & Co.",
-      "score": 68.0,
-      "action": "Accumulate",
-      "quality_grade": "C",
-      "analyst_upside_%": 22.6,
-      "expected_gain_%": 9.0,
-      "hist_win_rate": 0.5,
-      "hist_avg_return_%": -2.38,
-      "hist_trades": 6,
-      "risk_flags": [
-        {
-          "level": "warn",
-          "text": "high short interest (18%)"
-        },
-        {
-          "level": "warn",
-          "text": "high leverage (D/E 337%)"
-        },
-        {
-          "level": "warn",
-          "text": "high beta (2.1)"
-        },
-        {
-          "level": "good",
-          "text": "golden-cross regime"
-        }
-      ],
-      "rel_strength": {
-        "vs_spy": -2.9,
-        "vs_sector": 1.5,
-        "sector": "Consumer Cyclical",
-        "sector_etf": "XLY"
-      },
-      "mtf": {
-        "weekly_trend": "up",
-        "weekly_return_%": 4.2,
-        "confirms": true
-      },
-      "position": {
-        "shares": 37,
-        "value": 2795.72,
-        "risk_$": 249.01,
-        "basis": "1.0% of $25,000 at $6.73/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 74.0,
-        "fundamental": 58.0,
-        "options": 70.0,
-        "momentum": 72.0,
-        "sentiment": 68.0
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 75.56,
-      "stop_loss": 68.83,
-      "target1": 84.53,
-      "target2": 92.6,
-      "risk_reward": 2.53,
-      "covered_call": "Sell 2026-09-18 $80 call ~$1.40 (52% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $75 put ~$2.95 (110% ann.)",
-      "confidence": "Low",
-      "criteria_passed": [
-        "revenue_over_1b",
-        "pullback",
-        "oversold_rsi",
-        "above_ema200"
-      ],
-      "criteria_failed": [],
-      "metrics": {
-        "price": 75.56,
-        "day_%": 2.6,
-        "week_%": -14.0,
-        "month_%": -23.3,
-        "rsi": 35.2,
-        "above_ema200": true,
-        "revenue_$B": 6.91,
-        "target": 92.6,
-        "profile": "opportunity",
-        "passed": [
-          "revenue_over_1b",
-          "pullback",
-          "oversold_rsi",
-          "above_ema200"
-        ],
-        "failed": []
-      },
-      "reasoning": "VSXY scored 68.0/100. Setup: revenue $6.91B. Contributions \u2014 technical 74/100 (x0.35 = 25.9); fundamental 58/100 (x0.25 = 14.5); sentiment 68/100 (x0.25 = 17.0); options 70/100 (x0.10 = 7.0); momentum 72/100 (x0.05 = 3.6). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; revenue growth (10%); earnings growth (988%); buy consensus (2.18); 23% upside to target; rich CSP yield (110% ann.); positive 1y trend (194%); positive 6m trend. Backtest: this setup fired 6x historically, bounced 50% of the time (avg -2.4% over the hold). Sector thesis: moving WITH Consumer Cyclical (+2pp vs XLY) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
+      "reasoning": "GIII scored 68.2/100. Setup: revenue $2.85B. Contributions \u2014 technical 74/100 (x0.35 = 25.9); fundamental 63/100 (x0.25 = 15.8); sentiment 76/100 (x0.25 = 19.0); options 52/100 (x0.10 = 5.2); momentum 46/100 (x0.05 = 2.3). Key drivers: deeply oversold (RSI 21); below EMA200; high gross margin (41%); shrinking revenue; strong-buy consensus (1.67); 35% upside to target; solid CSP yield (21% ann.); wide bid/ask (illiquid); positive 1y trend (1%); positive 6m trend. Sector thesis: lagging Consumer Cyclical by 19pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "CCL",
@@ -1041,8 +1037,8 @@
       "target1": 25.15,
       "target2": 35.29615,
       "risk_reward": 9.58,
-      "covered_call": "Sell 2026-09-11 $24 call ~$0.27 (69% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $24 put ~$0.42 (109% ann.)",
+      "covered_call": "Sell 2026-09-11 $24 call ~$0.27 (82% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $24 put ~$0.42 (130% ann.)",
       "confidence": "High",
       "criteria_passed": [
         "revenue_over_1b",
@@ -1071,7 +1067,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "CCL scored 68.0/100. Setup: revenue $27.31B. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 75/100 (x0.25 = 18.8); sentiment 84/100 (x0.25 = 21.0); options 76/100 (x0.10 = 7.6); momentum 36/100 (x0.05 = 1.8). Key drivers: oversold (RSI 32); below EMA200; positive free cash flow; high gross margin (56%); strong-buy consensus (1.63); 50% upside to target; rich CSP yield (109% ann.); liquid open interest; negative 1y trend (-25%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +1.3% over the hold). Sector thesis: lagging Consumer Cyclical by 9pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "CCL scored 68.0/100. Setup: revenue $27.31B. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 75/100 (x0.25 = 18.8); sentiment 84/100 (x0.25 = 21.0); options 76/100 (x0.10 = 7.6); momentum 36/100 (x0.05 = 1.8). Key drivers: oversold (RSI 32); below EMA200; positive free cash flow; high gross margin (56%); strong-buy consensus (1.63); 50% upside to target; rich CSP yield (130% ann.); liquid open interest; negative 1y trend (-25%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +1.3% over the hold). Sector thesis: lagging Consumer Cyclical by 9pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "COHR",
@@ -1142,8 +1138,8 @@
       "target1": 328.05,
       "target2": 415.36197,
       "risk_reward": 3.85,
-      "covered_call": "Sell 2026-09-11 $282 call ~$10.00 (216% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $280 put ~$9.45 (205% ann.)",
+      "covered_call": "Sell 2026-09-11 $282 call ~$10.00 (259% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $280 put ~$9.45 (246% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -1172,7 +1168,7 @@
           "oversold_rsi"
         ]
       },
-      "reasoning": "COHR scored 67.0/100. Setup: revenue $7.12B. Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 63/100 (x0.25 = 15.8); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; negative free cash flow; revenue growth (34%); strong-buy consensus (1.61); 47% upside to target; rich CSP yield (205% ann.); wide bid/ask (illiquid); positive 1y trend (195%); positive 6m trend. Backtest: this setup fired 4x historically, bounced 50% of the time (avg +5.3% over the hold). Sector thesis: lagging Technology by 24pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "COHR scored 67.0/100. Setup: revenue $7.12B. Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 63/100 (x0.25 = 15.8); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; negative free cash flow; revenue growth (34%); strong-buy consensus (1.61); 47% upside to target; rich CSP yield (246% ann.); wide bid/ask (illiquid); positive 1y trend (195%); positive 6m trend. Backtest: this setup fired 4x historically, bounced 50% of the time (avg +5.3% over the hold). Sector thesis: lagging Technology by 24pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "AS",
@@ -1243,8 +1239,8 @@
       "target1": 31.88,
       "target2": 50.21091,
       "risk_reward": 11.75,
-      "covered_call": "Sell 2026-09-11 $30 call ~$0.45 (93% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $29 put ~$0.38 (79% ann.)",
+      "covered_call": "Sell 2026-09-11 $30 call ~$0.45 (111% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $29 put ~$0.38 (94% ann.)",
       "confidence": "High",
       "criteria_passed": [
         "revenue_over_1b",
@@ -1273,7 +1269,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "AS scored 66.9/100. Setup: revenue $7.44B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 94/100 (x0.25 = 23.5); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; positive free cash flow; high gross margin (60%); strong-buy consensus (1.27); 70% upside to target; rich CSP yield (79% ann.); wide bid/ask (illiquid); negative 1y trend (-22%); lagging SPY by -17pp (3mo). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +6.5% over the hold). Sector thesis: lagging Consumer Cyclical by 13pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "AS scored 66.9/100. Setup: revenue $7.44B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 94/100 (x0.25 = 23.5); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; positive free cash flow; high gross margin (60%); strong-buy consensus (1.27); 70% upside to target; rich CSP yield (94% ann.); wide bid/ask (illiquid); negative 1y trend (-22%); lagging SPY by -17pp (3mo). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +6.5% over the hold). Sector thesis: lagging Consumer Cyclical by 13pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "LULU",
@@ -1314,7 +1310,7 @@
         "active": true,
         "strength": "moderate",
         "suggested_strike": 91.77,
-        "idea": "Sell 2026-09-11 $100 put ~$1.96 (120% ann.)",
+        "idea": "Sell 2026-09-11 $100 put ~$1.96 (143% ann.)",
         "reason": "down -17.4% today; 27% upside to target; limited dip history"
       },
       "subscores": {
@@ -1336,8 +1332,8 @@
       "target1": 112.4,
       "target2": 127.34615,
       "risk_reward": 3.02,
-      "covered_call": "Sell 2026-09-11 $101 call ~$2.15 (130% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $100 put ~$1.96 (120% ann.)",
+      "covered_call": "Sell 2026-09-11 $101 call ~$2.15 (156% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $100 put ~$1.96 (143% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -1366,7 +1362,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "LULU scored 65.7/100. Setup: revenue $11.09B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 88/100 (x0.25 = 22.0); sentiment 58/100 (x0.25 = 14.5); options 70/100 (x0.10 = 7.0); momentum 24/100 (x0.05 = 1.2). Key drivers: oversold (RSI 32); below EMA200; positive free cash flow; high gross margin (55%); 27% upside to target; rich CSP yield (120% ann.); negative 1y trend (-51%); lagging SPY by -20pp (3mo). Sector thesis: lagging Consumer Cyclical by 16pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "LULU scored 65.7/100. Setup: revenue $11.09B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 88/100 (x0.25 = 22.0); sentiment 58/100 (x0.25 = 14.5); options 70/100 (x0.10 = 7.0); momentum 24/100 (x0.05 = 1.2). Key drivers: oversold (RSI 32); below EMA200; positive free cash flow; high gross margin (55%); 27% upside to target; rich CSP yield (143% ann.); negative 1y trend (-51%); lagging SPY by -20pp (3mo). Sector thesis: lagging Consumer Cyclical by 16pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "ALGT",
@@ -1429,8 +1425,8 @@
       "target1": 86.51,
       "target2": 132.42857,
       "risk_reward": 8.67,
-      "covered_call": "Sell 2026-09-18 $80 call ~$2.42 (87% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $75 put ~$2.25 (84% ann.)",
+      "covered_call": "Sell 2026-09-18 $80 call ~$2.42 (94% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $75 put ~$2.25 (91% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -1459,7 +1455,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "ALGT scored 65.4/100. Setup: revenue $2.89B. Contributions \u2014 technical 53/100 (x0.35 = 18.5); fundamental 67/100 (x0.25 = 16.8); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 58/100 (x0.05 = 2.9). Key drivers: below EMA200; 50/200 golden cross; positive free cash flow; revenue growth (37%); strong-buy consensus (1.71); 69% upside to target; rich CSP yield (84% ann.); wide bid/ask (illiquid); positive 1y trend (22%); positive 6m trend. Backtest: this setup fired 6x historically, bounced 50% of the time (avg +1.4% over the hold). Sector thesis: moving WITH Industrials (-3pp vs XLI) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "ALGT scored 65.4/100. Setup: revenue $2.89B. Contributions \u2014 technical 53/100 (x0.35 = 18.5); fundamental 67/100 (x0.25 = 16.8); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 58/100 (x0.05 = 2.9). Key drivers: below EMA200; 50/200 golden cross; positive free cash flow; revenue growth (37%); strong-buy consensus (1.71); 69% upside to target; rich CSP yield (91% ann.); wide bid/ask (illiquid); positive 1y trend (22%); positive 6m trend. Backtest: this setup fired 6x historically, bounced 50% of the time (avg +1.4% over the hold). Sector thesis: moving WITH Industrials (-3pp vs XLI) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "NXT",
@@ -1526,8 +1522,8 @@
       "target1": 93.6,
       "target2": 141.51852,
       "risk_reward": 8.36,
-      "covered_call": "Sell 2026-09-18 $85 call ~$3.45 (115% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $80 put ~$1.65 (58% ann.)",
+      "covered_call": "Sell 2026-09-18 $85 call ~$3.45 (124% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $80 put ~$1.65 (63% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -1556,7 +1552,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "NXT scored 65.2/100. Setup: revenue $3.63B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 85/100 (x0.25 = 21.2); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 40/100 (x0.05 = 2.0). Key drivers: below EMA200; positive free cash flow; strong net margin (16%); strong-buy consensus (1.43); 67% upside to target; rich CSP yield (58% ann.); wide bid/ask (illiquid); positive 1y trend (23%); lagging SPY by -29pp (3mo). Sector thesis: lagging Technology by 28pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "NXT scored 65.2/100. Setup: revenue $3.63B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 85/100 (x0.25 = 21.2); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 40/100 (x0.05 = 2.0). Key drivers: below EMA200; positive free cash flow; strong net margin (16%); strong-buy consensus (1.43); 67% upside to target; rich CSP yield (63% ann.); wide bid/ask (illiquid); positive 1y trend (23%); lagging SPY by -29pp (3mo). Sector thesis: lagging Technology by 28pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "ENOV",
@@ -1613,7 +1609,7 @@
         "active": true,
         "strength": "moderate",
         "suggested_strike": 16.39,
-        "idea": "Sell 2026-09-18 $18 put ~$0.38 (60% ann.)",
+        "idea": "Sell 2026-09-18 $18 put ~$0.38 (65% ann.)",
         "reason": "down -4.3% today; 107% upside to target; limited dip history"
       },
       "subscores": {
@@ -1635,8 +1631,8 @@
       "target1": 21.45,
       "target2": 38.33333,
       "risk_reward": 9.11,
-      "covered_call": "Sell 2026-09-18 $20 call ~$0.35 (53% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $18 put ~$0.38 (60% ann.)",
+      "covered_call": "Sell 2026-09-18 $20 call ~$0.35 (57% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $18 put ~$0.38 (65% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -1665,7 +1661,104 @@
           "above_ema200"
         ]
       },
-      "reasoning": "ENOV scored 65.0/100. Setup: revenue $2.30B. Contributions \u2014 technical 66/100 (x0.35 = 23.1); fundamental 54/100 (x0.25 = 13.5); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 24/100 (x0.05 = 1.2). Key drivers: oversold (RSI 26); below EMA200; positive free cash flow; unprofitable; strong-buy consensus (1.31); 107% upside to target; rich CSP yield (60% ann.); wide bid/ask (illiquid); negative 1y trend (-41%); lagging SPY by -20pp (3mo). Sector thesis: lagging Healthcare by 28pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "ENOV scored 65.0/100. Setup: revenue $2.30B. Contributions \u2014 technical 66/100 (x0.35 = 23.1); fundamental 54/100 (x0.25 = 13.5); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 24/100 (x0.05 = 1.2). Key drivers: oversold (RSI 26); below EMA200; positive free cash flow; unprofitable; strong-buy consensus (1.31); 107% upside to target; rich CSP yield (65% ann.); wide bid/ask (illiquid); negative 1y trend (-41%); lagging SPY by -20pp (3mo). Sector thesis: lagging Healthcare by 28pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+    },
+    {
+      "ticker": "EYE",
+      "company": "National Vision Holdings, Inc.",
+      "score": 64.7,
+      "action": "Accumulate",
+      "quality_grade": "C",
+      "analyst_upside_%": 71.6,
+      "expected_gain_%": 60.9,
+      "hist_win_rate": 1.0,
+      "hist_avg_return_%": 4.69,
+      "hist_trades": 3,
+      "risk_flags": [
+        {
+          "level": "warn",
+          "text": "high short interest (25%)"
+        },
+        {
+          "level": "info",
+          "text": "small cap (thinner liquidity)"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": -9.5,
+        "vs_sector": -5.0,
+        "sector": "Consumer Cyclical",
+        "sector_etf": "XLY"
+      },
+      "mtf": {
+        "weekly_trend": "down",
+        "weekly_return_%": 1.8,
+        "confirms": false
+      },
+      "position": {
+        "shares": 190,
+        "value": 3180.6,
+        "risk_$": 248.9,
+        "basis": "1.0% of $25,000 at $1.31/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": false,
+        "strength": null,
+        "suggested_strike": null,
+        "idea": null,
+        "reason": "no meaningful dip today"
+      },
+      "subscores": {
+        "technical": 54.0,
+        "fundamental": 67.0,
+        "options": 62.0,
+        "momentum": 36.0,
+        "sentiment": 84.0
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 16.74,
+      "stop_loss": 15.43,
+      "target1": 18.49,
+      "target2": 28.72727,
+      "risk_reward": 9.15,
+      "covered_call": "Sell 2026-09-18 $18 call ~$0.68 (123% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $2 put ~$0.03 (30% ann.)",
+      "confidence": "High",
+      "criteria_passed": [
+        "revenue_over_1b",
+        "pullback",
+        "oversold_rsi"
+      ],
+      "criteria_failed": [
+        "above_ema200"
+      ],
+      "metrics": {
+        "price": 16.74,
+        "day_%": -0.8,
+        "week_%": -3.7,
+        "month_%": -25.8,
+        "rsi": 30.9,
+        "above_ema200": false,
+        "revenue_$B": 2.03,
+        "target": 28.72727,
+        "profile": "opportunity",
+        "passed": [
+          "revenue_over_1b",
+          "pullback",
+          "oversold_rsi"
+        ],
+        "failed": [
+          "above_ema200"
+        ]
+      },
+      "reasoning": "EYE scored 64.7/100. Setup: revenue $2.03B. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 67/100 (x0.25 = 16.8); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: oversold (RSI 31); below EMA200; positive free cash flow; high gross margin (59%); strong-buy consensus (1.58); 72% upside to target; rich CSP yield (30% ann.); wide bid/ask (illiquid); negative 1y trend (-28%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 3x historically, bounced 100% of the time (avg +4.7% over the hold). Sector thesis: moving WITH Consumer Cyclical (-5pp vs XLY) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "FSLR",
@@ -1728,8 +1821,8 @@
       "target1": 222.39,
       "target2": 275.30466,
       "risk_reward": 5.26,
-      "covered_call": "Sell 2026-09-11 $205 call ~$4.12 (123% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $202 put ~$3.88 (117% ann.)",
+      "covered_call": "Sell 2026-09-11 $205 call ~$4.12 (147% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $202 put ~$3.88 (140% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -1758,104 +1851,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "FSLR scored 64.7/100. Setup: revenue $5.38B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 98/100 (x0.25 = 24.5); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: below EMA200; positive free cash flow; strong net margin (32%); buy consensus (1.91); 35% upside to target; rich CSP yield (117% ann.); wide bid/ask (illiquid); positive 1y trend (1%); positive 6m trend. Sector thesis: lagging Technology by 22pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
-    },
-    {
-      "ticker": "EYE",
-      "company": "National Vision Holdings, Inc.",
-      "score": 63.6,
-      "action": "Accumulate",
-      "quality_grade": "C",
-      "analyst_upside_%": 71.6,
-      "expected_gain_%": 60.9,
-      "hist_win_rate": 1.0,
-      "hist_avg_return_%": 4.69,
-      "hist_trades": 3,
-      "risk_flags": [
-        {
-          "level": "warn",
-          "text": "high short interest (25%)"
-        },
-        {
-          "level": "info",
-          "text": "small cap (thinner liquidity)"
-        }
-      ],
-      "rel_strength": {
-        "vs_spy": -9.5,
-        "vs_sector": -5.0,
-        "sector": "Consumer Cyclical",
-        "sector_etf": "XLY"
-      },
-      "mtf": {
-        "weekly_trend": "down",
-        "weekly_return_%": 1.8,
-        "confirms": false
-      },
-      "position": {
-        "shares": 190,
-        "value": 3180.6,
-        "risk_$": 248.9,
-        "basis": "1.0% of $25,000 at $1.31/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 54.0,
-        "fundamental": 67.0,
-        "options": 52.0,
-        "momentum": 36.0,
-        "sentiment": 84.0
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 16.74,
-      "stop_loss": 15.43,
-      "target1": 18.49,
-      "target2": 28.72727,
-      "risk_reward": 9.15,
-      "covered_call": "Sell 2026-09-18 $18 call ~$0.68 (113% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $2 put ~$0.03 (28% ann.)",
-      "confidence": "High",
-      "criteria_passed": [
-        "revenue_over_1b",
-        "pullback",
-        "oversold_rsi"
-      ],
-      "criteria_failed": [
-        "above_ema200"
-      ],
-      "metrics": {
-        "price": 16.74,
-        "day_%": -0.8,
-        "week_%": -3.7,
-        "month_%": -25.8,
-        "rsi": 30.9,
-        "above_ema200": false,
-        "revenue_$B": 2.03,
-        "target": 28.72727,
-        "profile": "opportunity",
-        "passed": [
-          "revenue_over_1b",
-          "pullback",
-          "oversold_rsi"
-        ],
-        "failed": [
-          "above_ema200"
-        ]
-      },
-      "reasoning": "EYE scored 63.6/100. Setup: revenue $2.03B. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 67/100 (x0.25 = 16.8); sentiment 84/100 (x0.25 = 21.0); options 52/100 (x0.10 = 5.2); momentum 36/100 (x0.05 = 1.8). Key drivers: oversold (RSI 31); below EMA200; positive free cash flow; high gross margin (59%); strong-buy consensus (1.58); 72% upside to target; solid CSP yield (28% ann.); wide bid/ask (illiquid); negative 1y trend (-28%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 3x historically, bounced 100% of the time (avg +4.7% over the hold). Sector thesis: moving WITH Consumer Cyclical (-5pp vs XLY) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "FSLR scored 64.7/100. Setup: revenue $5.38B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 98/100 (x0.25 = 24.5); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: below EMA200; positive free cash flow; strong net margin (32%); buy consensus (1.91); 35% upside to target; rich CSP yield (140% ann.); wide bid/ask (illiquid); positive 1y trend (1%); positive 6m trend. Sector thesis: lagging Technology by 22pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "FN",
@@ -1918,8 +1914,8 @@
       "target1": 465.31,
       "target2": 734.1111,
       "risk_reward": 7.52,
-      "covered_call": "Sell 2026-09-18 $410 call ~$16.55 (114% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $400 put ~$15.40 (108% ann.)",
+      "covered_call": "Sell 2026-09-18 $410 call ~$16.55 (124% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $400 put ~$15.40 (117% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -1948,7 +1944,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "FN scored 63.5/100. Setup: revenue $4.64B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 74/100 (x0.25 = 18.5); sentiment 84/100 (x0.25 = 21.0); options 70/100 (x0.10 = 7.0); momentum 46/100 (x0.05 = 2.3). Key drivers: below EMA200; negative free cash flow; high ROE (21%); strong-buy consensus (1.78); 80% upside to target; rich CSP yield (108% ann.); positive 1y trend (12%); sharp recent pullback (bounce setup). Sector thesis: lagging Technology by 34pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "FN scored 63.5/100. Setup: revenue $4.64B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 74/100 (x0.25 = 18.5); sentiment 84/100 (x0.25 = 21.0); options 70/100 (x0.10 = 7.0); momentum 46/100 (x0.05 = 2.3). Key drivers: below EMA200; negative free cash flow; high ROE (21%); strong-buy consensus (1.78); 80% upside to target; rich CSP yield (117% ann.); positive 1y trend (12%); sharp recent pullback (bounce setup). Sector thesis: lagging Technology by 34pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "FPS",
@@ -2015,8 +2011,8 @@
       "target1": 35.58,
       "target2": 59.9,
       "risk_reward": 9.01,
-      "covered_call": "Sell 2026-09-18 $32 call ~$2.33 (208% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $30 put ~$1.95 (182% ann.)",
+      "covered_call": "Sell 2026-09-18 $32 call ~$2.33 (226% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $30 put ~$1.95 (198% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -2045,7 +2041,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "FPS scored 63.0/100. Setup: revenue $1.20B. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 67/100 (x0.25 = 16.8); sentiment 84/100 (x0.25 = 21.0); options 70/100 (x0.10 = 7.0); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; MACD histogram turning up; revenue growth (103%); attractive PEG (0.35); strong-buy consensus (1.30); 91% upside to target; rich CSP yield (182% ann.); sharp recent pullback (bounce setup); lagging SPY by -46pp (3mo). Sector thesis: lagging Industrials by 42pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "FPS scored 63.0/100. Setup: revenue $1.20B. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 67/100 (x0.25 = 16.8); sentiment 84/100 (x0.25 = 21.0); options 70/100 (x0.10 = 7.0); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; MACD histogram turning up; revenue growth (103%); attractive PEG (0.35); strong-buy consensus (1.30); 91% upside to target; rich CSP yield (198% ann.); sharp recent pullback (bounce setup); lagging SPY by -46pp (3mo). Sector thesis: lagging Industrials by 42pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "STUB",
@@ -2108,8 +2104,8 @@
       "target1": 7.45,
       "target2": 11.29167,
       "risk_reward": 7.33,
-      "covered_call": "Sell 2026-09-11 $7 call ~$0.05 (46% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $6 put ~$0.12 (117% ann.)",
+      "covered_call": "Sell 2026-09-11 $7 call ~$0.05 (55% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $6 put ~$0.12 (140% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "revenue_over_1b",
@@ -2138,7 +2134,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "STUB scored 59.7/100. Setup: revenue $1.94B. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 65/100 (x0.25 = 16.2); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; MACD histogram turning up; positive free cash flow; unprofitable; buy consensus (2.07); 71% upside to target; rich CSP yield (117% ann.); wide bid/ask (illiquid); sharp recent pullback (bounce setup); lagging SPY by -40pp (3mo). Backtest: this setup fired 4x historically, bounced 50% of the time (avg -5.5% over the hold). Sector thesis: lagging Communication Services by 36pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "STUB scored 59.7/100. Setup: revenue $1.94B. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 65/100 (x0.25 = 16.2); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; MACD histogram turning up; positive free cash flow; unprofitable; buy consensus (2.07); 71% upside to target; rich CSP yield (140% ann.); wide bid/ask (illiquid); sharp recent pullback (bounce setup); lagging SPY by -40pp (3mo). Backtest: this setup fired 4x historically, bounced 50% of the time (avg -5.5% over the hold). Sector thesis: lagging Communication Services by 36pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "ESAB",
@@ -2205,8 +2201,8 @@
       "target1": 81.42,
       "target2": 131.18182,
       "risk_reward": 11.7,
-      "covered_call": "Sell 2026-09-18 $85 call ~$1.35 (51% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $75 put ~$3.03 (113% ann.)",
+      "covered_call": "Sell 2026-09-18 $85 call ~$1.35 (55% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $75 put ~$3.03 (123% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -2235,7 +2231,104 @@
           "above_ema200"
         ]
       },
-      "reasoning": "ESAB scored 59.5/100. Setup: revenue $3.00B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 81/100 (x0.25 = 20.2); sentiment 66/100 (x0.25 = 16.5); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; revenue growth (13%); 75% upside to target; rich CSP yield (113% ann.); wide bid/ask (illiquid); negative 1y trend (-35%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Sector thesis: lagging Industrials by 10pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "ESAB scored 59.5/100. Setup: revenue $3.00B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 81/100 (x0.25 = 20.2); sentiment 66/100 (x0.25 = 16.5); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; revenue growth (13%); 75% upside to target; rich CSP yield (123% ann.); wide bid/ask (illiquid); negative 1y trend (-35%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Sector thesis: lagging Industrials by 10pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+    },
+    {
+      "ticker": "LZB",
+      "company": "La-Z-Boy Incorporated",
+      "score": 57.6,
+      "action": "Hold",
+      "quality_grade": "B",
+      "analyst_upside_%": 25.2,
+      "expected_gain_%": 15.1,
+      "hist_win_rate": 0,
+      "hist_avg_return_%": 0,
+      "hist_trades": 0,
+      "risk_flags": [
+        {
+          "level": "info",
+          "text": "small cap (thinner liquidity)"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": -16.3,
+        "vs_sector": -11.9,
+        "sector": "Consumer Cyclical",
+        "sector_etf": "XLY"
+      },
+      "mtf": {
+        "weekly_trend": "down",
+        "weekly_return_%": -20.2,
+        "confirms": false
+      },
+      "position": {
+        "shares": 132,
+        "value": 4324.32,
+        "risk_$": 248.16,
+        "basis": "1.0% of $25,000 at $1.88/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": false,
+        "strength": null,
+        "suggested_strike": null,
+        "idea": null,
+        "reason": "no meaningful dip today"
+      },
+      "subscores": {
+        "technical": 48.0,
+        "fundamental": 72.0,
+        "options": 68.0,
+        "momentum": 30.0,
+        "sentiment": 58.0
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 32.76,
+      "stop_loss": 30.88,
+      "target1": 35.26,
+      "target2": 41.0,
+      "risk_reward": 4.38,
+      "covered_call": "Sell 2026-09-18 $35 call ~$0.12 (12% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $30 put ~$0.30 (30% ann.)",
+      "confidence": "Medium",
+      "criteria_passed": [
+        "revenue_over_1b",
+        "pullback",
+        "oversold_rsi"
+      ],
+      "criteria_failed": [
+        "above_ema200"
+      ],
+      "metrics": {
+        "price": 32.76,
+        "day_%": 2.6,
+        "week_%": 1.4,
+        "month_%": -21.7,
+        "rsi": 36.7,
+        "above_ema200": false,
+        "revenue_$B": 2.11,
+        "target": 41.0,
+        "profile": "opportunity",
+        "passed": [
+          "revenue_over_1b",
+          "pullback",
+          "oversold_rsi"
+        ],
+        "failed": [
+          "above_ema200"
+        ]
+      },
+      "reasoning": "LZB scored 57.6/100. Setup: revenue $2.11B. Contributions \u2014 technical 48/100 (x0.35 = 16.8); fundamental 72/100 (x0.25 = 18.0); sentiment 58/100 (x0.25 = 14.5); options 68/100 (x0.10 = 6.8); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; 50/200 golden cross; positive free cash flow; high gross margin (45%); 25% upside to target; rich CSP yield (30% ann.); wide bid/ask (illiquid); negative 1y trend (-7%); lagging SPY by -16pp (3mo). Sector thesis: lagging Consumer Cyclical by 12pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "KLAR",
@@ -2298,8 +2391,8 @@
       "target1": 16.12,
       "target2": 20.065,
       "risk_reward": 4.42,
-      "covered_call": "Sell 2026-09-11 $14 call ~$0.30 (127% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $14 put ~$0.15 (65% ann.)",
+      "covered_call": "Sell 2026-09-11 $14 call ~$0.30 (152% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $14 put ~$0.15 (78% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "revenue_over_1b",
@@ -2328,7 +2421,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "KLAR scored 57.5/100. Setup: revenue $4.04B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 71/100 (x0.25 = 17.8); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; unprofitable; buy consensus (2.17); 39% upside to target; rich CSP yield (65% ann.); wide bid/ask (illiquid); lagging XLF by -20pp (3mo); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 5x historically, bounced 40% of the time (avg -1.1% over the hold). Sector thesis: lagging Financial Services by 20pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "KLAR scored 57.5/100. Setup: revenue $4.04B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 71/100 (x0.25 = 17.8); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; unprofitable; buy consensus (2.17); 39% upside to target; rich CSP yield (78% ann.); wide bid/ask (illiquid); lagging XLF by -20pp (3mo); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 5x historically, bounced 40% of the time (avg -1.1% over the hold). Sector thesis: lagging Financial Services by 20pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "HUBG",
@@ -2391,8 +2484,8 @@
       "target1": 40.32,
       "target2": 41.0,
       "risk_reward": 1.58,
-      "covered_call": "Sell 2026-09-18 $40 call ~$1.77 (136% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $35 put ~$1.15 (92% ann.)",
+      "covered_call": "Sell 2026-09-18 $40 call ~$1.77 (147% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $35 put ~$1.15 (100% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -2421,7 +2514,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "HUBG scored 57.5/100. Setup: revenue $3.73B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 63/100 (x0.25 = 15.8); sentiment 50/100 (x0.25 = 12.5); options 68/100 (x0.10 = 6.8); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 33); below EMA200; positive free cash flow; shrinking revenue; rich CSP yield (92% ann.); wide bid/ask (illiquid); negative 1y trend (-1%); positive 6m trend. Sector thesis: lagging Industrials by 18pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "HUBG scored 57.5/100. Setup: revenue $3.73B. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 63/100 (x0.25 = 15.8); sentiment 50/100 (x0.25 = 12.5); options 68/100 (x0.10 = 6.8); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 33); below EMA200; positive free cash flow; shrinking revenue; rich CSP yield (100% ann.); wide bid/ask (illiquid); negative 1y trend (-1%); positive 6m trend. Sector thesis: lagging Industrials by 18pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "FLNC",
@@ -2492,8 +2585,8 @@
       "target1": 12.0,
       "target2": 16.33333,
       "risk_reward": 4.83,
-      "covered_call": "Sell 2026-09-18 $11 call ~$0.35 (95% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $10 put ~$0.40 (112% ann.)",
+      "covered_call": "Sell 2026-09-18 $11 call ~$0.35 (103% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $10 put ~$0.40 (122% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "revenue_over_1b",
@@ -2522,104 +2615,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "FLNC scored 57.1/100. Setup: revenue $2.63B. Contributions \u2014 technical 59/100 (x0.35 = 20.6); fundamental 46/100 (x0.25 = 11.5); sentiment 66/100 (x0.25 = 16.5); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: oversold (RSI 34); below EMA200; positive free cash flow; unprofitable; 58% upside to target; rich CSP yield (112% ann.); wide bid/ask (illiquid); positive 1y trend (53%); sharp recent pullback (bounce setup). Backtest: this setup fired 12x historically, bounced 42% of the time (avg -0.0% over the hold). Sector thesis: lagging Utilities by 50pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
-    },
-    {
-      "ticker": "LZB",
-      "company": "La-Z-Boy Incorporated",
-      "score": 56.6,
-      "action": "Hold",
-      "quality_grade": "B",
-      "analyst_upside_%": 25.2,
-      "expected_gain_%": 15.1,
-      "hist_win_rate": 0,
-      "hist_avg_return_%": 0,
-      "hist_trades": 0,
-      "risk_flags": [
-        {
-          "level": "info",
-          "text": "small cap (thinner liquidity)"
-        },
-        {
-          "level": "good",
-          "text": "golden-cross regime"
-        }
-      ],
-      "rel_strength": {
-        "vs_spy": -16.3,
-        "vs_sector": -11.9,
-        "sector": "Consumer Cyclical",
-        "sector_etf": "XLY"
-      },
-      "mtf": {
-        "weekly_trend": "down",
-        "weekly_return_%": -20.2,
-        "confirms": false
-      },
-      "position": {
-        "shares": 132,
-        "value": 4324.32,
-        "risk_$": 248.16,
-        "basis": "1.0% of $25,000 at $1.88/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 48.0,
-        "fundamental": 72.0,
-        "options": 58.0,
-        "momentum": 30.0,
-        "sentiment": 58.0
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 32.76,
-      "stop_loss": 30.88,
-      "target1": 35.26,
-      "target2": 41.0,
-      "risk_reward": 4.38,
-      "covered_call": "Sell 2026-09-18 $35 call ~$0.12 (11% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $30 put ~$0.30 (28% ann.)",
-      "confidence": "Medium",
-      "criteria_passed": [
-        "revenue_over_1b",
-        "pullback",
-        "oversold_rsi"
-      ],
-      "criteria_failed": [
-        "above_ema200"
-      ],
-      "metrics": {
-        "price": 32.76,
-        "day_%": 2.6,
-        "week_%": 1.4,
-        "month_%": -21.7,
-        "rsi": 36.7,
-        "above_ema200": false,
-        "revenue_$B": 2.11,
-        "target": 41.0,
-        "profile": "opportunity",
-        "passed": [
-          "revenue_over_1b",
-          "pullback",
-          "oversold_rsi"
-        ],
-        "failed": [
-          "above_ema200"
-        ]
-      },
-      "reasoning": "LZB scored 56.6/100. Setup: revenue $2.11B. Contributions \u2014 technical 48/100 (x0.35 = 16.8); fundamental 72/100 (x0.25 = 18.0); sentiment 58/100 (x0.25 = 14.5); options 58/100 (x0.10 = 5.8); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; 50/200 golden cross; positive free cash flow; high gross margin (45%); 25% upside to target; solid CSP yield (28% ann.); wide bid/ask (illiquid); negative 1y trend (-7%); lagging SPY by -16pp (3mo). Sector thesis: lagging Consumer Cyclical by 12pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "FLNC scored 57.1/100. Setup: revenue $2.63B. Contributions \u2014 technical 59/100 (x0.35 = 20.6); fundamental 46/100 (x0.25 = 11.5); sentiment 66/100 (x0.25 = 16.5); options 62/100 (x0.10 = 6.2); momentum 46/100 (x0.05 = 2.3). Key drivers: oversold (RSI 34); below EMA200; positive free cash flow; unprofitable; 58% upside to target; rich CSP yield (122% ann.); wide bid/ask (illiquid); positive 1y trend (53%); sharp recent pullback (bounce setup). Backtest: this setup fired 12x historically, bounced 42% of the time (avg -0.0% over the hold). Sector thesis: lagging Utilities by 50pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "AMTM",
@@ -2682,8 +2678,8 @@
       "target1": 21.57,
       "target2": 29.58333,
       "risk_reward": 8.43,
-      "covered_call": "Sell 2026-09-18 $22 call ~$0.05 (7% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $20 put ~$0.55 (77% ann.)",
+      "covered_call": "Sell 2026-09-18 $22 call ~$0.05 (8% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $20 put ~$0.55 (84% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -2712,7 +2708,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "AMTM scored 56.5/100. Setup: revenue $14.13B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 67/100 (x0.25 = 16.8); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; shrinking revenue; buy consensus (2.42); 47% upside to target; rich CSP yield (77% ann.); wide bid/ask (illiquid); negative 1y trend (-17%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Sector thesis: lagging Industrials by 10pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "AMTM scored 56.5/100. Setup: revenue $14.13B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 67/100 (x0.25 = 16.8); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; shrinking revenue; buy consensus (2.42); 47% upside to target; rich CSP yield (84% ann.); wide bid/ask (illiquid); negative 1y trend (-17%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Sector thesis: lagging Industrials by 10pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "DKS",
@@ -2779,8 +2775,8 @@
       "target1": 156.05,
       "target2": 166.00455,
       "risk_reward": 2.12,
-      "covered_call": "Sell 2026-09-11 $140 call ~$2.15 (94% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $139 put ~$3.40 (149% ann.)",
+      "covered_call": "Sell 2026-09-11 $140 call ~$2.15 (113% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $139 put ~$3.40 (179% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -2809,7 +2805,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "DKS scored 56.1/100. Setup: revenue $21.15B. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 58/100 (x0.25 = 14.5); sentiment 60/100 (x0.25 = 15.0); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 29); below EMA200; negative free cash flow; high ROE (18%); buy consensus (2.12); rich CSP yield (149% ann.); wide bid/ask (illiquid); negative 1y trend (-36%); sharp recent pullback (bounce setup). Sector thesis: lagging Consumer Cyclical by 35pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "DKS scored 56.1/100. Setup: revenue $21.15B. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 58/100 (x0.25 = 14.5); sentiment 60/100 (x0.25 = 15.0); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 29); below EMA200; negative free cash flow; high ROE (18%); buy consensus (2.12); rich CSP yield (179% ann.); wide bid/ask (illiquid); negative 1y trend (-36%); sharp recent pullback (bounce setup). Sector thesis: lagging Consumer Cyclical by 35pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "NCLH",
@@ -2888,8 +2884,8 @@
       "target1": 16.86,
       "target2": 20.6,
       "risk_reward": 5.19,
-      "covered_call": "Sell 2026-09-11 $16 call ~$0.16 (63% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $16 put ~$0.21 (84% ann.)",
+      "covered_call": "Sell 2026-09-11 $16 call ~$0.16 (75% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $16 put ~$0.21 (101% ann.)",
       "confidence": "High",
       "criteria_passed": [
         "revenue_over_1b",
@@ -2918,7 +2914,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "NCLH scored 56.1/100. Setup: revenue $10.15B. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 50/100 (x0.25 = 12.5); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 30); below EMA200; negative free cash flow; high gross margin (42%); buy consensus (2.30); 32% upside to target; rich CSP yield (84% ann.); wide bid/ask (illiquid); negative 1y trend (-39%); lagging SPY by -18pp (3mo). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +2.3% over the hold). Sector thesis: lagging Consumer Cyclical by 13pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "NCLH scored 56.1/100. Setup: revenue $10.15B. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 50/100 (x0.25 = 12.5); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 30); below EMA200; negative free cash flow; high gross margin (42%); buy consensus (2.30); 32% upside to target; rich CSP yield (101% ann.); wide bid/ask (illiquid); negative 1y trend (-39%); lagging SPY by -18pp (3mo). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +2.3% over the hold). Sector thesis: lagging Consumer Cyclical by 13pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "KTOS",
@@ -2985,8 +2981,8 @@
       "target1": 53.56,
       "target2": 105.61905,
       "risk_reward": 13.41,
-      "covered_call": "Sell 2026-09-11 $48 call ~$1.35 (172% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $48 put ~$1.10 (141% ann.)",
+      "covered_call": "Sell 2026-09-11 $48 call ~$1.35 (206% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $48 put ~$1.10 (169% ann.)",
       "confidence": "High",
       "criteria_passed": [
         "revenue_over_1b",
@@ -3015,7 +3011,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "KTOS scored 55.6/100. Setup: revenue $1.52B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 49/100 (x0.25 = 12.2); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; negative free cash flow; revenue growth (30%); strong-buy consensus (1.43); 121% upside to target; rich CSP yield (141% ann.); wide bid/ask (illiquid); negative 1y trend (-25%); lagging SPY by -18pp (3mo). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +10.0% over the hold). Sector thesis: lagging Industrials by 14pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "KTOS scored 55.6/100. Setup: revenue $1.52B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 49/100 (x0.25 = 12.2); sentiment 84/100 (x0.25 = 21.0); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; negative free cash flow; revenue growth (30%); strong-buy consensus (1.43); 121% upside to target; rich CSP yield (169% ann.); wide bid/ask (illiquid); negative 1y trend (-25%); lagging SPY by -18pp (3mo). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +10.0% over the hold). Sector thesis: lagging Industrials by 14pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "ADIG",
@@ -3077,8 +3073,8 @@
       "target1": 24.23,
       "target2": 28.5,
       "risk_reward": 2.93,
-      "covered_call": "Sell 2026-09-18 $22 call ~$0.25 (34% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $20 put ~$2.55 (358% ann.)",
+      "covered_call": "Sell 2026-09-18 $22 call ~$0.25 (37% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $20 put ~$2.55 (388% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "revenue_over_1b",
@@ -3107,7 +3103,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "ADIG scored 54.9/100. Setup: revenue $4.88B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 58/100 (x0.25 = 14.5); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; low leverage; healthy liquidity (CR 2.8); buy consensus (2.00); 38% upside to target; rich CSP yield (358% ann.); wide bid/ask (illiquid)."
+      "reasoning": "ADIG scored 54.9/100. Setup: revenue $4.88B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 58/100 (x0.25 = 14.5); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; low leverage; healthy liquidity (CR 2.8); buy consensus (2.00); 38% upside to target; rich CSP yield (388% ann.); wide bid/ask (illiquid)."
     },
     {
       "ticker": "AVAV",
@@ -3123,7 +3119,7 @@
       "risk_flags": [
         {
           "level": "info",
-          "text": "earnings in 4d"
+          "text": "earnings in 3d"
         },
         {
           "level": "info",
@@ -3178,8 +3174,8 @@
       "target1": 161.9,
       "target2": 225.76685,
       "risk_reward": 6.27,
-      "covered_call": "Sell 2026-09-11 $145 call ~$9.40 (395% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $144 put ~$7.85 (332% ann.)",
+      "covered_call": "Sell 2026-09-11 $145 call ~$9.40 (474% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $144 put ~$7.85 (398% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "revenue_over_1b",
@@ -3208,7 +3204,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "AVAV scored 54.6/100. Setup: revenue $1.98B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 43/100 (x0.25 = 10.8); sentiment 84/100 (x0.25 = 21.0); options 70/100 (x0.10 = 7.0); momentum 24/100 (x0.05 = 1.2). Key drivers: below EMA200; negative free cash flow; unprofitable; strong-buy consensus (1.60); 56% upside to target; rich CSP yield (332% ann.); negative 1y trend (-36%); lagging SPY by -21pp (3mo). Backtest: this setup fired 7x historically, bounced 57% of the time (avg +1.0% over the hold). Sector thesis: lagging Industrials by 17pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "AVAV scored 54.6/100. Setup: revenue $1.98B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 43/100 (x0.25 = 10.8); sentiment 84/100 (x0.25 = 21.0); options 70/100 (x0.10 = 7.0); momentum 24/100 (x0.05 = 1.2). Key drivers: below EMA200; negative free cash flow; unprofitable; strong-buy consensus (1.60); 56% upside to target; rich CSP yield (398% ann.); negative 1y trend (-36%); lagging SPY by -21pp (3mo). Backtest: this setup fired 7x historically, bounced 57% of the time (avg +1.0% over the hold). Sector thesis: lagging Industrials by 17pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "RH",
@@ -3224,7 +3220,7 @@
       "risk_flags": [
         {
           "level": "info",
-          "text": "earnings in 5d"
+          "text": "earnings in 4d"
         },
         {
           "level": "warn",
@@ -3287,8 +3283,8 @@
       "target1": 164.38,
       "target2": 178.05882,
       "risk_reward": 2.45,
-      "covered_call": "Sell 2026-09-11 $148 call ~$9.70 (399% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $147 put ~$9.10 (377% ann.)",
+      "covered_call": "Sell 2026-09-11 $148 call ~$9.70 (478% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $147 put ~$9.10 (452% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "revenue_over_1b",
@@ -3317,7 +3313,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "RH scored 53.6/100. Setup: revenue $3.43B. Contributions \u2014 technical 48/100 (x0.35 = 16.8); fundamental 56/100 (x0.25 = 14.0); sentiment 58/100 (x0.25 = 14.5); options 62/100 (x0.10 = 6.2); momentum 42/100 (x0.05 = 2.1). Key drivers: below EMA200; 50/200 golden cross; positive free cash flow; high gross margin (44%); 20% upside to target; rich CSP yield (377% ann.); wide bid/ask (illiquid); negative 1y trend (-37%); positive 6m trend. Backtest: this setup fired 6x historically, bounced 50% of the time (avg -3.9% over the hold). Sector thesis: moving WITH Consumer Cyclical (-1pp vs XLY) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "RH scored 53.6/100. Setup: revenue $3.43B. Contributions \u2014 technical 48/100 (x0.35 = 16.8); fundamental 56/100 (x0.25 = 14.0); sentiment 58/100 (x0.25 = 14.5); options 62/100 (x0.10 = 6.2); momentum 42/100 (x0.05 = 2.1). Key drivers: below EMA200; 50/200 golden cross; positive free cash flow; high gross margin (44%); 20% upside to target; rich CSP yield (452% ann.); wide bid/ask (illiquid); negative 1y trend (-37%); positive 6m trend. Backtest: this setup fired 6x historically, bounced 50% of the time (avg -3.9% over the hold). Sector thesis: moving WITH Consumer Cyclical (-1pp vs XLY) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "REZI",
@@ -3384,8 +3380,8 @@
       "target1": 21.94,
       "target2": 34.25,
       "risk_reward": 9.33,
-      "covered_call": "Sell 2026-09-18 $20 call ~$0.95 (134% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $18 put ~$0.38 (60% ann.)",
+      "covered_call": "Sell 2026-09-18 $20 call ~$0.95 (145% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $18 put ~$0.38 (65% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "revenue_over_1b",
@@ -3414,7 +3410,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "REZI scored 52.5/100. Setup: revenue $7.65B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 53/100 (x0.25 = 13.2); sentiment 66/100 (x0.25 = 16.5); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; negative free cash flow; high ROE (15%); 72% upside to target; rich CSP yield (60% ann.); wide bid/ask (illiquid); negative 1y trend (-19%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Sector thesis: lagging Industrials by 6pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "REZI scored 52.5/100. Setup: revenue $7.65B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 53/100 (x0.25 = 13.2); sentiment 66/100 (x0.25 = 16.5); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; negative free cash flow; high ROE (15%); 72% upside to target; rich CSP yield (65% ann.); wide bid/ask (illiquid); negative 1y trend (-19%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Sector thesis: lagging Industrials by 6pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "FND",
@@ -3477,8 +3473,8 @@
       "target1": 54.66,
       "target2": 58.59091,
       "risk_reward": 2.52,
-      "covered_call": "Sell 2026-09-18 $52 call ~$1.15 (64% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $50 put ~$2.05 (115% ann.)",
+      "covered_call": "Sell 2026-09-18 $52 call ~$1.15 (70% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $50 put ~$2.05 (125% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -3507,7 +3503,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "FND scored 52.5/100. Setup: revenue $4.71B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 69/100 (x0.25 = 17.2); sentiment 50/100 (x0.25 = 12.5); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; high gross margin (45%); rich CSP yield (115% ann.); wide bid/ask (illiquid); negative 1y trend (-39%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +4.0% over the hold). Sector thesis: moving WITH Consumer Cyclical (+2pp vs XLY) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "FND scored 52.5/100. Setup: revenue $4.71B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 69/100 (x0.25 = 17.2); sentiment 50/100 (x0.25 = 12.5); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; high gross margin (45%); rich CSP yield (125% ann.); wide bid/ask (illiquid); negative 1y trend (-39%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +4.0% over the hold). Sector thesis: moving WITH Consumer Cyclical (+2pp vs XLY) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "INIO",
@@ -3578,8 +3574,8 @@
       "target1": 24.26,
       "target2": 38.2,
       "risk_reward": 6.65,
-      "covered_call": "Sell 2026-09-18 $22 call ~$0.57 (78% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $20 put ~$0.60 (84% ann.)",
+      "covered_call": "Sell 2026-09-18 $22 call ~$0.57 (84% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $20 put ~$0.60 (91% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "revenue_over_1b",
@@ -3608,12 +3604,12 @@
           "above_ema200"
         ]
       },
-      "reasoning": "INIO scored 51.5/100. Setup: revenue $3.09B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 49/100 (x0.25 = 12.2); sentiment 66/100 (x0.25 = 16.5); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; revenue growth (42%); high leverage (D/E 1347%); 84% upside to target; rich CSP yield (84% ann.); wide bid/ask (illiquid); sharp recent pullback (bounce setup); lagging SPY by -39pp (3mo). Sector thesis: lagging Industrials by 35pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "INIO scored 51.5/100. Setup: revenue $3.09B. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 49/100 (x0.25 = 12.2); sentiment 66/100 (x0.25 = 16.5); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; revenue growth (42%); high leverage (D/E 1347%); 84% upside to target; rich CSP yield (91% ann.); wide bid/ask (illiquid); sharp recent pullback (bounce setup); lagging SPY by -39pp (3mo). Sector thesis: lagging Industrials by 35pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "ULCC",
       "company": "Frontier Group Holdings, Inc.",
-      "score": 49.9,
+      "score": 50.9,
       "action": "Hold",
       "quality_grade": "F",
       "analyst_upside_%": 13.7,
@@ -3675,7 +3671,7 @@
       "subscores": {
         "technical": 68.0,
         "fundamental": 21.0,
-        "options": 52.0,
+        "options": 62.0,
         "momentum": 64.0,
         "sentiment": 50.0
       },
@@ -3691,8 +3687,8 @@
       "target1": 6.6,
       "target2": 6.77778,
       "risk_reward": 1.7,
-      "covered_call": "Sell 2026-09-18 $6 call ~$0.28 (130% ann.)",
-      "cash_secured_put": "Sell 2026-09-18 $5 put ~$0.05 (28% ann.)",
+      "covered_call": "Sell 2026-09-18 $6 call ~$0.28 (140% ann.)",
+      "cash_secured_put": "Sell 2026-09-18 $5 put ~$0.05 (30% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "revenue_over_1b",
@@ -3721,7 +3717,7 @@
           "oversold_rsi"
         ]
       },
-      "reasoning": "ULCC scored 49.9/100. Setup: revenue $4.15B. Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 21/100 (x0.25 = 5.2); sentiment 50/100 (x0.25 = 12.5); options 52/100 (x0.10 = 5.2); momentum 64/100 (x0.05 = 3.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; negative free cash flow; unprofitable; solid CSP yield (28% ann.); wide bid/ask (illiquid); positive 1y trend (15%); positive 6m trend. Backtest: this setup fired 8x historically, bounced 12% of the time (avg -4.5% over the hold). Sector thesis: outperforming Industrials by 7pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "ULCC scored 50.9/100. Setup: revenue $4.15B. Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 21/100 (x0.25 = 5.2); sentiment 50/100 (x0.25 = 12.5); options 62/100 (x0.10 = 6.2); momentum 64/100 (x0.05 = 3.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; negative free cash flow; unprofitable; rich CSP yield (30% ann.); wide bid/ask (illiquid); positive 1y trend (15%); positive 6m trend. Backtest: this setup fired 8x historically, bounced 12% of the time (avg -4.5% over the hold). Sector thesis: outperforming Industrials by 7pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "AAP",
@@ -3792,8 +3788,8 @@
       "target1": 49.08,
       "target2": 50.21053,
       "risk_reward": 1.64,
-      "covered_call": "Sell 2026-09-11 $44 call ~$0.73 (100% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $44 put ~$0.93 (128% ann.)",
+      "covered_call": "Sell 2026-09-11 $44 call ~$0.73 (120% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $44 put ~$0.93 (153% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "revenue_over_1b",
@@ -3822,7 +3818,7 @@
           "above_ema200"
         ]
       },
-      "reasoning": "AAP scored 49.8/100. Setup: revenue $8.62B. Contributions \u2014 technical 48/100 (x0.35 = 16.8); fundamental 51/100 (x0.25 = 12.8); sentiment 50/100 (x0.25 = 12.5); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; 50/200 golden cross; negative free cash flow; high gross margin (45%); rich CSP yield (128% ann.); wide bid/ask (illiquid); negative 1y trend (-25%); sharp recent pullback (bounce setup). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +2.2% over the hold). Sector thesis: lagging Consumer Cyclical by 26pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "AAP scored 49.8/100. Setup: revenue $8.62B. Contributions \u2014 technical 48/100 (x0.35 = 16.8); fundamental 51/100 (x0.25 = 12.8); sentiment 50/100 (x0.25 = 12.5); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; 50/200 golden cross; negative free cash flow; high gross margin (45%); rich CSP yield (153% ann.); wide bid/ask (illiquid); negative 1y trend (-25%); sharp recent pullback (bounce setup). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +2.2% over the hold). Sector thesis: lagging Consumer Cyclical by 26pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "CABO",
