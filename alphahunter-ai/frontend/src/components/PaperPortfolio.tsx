@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { StatTile, Badge } from "./ui";
 
+type Band = { band: string; n: number; "avg_return_%": number; win_rate: number };
 type Holding = {
   ticker: string; company?: string; first_buy: string; action: string;
   entry: number; now?: number | null; value?: number | null;
@@ -19,8 +20,10 @@ export type Paper = {
   benchmark?: string; "benchmark_return_%"?: number; "benchmark_value"?: number;
   "alpha_%"?: number; beat_benchmark?: boolean;
   best?: Holding | null; worst?: Holding | null;
-  by_score_band?: { band: string; n: number; "avg_return_%": number; win_rate: number }[];
+  by_score_band?: Band[];
   score_separates?: boolean;
+  by_quality_grade?: Band[];
+  grade_separates?: boolean;
   holdings?: Holding[];
   generated?: string;
 };
@@ -39,6 +42,33 @@ export function usePaper(): Paper | null {
       .catch(() => setP(null));
   }, []);
   return p;
+}
+
+/** One rating's cohort table plus a plain verdict on whether it works. */
+function RatingCheck({ label, bands, separates, good, bad }: {
+  label: string; bands?: Band[]; separates?: boolean; good: string; bad: string;
+}) {
+  if (!bands || bands.length < 2) return null;
+  return (
+    <div className="border-t border-line pt-2">
+      <div className="label-eyebrow mb-1">{label}</div>
+      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+        {bands.map((b) => (
+          <span key={b.band} className="text-ink-secondary">
+            <b className="text-ink">{b.band}</b>{" "}
+            <span className="text-ink-muted">n={b.n}</span>{" "}
+            <b className={b["avg_return_%"] >= 0 ? "text-gain" : "text-loss"}>
+              {pct(b["avg_return_%"])}
+            </b>{" "}
+            <span className="text-ink-muted">{(b.win_rate * 100).toFixed(0)}% win</span>
+          </span>
+        ))}
+      </div>
+      <div className={`mt-1 text-xs ${separates ? "text-gain" : "text-warn"}`}>
+        {separates ? good : bad}
+      </div>
+    </div>
+  );
 }
 
 export default function PaperPortfolio({ p }: { p: Paper }) {
@@ -93,29 +123,22 @@ export default function PaperPortfolio({ p }: { p: Paper }) {
         </div>
       )}
 
-      {/* Does a higher AI score actually mean a better outcome? If not, the
-          score is decoration and saying so is the honest thing to do. */}
-      {p.by_score_band && p.by_score_band.length > 1 && (
-        <div className="border-t border-line pt-2">
-          <div className="label-eyebrow mb-1">Does the AI score predict the outcome?</div>
-          <div className="flex flex-wrap gap-3 text-xs">
-            {p.by_score_band.map((b) => (
-              <span key={b.band} className="text-ink-secondary">
-                <b className="text-ink">{b.band}</b>{" "}
-                <span className="text-ink-muted">n={b.n}</span>{" "}
-                <b className={b["avg_return_%"] >= 0 ? "text-gain" : "text-loss"}>
-                  {pct(b["avg_return_%"])}
-                </b>
-              </span>
-            ))}
-          </div>
-          <div className={`mt-1 text-xs ${p.score_separates ? "text-gain" : "text-warn"}`}>
-            {p.score_separates
-              ? "Higher-scored names did do better — the score is carrying real information."
-              : "Higher-scored names did NOT do better. On this history the score does not separate winners from losers, so treat it as a filter for what the screen found, not as conviction."}
-          </div>
-        </div>
-      )}
+      {/* Do the ratings this product displays as conviction actually predict
+          the outcome? If not, saying so is the honest thing to do. */}
+      <RatingCheck
+        label="Does the AI score predict the outcome?"
+        bands={p.by_score_band}
+        separates={p.score_separates}
+        good="Higher-scored names did do better — the score is carrying real information."
+        bad="Higher-scored names did NOT do better. On this history the score does not separate winners from losers, so treat it as a filter for what the screen found, not as conviction."
+      />
+      <RatingCheck
+        label="Does the quality grade predict the outcome?"
+        bands={p.by_quality_grade}
+        separates={p.grade_separates}
+        good="Better-graded names did do better — the grade is carrying real information."
+        bad="Better-graded names did NOT do better. The grade describes balance-sheet quality, which is not the same thing as what happens to the price over a few weeks."
+      />
 
       <div className="overflow-x-auto thin-scroll">
         <table className="table-data">

@@ -103,26 +103,36 @@ def simulate(
         sc = h.get("score") or 0
         return "80+" if sc >= 80 else "70-79" if sc >= 70 else "60-69" if sc >= 60 else "<60"
 
-    bands: dict[str, list[float]] = {}
-    for h in priced:
-        bands.setdefault(_band(h), []).append(h["return_%"])
-    by_score = [
-        {"band": b,
-         "n": len(v),
-         "avg_return_%": round(sum(v) / len(v), 2),
-         "win_rate": round(sum(1 for x in v if x > 0) / len(v), 3)}
-        for b, v in sorted(bands.items(), reverse=True)
-    ]
-    # "Higher score => better outcome" should mean the bands descend in order.
-    ordered = [b["avg_return_%"] for b in by_score]
-    score_separates = len(ordered) > 1 and all(
-        a >= b for a, b in zip(ordered, ordered[1:])
-    )
+    def _group(key, order=None) -> list[dict]:
+        g: dict[str, list[float]] = {}
+        for h in priced:
+            g.setdefault(key(h), []).append(h["return_%"])
+        keys = [k for k in (order or sorted(g, reverse=True)) if k in g]
+        return [
+            {"band": k, "n": len(g[k]),
+             "avg_return_%": round(sum(g[k]) / len(g[k]), 2),
+             "win_rate": round(sum(1 for x in g[k] if x > 0) / len(g[k]), 3)}
+            for k in keys
+        ]
+
+    def _descends(bands: list[dict], min_n: int = 5) -> bool:
+        """True when better-rated really did mean better outcome. Tiny bands
+        are ignored — a 2-name band decides nothing either way."""
+        vals = [b["avg_return_%"] for b in bands if b["n"] >= min_n]
+        return len(vals) > 1 and all(a >= b for a, b in zip(vals, vals[1:]))
+
+    by_score = _group(_band)
+    by_grade = _group(lambda h: h.get("quality_grade") or "—",
+                      order=["A", "B", "C", "D", "F", "—"])
+    score_separates = _descends(by_score)
+    grade_separates = _descends(by_grade)
 
     out = {
         "stake": stake,
         "by_score_band": by_score,
         "score_separates": score_separates,
+        "by_quality_grade": by_grade,
+        "grade_separates": grade_separates,
         "positions": len(rows),
         "priced": len(priced),
         "invested": round(invested, 2),

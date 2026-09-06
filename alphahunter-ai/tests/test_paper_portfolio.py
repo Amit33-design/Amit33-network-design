@@ -84,15 +84,22 @@ def test_a_losing_book_reports_losing():
     assert r["beat_benchmark"] is False
 
 
-def test_score_bands_are_reported_and_a_flat_score_is_called_out():
+def _band_history(returns_by_band):
+    """5 names per band — enough to clear the small-band guard, which exists so
+    a 2-name band can't decide whether the score works."""
+    recs, prices = [], {}
+    for band_score, ret in returns_by_band.items():
+        for i in range(5):
+            t = f"S{band_score}{i}"
+            recs.append(_rec(t, "Buy", 100.0, score=band_score))
+            prices[t] = 100.0 * (1 + ret / 100)
+    return [("2026-01-05", recs)], prices
+
+
+def test_score_bands_are_reported_and_an_inverted_score_is_called_out():
     """If a higher score doesn't mean a better outcome, the product must not
     keep presenting the score as conviction."""
-    history = [("2026-01-05", [
-        _rec("HI", "Buy", 100.0, score=85),      # top band, worst outcome
-        _rec("MID", "Buy", 100.0, score=75),
-        _rec("LO", "Buy", 100.0, score=62),      # bottom band, best outcome
-    ])]
-    prices = {"HI": 80.0, "MID": 100.0, "LO": 130.0}
+    history, prices = _band_history({85: -20.0, 75: 0.0, 62: 30.0})
     r = simulate(history, lambda t: prices[t])
 
     bands = {b["band"]: b["avg_return_%"] for b in r["by_score_band"]}
@@ -101,11 +108,34 @@ def test_score_bands_are_reported_and_a_flat_score_is_called_out():
 
 
 def test_a_score_that_does_separate_is_recognised():
-    history = [("2026-01-05", [
-        _rec("HI", "Buy", 100.0, score=85),
-        _rec("MID", "Buy", 100.0, score=75),
-        _rec("LO", "Buy", 100.0, score=62),
-    ])]
-    prices = {"HI": 130.0, "MID": 100.0, "LO": 80.0}
+    history, prices = _band_history({85: 30.0, 75: 0.0, 62: -20.0})
     r = simulate(history, lambda t: prices[t])
     assert r["score_separates"] is True
+
+
+def test_a_tiny_band_cannot_decide_whether_the_score_works():
+    """One lucky name in the 80+ band must not flip the verdict."""
+    history, prices = _band_history({75: 0.0, 62: 30.0})
+    history[0][1].append(_rec("LUCKY", "Buy", 100.0, score=95))
+    prices["LUCKY"] = 200.0                     # +100%, n=1
+
+    r = simulate(history, lambda t: prices[t])
+    assert any(b["band"] == "80+" and b["n"] == 1 for b in r["by_score_band"])
+    assert r["score_separates"] is False        # still inverted where n is real
+
+
+def test_quality_grade_is_held_to_the_same_standard_as_the_score():
+    recs, prices = [], {}
+    # Grade A does worst, D does best — an inverted grade must be reported.
+    for grade, ret in (("A", -10.0), ("B", 0.0), ("C", 5.0), ("D", 15.0)):
+        for i in range(5):
+            t = f"{grade}{i}"
+            rec = _rec(t, "Buy", 100.0)
+            rec["quality_grade"] = grade
+            recs.append(rec)
+            prices[t] = 100.0 * (1 + ret / 100)
+    r = simulate([("2026-01-05", recs)], lambda t: prices[t])
+
+    grades = {b["band"]: b["avg_return_%"] for b in r["by_quality_grade"]}
+    assert grades == {"A": -10.0, "B": 0.0, "C": 5.0, "D": 15.0}
+    assert r["grade_separates"] is False
