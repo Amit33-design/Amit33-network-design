@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { ReactNode } from "react";
 
 // Shared primitives. Every surface in the app is built from these, so spacing,
@@ -122,3 +123,36 @@ export const CHART = {
   axis: "#8a938d",
   recessive: "#b9bfba",
 };
+
+// Collapsible category section — click the header to expand/collapse.
+export function Section({
+  title, subtitle, badge, badgeColor, defaultOpen, children,
+}: {
+  title: string; subtitle?: string; badge?: string; badgeColor?: string;
+  defaultOpen?: boolean; children: ReactNode;
+}) {
+  const [open, setOpen] = useState(!!defaultOpen);
+  return (
+    <section className="mb-3 panel overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-surface-sunken/60 transition-colors text-left"
+      >
+        <span className={`text-ink-muted text-xs transition-transform duration-150 ${open ? "rotate-90" : ""}`}>▶</span>
+        <span className="text-sm font-semibold text-ink">{title}</span>
+        {badge && (
+          <span className="rounded-full border px-2 py-0.5 text-2xs font-medium num"
+                style={{ backgroundColor: `${badgeColor ?? "#8a938d"}14`,
+                         color: badgeColor ?? "#5b6660",
+                         borderColor: `${badgeColor ?? "#8a938d"}33` }}>
+            {badge}
+          </span>
+        )}
+        {subtitle && <span className="text-xs text-ink-muted hidden sm:inline truncate">{subtitle}</span>}
+        <span className="ml-auto text-2xs text-ink-muted">{open ? "Hide" : "Show"}</span>
+      </button>
+      {open && <div className="px-4 pb-4 pt-1 border-t border-line">{children}</div>}
+    </section>
+  );
+}
