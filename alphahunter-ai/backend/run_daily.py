@@ -176,6 +176,26 @@ def main() -> None:
             with open(paper_path, "w") as f:
                 json.dump({"error": "not generated yet", "holdings": []}, f)
 
+    # Growth leaders: the other half of the product. The oversold screen finds
+    # things that fell; this finds growing businesses whose stock is working.
+    growth_path = os.path.join(os.path.dirname(FRONTEND_SNAPSHOT), "growth.json")
+    try:
+        from backend.scanners.runner import run_growth_scan
+        growth = run_growth_scan(limit=args.limit or None, max_scored=40)
+        with open(growth_path, "w") as f:
+            json.dump({"date": today, "count": len(growth), "results": growth}, f, indent=2)
+        if growth:
+            top = growth[0]
+            print(f"Growth leaders: {len(growth)} names, best {top['ticker']} "
+                  f"(score {top['score']}, growth {top['metrics'].get('growth_score')})")
+        else:
+            print("Growth leaders: none passed the screen today.")
+    except Exception as e:  # pragma: no cover - CI only
+        print(f"Growth scan skipped: {e}")
+        if not os.path.exists(growth_path):
+            with open(growth_path, "w") as f:
+                json.dump({"date": today, "count": 0, "results": []}, f)
+
     # Income plan: what the MEASURED edge implies for an annual profit goal.
     # Derived from the paper portfolio so it describes this system, not a
     # hypothetical good one.

@@ -8,6 +8,7 @@ import { StatTile, Badge, Delta, SkeletonPanel, EmptyState } from "../components
 import BacktestPanel, { useBacktest } from "../components/BacktestPanel";
 import PaperPortfolio, { usePaper } from "../components/PaperPortfolio";
 import IncomePlan, { useIncomePlan } from "../components/IncomePlan";
+import GrowthLeaders, { useGrowth } from "../components/GrowthLeaders";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 
 interface Stock {
@@ -363,6 +364,7 @@ export default function Dashboard() {
   const backtest = useBacktest();
   const paper = usePaper();
   const incomePlan = useIncomePlan();
+  const growth = useGrowth();
 
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
 
@@ -454,6 +456,20 @@ export default function Dashboard() {
       </Section>
 
       {/* Strategy backtest — the equity curve of actually trading the picks */}
+      {/* Growth leaders — the "what should I buy" half, as opposed to the
+          "what fell" half every other screen here answers. */}
+      {growth && (
+        <Section
+          title="🌱 Growth Leaders"
+          subtitle="growing businesses whose stock is already working"
+          badge={`${growth.results.length}`}
+          badgeColor="#31a05c"
+          defaultOpen
+        >
+          <GrowthLeaders feed={growth} />
+        </Section>
+      )}
+
       {/* Profit-target planner: what the measured edge and YOUR capital
           actually support, rather than what anyone would like them to. */}
       {incomePlan && (
