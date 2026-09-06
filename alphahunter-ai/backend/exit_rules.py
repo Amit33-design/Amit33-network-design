@@ -69,9 +69,15 @@ def build_plan(
     tp, sp = target_pct, stop_pct
     if atr and atr > 0:
         atr_pct = atr / entry * 100
-        # 2 ATR to the target, 1.2 ATR to the stop, then clamped to sane bounds.
-        tp = max(6.0, min(30.0, atr_pct * 2.0))
-        sp = -max(3.0, min(15.0, atr_pct * 1.2))
+        # Scale to the HOLDING PERIOD, not to a single day. Volatility grows
+        # with the square root of time, so a stock that moves 2% a day has a
+        # ~6.5% expected range over 10 sessions — asking it for 2x its DAILY
+        # ATR was both too tight and, once clamped at a 6% floor, identical
+        # for almost every name. The first version handed a 2.2%-ATR stock and
+        # a 2.8%-ATR stock exactly the same plan.
+        horizon_move = atr_pct * (horizon_days ** 0.5)
+        tp = max(5.0, min(30.0, horizon_move * 1.0))
+        sp = -max(3.0, min(15.0, horizon_move * 0.6))   # ~1.67:1 reward:risk
 
     return ExitPlan(
         entry=round(entry, 2),

@@ -244,6 +244,11 @@ class GrowthScanner:
         return ScanHit(
             ticker=snap.ticker,
             metrics={
+                # score_snapshot reads its indicators from here. Omitting this
+                # silently produced growth picks with NO stop, target or R:R —
+                # every exit plan fell back to the flat 12%/-7% default, which
+                # is exactly the kind of failure that looks fine on screen.
+                "indicators": ind,
                 "profile": "growth",
                 "price": round(last, 2),
                 "growth_score": read.score,

@@ -99,7 +99,14 @@ def run_growth_scan(
             results.append(score_snapshot(snap, hit, md=md))
         except Exception:
             continue
-    results.sort(key=lambda r: r["score"], reverse=True)
+
+    # Rank by the GROWTH score, not the composite. The composite was tuned for
+    # oversold bounce setups, so it marks a healthy leader down for the crime
+    # of not having crashed — on the first live run it put NVDA above FNV and
+    # PLTR purely because they were less beaten up. The composite still rides
+    # along on each row as a second opinion.
+    results.sort(key=lambda r: ((r.get("metrics") or {}).get("growth_score") or 0,
+                                r.get("score") or 0), reverse=True)
     return results
 
 

@@ -184,3 +184,33 @@ def test_edge_is_measured_from_real_holdings_not_assumed():
 
 def test_too_little_history_refuses_to_guess_an_edge():
     assert edge_from_history([{"priced": True, "return_%": 5.0}] * 5) is None
+
+
+def test_growth_hits_carry_indicators_so_price_levels_get_built():
+    """score_snapshot reads indicators off the hit. Without them a growth pick
+    ships with no stop, no target and a flat default exit plan."""
+    snap = StockSnapshot(ticker="LEADER", history=_hist(daily=0.004),
+                         info=GROWTH_INFO)
+    hit = GrowthScanner(spy_ret_60d=1.0).evaluate(snap)
+
+    assert hit is not None
+    assert hit.metrics.get("indicators"), "growth hits must carry indicators"
+    assert hit.metrics["indicators"].get("atr"), "ATR is what sizes the exit plan"
+
+
+def test_the_exit_plan_scales_with_atr_end_to_end():
+    """A volatile name must not get the same 12%/-7% plan as a calm one."""
+    from backend.exit_rules import build_plan
+    # 3% noise breaks the 200-day gate entirely, so the "wild" case stays
+    # inside what the screen would actually accept.
+    calm = StockSnapshot("CALM", _hist(daily=0.004, noise=0.012), GROWTH_INFO)
+    wild = StockSnapshot("WILD", _hist(daily=0.004, noise=0.020), GROWTH_INFO)
+
+    plans = []
+    for snap in (calm, wild):
+        hit = GrowthScanner(spy_ret_60d=1.0, loose=True).evaluate(snap)
+        assert hit is not None
+        ind = hit.metrics["indicators"]
+        plans.append(build_plan(snap.last_close, atr=ind["atr"]))
+
+    assert plans[1].target_pct > plans[0].target_pct
