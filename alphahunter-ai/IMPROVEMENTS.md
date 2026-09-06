@@ -295,8 +295,21 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   flags counter-trend / false-bounce risk (−8). Surfaced as `mtf` in the
   payload, a reasoning sentence, a "Weekly uptrend/downtrend" badge on the
   Analysis tab, plus the same logic + thesis line in `api/ta.js`. +2 tests.
-- [ ] **Iter 10 — Backtest the full screen.** Portfolio-level backtest of the
-  ranked list (top-N each day) with equity curve on the Backtest page.
+- [x] **Iter 10 — Backtest the full screen.** New `backend/portfolio_backtest.py`
+  simulates the strategy a user would actually run: *every scan day buy the top
+  N picks equal-weight and hold H trading days, letting days overlap*. The
+  book's daily return is the equal-weight average of whatever is open that day;
+  the equity curve compounds it, and **SPY is compounded over the exact same
+  days** so the comparison is not flattered by sitting in cash during a
+  selloff. Reports total return, alpha, max drawdown (both sides), trade win
+  rate, and the best/worst trade. `simulate()` is pure (history + a price table
+  in, a dict out) so it is fully testable offline — 7 tests cover a winning
+  book, a losing book, top-N truncation, overlapping positions, scan dates
+  landing on weekends, and a missing benchmark. Rendered as a **🧪 Strategy
+  Backtest** equity curve on the Dashboard, hidden until CI has generated the
+  data. Wired into `run_daily` (best-effort, never fails the scan) and the scan
+  workflow. Verified end-to-end against the real 59-day scan history: 275
+  trades across the book.
 
 ## Guardrails
 - Each iteration: tests pass, atomic commit, this file updated.

@@ -157,6 +157,24 @@ def main() -> None:
             with open(perf_path, "w") as f:
                 json.dump({"picks": [], "summary": None, "generated": today}, f)
 
+    # Portfolio-level backtest: what a mechanical "buy the top N, hold H days"
+    # book would actually have returned vs SPY. Best-effort — never fails the
+    # scan. Costs a price-history fetch, so it runs after the scan is safe.
+    bt_path = os.path.join(os.path.dirname(FRONTEND_SNAPSHOT), "backtest.json")
+    try:
+        from backend.portfolio_backtest import build as build_backtest
+        bt = build_backtest(RESULTS_DIR, bt_path)
+        if bt.get("points"):
+            print(f"Backtest: {bt['trades']} trades, strategy {bt['strategy_return_%']:+.1f}% "
+                  f"vs SPY {bt['benchmark_return_%']:+.1f}% (alpha {bt['alpha_%']:+.1f}pp)")
+        else:
+            print(f"Backtest: {bt.get('error', 'no result')}")
+    except Exception as e:  # pragma: no cover - CI only
+        print(f"Backtest skipped: {e}")
+        if not os.path.exists(bt_path):  # keep the workflow's git add happy
+            with open(bt_path, "w") as f:
+                json.dump({"error": "not generated yet", "points": []}, f)
+
     # Push the day's best high-conviction setups to configured channels
     # (Slack/Discord webhooks via env/secrets); logs and no-ops when unset.
     outcome = send_scan_digest(today, results)

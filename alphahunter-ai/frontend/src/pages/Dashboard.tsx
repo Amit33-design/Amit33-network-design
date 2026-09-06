@@ -4,6 +4,7 @@ import Plot from "react-plotly.js";
 import { ErrorBox } from "../components/Loading";
 import { getWatchlist, removeFromWatchlist, onWatchlistChange } from "../lib/watchlist";
 import { StatTile, Badge, Delta, SkeletonPanel, EmptyState } from "../components/ui";
+import BacktestPanel, { useBacktest } from "../components/BacktestPanel";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 
 interface Stock {
@@ -289,6 +290,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [theme, setTheme] = useState(getTheme);
+  const backtest = useBacktest();
 
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
 
@@ -378,6 +380,20 @@ export default function Dashboard() {
           ))}
         </div>
       </Section>
+
+      {/* Strategy backtest — the equity curve of actually trading the picks */}
+      {backtest && (
+        <Section
+          title="🧪 Strategy Backtest"
+          subtitle={`top ${backtest.params?.top_n ?? 5} bought each scan day, held ${backtest.params?.hold_days ?? 10} trading days, vs ${backtest.params?.benchmark ?? "SPY"}`}
+          badge={backtest["alpha_%"] != null
+            ? `alpha ${backtest["alpha_%"] >= 0 ? "+" : ""}${backtest["alpha_%"]}pp`
+            : undefined}
+          badgeColor={(backtest["alpha_%"] ?? 0) >= 0 ? "#31a05c" : "#e2574c"}
+        >
+          <BacktestPanel bt={backtest} />
+        </Section>
+      )}
 
       {/* Track record — how past picks actually performed (accountability) */}
       {perf?.summary && (
