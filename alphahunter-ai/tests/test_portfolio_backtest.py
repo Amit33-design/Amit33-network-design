@@ -102,3 +102,37 @@ def test_missing_benchmark_history_degrades_gracefully():
 def test_max_drawdown_measures_peak_to_trough():
     assert _max_drawdown([1.0, 1.5, 0.75, 1.2]) == -50.0
     assert _max_drawdown([1.0, 1.1, 1.2]) == 0.0
+
+
+def test_sweep_reports_out_of_sample_separately_from_the_tuned_pick():
+    """The tuned cell must be re-run on unseen data, never reported in-sample."""
+    from backend.portfolio_backtest import sweep
+
+    dates = _calendar(80)
+    # AAA rises through the first half then falls through the second — the exact
+    # shape that makes in-sample tuning look brilliant and out-of-sample fail.
+    aaa = {}
+    price = 100.0
+    for i, d in enumerate(dates):
+        price *= 1.02 if i < 40 else 0.98
+        aaa[d] = price
+    closes = {"SPY": _series(dates, 500.0, 0.0), "AAA": aaa}
+    history = [(dates[i], [{"ticker": "AAA", "score": 90}]) for i in range(0, 70, 2)]
+
+    r = sweep(history, closes, top_n_grid=(1,), hold_grid=(5, 10))
+
+    assert r["split_date"] in dates
+    assert r["train_days"] > 0 and r["test_days"] > 0
+    assert r["best_in_sample"]["alpha_%"] > 0        # the rising half
+    assert r["out_of_sample"]["alpha_%"] < 0         # the falling half
+    assert r["held_up"] is False                     # correctly called as noise
+    assert r["out_of_sample"]["hold_days"] == r["best_in_sample"]["hold_days"]
+
+
+def test_sweep_needs_enough_history():
+    from backend.portfolio_backtest import sweep
+
+    dates = _calendar(10)
+    closes = {"SPY": _series(dates, 500.0, 0.0)}
+    r = sweep([(dates[0], [{"ticker": "AAA", "score": 90}])], closes)
+    assert "error" in r

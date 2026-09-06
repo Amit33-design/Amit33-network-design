@@ -164,6 +164,72 @@ def simulate(
     }
 
 
+TOP_N_GRID = (3, 5, 10)
+HOLD_GRID = (5, 10, 20)
+
+
+def sweep(
+    history: list[tuple[str, list[dict]]],
+    closes: dict[str, dict[str, float]],
+    *,
+    top_n_grid: tuple[int, ...] = TOP_N_GRID,
+    hold_grid: tuple[int, ...] = HOLD_GRID,
+    benchmark: str = BENCHMARK,
+) -> dict:
+    """Walk-forward parameter search over (top_n, hold_days).
+
+    Picking the grid cell with the best full-sample alpha would be textbook
+    overfitting: with 9 cells and ~60 scan days, the winner is mostly luck.
+    So the history is split chronologically — the best cell is chosen on the
+    FIRST half and then re-run untouched on the SECOND half. The out-of-sample
+    number is the one worth believing, and the gap between them is the honest
+    measure of how much of the tuning was noise.
+    """
+    dates = sorted({d for d, _ in history})
+    if len(dates) < 6:
+        return {"error": "not enough scan history to split"}
+    cut = dates[len(dates) // 2]
+    train = [(d, r) for d, r in history if d < cut]
+    test = [(d, r) for d, r in history if d >= cut]
+
+    grid: list[dict] = []
+    for n in top_n_grid:
+        for h in hold_grid:
+            r = simulate(train, closes, top_n=n, hold_days=h, benchmark=benchmark)
+            if r.get("points"):
+                grid.append({"top_n": n, "hold_days": h,
+                             "alpha_%": r["alpha_%"], "trades": r["trades"]})
+    if not grid:
+        return {"error": "no tradable grid cells"}
+
+    best = max(grid, key=lambda c: c["alpha_%"])
+    oos = simulate(test, closes, top_n=best["top_n"], hold_days=best["hold_days"],
+                   benchmark=benchmark)
+    default = simulate(test, closes, top_n=TOP_N, hold_days=HOLD_DAYS, benchmark=benchmark)
+
+    return {
+        "split_date": cut,
+        "train_days": len(train), "test_days": len(test),
+        "grid": sorted(grid, key=lambda c: -c["alpha_%"]),
+        "best_in_sample": best,
+        "out_of_sample": {
+            "top_n": best["top_n"], "hold_days": best["hold_days"],
+            "alpha_%": oos.get("alpha_%"),
+            "strategy_return_%": oos.get("strategy_return_%"),
+            "benchmark_return_%": oos.get("benchmark_return_%"),
+            "trades": oos.get("trades"),
+        },
+        "shipped_defaults_out_of_sample": {
+            "top_n": TOP_N, "hold_days": HOLD_DAYS,
+            "alpha_%": default.get("alpha_%"), "trades": default.get("trades"),
+        },
+        # Positive = the tuning survived unseen data; negative = it was noise.
+        "held_up": (oos.get("alpha_%") is not None
+                    and best["alpha_%"] is not None
+                    and oos["alpha_%"] > 0),
+    }
+
+
 def _fetch_closes(tickers: list[str], start: str, end: str) -> dict[str, dict[str, float]]:
     """Daily closes per ticker. Network-only; kept out of `simulate` on purpose."""
     import yfinance as yf
@@ -194,6 +260,10 @@ def build(results_dir: str, out_path: str, *, top_n: int = TOP_N,
     tickers = _pick_universe(history, top_n)[:MAX_TICKERS]
     closes = _fetch_closes([BENCHMARK] + tickers, start, end)
     result = simulate(history, closes, top_n=top_n, hold_days=hold_days)
+    try:
+        result["sweep"] = sweep(history, closes)
+    except Exception as e:  # pragma: no cover - never let tuning break the build
+        result["sweep"] = {"error": str(e)}
     result["generated"] = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
 
     os.makedirs(os.path.dirname(out_path), exist_ok=True)

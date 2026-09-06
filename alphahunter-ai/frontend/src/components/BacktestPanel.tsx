@@ -23,6 +23,16 @@ export type Backtest = {
   "avg_trade_%"?: number | null;
   best_trade?: Trade | null;
   worst_trade?: Trade | null;
+  sweep?: {
+    error?: string;
+    split_date?: string;
+    best_in_sample?: { top_n: number; hold_days: number; "alpha_%": number };
+    out_of_sample?: {
+      top_n: number; hold_days: number;
+      "alpha_%"?: number | null; trades?: number;
+    };
+    held_up?: boolean;
+  };
   points?: { date: string; strategy: number; benchmark: number; positions: number }[];
 };
 
@@ -122,6 +132,26 @@ export default function BacktestPanel({ bt }: { bt: Backtest }) {
           <span>worst <b className="text-loss">{bt.worst_trade.ticker} {pct(bt.worst_trade["return_%"])}</b></span>
         )}
       </div>
+
+      {/* Walk-forward check: a grid search picked on the first half of the
+          history, then re-run untouched on the second. The unseen number is
+          the one worth believing. */}
+      {bt.sweep?.out_of_sample?.["alpha_%"] != null && (
+        <div className="text-xs text-ink-secondary border-t border-line pt-2">
+          <span className="label-eyebrow">Walk-forward check</span>{" "}
+          Tuning <b>top {bt.sweep.best_in_sample?.top_n} / {bt.sweep.best_in_sample?.hold_days}d</b>{" "}
+          on scans before {bt.sweep.split_date} and re-running it on the unseen
+          half gave{" "}
+          <b className={bt.sweep.held_up ? "text-gain" : "text-loss"}>
+            {pct(bt.sweep.out_of_sample["alpha_%"])} alpha
+          </b>{" "}
+          over {bt.sweep.out_of_sample.trades} trades — versus{" "}
+          {pct(bt.sweep.best_in_sample?.["alpha_%"])} on the data it was chosen from.{" "}
+          {bt.sweep.held_up
+            ? "The edge survived data it had never seen."
+            : "The in-sample edge did not survive, so treat the tuning as noise."}
+        </div>
+      )}
 
       {!beat && (
         <div className="text-xs text-warn border border-warn/30 bg-warn-soft rounded-panel px-3 py-2">
