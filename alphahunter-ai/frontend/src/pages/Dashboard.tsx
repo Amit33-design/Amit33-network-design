@@ -364,7 +364,7 @@ export default function Dashboard() {
         badgeColor="#7c3aed"
         defaultOpen
       >
-        <div className="text-xs text-slate-400 mb-3">
+        <div className="text-xs text-ink-muted mb-3">
           Highest AI-scored names across every domain right now — the system's best identifications, ranked by conviction.
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -419,7 +419,7 @@ export default function Dashboard() {
             <div className="mb-4">
               <div className="text-sm font-semibold text-ink mb-2">
                 What's actually working
-                <span className="ml-2 text-xs font-normal text-slate-400">
+                <span className="ml-2 text-xs font-normal text-ink-muted">
                   picks · win rate · avg return · alpha vs SPY (groups under 3 picks hidden)
                 </span>
               </div>
@@ -432,7 +432,7 @@ export default function Dashboard() {
           )}
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="text-slate-400 text-left">
+              <thead className="text-ink-muted text-left">
                 <tr>{["Picked", "Ticker", "Action", "Entry", "Now", "Return", "Held"].map((h) => (
                   <th key={h} className="px-2 py-1 whitespace-nowrap">{h}</th>))}
                 </tr>
@@ -440,15 +440,15 @@ export default function Dashboard() {
               <tbody>
                 {perf.picks.slice(0, 15).map((p, i) => (
                   <tr key={`${p.date}-${p.ticker}-${i}`} className="border-t">
-                    <td className="px-2 py-1 text-slate-400 whitespace-nowrap">{p.date}</td>
+                    <td className="px-2 py-1 text-ink-muted whitespace-nowrap">{p.date}</td>
                     <td className="px-2 py-1 font-semibold text-alpha">{p.ticker}</td>
                     <td className="px-2 py-1">{p.action ?? "—"}</td>
                     <td className="px-2 py-1">${p.entry}</td>
                     <td className="px-2 py-1">${p.price}</td>
-                    <td className={`px-2 py-1 font-semibold ${p["return_%"] >= 0 ? "text-alpha" : "text-red-600"}`}>
+                    <td className={`px-2 py-1 font-semibold ${p["return_%"] >= 0 ? "text-alpha" : "text-loss"}`}>
                       {p["return_%"] >= 0 ? "+" : ""}{p["return_%"]}%
                     </td>
-                    <td className="px-2 py-1 text-slate-400">{p.days}d</td>
+                    <td className="px-2 py-1 text-ink-muted">{p.days}d</td>
                   </tr>
                 ))}
               </tbody>
@@ -469,7 +469,7 @@ export default function Dashboard() {
           {topGainers.map((s) => <StockCard key={s.ticker} s={s} />)}
         </div>
         {losers.length > 0 && (
-          <div className="mt-3 text-xs text-slate-400">
+          <div className="mt-3 text-xs text-ink-muted">
             Today's laggards: {losers.map((s) => `${s.ticker} ${Number(s["day_%"]).toFixed(1)}%`).join(" · ")}
           </div>
         )}

@@ -9,7 +9,7 @@ export function Loading({ label = "Scanning the market…" }: { label?: string }
 
 export function ErrorBox({ error }: { error: string }) {
   return (
-    <div className="bg-red-50 border border-red-200 text-red-700 rounded p-4 text-sm">
+    <div className="bg-loss-soft border border-loss/30 text-loss rounded-panel p-4 text-sm">
       <div className="font-semibold">Couldn't reach the backend.</div>
       <div className="mt-1">{error}</div>
       <div className="mt-2 text-loss">

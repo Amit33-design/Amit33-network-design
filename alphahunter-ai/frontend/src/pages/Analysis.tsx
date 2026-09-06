@@ -173,7 +173,7 @@ export default function Analysis() {
                   <div className="text-xs uppercase tracking-wide text-ink-muted">Long-term trend</div>
                   <div className={`text-2xl font-bold ${
                     data.trend.direction === "up" ? "text-brand"
-                      : data.trend.direction === "down" ? "text-loss" : "text-amber-600"
+                      : data.trend.direction === "down" ? "text-loss" : "text-warn"
                   }`}>
                     {data.trend.direction === "up" ? "▲ UP" : data.trend.direction === "down" ? "▼ DOWN" : "◆ MIXED"}
                     <span className="text-sm font-semibold text-ink-muted"> {data.trend.score}</span>
@@ -183,7 +183,7 @@ export default function Analysis() {
               {data.timing && (
                 <div className="text-center" title="Short-term entry timing (RSI, MACD, weekly move). Only tunes the entry — never flips the direction.">
                   <div className="text-xs uppercase tracking-wide text-ink-muted">Entry timing</div>
-                  <div className={`text-2xl font-bold ${data.timing.score >= 55 ? "text-brand" : data.timing.score >= 40 ? "text-amber-600" : "text-loss"}`}>
+                  <div className={`text-2xl font-bold ${data.timing.score >= 55 ? "text-brand" : data.timing.score >= 40 ? "text-warn" : "text-loss"}`}>
                     {data.timing.score >= 55 ? "Good" : data.timing.score >= 40 ? "OK" : "Poor"}
                     <span className="text-sm font-semibold text-ink-muted"> {data.timing.score}</span>
                   </div>
@@ -333,7 +333,7 @@ export default function Analysis() {
                     : "Cash-Secured Put signal: not today"}
                 </span>
                 {data.csp_signal.active && data.csp_signal.suggested_strike != null && (
-                  <span className="text-sm font-semibold text-gain bg-emerald-100 px-2 py-0.5 rounded">
+                  <span className="text-sm font-semibold text-gain bg-gain-soft px-2 py-0.5 rounded">
                     suggested strike ≈ ${data.csp_signal.suggested_strike}
                   </span>
                 )}
@@ -630,7 +630,7 @@ function Row({ k, v }: { k: string; v: any }) {
 function PlanCell({ label, value, sub, tone }:
   { label: string; value: string; sub?: string; tone?: "red" | "green" | "amber" }) {
   const color = tone === "red" ? "text-loss" : tone === "green" ? "text-brand"
-    : tone === "amber" ? "text-amber-600" : "text-ink";
+    : tone === "amber" ? "text-warn" : "text-ink";
   return (
     <div>
       <div className="text-[10px] uppercase tracking-wide text-ink-muted">{label}</div>

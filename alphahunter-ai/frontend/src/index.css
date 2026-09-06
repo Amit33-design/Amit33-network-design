@@ -90,6 +90,18 @@
     font-variant-numeric: tabular-nums lining-nums;
   }
 
+  /* Form controls are themed globally rather than per-page: pages were writing
+     bare `border rounded`, which left native inputs/selects rendering in the
+     UA's own palette against our dark surfaces. */
+  input[type="text"], input[type="number"], input[type="search"],
+  input:not([type]), select, textarea {
+    @apply bg-surface-sunken text-ink border border-line rounded-md
+           placeholder:text-ink-muted;
+  }
+  input:disabled, select:disabled, textarea:disabled {
+    @apply opacity-60 cursor-not-allowed;
+  }
+
   :focus-visible {
     @apply outline-none ring-2 ring-brand/50 ring-offset-1 ring-offset-surface;
   }
