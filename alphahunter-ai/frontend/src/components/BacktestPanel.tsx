@@ -14,6 +14,8 @@ export type Backtest = {
   params?: { top_n: number; hold_days: number; benchmark: string };
   start?: string; end?: string;
   trades?: number;
+  distinct_names?: number;
+  skipped_entries?: number;
   "strategy_return_%"?: number;
   "benchmark_return_%"?: number;
   "alpha_%"?: number;
@@ -76,6 +78,20 @@ export default function BacktestPanel({ bt }: { bt: Backtest }) {
         this is not flattered by sitting in cash during a selloff.
         {" "}<b>{bt.trades}</b> trades, {bt.start} → {bt.end}.
       </div>
+
+      {/* The trade count is the number most likely to be over-read, so the
+          honest denominators sit right next to it. */}
+      {bt.distinct_names != null && (
+        <div className="text-2xs text-ink-muted">
+          Those {bt.trades} entries fall in only <b>{bt.distinct_names} distinct names</b> —
+          the screen keeps re-surfacing the same stocks, so repeated entries in one
+          ticker are closer to a single bet held longer than to independent trades.
+          Read the trade count as activity, not as sample size.
+          {bt.skipped_entries ? (
+            <> {bt.skipped_entries} further entries were skipped for missing price history.</>
+          ) : null}
+        </div>
+      )}
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <StatTile label="Strategy" value={pct(bt["strategy_return_%"])}
@@ -150,6 +166,15 @@ export default function BacktestPanel({ bt }: { bt: Backtest }) {
           {bt.sweep.held_up
             ? "The edge survived data it had never seen."
             : "The in-sample edge did not survive, so treat the tuning as noise."}
+        </div>
+      )}
+
+      {(bt["max_drawdown_%"] ?? 0) < (bt["benchmark_max_drawdown_%"] ?? 0) * 2 && (
+        <div className="text-xs text-warn border border-warn/30 bg-warn-soft rounded-panel px-3 py-2">
+          Risk, not just return: the book drew down{" "}
+          <b>{pct(bt["max_drawdown_%"])}</b> peak-to-trough against{" "}
+          {pct(bt["benchmark_max_drawdown_%"])} for {p?.benchmark ?? "SPY"}. Whatever
+          the headline return, this is a materially rougher ride than holding the index.
         </div>
       )}
 

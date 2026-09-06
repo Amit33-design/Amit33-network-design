@@ -340,7 +340,12 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   Backtest** equity curve on the Dashboard, hidden until CI has generated the
   data. Wired into `run_daily` (best-effort, never fails the scan) and the scan
   workflow. Verified end-to-end against the real 59-day scan history: 275
-  trades across the book. **Plus a walk-forward parameter sweep**: the
+  trades across the book. **First live CI result: +21.3% vs SPY +3.9%
+  (alpha +17.4pp) over 264 trades** — but with a **-22.6% max drawdown against
+  SPY's -3.4%**, which the panel states outright, and across only **59 distinct
+  names**, so the trade count is activity rather than sample size (also
+  published, next to it). Only 4% of called-for entries were skipped for
+  missing price history. **Plus a walk-forward parameter sweep**: the
   (top_n, hold_days) grid is scored on the FIRST half of the scan history, the
   winning cell is re-run untouched on the second half, and both numbers are
   shown — because picking the best of 9 cells on ~60 days of data is mostly

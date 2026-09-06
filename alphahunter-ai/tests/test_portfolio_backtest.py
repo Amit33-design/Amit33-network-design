@@ -136,3 +136,19 @@ def test_sweep_needs_enough_history():
     closes = {"SPY": _series(dates, 500.0, 0.0)}
     r = sweep([(dates[0], [{"ticker": "AAA", "score": 90}])], closes)
     assert "error" in r
+
+
+def test_trade_count_is_reported_alongside_distinct_names_and_skips():
+    """264 trades across 59 names is not 264 independent bets — and entries
+    with no price history must be counted, not silently dropped."""
+    dates = _calendar(40)
+    closes = {"SPY": _series(dates, 500.0, 0.0), "AAA": _series(dates, 100.0, 0.01)}
+    # AAA re-picked on many days; GHOST has no price history at all.
+    history = [(dates[i], [{"ticker": "AAA", "score": 90},
+                           {"ticker": "GHOST", "score": 80}])
+               for i in range(0, 20, 2)]
+    r = simulate(history, closes, top_n=2, hold_days=5)
+
+    assert r["trades"] == 10           # ten AAA entries
+    assert r["distinct_names"] == 1    # ...all in one name
+    assert r["skipped_entries"] == 10  # every GHOST entry accounted for

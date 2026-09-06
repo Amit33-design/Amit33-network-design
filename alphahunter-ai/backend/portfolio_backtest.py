@@ -86,11 +86,13 @@ def simulate(
     # Build the position book: (entry index, exit index, ticker).
     positions: list[tuple[int, int, str]] = []
     trades: list[dict] = []
+    wanted = 0          # entries the strategy called for
     for date_str, results in history:
         entry = next_trading_day(date_str)
         if entry is None or entry + 1 >= len(calendar):
             continue
         ranked = sorted(results, key=lambda x: x.get("score") or 0, reverse=True)[:top_n]
+        wanted += len(ranked)
         for r in ranked:
             t = r.get("ticker")
             series = closes.get(t or "")
@@ -144,6 +146,7 @@ def simulate(
     strat_ret = (equity - 1) * 100
     bench_ret = (bench_equity - 1) * 100
     wins = [t for t in trades if t["return_%"] > 0]
+    names = {t["ticker"] for t in trades}
     return {
         "params": {"top_n": top_n, "hold_days": hold_days, "benchmark": benchmark},
         "start": points[0]["date"] if points else None,
@@ -151,6 +154,14 @@ def simulate(
         "trading_days": len(points),
         "days_invested": days_invested,
         "trades": len(trades),
+        # Trades are NOT independent bets: the screen keeps re-surfacing the
+        # same names, so a run of entries in one ticker is close to one bet
+        # held longer. Publishing the distinct-name count keeps the trade
+        # count from being read as a sample size.
+        "distinct_names": len(names),
+        # Entries the strategy called for but that had no usable price history
+        # — the survivorship leak, published so it can be judged.
+        "skipped_entries": wanted - len(trades),
         "strategy_return_%": round(strat_ret, 2),
         "benchmark_return_%": round(bench_ret, 2),
         "alpha_%": round(strat_ret - bench_ret, 2),
