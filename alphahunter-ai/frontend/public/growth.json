@@ -5,22 +5,41 @@
     {
       "ticker": "TNK",
       "company": "Teekay Tankers Ltd.",
-      "score": 60.9,
+      "score": 73.5,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 0.5,
-      "expected_gain_%": 0.3,
+      "expected_gain_%": 0.4,
       "hist_win_rate": 0,
       "hist_avg_return_%": 0,
       "hist_trades": 0,
-      "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "risk_flags": [
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 0.09 below 1.5 floor"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": 24.0,
+        "vs_sector": 16.9,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 20.8,
+        "confirms": true
+      },
+      "position": {
+        "shares": 51,
+        "value": 4761.87,
+        "risk_$": 248.37,
+        "basis": "1.0% of $25,000 at $4.87/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -30,10 +49,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 73.0,
         "fundamental": 100.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 50.0
       },
       "weights": {
@@ -44,23 +63,23 @@
         "sentiment": 0.25
       },
       "entry": 93.37,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 88.5,
+      "target1": 99.87,
       "target2": 93.8,
-      "risk_reward": null,
+      "risk_reward": 0.09,
       "exit_plan": {
         "entry": 93.37,
-        "target": 104.57,
-        "stop": 86.83,
+        "target": 103.64,
+        "stop": 87.21,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 11.0,
+        "stop_pct": -6.6,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $95 call ~$1.70 (55% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $90 put ~$1.18 (40% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -97,17 +116,17 @@
         "profit_score": 12.1,
         "peg": 1.1,
         "value_score": 5.0,
-        "rsi": 66.2028936085488,
+        "rsi": 66.20289360871581,
         "ret_60d": 28.742640388069095,
         "ret_120d": 43.828770071865065
       },
-      "reasoning": "TNK scored 60.9/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 50/100 (x0.25 = 12.5); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (51%); rich CSP yield (40% ann.); wide bid/ask (illiquid)."
+      "reasoning": "TNK scored 73.5/100. Setup: . Contributions \u2014 technical 73/100 (x0.35 = 25.5); fundamental 100/100 (x0.25 = 25.0); sentiment 50/100 (x0.25 = 12.5); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; strong net margin (51%); rich CSP yield (40% ann.); wide bid/ask (illiquid); positive 1y trend (88%); positive 6m trend. Sector thesis: outperforming Energy by 17pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "SLDE",
       "company": "Slide Insurance Holdings, Inc.",
-      "score": 58.9,
-      "action": "Hold",
+      "score": 67.2,
+      "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 4.6,
       "expected_gain_%": 2.7,
@@ -118,15 +137,33 @@
         {
           "level": "warn",
           "text": "high short interest (10%)"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 1.05 below 1.5 floor"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 40.0,
+        "vs_sector": 33.3,
+        "sector": "Financial Services",
+        "sector_etf": "XLF"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 40.7,
+        "confirms": true
+      },
+      "position": {
+        "shares": 231,
+        "value": 5698.77,
+        "risk_$": 249.48,
+        "basis": "1.0% of $25,000 at $1.08/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -136,10 +173,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 61.0,
         "fundamental": 100.0,
         "options": 42.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 50.0
       },
       "weights": {
@@ -150,17 +187,17 @@
         "sentiment": 0.25
       },
       "entry": 24.67,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 23.59,
+      "target1": 26.1,
       "target2": 25.8,
-      "risk_reward": null,
+      "risk_reward": 1.05,
       "exit_plan": {
         "entry": 24.67,
-        "target": 27.63,
-        "stop": 22.94,
+        "target": 26.94,
+        "stop": 23.31,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 9.19,
+        "stop_pct": -5.52,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -206,12 +243,131 @@
         "ret_60d": 44.73828360128855,
         "ret_120d": 36.968720345621335
       },
-      "reasoning": "SLDE scored 58.9/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 50/100 (x0.25 = 12.5); options 42/100 (x0.10 = 4.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (40%); wide bid/ask (illiquid)."
+      "reasoning": "SLDE scored 67.2/100. Setup: . Contributions \u2014 technical 61/100 (x0.35 = 21.3); fundamental 100/100 (x0.25 = 25.0); sentiment 50/100 (x0.25 = 12.5); options 42/100 (x0.10 = 4.2); momentum 84/100 (x0.05 = 4.2). Key drivers: overbought (RSI 72); above EMA200 (uptrend intact); positive free cash flow; strong net margin (40%); wide bid/ask (illiquid); positive 1y trend (79%); positive 6m trend. Sector thesis: outperforming Financial Services by 33pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
+    },
+    {
+      "ticker": "WPM",
+      "company": "Wheaton Precious Metals Corp",
+      "score": 69.7,
+      "action": "Accumulate",
+      "quality_grade": "B",
+      "analyst_upside_%": 12.7,
+      "expected_gain_%": 7.6,
+      "hist_win_rate": 1.0,
+      "hist_avg_return_%": 17.17,
+      "hist_trades": 1,
+      "risk_flags": [
+        {
+          "level": "warn",
+          "text": "negative free cash flow"
+        },
+        {
+          "level": "good",
+          "text": "strong-buy consensus"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": 39.6,
+        "vs_sector": 40.4,
+        "sector": "Basic Materials",
+        "sector_etf": "XLB"
+      },
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 23.2,
+        "confirms": true
+      },
+      "position": {
+        "shares": 27,
+        "value": 4184.46,
+        "risk_$": 244.89,
+        "basis": "1.0% of $25,000 at $9.07/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": false,
+        "strength": null,
+        "suggested_strike": null,
+        "idea": null,
+        "reason": "no meaningful dip today"
+      },
+      "subscores": {
+        "technical": 62.0,
+        "fundamental": 79.0,
+        "options": 70.0,
+        "momentum": 84.0,
+        "sentiment": 68.0
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 154.98,
+      "stop_loss": 145.91,
+      "target1": 167.07,
+      "target2": 174.607,
+      "risk_reward": 2.16,
+      "exit_plan": {
+        "entry": 154.98,
+        "target": 174.09,
+        "stop": 143.51,
+        "horizon_days": 10,
+        "target_pct": 12.33,
+        "stop_pct": -7.4,
+        "trail_arms_at_pct": 8.0,
+        "trail_giveback_pct": 5.0
+      },
+      "covered_call": "Sell 2026-09-11 $155 call ~$3.55 (167% ann.)",
+      "cash_secured_put": "Sell 2026-09-11 $152 put ~$2.25 (108% ann.)",
+      "confidence": "Medium",
+      "criteria_passed": [
+        "revenue_growth_15pct",
+        "uptrend_above_ema200",
+        "near_52w_high",
+        "six_month_uptrend",
+        "not_overheated",
+        "beating_the_market"
+      ],
+      "criteria_failed": [],
+      "metrics": {
+        "profile": "growth",
+        "price": 154.98,
+        "growth_score": 94.3,
+        "reasons": [
+          "revenue growing 85% year over year",
+          "earnings growing 86%",
+          "trading above its 200-day average",
+          "50-day above 200-day (uptrend intact)",
+          "within 6% of its 52-week high",
+          "beating the market by 38 points over 3 months",
+          "86% gross margin",
+          "PEG 0.4 \u2014 growth not absurdly priced"
+        ],
+        "warnings": [],
+        "revenue_growth": 0.847,
+        "earnings_growth": 0.857,
+        "business_score": 35.0,
+        "dist_52w_high": -6.068490824707259,
+        "trend_score": 22.3,
+        "rs_vs_spy_60d": 37.9,
+        "strength_score": 20.0,
+        "gross_margin": 0.86337,
+        "profit_score": 12.0,
+        "peg": 0.43,
+        "value_score": 5.0,
+        "rsi": 62.23012212963897,
+        "ret_60d": 44.33152641272295,
+        "ret_120d": 11.835103059211631
+      },
+      "reasoning": "WPM scored 69.7/100. Setup: . Contributions \u2014 technical 62/100 (x0.35 = 21.7); fundamental 79/100 (x0.25 = 19.8); sentiment 68/100 (x0.25 = 17.0); options 70/100 (x0.10 = 7.0); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); negative free cash flow; strong net margin (65%); strong-buy consensus (1.31); rich CSP yield (108% ann.); positive 1y trend (52%); positive 6m trend. Sector thesis: outperforming Basic Materials by 40pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "HALO",
       "company": "Halozyme Therapeutics, Inc.",
-      "score": 61.6,
+      "score": 68.2,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": -9.7,
@@ -231,15 +387,33 @@
         {
           "level": "warn",
           "text": "high leverage (D/E 1518%)"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 1.33 below 1.5 floor"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 51.6,
+        "vs_sector": 43.8,
+        "sector": "Healthcare",
+        "sector_etf": "XLV"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 55.3,
+        "confirms": true
+      },
+      "position": {
+        "shares": 58,
+        "value": 6391.02,
+        "risk_$": 248.82,
+        "basis": "1.0% of $25,000 at $4.29/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -249,10 +423,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 56.0,
         "fundamental": 93.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 60.0
       },
       "weights": {
@@ -263,17 +437,17 @@
         "sentiment": 0.25
       },
       "entry": 110.19,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 105.9,
+      "target1": 115.91,
       "target2": 99.55556,
-      "risk_reward": null,
+      "risk_reward": 1.33,
       "exit_plan": {
         "entry": 110.19,
-        "target": 123.41,
-        "stop": 102.48,
+        "target": 119.24,
+        "stop": 104.76,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 8.21,
+        "stop_pct": -4.93,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -319,136 +493,46 @@
         "ret_60d": 56.29787580341312,
         "ret_120d": 71.3952416740332
       },
-      "reasoning": "HALO scored 61.6/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 93/100 (x0.25 = 23.2); sentiment 60/100 (x0.25 = 15.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (25%); strong-buy consensus (1.67); trading above target; rich CSP yield (60% ann.); wide bid/ask (illiquid)."
-    },
-    {
-      "ticker": "WPM",
-      "company": "Wheaton Precious Metals Corp",
-      "score": 61.0,
-      "action": "Accumulate",
-      "quality_grade": "B",
-      "analyst_upside_%": 12.7,
-      "expected_gain_%": 7.6,
-      "hist_win_rate": 1.0,
-      "hist_avg_return_%": 17.17,
-      "hist_trades": 1,
-      "risk_flags": [
-        {
-          "level": "warn",
-          "text": "negative free cash flow"
-        },
-        {
-          "level": "good",
-          "text": "strong-buy consensus"
-        }
-      ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
-      },
-      "position": null,
-      "rr_pass": false,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 42.0,
-        "fundamental": 79.0,
-        "options": 70.0,
-        "momentum": 50.0,
-        "sentiment": 68.0
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 154.98,
-      "stop_loss": null,
-      "target1": null,
-      "target2": 174.607,
-      "risk_reward": null,
-      "exit_plan": {
-        "entry": 154.98,
-        "target": 173.58,
-        "stop": 144.13,
-        "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
-        "trail_arms_at_pct": 8.0,
-        "trail_giveback_pct": 5.0
-      },
-      "covered_call": "Sell 2026-09-11 $155 call ~$3.55 (167% ann.)",
-      "cash_secured_put": "Sell 2026-09-11 $152 put ~$2.25 (108% ann.)",
-      "confidence": "Medium",
-      "criteria_passed": [
-        "revenue_growth_15pct",
-        "uptrend_above_ema200",
-        "near_52w_high",
-        "six_month_uptrend",
-        "not_overheated",
-        "beating_the_market"
-      ],
-      "criteria_failed": [],
-      "metrics": {
-        "profile": "growth",
-        "price": 154.98,
-        "growth_score": 94.3,
-        "reasons": [
-          "revenue growing 85% year over year",
-          "earnings growing 86%",
-          "trading above its 200-day average",
-          "50-day above 200-day (uptrend intact)",
-          "within 6% of its 52-week high",
-          "beating the market by 38 points over 3 months",
-          "86% gross margin",
-          "PEG 0.4 \u2014 growth not absurdly priced"
-        ],
-        "warnings": [],
-        "revenue_growth": 0.847,
-        "earnings_growth": 0.857,
-        "business_score": 35.0,
-        "dist_52w_high": -6.068490824707259,
-        "trend_score": 22.3,
-        "rs_vs_spy_60d": 37.9,
-        "strength_score": 20.0,
-        "gross_margin": 0.86337,
-        "profit_score": 12.0,
-        "peg": 0.43,
-        "value_score": 5.0,
-        "rsi": 62.23012213492726,
-        "ret_60d": 44.33152641272295,
-        "ret_120d": 11.835115373257223
-      },
-      "reasoning": "WPM scored 61.0/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 79/100 (x0.25 = 19.8); sentiment 68/100 (x0.25 = 17.0); options 70/100 (x0.10 = 7.0); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; negative free cash flow; strong net margin (65%); strong-buy consensus (1.31); rich CSP yield (108% ann.)."
+      "reasoning": "HALO scored 68.2/100. Setup: . Contributions \u2014 technical 56/100 (x0.35 = 19.6); fundamental 93/100 (x0.25 = 23.2); sentiment 60/100 (x0.25 = 15.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: overbought (RSI 72); above EMA200 (uptrend intact); positive free cash flow; strong net margin (25%); strong-buy consensus (1.67); trading above target; rich CSP yield (60% ann.); wide bid/ask (illiquid); positive 1y trend (50%); positive 6m trend. Sector thesis: outperforming Healthcare by 44pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "FRO",
       "company": "Frontline Plc",
-      "score": 63.4,
-      "action": "Accumulate",
+      "score": 76.0,
+      "action": "Buy",
       "quality_grade": "A",
       "analyst_upside_%": 1.9,
-      "expected_gain_%": 1.1,
+      "expected_gain_%": 1.6,
       "hist_win_rate": 1.0,
       "hist_avg_return_%": 15.82,
       "hist_trades": 1,
-      "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "risk_flags": [
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 0.38 below 1.5 floor"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": 28.0,
+        "vs_sector": 20.8,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 7.0,
+        "confirms": true
+      },
+      "position": {
+        "shares": 106,
+        "value": 4888.72,
+        "risk_$": 248.04,
+        "basis": "1.0% of $25,000 at $2.34/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -458,10 +542,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 73.0,
         "fundamental": 100.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 60.0
       },
       "weights": {
@@ -472,23 +556,23 @@
         "sentiment": 0.25
       },
       "entry": 46.12,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 43.78,
+      "target1": 49.24,
       "target2": 47.0,
-      "risk_reward": null,
+      "risk_reward": 0.38,
       "exit_plan": {
         "entry": 46.12,
-        "target": 51.65,
-        "stop": 42.89,
+        "target": 51.05,
+        "stop": 43.16,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 10.7,
+        "stop_pct": -6.42,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $47 call ~$1.00 (66% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $46 put ~$3.05 (202% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -526,32 +610,42 @@
         "profit_score": 14.0,
         "peg": 5.58,
         "value_score": 0.0,
-        "rsi": 67.17722475362974,
+        "rsi": 67.17722475418356,
         "ret_60d": 32.66031079172877,
         "ret_120d": 51.20690819588481
       },
-      "reasoning": "FRO scored 63.4/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 60/100 (x0.25 = 15.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (55%); buy consensus (2.00); rich CSP yield (202% ann.); wide bid/ask (illiquid)."
+      "reasoning": "FRO scored 76.0/100. Setup: . Contributions \u2014 technical 73/100 (x0.35 = 25.5); fundamental 100/100 (x0.25 = 25.0); sentiment 60/100 (x0.25 = 15.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; strong net margin (55%); buy consensus (2.00); rich CSP yield (202% ann.); wide bid/ask (illiquid); positive 1y trend (128%); positive 6m trend. Sector thesis: outperforming Energy by 21pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "FNV",
       "company": "Franco-Nevada Corporation",
-      "score": 65.4,
+      "score": 74.1,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 7.1,
-      "expected_gain_%": 4.2,
+      "expected_gain_%": 6.0,
       "hist_win_rate": 0,
       "hist_avg_return_%": 0,
       "hist_trades": 0,
       "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 23.3,
+        "vs_sector": 24.0,
+        "sector": "Basic Materials",
+        "sector_etf": "XLB"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 20.0,
+        "confirms": true
+      },
+      "position": {
+        "shares": 19,
+        "value": 5057.42,
+        "risk_$": 238.64,
+        "basis": "1.0% of $25,000 at $12.56/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -560,10 +654,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 62.0,
         "fundamental": 100.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -574,23 +668,23 @@
         "sentiment": 0.25
       },
       "entry": 266.18,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 253.62,
+      "target1": 282.92,
       "target2": 285.0111,
-      "risk_reward": null,
+      "risk_reward": 1.5,
       "exit_plan": {
         "entry": 266.18,
-        "target": 298.12,
-        "stop": 247.55,
+        "target": 292.65,
+        "stop": 250.3,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 9.94,
+        "stop_pct": -5.97,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $270 call ~$7.10 (81% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $260 put ~$5.50 (64% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -630,40 +724,55 @@
         "ret_60d": 27.958843961537173,
         "ret_120d": 4.963208604633434
       },
-      "reasoning": "FNV scored 65.4/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (64%); strong-buy consensus (1.67); rich CSP yield (64% ann.); wide bid/ask (illiquid)."
+      "reasoning": "FNV scored 74.1/100. Setup: . Contributions \u2014 technical 62/100 (x0.35 = 21.7); fundamental 100/100 (x0.25 = 25.0); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); positive free cash flow; strong net margin (64%); strong-buy consensus (1.67); rich CSP yield (64% ann.); wide bid/ask (illiquid); positive 1y trend (41%); positive 6m trend. Sector thesis: outperforming Basic Materials by 24pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "PLTR",
       "company": "Palantir Technologies Inc.",
-      "score": 65.4,
+      "score": 74.1,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 10.0,
-      "expected_gain_%": 6.0,
+      "expected_gain_%": 8.5,
       "hist_win_rate": 0.0,
       "hist_avg_return_%": -3.33,
       "hist_trades": 1,
-      "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "risk_flags": [
+        {
+          "level": "warn",
+          "text": "R:R 1.36 below 1.5 floor"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": 29.2,
+        "vs_sector": 29.9,
+        "sector": "Technology",
+        "sector_etf": "XLK"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 45.1,
+        "confirms": true
+      },
+      "position": {
+        "shares": 19,
+        "value": 3312.27,
+        "risk_$": 243.01,
+        "basis": "1.0% of $25,000 at $12.79/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
+        "active": true,
+        "strength": "moderate",
+        "suggested_strike": 161.54,
+        "idea": "Sell 2026-09-11 $172 put ~$3.12 (132% ann.)",
+        "reason": "down -4.5% today; uptrend intact (above EMA200); limited dip history"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 62.0,
         "fundamental": 100.0,
         "options": 82.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 60.0
       },
       "weights": {
@@ -674,23 +783,23 @@
         "sentiment": 0.25
       },
       "entry": 174.33,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 161.54,
+      "target1": 191.38,
       "target2": 191.68,
-      "risk_reward": null,
+      "risk_reward": 1.36,
       "exit_plan": {
         "entry": 174.33,
-        "target": 195.25,
-        "stop": 162.13,
+        "target": 201.29,
+        "stop": 158.15,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 15.46,
+        "stop_pct": -9.28,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-11 $175 call ~$3.70 (155% ann.)",
       "cash_secured_put": "Sell 2026-09-11 $172 put ~$3.12 (132% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -730,27 +839,46 @@
         "ret_60d": 33.88372079124452,
         "ret_120d": 14.150078861721521
       },
-      "reasoning": "PLTR scored 65.4/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 60/100 (x0.25 = 15.0); options 82/100 (x0.10 = 8.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (49%); buy consensus (1.81); rich CSP yield (132% ann.); tight bid/ask."
+      "reasoning": "PLTR scored 74.1/100. Setup: . Contributions \u2014 technical 62/100 (x0.35 = 21.7); fundamental 100/100 (x0.25 = 25.0); sentiment 60/100 (x0.25 = 15.0); options 82/100 (x0.10 = 8.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); positive free cash flow; strong net margin (49%); buy consensus (1.81); rich CSP yield (132% ann.); tight bid/ask; positive 1y trend (12%); positive 6m trend. Sector thesis: outperforming Technology by 30pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "DELL",
       "company": "Dell Technologies Inc.",
-      "score": 59.5,
-      "action": "Hold",
+      "score": 72.0,
+      "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 7.7,
-      "expected_gain_%": 4.6,
+      "expected_gain_%": 6.5,
       "hist_win_rate": 1.0,
       "hist_avg_return_%": 11.91,
       "hist_trades": 2,
-      "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "risk_flags": [
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 0.84 below 1.5 floor"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": 37.3,
+        "vs_sector": 38.0,
+        "sector": "Technology",
+        "sector_etf": "XLK"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 11.5,
+        "confirms": true
+      },
+      "position": {
+        "shares": 5,
+        "value": 2620.7,
+        "risk_$": 240.75,
+        "basis": "1.0% of $25,000 at $48.15/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -760,10 +888,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 73.0,
         "fundamental": 81.0,
         "options": 70.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 60.0
       },
       "weights": {
@@ -774,23 +902,23 @@
         "sentiment": 0.25
       },
       "entry": 524.14,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 475.99,
+      "target1": 588.34,
       "target2": 564.4583,
-      "risk_reward": null,
+      "risk_reward": 0.84,
       "exit_plan": {
         "entry": 524.14,
-        "target": 587.04,
-        "stop": 487.45,
+        "target": 625.64,
+        "stop": 463.24,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 19.37,
+        "stop_pct": -11.62,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-11 $525 call ~$16.62 (232% ann.)",
       "cash_secured_put": "Sell 2026-09-11 $522 put ~$15.55 (217% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -828,20 +956,20 @@
         "profit_score": 7.7,
         "peg": 0.85,
         "value_score": 5.0,
-        "rsi": 63.67345526049451,
+        "rsi": 63.673455258006676,
         "ret_60d": 41.958774228119175,
-        "ret_120d": 236.41921291315487
+        "ret_120d": 236.41917996475777
       },
-      "reasoning": "DELL scored 59.5/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 81/100 (x0.25 = 20.2); sentiment 60/100 (x0.25 = 15.0); options 70/100 (x0.10 = 7.0); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; high ROA (9%); buy consensus (1.82); rich CSP yield (217% ann.)."
+      "reasoning": "DELL scored 72.0/100. Setup: . Contributions \u2014 technical 73/100 (x0.35 = 25.5); fundamental 81/100 (x0.25 = 20.2); sentiment 60/100 (x0.25 = 15.0); options 70/100 (x0.10 = 7.0); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; high ROA (9%); buy consensus (1.82); rich CSP yield (217% ann.); positive 1y trend (319%); positive 6m trend. Sector thesis: outperforming Technology by 38pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "CMBT",
       "company": "CMB.TECH NV",
-      "score": 54.9,
-      "action": "Hold",
+      "score": 63.2,
+      "action": "Accumulate",
       "quality_grade": "B",
       "analyst_upside_%": 4.9,
-      "expected_gain_%": 2.0,
+      "expected_gain_%": 3.0,
       "hist_win_rate": 1.0,
       "hist_avg_return_%": 15.06,
       "hist_trades": 1,
@@ -849,15 +977,33 @@
         {
           "level": "warn",
           "text": "negative free cash flow"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 1.16 below 1.5 floor"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 26.4,
+        "vs_sector": 19.2,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 26.8,
+        "confirms": true
+      },
+      "position": {
+        "shares": 301,
+        "value": 5866.49,
+        "risk_$": 249.83,
+        "basis": "1.0% of $25,000 at $0.83/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -867,10 +1013,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 61.0,
         "fundamental": 70.0,
         "options": 52.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 60.0
       },
       "weights": {
@@ -881,23 +1027,23 @@
         "sentiment": 0.25
       },
       "entry": 19.49,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 18.66,
+      "target1": 20.6,
       "target2": 20.45,
-      "risk_reward": null,
+      "risk_reward": 1.16,
       "exit_plan": {
         "entry": 19.49,
-        "target": 21.83,
-        "stop": 18.13,
+        "target": 21.24,
+        "stop": 18.44,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 8.99,
+        "stop_pct": -5.4,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $20 call ~$0.30 (47% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $18 put ~$0.15 (26% ann.)",
-      "confidence": "Low",
+      "confidence": "Medium",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -936,16 +1082,16 @@
         "ret_60d": 31.06926645000024,
         "ret_120d": 65.57625498266195
       },
-      "reasoning": "CMBT scored 54.9/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 70/100 (x0.25 = 17.5); sentiment 60/100 (x0.25 = 15.0); options 52/100 (x0.10 = 5.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; negative free cash flow; strong net margin (37%); buy consensus (2.25); solid CSP yield (26% ann.); wide bid/ask (illiquid)."
+      "reasoning": "CMBT scored 63.2/100. Setup: . Contributions \u2014 technical 61/100 (x0.35 = 21.3); fundamental 70/100 (x0.25 = 17.5); sentiment 60/100 (x0.25 = 15.0); options 52/100 (x0.10 = 5.2); momentum 84/100 (x0.05 = 4.2). Key drivers: overbought (RSI 77); above EMA200 (uptrend intact); negative free cash flow; strong net margin (37%); buy consensus (2.25); solid CSP yield (26% ann.); wide bid/ask (illiquid); positive 1y trend (128%); positive 6m trend. Sector thesis: outperforming Energy by 19pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "PR",
       "company": "Permian Resources Corporation",
-      "score": 62.6,
+      "score": 73.5,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 12.8,
-      "expected_gain_%": 7.7,
+      "expected_gain_%": 10.9,
       "hist_win_rate": 0,
       "hist_avg_return_%": 0,
       "hist_trades": 0,
@@ -953,16 +1099,30 @@
         {
           "level": "good",
           "text": "strong-buy consensus"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 14.7,
+        "vs_sector": 7.5,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 26.4,
+        "confirms": true
+      },
+      "position": {
+        "shares": 260,
+        "value": 6073.6,
+        "risk_$": 249.6,
+        "basis": "1.0% of $25,000 at $0.96/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -971,10 +1131,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 68.0,
         "fundamental": 89.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -985,23 +1145,23 @@
         "sentiment": 0.25
       },
       "entry": 23.36,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 22.4,
+      "target1": 24.64,
       "target2": 26.35,
-      "risk_reward": null,
+      "risk_reward": 3.11,
       "exit_plan": {
         "entry": 23.36,
-        "target": 26.16,
-        "stop": 21.72,
+        "target": 25.38,
+        "stop": 22.15,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 8.64,
+        "stop_pct": -5.19,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $24 call ~$0.35 (46% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $23 put ~$0.53 (69% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -1038,17 +1198,17 @@
         "profit_score": 15.0,
         "peg": 1.37,
         "value_score": 5.0,
-        "rsi": 59.67093481819639,
+        "rsi": 59.670934820738616,
         "ret_60d": 19.40925637187724,
-        "ret_120d": 23.54193475563853
+        "ret_120d": 23.541922293689073
       },
-      "reasoning": "PR scored 62.6/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 89/100 (x0.25 = 22.2); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (22%); strong-buy consensus (1.32); rich CSP yield (69% ann.); wide bid/ask (illiquid)."
+      "reasoning": "PR scored 73.5/100. Setup: . Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 89/100 (x0.25 = 22.2); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; strong net margin (22%); strong-buy consensus (1.32); rich CSP yield (69% ann.); wide bid/ask (illiquid); positive 1y trend (70%); positive 6m trend. Sector thesis: outperforming Energy by 8pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "MPC",
       "company": "Marathon Petroleum Corporation",
-      "score": 59.2,
-      "action": "Hold",
+      "score": 67.5,
+      "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": -16.0,
       "expected_gain_%": -9.6,
@@ -1059,15 +1219,33 @@
         {
           "level": "warn",
           "text": "trades above analyst target \u2014 worst realized cohort"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 1.33 below 1.5 floor"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 43.4,
+        "vs_sector": 36.2,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 54.1,
+        "confirms": true
+      },
+      "position": {
+        "shares": 15,
+        "value": 5833.5,
+        "risk_$": 247.35,
+        "basis": "1.0% of $25,000 at $16.49/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -1077,10 +1255,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 61.0,
         "fundamental": 88.0,
         "options": 70.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 52.0
       },
       "weights": {
@@ -1091,17 +1269,17 @@
         "sentiment": 0.25
       },
       "entry": 388.9,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 372.41,
+      "target1": 410.88,
       "target2": 326.83334,
-      "risk_reward": null,
+      "risk_reward": 1.33,
       "exit_plan": {
         "entry": 388.9,
-        "target": 435.57,
-        "stop": 361.68,
+        "target": 423.66,
+        "stop": 368.05,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 8.94,
+        "stop_pct": -5.36,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -1145,17 +1323,17 @@
         "profit_score": 7.0,
         "peg": 1.86,
         "value_score": 5.0,
-        "rsi": 78.23784673146892,
+        "rsi": 78.23784673157645,
         "ret_60d": 48.117921786470575,
         "ret_120d": 70.98505348735861
       },
-      "reasoning": "MPC scored 59.2/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 88/100 (x0.25 = 22.0); sentiment 52/100 (x0.25 = 13.0); options 70/100 (x0.10 = 7.0); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; high ROE (42%); buy consensus (2.26); trading above target; rich CSP yield (66% ann.)."
+      "reasoning": "MPC scored 67.5/100. Setup: . Contributions \u2014 technical 61/100 (x0.35 = 21.3); fundamental 88/100 (x0.25 = 22.0); sentiment 52/100 (x0.25 = 13.0); options 70/100 (x0.10 = 7.0); momentum 84/100 (x0.05 = 4.2). Key drivers: overbought (RSI 78); above EMA200 (uptrend intact); positive free cash flow; high ROE (42%); buy consensus (2.26); trading above target; rich CSP yield (66% ann.); positive 1y trend (121%); positive 6m trend. Sector thesis: outperforming Energy by 36pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "PSX",
       "company": "Phillips 66",
-      "score": 58.6,
-      "action": "Hold",
+      "score": 67.0,
+      "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": -9.9,
       "expected_gain_%": -5.9,
@@ -1166,15 +1344,33 @@
         {
           "level": "warn",
           "text": "trades above analyst target \u2014 worst realized cohort"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 1.33 below 1.5 floor"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 36.4,
+        "vs_sector": 29.2,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 49.2,
+        "confirms": true
+      },
+      "position": {
+        "shares": 23,
+        "value": 5867.07,
+        "risk_$": 243.57,
+        "basis": "1.0% of $25,000 at $10.59/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -1184,10 +1380,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 61.0,
         "fundamental": 89.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 52.0
       },
       "weights": {
@@ -1198,17 +1394,17 @@
         "sentiment": 0.25
       },
       "entry": 255.09,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 244.5,
+      "target1": 269.21,
       "target2": 229.94737,
-      "risk_reward": null,
+      "risk_reward": 1.33,
       "exit_plan": {
         "entry": 255.09,
-        "target": 285.7,
-        "stop": 237.23,
+        "target": 277.42,
+        "stop": 241.69,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 8.75,
+        "stop_pct": -5.25,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -1252,17 +1448,17 @@
         "profit_score": 7.0,
         "peg": 1.22,
         "value_score": 5.0,
-        "rsi": 75.04381055028055,
+        "rsi": 75.04381067601389,
         "ret_60d": 41.12034894866569,
         "ret_120d": 48.8965275719367
       },
-      "reasoning": "PSX scored 58.6/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 89/100 (x0.25 = 22.2); sentiment 52/100 (x0.25 = 13.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; high ROE (23%); buy consensus (2.15); trading above target; rich CSP yield (136% ann.); wide bid/ask (illiquid)."
+      "reasoning": "PSX scored 67.0/100. Setup: . Contributions \u2014 technical 61/100 (x0.35 = 21.3); fundamental 89/100 (x0.25 = 22.2); sentiment 52/100 (x0.25 = 13.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: overbought (RSI 75); above EMA200 (uptrend intact); positive free cash flow; high ROE (23%); buy consensus (2.15); trading above target; rich CSP yield (136% ann.); wide bid/ask (illiquid); positive 1y trend (100%); positive 6m trend. Sector thesis: outperforming Energy by 29pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "DINO",
       "company": "HF Sinclair Corporation",
-      "score": 59.3,
-      "action": "Hold",
+      "score": 67.7,
+      "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": -12.2,
       "expected_gain_%": -7.3,
@@ -1273,15 +1469,33 @@
         {
           "level": "warn",
           "text": "trades above analyst target \u2014 worst realized cohort"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 1.33 below 1.5 floor"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 45.2,
+        "vs_sector": 38.0,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 58.5,
+        "confirms": true
+      },
+      "position": {
+        "shares": 45,
+        "value": 4743.45,
+        "risk_$": 249.75,
+        "basis": "1.0% of $25,000 at $5.55/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -1291,10 +1505,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 61.0,
         "fundamental": 96.0,
         "options": 76.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 42.0
       },
       "weights": {
@@ -1305,17 +1519,17 @@
         "sentiment": 0.25
       },
       "entry": 105.41,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 99.86,
+      "target1": 112.81,
       "target2": 92.53333,
-      "risk_reward": null,
+      "risk_reward": 1.33,
       "exit_plan": {
         "entry": 105.41,
-        "target": 118.06,
-        "stop": 98.03,
+        "target": 117.11,
+        "stop": 98.39,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 11.1,
+        "stop_pct": -6.66,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -1359,17 +1573,17 @@
         "profit_score": 7.0,
         "peg": 1.72,
         "value_score": 5.0,
-        "rsi": 71.89993445449623,
+        "rsi": 71.89993445317963,
         "ret_60d": 49.89174418843075,
         "ret_120d": 88.72711881921349
       },
-      "reasoning": "DINO scored 59.3/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 96/100 (x0.25 = 24.0); sentiment 42/100 (x0.25 = 10.5); options 76/100 (x0.10 = 7.6); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; high ROE (20%); trading above target; rich CSP yield (104% ann.); liquid open interest."
+      "reasoning": "DINO scored 67.7/100. Setup: . Contributions \u2014 technical 61/100 (x0.35 = 21.3); fundamental 96/100 (x0.25 = 24.0); sentiment 42/100 (x0.25 = 10.5); options 76/100 (x0.10 = 7.6); momentum 84/100 (x0.05 = 4.2). Key drivers: overbought (RSI 72); above EMA200 (uptrend intact); positive free cash flow; high ROE (20%); trading above target; rich CSP yield (104% ann.); liquid open interest; positive 1y trend (111%); positive 6m trend. Sector thesis: outperforming Energy by 38pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "SBLK",
       "company": "Star Bulk Carriers Corp.",
-      "score": 57.1,
-      "action": "Hold",
+      "score": 65.5,
+      "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": -0.1,
       "expected_gain_%": -0.1,
@@ -1380,15 +1594,33 @@
         {
           "level": "warn",
           "text": "trades above analyst target \u2014 worst realized cohort"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 1.33 below 1.5 floor"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 23.4,
+        "vs_sector": 27.3,
+        "sector": "Industrials",
+        "sector_etf": "XLI"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 23.3,
+        "confirms": true
+      },
+      "position": {
+        "shares": 185,
+        "value": 5997.7,
+        "risk_$": 249.75,
+        "basis": "1.0% of $25,000 at $1.35/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -1398,10 +1630,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 61.0,
         "fundamental": 93.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 42.0
       },
       "weights": {
@@ -1412,17 +1644,17 @@
         "sentiment": 0.25
       },
       "entry": 32.42,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 31.07,
+      "target1": 34.22,
       "target2": 32.38,
-      "risk_reward": null,
+      "risk_reward": 1.33,
       "exit_plan": {
         "entry": 32.42,
-        "target": 36.31,
-        "stop": 30.15,
+        "target": 35.26,
+        "stop": 30.71,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 8.77,
+        "stop_pct": -5.26,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -1463,20 +1695,20 @@
         "profit_score": 11.7,
         "peg": null,
         "value_score": 2.5,
-        "rsi": 72.4639414606669,
+        "rsi": 72.46394145943239,
         "ret_60d": 28.14318755483195,
         "ret_120d": 53.22972167359145
       },
-      "reasoning": "SBLK scored 57.1/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 93/100 (x0.25 = 23.2); sentiment 42/100 (x0.25 = 10.5); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (24%); trading above target; rich CSP yield (50% ann.); wide bid/ask (illiquid)."
+      "reasoning": "SBLK scored 65.5/100. Setup: . Contributions \u2014 technical 61/100 (x0.35 = 21.3); fundamental 93/100 (x0.25 = 23.2); sentiment 42/100 (x0.25 = 10.5); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: overbought (RSI 72); above EMA200 (uptrend intact); positive free cash flow; strong net margin (24%); trading above target; rich CSP yield (50% ann.); wide bid/ask (illiquid); positive 1y trend (82%); positive 6m trend. Sector thesis: outperforming Industrials by 27pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "ARGX",
       "company": "argenx SE",
-      "score": 65.4,
-      "action": "Accumulate",
+      "score": 78.0,
+      "action": "Buy",
       "quality_grade": "A",
       "analyst_upside_%": 14.2,
-      "expected_gain_%": 8.5,
+      "expected_gain_%": 12.1,
       "hist_win_rate": 1.0,
       "hist_avg_return_%": 16.91,
       "hist_trades": 1,
@@ -1484,16 +1716,30 @@
         {
           "level": "good",
           "text": "strong-buy consensus"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 15.1,
+        "vs_sector": 7.3,
+        "sector": "Healthcare",
+        "sector_etf": "XLV"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 17.5,
+        "confirms": true
+      },
+      "position": {
+        "shares": 5,
+        "value": 5165.75,
+        "risk_$": 232.4,
+        "basis": "1.0% of $25,000 at $46.48/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -1502,10 +1748,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 73.0,
         "fundamental": 100.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -1516,23 +1762,23 @@
         "sentiment": 0.25
       },
       "entry": 1033.15,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 986.67,
+      "target1": 1095.13,
       "target2": 1179.7391,
-      "risk_reward": null,
+      "risk_reward": 3.15,
       "exit_plan": {
         "entry": 1033.15,
-        "target": 1157.13,
-        "stop": 960.83,
+        "target": 1131.15,
+        "stop": 974.35,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 9.49,
+        "stop_pct": -5.69,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $1040 call ~$22.40 (66% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $1020 put ~$16.95 (51% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -1555,7 +1801,7 @@
           "beating the market by 13 points over 3 months",
           "59% gross margin",
           "free cash flow positive",
-          "PEG 1.3 \u2014 growth not absurdly priced"
+          "PEG 1.2 \u2014 growth not absurdly priced"
         ],
         "warnings": [],
         "revenue_growth": 0.593,
@@ -1567,33 +1813,52 @@
         "strength_score": 13.4,
         "gross_margin": 0.59067,
         "profit_score": 13.4,
-        "peg": 1.27,
+        "peg": 1.25,
         "value_score": 5.0,
         "rsi": 61.2073104906357,
         "ret_60d": 19.829969750014108,
         "ret_120d": 46.9003330507937
       },
-      "reasoning": "ARGX scored 65.4/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (32%); strong-buy consensus (1.17); rich CSP yield (51% ann.); wide bid/ask (illiquid)."
+      "reasoning": "ARGX scored 78.0/100. Setup: . Contributions \u2014 technical 73/100 (x0.35 = 25.5); fundamental 100/100 (x0.25 = 25.0); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; strong net margin (32%); strong-buy consensus (1.14); rich CSP yield (51% ann.); wide bid/ask (illiquid); positive 1y trend (41%); positive 6m trend. Sector thesis: outperforming Healthcare by 7pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "TRMD",
       "company": "TORM plc",
-      "score": 63.4,
+      "score": 73.8,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 3.8,
-      "expected_gain_%": 2.3,
+      "expected_gain_%": 3.2,
       "hist_win_rate": 0.5,
       "hist_avg_return_%": -3.01,
       "hist_trades": 2,
-      "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "risk_flags": [
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 0.90 below 1.5 floor"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": 15.9,
+        "vs_sector": 8.7,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 11.6,
+        "confirms": true
+      },
+      "position": {
+        "shares": 171,
+        "value": 6015.78,
+        "risk_$": 249.66,
+        "basis": "1.0% of $25,000 at $1.46/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -1603,10 +1868,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 67.0,
         "fundamental": 100.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 60.0
       },
       "weights": {
@@ -1617,23 +1882,23 @@
         "sentiment": 0.25
       },
       "entry": 35.18,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 33.72,
+      "target1": 37.13,
       "target2": 36.5,
-      "risk_reward": null,
+      "risk_reward": 0.9,
       "exit_plan": {
         "entry": 35.18,
-        "target": 39.4,
-        "stop": 32.72,
+        "target": 38.26,
+        "stop": 33.33,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 8.75,
+        "stop_pct": -5.25,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $38 call ~$0.07 (6% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $35 put ~$2.38 (206% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -1669,17 +1934,17 @@
         "profit_score": 13.3,
         "peg": null,
         "value_score": 2.5,
-        "rsi": 74.12416631901782,
+        "rsi": 74.12416631901863,
         "ret_60d": 20.562028571794617,
         "ret_120d": 42.34461865017637
       },
-      "reasoning": "TRMD scored 63.4/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 60/100 (x0.25 = 15.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (36%); buy consensus (2.00); rich CSP yield (206% ann.); wide bid/ask (illiquid)."
+      "reasoning": "TRMD scored 73.8/100. Setup: . Contributions \u2014 technical 67/100 (x0.35 = 23.4); fundamental 100/100 (x0.25 = 25.0); sentiment 60/100 (x0.25 = 15.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: overbought (RSI 74); above EMA200 (uptrend intact); positive free cash flow; strong net margin (36%); buy consensus (2.00); rich CSP yield (206% ann.); wide bid/ask (illiquid); positive 1y trend (67%); positive 6m trend. Sector thesis: outperforming Energy by 9pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "PARR",
       "company": "Par Pacific Holdings, Inc. Comm",
-      "score": 64.4,
-      "action": "Accumulate",
+      "score": 77.0,
+      "action": "Buy",
       "quality_grade": "A",
       "analyst_upside_%": 2.1,
       "expected_gain_%": 1.8,
@@ -1690,15 +1955,33 @@
         {
           "level": "warn",
           "text": "high short interest (13%)"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 0.25 below 1.5 floor"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 36.4,
+        "vs_sector": 29.2,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 57.0,
+        "confirms": true
+      },
+      "position": {
+        "shares": 36,
+        "value": 2927.52,
+        "risk_$": 245.16,
+        "basis": "1.0% of $25,000 at $6.81/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -1708,10 +1991,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 73.0,
         "fundamental": 96.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -1722,17 +2005,17 @@
         "sentiment": 0.25
       },
       "entry": 81.32,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 74.51,
+      "target1": 90.4,
       "target2": 83.0,
-      "risk_reward": null,
+      "risk_reward": 0.25,
       "exit_plan": {
         "entry": 81.32,
-        "target": 91.08,
-        "stop": 75.63,
+        "target": 95.68,
+        "stop": 72.7,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 17.66,
+        "stop_pct": -10.6,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -1779,13 +2062,13 @@
         "ret_60d": 41.10705914912064,
         "ret_120d": 53.087351901305624
       },
-      "reasoning": "PARR scored 64.4/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 96/100 (x0.25 = 24.0); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; high ROE (53%); strong-buy consensus (1.57); rich CSP yield (111% ann.); wide bid/ask (illiquid). Backtest: this setup fired 3x historically, bounced 100% of the time (avg +5.1% over the hold)."
+      "reasoning": "PARR scored 77.0/100. Setup: . Contributions \u2014 technical 73/100 (x0.35 = 25.5); fundamental 96/100 (x0.25 = 24.0); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; high ROE (53%); strong-buy consensus (1.57); rich CSP yield (111% ann.); wide bid/ask (illiquid); positive 1y trend (138%); positive 6m trend. Backtest: this setup fired 3x historically, bounced 100% of the time (avg +5.1% over the hold). Sector thesis: outperforming Energy by 29pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "RGLD",
       "company": "Royal Gold, Inc.",
-      "score": 58.9,
-      "action": "Hold",
+      "score": 67.6,
+      "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 15.5,
       "expected_gain_%": 9.3,
@@ -1798,14 +2081,24 @@
           "text": "negative free cash flow"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 28.6,
+        "vs_sector": 29.4,
+        "sector": "Basic Materials",
+        "sector_etf": "XLB"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 22.0,
+        "confirms": true
+      },
+      "position": {
+        "shares": 21,
+        "value": 5504.31,
+        "risk_$": 244.86,
+        "basis": "1.0% of $25,000 at $11.66/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -1814,10 +2107,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 62.0,
         "fundamental": 82.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 60.0
       },
       "weights": {
@@ -1828,17 +2121,17 @@
         "sentiment": 0.25
       },
       "entry": 262.11,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 250.45,
+      "target1": 277.66,
       "target2": 302.66666,
-      "risk_reward": null,
+      "risk_reward": 3.48,
       "exit_plan": {
         "entry": 262.11,
-        "target": 293.56,
-        "stop": 243.76,
+        "target": 286.69,
+        "stop": 247.36,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 9.38,
+        "stop_pct": -5.63,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -1879,20 +2172,20 @@
         "profit_score": 12.0,
         "peg": 1.06,
         "value_score": 5.0,
-        "rsi": 64.62934336887179,
+        "rsi": 64.62934336887167,
         "ret_60d": 33.32205347274827,
         "ret_120d": 5.17070117229401
       },
-      "reasoning": "RGLD scored 58.9/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 82/100 (x0.25 = 20.5); sentiment 60/100 (x0.25 = 15.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; negative free cash flow; strong net margin (48%); buy consensus (1.83); rich CSP yield (78% ann.); wide bid/ask (illiquid)."
+      "reasoning": "RGLD scored 67.6/100. Setup: . Contributions \u2014 technical 62/100 (x0.35 = 21.7); fundamental 82/100 (x0.25 = 20.5); sentiment 60/100 (x0.25 = 15.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); negative free cash flow; strong net margin (48%); buy consensus (1.83); rich CSP yield (78% ann.); wide bid/ask (illiquid); positive 1y trend (46%); positive 6m trend. Sector thesis: outperforming Basic Materials by 29pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "ONC",
       "company": "BeOne Medicines Ltd.",
-      "score": 65.9,
-      "action": "Accumulate",
+      "score": 76.7,
+      "action": "Buy",
       "quality_grade": "A",
       "analyst_upside_%": 20.6,
-      "expected_gain_%": 12.4,
+      "expected_gain_%": 17.5,
       "hist_win_rate": 0,
       "hist_avg_return_%": 0,
       "hist_trades": 0,
@@ -1900,16 +2193,30 @@
         {
           "level": "good",
           "text": "strong-buy consensus"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 31.2,
+        "vs_sector": 23.4,
+        "sector": "Healthcare",
+        "sector_etf": "XLV"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 33.1,
+        "confirms": true
+      },
+      "position": {
+        "shares": 18,
+        "value": 6448.68,
+        "risk_$": 245.16,
+        "basis": "1.0% of $25,000 at $13.62/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -1918,10 +2225,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 68.0,
         "fundamental": 94.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 76.0
       },
       "weights": {
@@ -1932,23 +2239,23 @@
         "sentiment": 0.25
       },
       "entry": 358.26,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 344.64,
+      "target1": 376.42,
       "target2": 432.1582,
-      "risk_reward": null,
+      "risk_reward": 5.43,
       "exit_plan": {
         "entry": 358.26,
-        "target": 401.25,
-        "stop": 333.18,
+        "target": 386.98,
+        "stop": 341.03,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 8.02,
+        "stop_pct": -4.81,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $360 call ~$8.65 (73% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $350 put ~$5.20 (45% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -1989,28 +2296,43 @@
         "ret_60d": 35.905325926039126,
         "ret_120d": 23.68721467802295
       },
-      "reasoning": "ONC scored 65.9/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 94/100 (x0.25 = 23.5); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; high gross margin (89%); strong-buy consensus (1.32); 21% upside to target; rich CSP yield (45% ann.); wide bid/ask (illiquid)."
+      "reasoning": "ONC scored 76.7/100. Setup: . Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 94/100 (x0.25 = 23.5); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; high gross margin (89%); strong-buy consensus (1.32); 21% upside to target; rich CSP yield (45% ann.); wide bid/ask (illiquid); positive 1y trend (12%); positive 6m trend. Sector thesis: outperforming Healthcare by 23pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "NESR",
       "company": "National Energy Services Reunit",
-      "score": 57.9,
-      "action": "Hold",
+      "score": 68.7,
+      "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 23.7,
       "expected_gain_%": 14.2,
       "hist_win_rate": 0.5,
       "hist_avg_return_%": 0.74,
       "hist_trades": 2,
-      "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "risk_flags": [
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": 43.0,
+        "vs_sector": 35.8,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 43.1,
+        "confirms": true
+      },
+      "position": {
+        "shares": 109,
+        "value": 3787.75,
+        "risk_$": 248.52,
+        "basis": "1.0% of $25,000 at $2.28/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -2019,10 +2341,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 68.0,
         "fundamental": 80.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 58.0
       },
       "weights": {
@@ -2033,17 +2355,17 @@
         "sentiment": 0.25
       },
       "entry": 34.75,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 32.47,
+      "target1": 37.79,
       "target2": 43.0,
-      "risk_reward": null,
+      "risk_reward": 3.62,
       "exit_plan": {
         "entry": 34.75,
-        "target": 38.92,
-        "stop": 32.32,
+        "target": 39.56,
+        "stop": 31.86,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 13.84,
+        "stop_pct": -8.3,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -2090,16 +2412,16 @@
         "ret_60d": 47.683803595137256,
         "ret_120d": 68.6074671077229
       },
-      "reasoning": "NESR scored 57.9/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 80/100 (x0.25 = 20.0); sentiment 58/100 (x0.25 = 14.5); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; revenue growth (59%); 24% upside to target; rich CSP yield (43% ann.); wide bid/ask (illiquid)."
+      "reasoning": "NESR scored 68.7/100. Setup: . Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 80/100 (x0.25 = 20.0); sentiment 58/100 (x0.25 = 14.5); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; revenue growth (59%); 24% upside to target; rich CSP yield (43% ann.); wide bid/ask (illiquid); positive 1y trend (258%); positive 6m trend. Sector thesis: outperforming Energy by 36pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "NVDA",
       "company": "NVIDIA Corporation",
-      "score": 68.8,
-      "action": "Accumulate",
+      "score": 81.3,
+      "action": "Buy",
       "quality_grade": "A",
       "analyst_upside_%": 42.0,
-      "expected_gain_%": 25.2,
+      "expected_gain_%": 35.7,
       "hist_win_rate": 0,
       "hist_avg_return_%": 0,
       "hist_trades": 0,
@@ -2111,16 +2433,30 @@
         {
           "level": "good",
           "text": "strong-buy consensus"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 10.2,
+        "vs_sector": 10.9,
+        "sector": "Technology",
+        "sector_etf": "XLK"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 4.8,
+        "confirms": true
+      },
+      "position": {
+        "shares": 22,
+        "value": 5067.92,
+        "risk_$": 243.54,
+        "basis": "1.0% of $25,000 at $11.07/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -2129,10 +2465,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 73.0,
         "fundamental": 100.0,
         "options": 76.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 76.0
       },
       "weights": {
@@ -2143,23 +2479,23 @@
         "sentiment": 0.25
       },
       "entry": 230.36,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 219.29,
+      "target1": 245.12,
       "target2": 327.12808,
-      "risk_reward": null,
+      "risk_reward": 8.74,
       "exit_plan": {
         "entry": 230.36,
-        "target": 258.0,
-        "stop": 214.23,
+        "target": 253.7,
+        "stop": 216.36,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 10.13,
+        "stop_pct": -6.08,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-09 $232 call ~$1.83 (97% ann.)",
       "cash_secured_put": "Sell 2026-09-09 $230 put ~$2.56 (136% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -2194,18 +2530,18 @@
         "strength_score": 8.5,
         "gross_margin": 0.74674004,
         "profit_score": 15.0,
-        "peg": 0.58,
+        "peg": 0.59,
         "value_score": 5.0,
-        "rsi": 60.392962490768106,
+        "rsi": 60.39296248994381,
         "ret_60d": 14.938630233979014,
         "ret_120d": 25.875163671606888
       },
-      "reasoning": "NVDA scored 68.8/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 76/100 (x0.25 = 19.0); options 76/100 (x0.10 = 7.6); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (64%); strong-buy consensus (1.28); 42% upside to target; rich CSP yield (136% ann.); liquid open interest."
+      "reasoning": "NVDA scored 81.3/100. Setup: . Contributions \u2014 technical 73/100 (x0.35 = 25.5); fundamental 100/100 (x0.25 = 25.0); sentiment 76/100 (x0.25 = 19.0); options 76/100 (x0.10 = 7.6); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; strong net margin (64%); strong-buy consensus (1.28); 42% upside to target; rich CSP yield (136% ann.); liquid open interest; positive 1y trend (34%); positive 6m trend. Sector thesis: outperforming Technology by 11pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "JHX",
       "company": "James Hardie Industries plc.",
-      "score": 61.9,
+      "score": 72.7,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 16.6,
@@ -2217,16 +2553,30 @@
         {
           "level": "good",
           "text": "strong-buy consensus"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 33.4,
+        "vs_sector": 34.1,
+        "sector": "Basic Materials",
+        "sector_etf": "XLB"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 19.5,
+        "confirms": true
+      },
+      "position": {
+        "shares": 185,
+        "value": 5622.15,
+        "risk_$": 249.75,
+        "basis": "1.0% of $25,000 at $1.35/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -2235,10 +2585,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 68.0,
         "fundamental": 86.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -2249,17 +2599,17 @@
         "sentiment": 0.25
       },
       "entry": 30.39,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 29.04,
+      "target1": 32.19,
       "target2": 35.42857,
-      "risk_reward": null,
+      "risk_reward": 3.73,
       "exit_plan": {
         "entry": 30.39,
-        "target": 34.04,
-        "stop": 28.26,
+        "target": 33.24,
+        "stop": 28.68,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 9.37,
+        "stop_pct": -5.62,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -2305,13 +2655,13 @@
         "ret_60d": 38.07359869887801,
         "ret_120d": 52.94412735828003
       },
-      "reasoning": "JHX scored 61.9/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 86/100 (x0.25 = 21.5); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; revenue growth (64%); strong-buy consensus (1.25); rich CSP yield (117% ann.); wide bid/ask (illiquid). Backtest: this setup fired 4x historically, bounced 75% of the time (avg +1.6% over the hold)."
+      "reasoning": "JHX scored 72.7/100. Setup: . Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 86/100 (x0.25 = 21.5); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; revenue growth (64%); strong-buy consensus (1.25); rich CSP yield (117% ann.); wide bid/ask (illiquid); positive 1y trend (56%); positive 6m trend. Backtest: this setup fired 4x historically, bounced 75% of the time (avg +1.6% over the hold). Sector thesis: outperforming Basic Materials by 34pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "VLO",
       "company": "Valero Energy Corporation",
-      "score": 59.4,
-      "action": "Hold",
+      "score": 67.8,
+      "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": -13.8,
       "expected_gain_%": -8.3,
@@ -2322,15 +2672,33 @@
         {
           "level": "warn",
           "text": "trades above analyst target \u2014 worst realized cohort"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 1.33 below 1.5 floor"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 39.6,
+        "vs_sector": 32.4,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 52.5,
+        "confirms": true
+      },
+      "position": {
+        "shares": 15,
+        "value": 5560.8,
+        "risk_$": 240.15,
+        "basis": "1.0% of $25,000 at $16.01/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -2340,10 +2708,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 61.0,
         "fundamental": 92.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 52.0
       },
       "weights": {
@@ -2354,17 +2722,17 @@
         "sentiment": 0.25
       },
       "entry": 370.72,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 354.71,
+      "target1": 392.07,
       "target2": 319.6316,
-      "risk_reward": null,
+      "risk_reward": 1.33,
       "exit_plan": {
         "entry": 370.72,
-        "target": 415.21,
-        "stop": 344.77,
+        "target": 404.47,
+        "stop": 350.47,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 9.1,
+        "stop_pct": -5.46,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -2408,17 +2776,17 @@
         "profit_score": 7.2,
         "peg": 4.08,
         "value_score": 0.0,
-        "rsi": 75.26716946090245,
+        "rsi": 75.26716954801111,
         "ret_60d": 44.250826270761266,
-        "ret_120d": 60.77776568228871
+        "ret_120d": 60.77775504267156
       },
-      "reasoning": "VLO scored 59.4/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 92/100 (x0.25 = 23.0); sentiment 52/100 (x0.25 = 13.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; high ROE (28%); buy consensus (2.35); trading above target; rich CSP yield (150% ann.); wide bid/ask (illiquid)."
+      "reasoning": "VLO scored 67.8/100. Setup: . Contributions \u2014 technical 61/100 (x0.35 = 21.3); fundamental 92/100 (x0.25 = 23.0); sentiment 52/100 (x0.25 = 13.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: overbought (RSI 75); above EMA200 (uptrend intact); positive free cash flow; high ROE (28%); buy consensus (2.35); trading above target; rich CSP yield (150% ann.); wide bid/ask (illiquid); positive 1y trend (144%); positive 6m trend. Sector thesis: outperforming Energy by 32pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "CRGY",
       "company": "Crescent Energy Company",
-      "score": 58.5,
-      "action": "Hold",
+      "score": 69.3,
+      "action": "Accumulate",
       "quality_grade": "B",
       "analyst_upside_%": 17.1,
       "expected_gain_%": 10.3,
@@ -2429,16 +2797,30 @@
         {
           "level": "warn",
           "text": "high short interest (12%)"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 14.1,
+        "vs_sector": 6.9,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 32.4,
+        "confirms": true
+      },
+      "position": {
+        "shares": 362,
+        "value": 4984.74,
+        "risk_$": 249.78,
+        "basis": "1.0% of $25,000 at $0.69/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -2447,10 +2829,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 68.0,
         "fundamental": 70.0,
         "options": 68.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -2461,17 +2843,17 @@
         "sentiment": 0.25
       },
       "entry": 13.77,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 13.08,
+      "target1": 14.68,
       "target2": 16.125,
-      "risk_reward": null,
+      "risk_reward": 3.41,
       "exit_plan": {
         "entry": 13.77,
-        "target": 15.42,
-        "stop": 12.81,
+        "target": 15.22,
+        "stop": 12.9,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 10.5,
+        "stop_pct": -6.3,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -2513,20 +2895,20 @@
         "profit_score": 13.9,
         "peg": null,
         "value_score": 2.5,
-        "rsi": 62.69518400478734,
+        "rsi": 62.69518400478622,
         "ret_60d": 18.75993271947393,
         "ret_120d": 18.948764819175352
       },
-      "reasoning": "CRGY scored 58.5/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 70/100 (x0.25 = 17.5); sentiment 68/100 (x0.25 = 17.0); options 68/100 (x0.10 = 6.8); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; high gross margin (62%); strong-buy consensus (1.75); rich CSP yield (41% ann.); wide bid/ask (illiquid)."
+      "reasoning": "CRGY scored 69.3/100. Setup: . Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 70/100 (x0.25 = 17.5); sentiment 68/100 (x0.25 = 17.0); options 68/100 (x0.10 = 6.8); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; high gross margin (62%); strong-buy consensus (1.75); rich CSP yield (41% ann.); wide bid/ask (illiquid); positive 1y trend (55%); positive 6m trend. Sector thesis: outperforming Energy by 7pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "AUGO",
       "company": "Aura Minerals Inc.",
-      "score": 64.7,
-      "action": "Accumulate",
+      "score": 75.5,
+      "action": "Buy",
       "quality_grade": "A",
       "analyst_upside_%": 17.7,
-      "expected_gain_%": 10.6,
+      "expected_gain_%": 15.1,
       "hist_win_rate": 1.0,
       "hist_avg_return_%": 8.05,
       "hist_trades": 1,
@@ -2534,28 +2916,42 @@
         {
           "level": "warn",
           "text": "high short interest (16%)"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 56.1,
+        "vs_sector": 56.8,
+        "sector": "Basic Materials",
+        "sector_etf": "XLB"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 32.8,
+        "confirms": true
+      },
+      "position": {
+        "shares": 35,
+        "value": 2971.85,
+        "risk_$": 245.0,
+        "basis": "1.0% of $25,000 at $7.00/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
+        "active": true,
+        "strength": "moderate",
+        "suggested_strike": 77.91,
+        "idea": "Sell 2026-09-18 $80 put ~$2.35 (89% ann.)",
+        "reason": "down -3.6% today; uptrend intact (above EMA200); 18% upside to target; limited dip history"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 68.0,
         "fundamental": 97.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -2566,23 +2962,23 @@
         "sentiment": 0.25
       },
       "entry": 84.91,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 77.91,
+      "target1": 94.25,
       "target2": 99.95556,
-      "risk_reward": null,
+      "risk_reward": 2.15,
       "exit_plan": {
         "entry": 84.91,
-        "target": 95.1,
-        "stop": 78.97,
+        "target": 99.67,
+        "stop": 76.05,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 17.39,
+        "stop_pct": -10.43,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $85 call ~$4.60 (165% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $80 put ~$2.35 (89% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -2617,20 +3013,20 @@
         "profit_score": 13.5,
         "peg": null,
         "value_score": 2.5,
-        "rsi": 59.21079461124832,
+        "rsi": 59.21079461082231,
         "ret_60d": 60.77974098442907,
         "ret_120d": 13.039829712876628
       },
-      "reasoning": "AUGO scored 64.7/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 97/100 (x0.25 = 24.2); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (23%); strong-buy consensus (1.67); rich CSP yield (89% ann.); wide bid/ask (illiquid)."
+      "reasoning": "AUGO scored 75.5/100. Setup: . Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 97/100 (x0.25 = 24.2); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; strong net margin (23%); strong-buy consensus (1.67); rich CSP yield (89% ann.); wide bid/ask (illiquid); positive 1y trend (186%); positive 6m trend. Sector thesis: outperforming Basic Materials by 57pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "DLO",
       "company": "DLocal Limited",
-      "score": 66.7,
-      "action": "Accumulate",
+      "score": 79.2,
+      "action": "Buy",
       "quality_grade": "A",
       "analyst_upside_%": 20.5,
-      "expected_gain_%": 12.3,
+      "expected_gain_%": 17.4,
       "hist_win_rate": 0.0,
       "hist_avg_return_%": -8.74,
       "hist_trades": 2,
@@ -2642,16 +3038,30 @@
         {
           "level": "good",
           "text": "strong-buy consensus"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 27.1,
+        "vs_sector": 27.8,
+        "sector": "Technology",
+        "sector_etf": "XLK"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 15.9,
+        "confirms": true
+      },
+      "position": {
+        "shares": 308,
+        "value": 4780.16,
+        "risk_$": 249.48,
+        "basis": "1.0% of $25,000 at $0.81/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -2660,10 +3070,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 73.0,
         "fundamental": 97.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 76.0
       },
       "weights": {
@@ -2674,23 +3084,23 @@
         "sentiment": 0.25
       },
       "entry": 15.52,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 14.71,
+      "target1": 16.61,
       "target2": 18.7,
-      "risk_reward": null,
+      "risk_reward": 3.93,
       "exit_plan": {
         "entry": 15.52,
-        "target": 17.38,
-        "stop": 14.43,
+        "target": 17.24,
+        "stop": 14.49,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 11.06,
+        "stop_pct": -6.64,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $16 call ~$0.23 (44% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $15 put ~$0.22 (46% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -2729,16 +3139,16 @@
         "ret_60d": 31.74873352776524,
         "ret_120d": 38.795073281929206
       },
-      "reasoning": "DLO scored 66.7/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 97/100 (x0.25 = 24.2); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (15%); strong-buy consensus (1.50); 20% upside to target; rich CSP yield (46% ann.); wide bid/ask (illiquid)."
+      "reasoning": "DLO scored 79.2/100. Setup: . Contributions \u2014 technical 73/100 (x0.35 = 25.5); fundamental 97/100 (x0.25 = 24.2); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; strong net margin (15%); strong-buy consensus (1.50); 20% upside to target; rich CSP yield (46% ann.); wide bid/ask (illiquid); positive 1y trend (23%); positive 6m trend. Sector thesis: outperforming Technology by 28pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "ANET",
       "company": "Arista Networks, Inc.",
-      "score": 68.2,
-      "action": "Accumulate",
+      "score": 79.0,
+      "action": "Buy",
       "quality_grade": "A",
       "analyst_upside_%": 24.4,
-      "expected_gain_%": 14.6,
+      "expected_gain_%": 20.7,
       "hist_win_rate": 0.5,
       "hist_avg_return_%": -5.6,
       "hist_trades": 2,
@@ -2746,16 +3156,30 @@
         {
           "level": "good",
           "text": "strong-buy consensus"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 23.0,
+        "vs_sector": 23.7,
+        "sector": "Technology",
+        "sector_etf": "XLK"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 15.3,
+        "confirms": true
+      },
+      "position": {
+        "shares": 20,
+        "value": 3875.6,
+        "risk_$": 248.4,
+        "basis": "1.0% of $25,000 at $12.42/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -2764,10 +3188,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 68.0,
         "fundamental": 100.0,
         "options": 70.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 76.0
       },
       "weights": {
@@ -2778,23 +3202,23 @@
         "sentiment": 0.25
       },
       "entry": 193.78,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 181.36,
+      "target1": 210.34,
       "target2": 241.03607,
-      "risk_reward": null,
+      "risk_reward": 3.8,
       "exit_plan": {
         "entry": 193.78,
-        "target": 217.03,
-        "stop": 180.22,
+        "target": 219.96,
+        "stop": 178.07,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 13.51,
+        "stop_pct": -8.11,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-11 $195 call ~$4.05 (153% ann.)",
       "cash_secured_put": "Sell 2026-09-11 $192 put ~$4.28 (162% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -2835,16 +3259,16 @@
         "ret_60d": 27.68845927348012,
         "ret_120d": 43.16955304094631
       },
-      "reasoning": "ANET scored 68.2/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 76/100 (x0.25 = 19.0); options 70/100 (x0.10 = 7.0); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (38%); strong-buy consensus (1.26); 24% upside to target; rich CSP yield (162% ann.)."
+      "reasoning": "ANET scored 79.0/100. Setup: . Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 100/100 (x0.25 = 25.0); sentiment 76/100 (x0.25 = 19.0); options 70/100 (x0.10 = 7.0); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; strong net margin (38%); strong-buy consensus (1.26); 24% upside to target; rich CSP yield (162% ann.); positive 1y trend (37%); positive 6m trend. Sector thesis: outperforming Technology by 24pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "MRX",
       "company": "Marex Group Limited",
-      "score": 53.1,
-      "action": "Hold",
+      "score": 67.8,
+      "action": "Accumulate",
       "quality_grade": "B",
       "analyst_upside_%": 2.1,
-      "expected_gain_%": 0.8,
+      "expected_gain_%": 1.2,
       "hist_win_rate": 0,
       "hist_avg_return_%": 0,
       "hist_trades": 0,
@@ -2852,15 +3276,33 @@
         {
           "level": "warn",
           "text": "high leverage (D/E 825%)"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 0.32 below 1.5 floor"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 22.0,
+        "vs_sector": 15.2,
+        "sector": "Financial Services",
+        "sector_etf": "XLF"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 12.0,
+        "confirms": true
+      },
+      "position": {
+        "shares": 49,
+        "value": 3835.23,
+        "risk_$": 245.98,
+        "basis": "1.0% of $25,000 at $5.02/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -2870,10 +3312,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 79.0,
         "fundamental": 69.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 50.0
       },
       "weights": {
@@ -2884,23 +3326,23 @@
         "sentiment": 0.25
       },
       "entry": 78.27,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 73.25,
+      "target1": 84.96,
       "target2": 79.875,
-      "risk_reward": null,
+      "risk_reward": 0.32,
       "exit_plan": {
         "entry": 78.27,
-        "target": 87.66,
-        "stop": 72.79,
+        "target": 88.86,
+        "stop": 71.92,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 13.52,
+        "stop_pct": -8.11,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $80 call ~$1.62 (63% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $75 put ~$1.48 (60% ann.)",
-      "confidence": "Low",
+      "confidence": "Medium",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -2935,20 +3377,20 @@
         "profit_score": 12.0,
         "peg": null,
         "value_score": 2.5,
-        "rsi": 69.39429628874849,
+        "rsi": 69.3942963067575,
         "ret_60d": 26.703194730760167,
         "ret_120d": 123.99153640346492
       },
-      "reasoning": "MRX scored 53.1/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 69/100 (x0.25 = 17.2); sentiment 50/100 (x0.25 = 12.5); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; high gross margin (70%); high ROE (26%); rich CSP yield (60% ann.); wide bid/ask (illiquid)."
+      "reasoning": "MRX scored 67.8/100. Setup: . Contributions \u2014 technical 79/100 (x0.35 = 27.6); fundamental 69/100 (x0.25 = 17.2); sentiment 50/100 (x0.25 = 12.5); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; high gross margin (70%); high ROE (26%); rich CSP yield (60% ann.); wide bid/ask (illiquid); positive 1y trend (123%); positive 6m trend. Sector thesis: outperforming Financial Services by 15pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "FSM",
       "company": "Fortuna Mining Corp.",
-      "score": 63.0,
+      "score": 71.7,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 17.8,
-      "expected_gain_%": 10.7,
+      "expected_gain_%": 15.1,
       "hist_win_rate": 0.5,
       "hist_avg_return_%": 0.15,
       "hist_trades": 2,
@@ -2958,26 +3400,36 @@
           "text": "high beta (2.2)"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 47.5,
+        "vs_sector": 48.2,
+        "sector": "Basic Materials",
+        "sector_etf": "XLB"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 30.5,
+        "confirms": true
+      },
+      "position": {
+        "shares": 316,
+        "value": 3889.96,
+        "risk_$": 249.64,
+        "basis": "1.0% of $25,000 at $0.79/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
+        "active": true,
+        "strength": "moderate",
+        "suggested_strike": 11.52,
+        "idea": "Sell 2026-09-18 $10 put ~$0.05 (15% ann.)",
+        "reason": "down -2.8% today; uptrend intact (above EMA200); 18% upside to target; limited dip history"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 62.0,
         "fundamental": 100.0,
         "options": 58.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 60.0
       },
       "weights": {
@@ -2988,23 +3440,23 @@
         "sentiment": 0.25
       },
       "entry": 12.31,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 11.52,
+      "target1": 13.36,
       "target2": 14.5,
-      "risk_reward": null,
+      "risk_reward": 2.77,
       "exit_plan": {
         "entry": 12.31,
-        "target": 13.79,
-        "stop": 11.45,
+        "target": 13.97,
+        "stop": 11.31,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 13.49,
+        "stop_pct": -8.1,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $12 call ~$0.40 (99% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $10 put ~$0.05 (15% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -3044,28 +3496,43 @@
         "ret_60d": 52.163166717356404,
         "ret_120d": 19.514564967580167
       },
-      "reasoning": "FSM scored 63.0/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 60/100 (x0.25 = 15.0); options 58/100 (x0.10 = 5.8); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (32%); buy consensus (2.00); solid CSP yield (15% ann.); wide bid/ask (illiquid)."
+      "reasoning": "FSM scored 71.7/100. Setup: . Contributions \u2014 technical 62/100 (x0.35 = 21.7); fundamental 100/100 (x0.25 = 25.0); sentiment 60/100 (x0.25 = 15.0); options 58/100 (x0.10 = 5.8); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); positive free cash flow; strong net margin (32%); buy consensus (2.00); solid CSP yield (15% ann.); wide bid/ask (illiquid); positive 1y trend (62%); positive 6m trend. Sector thesis: outperforming Basic Materials by 48pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "GPN",
       "company": "Global Payments Inc.",
-      "score": 54.2,
-      "action": "Hold",
+      "score": 65.0,
+      "action": "Accumulate",
       "quality_grade": "C",
       "analyst_upside_%": 11.5,
-      "expected_gain_%": 4.6,
+      "expected_gain_%": 6.9,
       "hist_win_rate": 1.0,
       "hist_avg_return_%": 13.52,
       "hist_trades": 1,
-      "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "risk_flags": [
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": 44.0,
+        "vs_sector": 47.8,
+        "sector": "Industrials",
+        "sector_etf": "XLI"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 36.1,
+        "confirms": true
+      },
+      "position": {
+        "shares": 57,
+        "value": 5274.78,
+        "risk_$": 249.66,
+        "basis": "1.0% of $25,000 at $4.38/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -3074,10 +3541,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 68.0,
         "fundamental": 61.0,
         "options": 68.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 60.0
       },
       "weights": {
@@ -3088,23 +3555,23 @@
         "sentiment": 0.25
       },
       "entry": 92.54,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 88.16,
+      "target1": 98.38,
       "target2": 103.14286,
-      "risk_reward": null,
+      "risk_reward": 2.42,
       "exit_plan": {
         "entry": 92.54,
-        "target": 103.64,
-        "stop": 86.06,
+        "target": 101.78,
+        "stop": 87.0,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 9.98,
+        "stop_pct": -5.99,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $95 call ~$1.60 (53% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $90 put ~$1.25 (42% ann.)",
-      "confidence": "Low",
+      "confidence": "Medium",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -3142,17 +3609,17 @@
         "profit_score": 14.1,
         "peg": 0.22,
         "value_score": 5.0,
-        "rsi": 58.71761137477097,
+        "rsi": 58.71761137454331,
         "ret_60d": 48.70319649146165,
         "ret_120d": 36.509747759661245
       },
-      "reasoning": "GPN scored 54.2/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 61/100 (x0.25 = 15.2); sentiment 60/100 (x0.25 = 15.0); options 68/100 (x0.10 = 6.8); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; unprofitable; buy consensus (2.32); rich CSP yield (42% ann.); wide bid/ask (illiquid)."
+      "reasoning": "GPN scored 65.0/100. Setup: . Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 61/100 (x0.25 = 15.2); sentiment 60/100 (x0.25 = 15.0); options 68/100 (x0.10 = 6.8); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; unprofitable; buy consensus (2.32); rich CSP yield (42% ann.); wide bid/ask (illiquid); positive 1y trend (7%); positive 6m trend. Sector thesis: outperforming Industrials by 48pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "TPG",
       "company": "TPG Inc.",
-      "score": 59.4,
-      "action": "Hold",
+      "score": 67.3,
+      "action": "Accumulate",
       "quality_grade": "B",
       "analyst_upside_%": 14.8,
       "expected_gain_%": 5.9,
@@ -3160,14 +3627,24 @@
       "hist_avg_return_%": -3.68,
       "hist_trades": 3,
       "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 22.7,
+        "vs_sector": 15.9,
+        "sector": "Financial Services",
+        "sector_etf": "XLF"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 30.1,
+        "confirms": true
+      },
+      "position": {
+        "shares": 93,
+        "value": 4896.45,
+        "risk_$": 247.38,
+        "basis": "1.0% of $25,000 at $2.66/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -3176,10 +3653,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 62.0,
         "fundamental": 76.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 68.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -3190,17 +3667,17 @@
         "sentiment": 0.25
       },
       "entry": 52.65,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 49.99,
+      "target1": 56.19,
       "target2": 60.4375,
-      "risk_reward": null,
+      "risk_reward": 2.93,
       "exit_plan": {
         "entry": 52.65,
-        "target": 58.97,
-        "stop": 48.96,
+        "target": 58.26,
+        "stop": 49.29,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 10.65,
+        "stop_pct": -6.39,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -3240,32 +3717,47 @@
         "profit_score": 12.0,
         "peg": null,
         "value_score": 2.5,
-        "rsi": 59.187288718359646,
+        "rsi": 59.187288718066284,
         "ret_60d": 27.408954021886057,
         "ret_120d": 36.536322266462975
       },
-      "reasoning": "TPG scored 59.4/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 76/100 (x0.25 = 19.0); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; high gross margin (100%); high ROE (19%); strong-buy consensus (1.75); rich CSP yield (71% ann.); wide bid/ask (illiquid). Backtest: this setup fired 3x historically, bounced 33% of the time (avg -3.7% over the hold)."
+      "reasoning": "TPG scored 67.3/100. Setup: . Contributions \u2014 technical 62/100 (x0.35 = 21.7); fundamental 76/100 (x0.25 = 19.0); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 68/100 (x0.05 = 3.4). Key drivers: above EMA200 (uptrend intact); high gross margin (100%); high ROE (19%); strong-buy consensus (1.75); rich CSP yield (71% ann.); wide bid/ask (illiquid); negative 1y trend (-7%); positive 6m trend. Backtest: this setup fired 3x historically, bounced 33% of the time (avg -3.7% over the hold). Sector thesis: outperforming Financial Services by 16pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "TAL",
       "company": "TAL Education Group",
-      "score": 67.4,
-      "action": "Accumulate",
+      "score": 80.0,
+      "action": "Buy",
       "quality_grade": "A",
       "analyst_upside_%": 30.0,
       "expected_gain_%": 25.5,
       "hist_win_rate": 1.0,
       "hist_avg_return_%": 8.27,
       "hist_trades": 3,
-      "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "risk_flags": [
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": 28.6,
+        "vs_sector": 31.3,
+        "sector": "Consumer Defensive",
+        "sector_etf": "XLP"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 27.7,
+        "confirms": true
+      },
+      "position": {
+        "shares": 409,
+        "value": 5071.6,
+        "risk_$": 249.49,
+        "basis": "1.0% of $25,000 at $0.61/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -3274,10 +3766,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 73.0,
         "fundamental": 100.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 76.0
       },
       "weights": {
@@ -3288,17 +3780,17 @@
         "sentiment": 0.25
       },
       "entry": 12.4,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 11.79,
+      "target1": 13.21,
       "target2": 16.11833,
-      "risk_reward": null,
+      "risk_reward": 6.1,
       "exit_plan": {
         "entry": 12.4,
-        "target": 13.89,
-        "stop": 11.53,
+        "target": 13.68,
+        "stop": 11.63,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 10.31,
+        "stop_pct": -6.19,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -3344,27 +3836,42 @@
         "ret_60d": 33.33332649695844,
         "ret_120d": 10.912337030882668
       },
-      "reasoning": "TAL scored 67.4/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (28%); strong-buy consensus (1.58); 30% upside to target; rich CSP yield (32% ann.); wide bid/ask (illiquid). Backtest: this setup fired 3x historically, bounced 100% of the time (avg +8.3% over the hold)."
+      "reasoning": "TAL scored 80.0/100. Setup: . Contributions \u2014 technical 73/100 (x0.35 = 25.5); fundamental 100/100 (x0.25 = 25.0); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; strong net margin (28%); strong-buy consensus (1.58); 30% upside to target; rich CSP yield (32% ann.); wide bid/ask (illiquid); positive 1y trend (21%); positive 6m trend. Backtest: this setup fired 3x historically, bounced 100% of the time (avg +8.3% over the hold). Sector thesis: outperforming Consumer Defensive by 31pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "GFI",
       "company": "Gold Fields Limited",
-      "score": 66.0,
+      "score": 74.7,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 2.2,
-      "expected_gain_%": 1.3,
+      "expected_gain_%": 1.9,
       "hist_win_rate": 0.5,
       "hist_avg_return_%": 4.13,
       "hist_trades": 2,
-      "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "risk_flags": [
+        {
+          "level": "warn",
+          "text": "R:R 0.38 below 1.5 floor"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": 36.7,
+        "vs_sector": 37.4,
+        "sector": "Basic Materials",
+        "sector_etf": "XLB"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 20.1,
+        "confirms": true
+      },
+      "position": {
+        "shares": 89,
+        "value": 4218.6,
+        "risk_$": 248.31,
+        "basis": "1.0% of $25,000 at $2.79/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -3374,10 +3881,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 62.0,
         "fundamental": 100.0,
         "options": 68.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -3388,23 +3895,23 @@
         "sentiment": 0.25
       },
       "entry": 47.4,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 44.61,
+      "target1": 51.13,
       "target2": 48.4625,
-      "risk_reward": null,
+      "risk_reward": 0.38,
       "exit_plan": {
         "entry": 47.4,
-        "target": 53.09,
-        "stop": 44.08,
+        "target": 53.29,
+        "stop": 43.87,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 12.43,
+        "stop_pct": -7.46,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $50 call ~$0.83 (53% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $45 put ~$1.08 (73% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -3445,16 +3952,16 @@
         "ret_60d": 41.365950645802215,
         "ret_120d": 0.1267456127959805
       },
-      "reasoning": "GFI scored 66.0/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 68/100 (x0.25 = 17.0); options 68/100 (x0.10 = 6.8); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (39%); strong-buy consensus (1.75); rich CSP yield (73% ann.); wide bid/ask (illiquid)."
+      "reasoning": "GFI scored 74.7/100. Setup: . Contributions \u2014 technical 62/100 (x0.35 = 21.7); fundamental 100/100 (x0.25 = 25.0); sentiment 68/100 (x0.25 = 17.0); options 68/100 (x0.10 = 6.8); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); positive free cash flow; strong net margin (39%); strong-buy consensus (1.75); rich CSP yield (73% ann.); wide bid/ask (illiquid); positive 1y trend (46%); positive 6m trend. Sector thesis: outperforming Basic Materials by 37pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "IAG",
       "company": "Iamgold Corporation",
-      "score": 65.4,
+      "score": 74.1,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 16.4,
-      "expected_gain_%": 9.8,
+      "expected_gain_%": 13.9,
       "hist_win_rate": 1.0,
       "hist_avg_return_%": 14.63,
       "hist_trades": 2,
@@ -3464,26 +3971,36 @@
           "text": "high beta (2.3)"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 33.3,
+        "vs_sector": 34.0,
+        "sector": "Basic Materials",
+        "sector_etf": "XLB"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 21.1,
+        "confirms": true
+      },
+      "position": {
+        "shares": 182,
+        "value": 3727.36,
+        "risk_$": 249.34,
+        "basis": "1.0% of $25,000 at $1.37/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
+        "active": true,
+        "strength": "moderate",
+        "suggested_strike": 19.11,
+        "idea": "Sell 2026-09-18 $20 put ~$0.60 (91% ann.)",
+        "reason": "down -2.2% today; uptrend intact (above EMA200); 16% upside to target; limited dip history"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 62.0,
         "fundamental": 100.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -3494,23 +4011,23 @@
         "sentiment": 0.25
       },
       "entry": 20.48,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 19.11,
+      "target1": 22.31,
       "target2": 23.83333,
-      "risk_reward": null,
+      "risk_reward": 2.45,
       "exit_plan": {
         "entry": 20.48,
-        "target": 22.94,
-        "stop": 19.05,
+        "target": 23.37,
+        "stop": 18.75,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 14.09,
+        "stop_pct": -8.46,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $21 call ~$0.73 (108% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $20 put ~$0.60 (91% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -3551,12 +4068,12 @@
         "ret_60d": 38.00538633191927,
         "ret_120d": 4.2769866532207
       },
-      "reasoning": "IAG scored 65.4/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (31%); strong-buy consensus (1.77); rich CSP yield (91% ann.); wide bid/ask (illiquid)."
+      "reasoning": "IAG scored 74.1/100. Setup: . Contributions \u2014 technical 62/100 (x0.35 = 21.7); fundamental 100/100 (x0.25 = 25.0); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); positive free cash flow; strong net margin (31%); strong-buy consensus (1.77); rich CSP yield (91% ann.); wide bid/ask (illiquid); positive 1y trend (116%); positive 6m trend. Sector thesis: outperforming Basic Materials by 34pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "SM",
       "company": "SM Energy Company",
-      "score": 62.0,
+      "score": 72.5,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 11.8,
@@ -3564,27 +4081,42 @@
       "hist_win_rate": 0.667,
       "hist_avg_return_%": 3.21,
       "hist_trades": 3,
-      "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "risk_flags": [
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": 7.0,
+        "vs_sector": -0.2,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 37.0,
+        "confirms": true
+      },
+      "position": {
+        "shares": 121,
+        "value": 4409.24,
+        "risk_$": 248.05,
+        "basis": "1.0% of $25,000 at $2.05/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
+        "active": true,
+        "strength": "strong",
+        "suggested_strike": 34.39,
+        "idea": "Sell 2026-09-18 $35 put ~$0.62 (54% ann.)",
+        "reason": "down -2.5% today; uptrend intact (above EMA200); 12% upside to target; historically bounced 67% of 3 similar dips (avg +3.2%)"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 68.0,
         "fundamental": 92.0,
         "options": 68.0,
-        "momentum": 50.0,
+        "momentum": 78.0,
         "sentiment": 60.0
       },
       "weights": {
@@ -3595,17 +4127,17 @@
         "sentiment": 0.25
       },
       "entry": 36.44,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 34.39,
+      "target1": 39.18,
       "target2": 40.75,
-      "risk_reward": null,
+      "risk_reward": 2.1,
       "exit_plan": {
         "entry": 36.44,
-        "target": 40.81,
-        "stop": 33.89,
+        "target": 40.77,
+        "stop": 33.84,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 11.87,
+        "stop_pct": -7.12,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
@@ -3648,20 +4180,20 @@
         "profit_score": 15.0,
         "peg": 0.69,
         "value_score": 5.0,
-        "rsi": 58.57467080400465,
+        "rsi": 58.57467080399264,
         "ret_60d": 11.64930540945638,
         "ret_120d": 37.91683721239133
       },
-      "reasoning": "SM scored 62.0/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 92/100 (x0.25 = 23.0); sentiment 60/100 (x0.25 = 15.0); options 68/100 (x0.10 = 6.8); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (20%); buy consensus (1.88); rich CSP yield (54% ann.); wide bid/ask (illiquid). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +3.2% over the hold)."
+      "reasoning": "SM scored 72.5/100. Setup: . Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 92/100 (x0.25 = 23.0); sentiment 60/100 (x0.25 = 15.0); options 68/100 (x0.10 = 6.8); momentum 78/100 (x0.05 = 3.9). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; strong net margin (20%); buy consensus (1.88); rich CSP yield (54% ann.); wide bid/ask (illiquid); positive 1y trend (35%); positive 6m trend. Backtest: this setup fired 3x historically, bounced 67% of the time (avg +3.2% over the hold). Sector thesis: moving WITH Energy (-0pp vs XLE) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "EE",
       "company": "Excelerate Energy, Inc.",
-      "score": 54.9,
-      "action": "Hold",
+      "score": 67.5,
+      "action": "Accumulate",
       "quality_grade": "C",
       "analyst_upside_%": 9.0,
-      "expected_gain_%": 3.6,
+      "expected_gain_%": 5.4,
       "hist_win_rate": 0,
       "hist_avg_return_%": 0,
       "hist_trades": 0,
@@ -3673,16 +4205,30 @@
         {
           "level": "warn",
           "text": "negative free cash flow"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 17.8,
+        "vs_sector": 10.6,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 14.9,
+        "confirms": true
+      },
+      "position": {
+        "shares": 112,
+        "value": 4483.36,
+        "risk_$": 249.76,
+        "basis": "1.0% of $25,000 at $2.23/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -3691,10 +4237,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 73.0,
         "fundamental": 58.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -3705,23 +4251,23 @@
         "sentiment": 0.25
       },
       "entry": 40.03,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 37.8,
+      "target1": 43.0,
       "target2": 43.61538,
-      "risk_reward": null,
+      "risk_reward": 1.61,
       "exit_plan": {
         "entry": 40.03,
-        "target": 44.83,
-        "stop": 37.23,
+        "target": 44.73,
+        "stop": 37.21,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 11.74,
+        "stop_pct": -7.04,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $41 call ~$0.70 (53% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $37 put ~$0.40 (33% ann.)",
-      "confidence": "Low",
+      "confidence": "Medium",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -3747,7 +4293,7 @@
         "revenue_growth": 0.61,
         "earnings_growth": 1.467,
         "business_score": 35.0,
-        "dist_52w_high": -6.026131295530019,
+        "dist_52w_high": -6.02612287985895,
         "trend_score": 22.3,
         "rs_vs_spy_60d": 16.0,
         "strength_score": 16.0,
@@ -3755,20 +4301,20 @@
         "profit_score": 7.3,
         "peg": null,
         "value_score": 2.5,
-        "rsi": 58.796909505022164,
+        "rsi": 58.79690946740049,
         "ret_60d": 22.45026461243756,
-        "ret_120d": 18.770685022642958
+        "ret_120d": 18.77067157974275
       },
-      "reasoning": "EE scored 54.9/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 58/100 (x0.25 = 14.5); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; negative free cash flow; revenue growth (61%); strong-buy consensus (1.69); rich CSP yield (33% ann.); wide bid/ask (illiquid)."
+      "reasoning": "EE scored 67.5/100. Setup: . Contributions \u2014 technical 73/100 (x0.35 = 25.5); fundamental 58/100 (x0.25 = 14.5); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; negative free cash flow; revenue growth (61%); strong-buy consensus (1.69); rich CSP yield (33% ann.); wide bid/ask (illiquid); positive 1y trend (70%); positive 6m trend. Sector thesis: outperforming Energy by 11pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "NMM",
       "company": "Navios Maritime Partners LP",
-      "score": 58.1,
-      "action": "Hold",
+      "score": 70.7,
+      "action": "Accumulate",
       "quality_grade": "B",
       "analyst_upside_%": 6.3,
-      "expected_gain_%": 3.8,
+      "expected_gain_%": 5.4,
       "hist_win_rate": 1.0,
       "hist_avg_return_%": 1.97,
       "hist_trades": 1,
@@ -3780,16 +4326,30 @@
         {
           "level": "good",
           "text": "strong-buy consensus"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 23.2,
+        "vs_sector": 27.0,
+        "sector": "Industrials",
+        "sector_etf": "XLI"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 26.0,
+        "confirms": true
+      },
+      "position": {
+        "shares": 67,
+        "value": 6174.72,
+        "risk_$": 247.9,
+        "basis": "1.0% of $25,000 at $3.70/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -3798,10 +4358,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 73.0,
         "fundamental": 71.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -3812,23 +4372,23 @@
         "sentiment": 0.25
       },
       "entry": 92.16,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 88.46,
+      "target1": 97.09,
       "target2": 98.0,
-      "risk_reward": null,
+      "risk_reward": 1.58,
       "exit_plan": {
         "entry": 92.16,
-        "target": 103.22,
-        "stop": 85.71,
+        "target": 99.95,
+        "stop": 87.48,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 8.46,
+        "stop_pct": -5.07,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $92 call ~$2.08 (68% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $90 put ~$1.18 (40% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -3867,28 +4427,38 @@
         "ret_60d": 27.883723552300953,
         "ret_120d": 47.09739311686603
       },
-      "reasoning": "NMM scored 58.1/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 71/100 (x0.25 = 17.8); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; negative free cash flow; strong net margin (30%); strong-buy consensus (1.00); rich CSP yield (40% ann.); wide bid/ask (illiquid)."
+      "reasoning": "NMM scored 70.7/100. Setup: . Contributions \u2014 technical 73/100 (x0.35 = 25.5); fundamental 71/100 (x0.25 = 17.8); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; negative free cash flow; strong net margin (30%); strong-buy consensus (1.00); rich CSP yield (40% ann.); wide bid/ask (illiquid); positive 1y trend (93%); positive 6m trend. Sector thesis: outperforming Industrials by 27pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "EDU",
       "company": "New Oriental Education & Techno",
-      "score": 64.9,
-      "action": "Accumulate",
+      "score": 75.3,
+      "action": "Buy",
       "quality_grade": "A",
       "analyst_upside_%": 23.6,
-      "expected_gain_%": 14.2,
+      "expected_gain_%": 20.1,
       "hist_win_rate": 1.0,
       "hist_avg_return_%": 6.56,
       "hist_trades": 2,
       "risk_flags": [],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 24.4,
+        "vs_sector": 27.0,
+        "sector": "Consumer Defensive",
+        "sector_etf": "XLP"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 28.2,
+        "confirms": true
+      },
+      "position": {
+        "shares": 96,
+        "value": 5712.96,
+        "risk_$": 248.64,
+        "basis": "1.0% of $25,000 at $2.59/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -3897,10 +4467,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 67.0,
         "fundamental": 90.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 76.0
       },
       "weights": {
@@ -3911,23 +4481,23 @@
         "sentiment": 0.25
       },
       "entry": 59.51,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 56.92,
+      "target1": 62.96,
       "target2": 73.5695,
-      "risk_reward": null,
+      "risk_reward": 5.43,
       "exit_plan": {
         "entry": 59.51,
-        "target": 66.65,
-        "stop": 55.34,
+        "target": 64.97,
+        "stop": 56.24,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 9.17,
+        "stop_pct": -5.5,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $60 call ~$0.90 (46% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $55 put ~$1.00 (55% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -3968,16 +4538,16 @@
         "ret_60d": 29.060935879001875,
         "ret_120d": 10.877899963901152
       },
-      "reasoning": "EDU scored 64.9/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 90/100 (x0.25 = 22.5); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; high gross margin (55%); strong-buy consensus (1.55); 24% upside to target; rich CSP yield (55% ann.); wide bid/ask (illiquid)."
+      "reasoning": "EDU scored 75.3/100. Setup: . Contributions \u2014 technical 67/100 (x0.35 = 23.4); fundamental 90/100 (x0.25 = 22.5); sentiment 76/100 (x0.25 = 19.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); MACD histogram turning up; positive free cash flow; high gross margin (55%); strong-buy consensus (1.55); 24% upside to target; rich CSP yield (55% ann.); wide bid/ask (illiquid); positive 1y trend (23%); positive 6m trend. Sector thesis: outperforming Consumer Defensive by 27pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "QNST",
       "company": "QuinStreet, Inc.",
-      "score": 63.6,
+      "score": 74.5,
       "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": 19.6,
-      "expected_gain_%": 11.8,
+      "expected_gain_%": 16.7,
       "hist_win_rate": 0.5,
       "hist_avg_return_%": 6.4,
       "hist_trades": 2,
@@ -3993,16 +4563,30 @@
         {
           "level": "good",
           "text": "strong-buy consensus"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 47.5,
+        "vs_sector": 51.6,
+        "sector": "Communication Services",
+        "sector_etf": "XLC"
       },
-      "position": null,
-      "rr_pass": false,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 48.9,
+        "confirms": true
+      },
+      "position": {
+        "shares": 189,
+        "value": 3539.97,
+        "risk_$": 249.48,
+        "basis": "1.0% of $25,000 at $1.32/share stop distance"
+      },
+      "rr_pass": true,
       "csp_signal": {
         "active": false,
         "strength": null,
@@ -4011,10 +4595,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 68.0,
         "fundamental": 93.0,
         "options": 62.0,
-        "momentum": 50.0,
+        "momentum": 84.0,
         "sentiment": 68.0
       },
       "weights": {
@@ -4025,23 +4609,23 @@
         "sentiment": 0.25
       },
       "entry": 18.73,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 17.41,
+      "target1": 20.49,
       "target2": 22.4,
-      "risk_reward": null,
+      "risk_reward": 2.78,
       "exit_plan": {
         "entry": 18.73,
-        "target": 20.98,
-        "stop": 17.42,
+        "target": 21.52,
+        "stop": 17.06,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 14.9,
+        "stop_pct": -8.94,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $20 call ~$0.60 (97% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $18 put ~$0.35 (61% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -4082,13 +4666,13 @@
         "ret_60d": 52.152712459611195,
         "ret_120d": 56.99915392383013
       },
-      "reasoning": "QNST scored 63.6/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 93/100 (x0.25 = 23.2); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; high ROE (29%); strong-buy consensus (1.17); rich CSP yield (61% ann.); wide bid/ask (illiquid)."
+      "reasoning": "QNST scored 74.5/100. Setup: . Contributions \u2014 technical 68/100 (x0.35 = 23.8); fundamental 93/100 (x0.25 = 23.2); sentiment 68/100 (x0.25 = 17.0); options 62/100 (x0.10 = 6.2); momentum 84/100 (x0.05 = 4.2). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; high ROE (29%); strong-buy consensus (1.17); rich CSP yield (61% ann.); wide bid/ask (illiquid); positive 1y trend (19%); positive 6m trend. Sector thesis: outperforming Communication Services by 52pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "TK",
       "company": "Teekay Corporation Ltd.",
-      "score": 59.9,
-      "action": "Hold",
+      "score": 72.1,
+      "action": "Accumulate",
       "quality_grade": "A",
       "analyst_upside_%": null,
       "expected_gain_%": null,
@@ -4099,15 +4683,33 @@
         {
           "level": "info",
           "text": "small cap (thinner liquidity)"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 1.34 below 1.5 floor"
         }
       ],
-      "rel_strength": null,
-      "mtf": {
-        "weekly_trend": null,
-        "weekly_return_%": null,
-        "confirms": false
+      "rel_strength": {
+        "vs_spy": 9.7,
+        "vs_sector": 2.5,
+        "sector": "Energy",
+        "sector_etf": "XLE"
       },
-      "position": null,
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 10.5,
+        "confirms": true
+      },
+      "position": {
+        "shares": 352,
+        "value": 4797.76,
+        "risk_$": 249.92,
+        "basis": "1.0% of $25,000 at $0.71/share stop distance"
+      },
       "rr_pass": false,
       "csp_signal": {
         "active": false,
@@ -4117,10 +4719,10 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 73.0,
         "fundamental": 100.0,
         "options": 52.0,
-        "momentum": 50.0,
+        "momentum": 78.0,
         "sentiment": 50.0
       },
       "weights": {
@@ -4131,23 +4733,23 @@
         "sentiment": 0.25
       },
       "entry": 13.63,
-      "stop_loss": null,
-      "target1": null,
+      "stop_loss": 12.92,
+      "target1": 14.58,
       "target2": null,
-      "risk_reward": null,
+      "risk_reward": 1.34,
       "exit_plan": {
         "entry": 13.63,
-        "target": 15.27,
-        "stop": 12.68,
+        "target": 15.13,
+        "stop": 12.73,
         "horizon_days": 10,
-        "target_pct": 12.0,
-        "stop_pct": -7.0,
+        "target_pct": 10.97,
+        "stop_pct": -6.58,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "covered_call": "Sell 2026-09-18 $15 call ~$0.05 (11% ann.)",
       "cash_secured_put": "Sell 2026-09-18 $12 put ~$0.10 (24% ann.)",
-      "confidence": "Medium",
+      "confidence": "High",
       "criteria_passed": [
         "revenue_growth_15pct",
         "uptrend_above_ema200",
@@ -4188,7 +4790,7 @@
         "ret_60d": 14.34563781209832,
         "ret_120d": 29.591362734451014
       },
-      "reasoning": "TK scored 59.9/100. Setup: . Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 50/100 (x0.25 = 12.5); options 52/100 (x0.10 = 5.2); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; strong net margin (16%); solid CSP yield (24% ann.); wide bid/ask (illiquid)."
+      "reasoning": "TK scored 72.1/100. Setup: . Contributions \u2014 technical 73/100 (x0.35 = 25.5); fundamental 100/100 (x0.25 = 25.0); sentiment 50/100 (x0.25 = 12.5); options 52/100 (x0.10 = 5.2); momentum 78/100 (x0.05 = 3.9). Key drivers: above EMA200 (uptrend intact); 50/200 golden cross; positive free cash flow; strong net margin (16%); solid CSP yield (24% ann.); wide bid/ask (illiquid); positive 1y trend (79%); positive 6m trend. Sector thesis: moving WITH Energy (+2pp vs XLE) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     }
   ]
 }
