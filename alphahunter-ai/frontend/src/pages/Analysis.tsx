@@ -237,10 +237,15 @@ export default function Analysis() {
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-sm">
                     <PlanCell label="Entry" value={`$${data.trade_plan.entry}`} />
                     <PlanCell label="Stop" value={`$${data.trade_plan.stop}`} sub={`-${data.trade_plan.stop_pct}%`} tone="red" />
-                    <PlanCell label="Target 1" value={`$${data.trade_plan.target1}`} sub="2R" tone="green" />
-                    <PlanCell label="Target 2" value={`$${data.trade_plan.target2}`} tone="green" />
+                    <PlanCell label="Take profit" value={`$${data.trade_plan.target1}`}
+                              sub={data.trade_plan.target_pct != null ? `+${data.trade_plan.target_pct}%` : "2R"}
+                              tone="green" />
+                    <PlanCell label="Stretch" value={`$${data.trade_plan.target2}`} tone="green" />
                     <PlanCell label="R:R" value={`${data.trade_plan.risk_reward}:1`}
                               tone={data.trade_plan.risk_reward >= 2 ? "green" : "amber"} />
+                    <PlanCell label="Review in"
+                              value={data.trade_plan.horizon_days != null ? `${data.trade_plan.horizon_days}d` : "—"}
+                              sub="then it's stale" />
                     <PlanCell label="Size" value={`${data.trade_plan.shares} sh`}
                               sub={`$${Math.round(data.trade_plan.position_value).toLocaleString()}`} />
                   </div>
@@ -253,8 +258,15 @@ export default function Analysis() {
                 <div className="text-sm text-ink-secondary">{data.trade_plan.note}</div>
               )}
               <div className="mt-2 text-xs text-ink-muted">
-                Stop is 1.5×ATR below entry, widened under nearby support so normal volatility
-                doesn't take you out. Not financial advice.
+                Levels are sized to the <b>holding period</b>, not to a single day: volatility
+                grows with the square root of time, so a 10-day plan gets roughly 3× a daily
+                ATR of room, at a consistent 1.67:1 reward-to-risk. Same arithmetic as the
+                dashboard cards and the opportunities grid — one ticker, one plan.
+                {data.trade_plan.nearest_support != null && (
+                  <> Nearest support is <b>${data.trade_plan.nearest_support}</b>, which is where
+                  a stop is most likely to get run.</>
+                )}
+                {" "}Not financial advice.
               </div>
             </div>
           )}

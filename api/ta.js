@@ -316,19 +316,33 @@ function tradePlan(last, a, sr, ltDir, recommendation, accountSize, riskPct) {
     return { actionable: false,
              note: "No long plan: the long-term trend is down. Wait for the weekly trend and the 200-day to turn up." };
   }
-  let stop = last - 1.5 * a;
-  const support = (sr.support || []).find((x) => x < last);
-  // If support sits just below the ATR stop, tuck the stop under it instead.
-  if (support != null && support < last && support > stop - a) {
-    stop = Math.min(stop, support - 0.25 * a);
-  }
+  // SAME ARITHMETIC AS backend/exit_rules.py AND frontend/src/lib/exitRules.ts.
+  //
+  // This used to compute its own stop (1.5x daily ATR, tucked under nearby
+  // support) and its own 2R target, which meant one ticker showed three
+  // different stops across the product: this page, the dashboard cards and
+  // the opportunities grid. Each was defensible alone; together they were
+  // worse than any one of them. Volatility scales with the square root of
+  // time, so levels are sized to the holding period.
+  const HORIZON_DAYS = 10;
+  const atrPct = (a / last) * 100;
+  const horizonMove = atrPct * Math.sqrt(HORIZON_DAYS);
+  const targetPct = Math.max(5, Math.min(30, horizonMove));
+  const stopPct = Math.max(3, Math.min(15, horizonMove * 0.6));   // ~1.67:1
+
+  const stop = last * (1 - stopPct / 100);
   const risk = last - stop;
   if (!(risk > 0)) return null;
-  const target1 = last + 2 * risk;                       // 2R
+  const target1 = last * (1 + targetPct / 100);
   const resistance = (sr.resistance || []).find((x) => x > last);
   const target2 = resistance != null && resistance > target1
-    ? resistance : last + 3 * risk;                      // 3R or the next wall
+    ? resistance : last + 3 * risk;                      // next wall, or 3R
   const rr = (target1 - last) / risk;
+
+  // Support is reported rather than used: it is genuinely useful context for
+  // where a stop might get run, but folding it into the number silently made
+  // this page disagree with every other surface.
+  const support = (sr.support || []).find((x) => x < last);
 
   const budget = (accountSize || 25000) * ((riskPct || 1) / 100);
   const shares = Math.floor(budget / risk);
@@ -346,8 +360,11 @@ function tradePlan(last, a, sr, ltDir, recommendation, accountSize, riskPct) {
     position_value: r2(shares * last),
     risk_amount: r2(shares * risk),
     basis: `${riskPct || 1}% of $${(accountSize || 25000).toLocaleString()} risked at $${r2(risk)}/share`,
+    horizon_days: HORIZON_DAYS,
+    target_pct: Math.round(targetPct * 100) / 100,
+    nearest_support: support != null ? r2(support) : null,
     note: recommendation === "Buy" || recommendation === "Accumulate"
-      ? "Trend supports a long; size so the stop costs no more than your risk budget."
+      ? `Trend supports a long; size so the stop costs no more than your risk budget. Review after ${HORIZON_DAYS} trading days — if neither level is hit by then the setup has not worked.`
       : "Trend is mixed — treat as a watch-list plan, not a signal to buy today.",
   };
 }
