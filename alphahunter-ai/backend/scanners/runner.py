@@ -55,6 +55,54 @@ def run_scan(
     return results
 
 
+def run_growth_scan(
+    limit: int | None = None,
+    max_scored: int | None = 60,
+    loose: bool = False,
+) -> list[dict]:
+    """Rank growing businesses whose stock is already working.
+
+    Structurally the opposite of the oversold screens: it wants strength, not
+    wreckage. SPY's own 3-month return is fetched once and passed in, so
+    "beating the market" is measured rather than assumed.
+    """
+    from backend.indicators import technical as ta
+    from backend.scanners.growth import GrowthScanner
+
+    md = MarketData()
+    spy_ret = None
+    spy = md.snapshot("SPY")
+    if spy is not None:
+        spy_ret = ta.indicator_bundle(spy.history).get("ret_60d")
+
+    scanner = GrowthScanner(spy_ret_60d=spy_ret, loose=loose)
+    tickers = load_universe()
+    if limit:
+        tickers = tickers[:limit]
+
+    hits: list[tuple[float, object, object]] = []
+    for ticker in tickers:
+        snap = md.snapshot(ticker)
+        if snap is None:
+            continue
+        hit = scanner.evaluate(snap)
+        if hit is not None:
+            hits.append((hit.metrics.get("growth_score", 0), snap, hit))
+        time.sleep(settings.request_sleep)
+
+    # Score only the strongest candidates — the composite scoring step is the
+    # expensive part and there is no value in pricing the tail.
+    hits.sort(key=lambda x: -x[0])
+    results = []
+    for _score, snap, hit in hits[: (max_scored or len(hits))]:
+        try:
+            results.append(score_snapshot(snap, hit, md=md))
+        except Exception:
+            continue
+    results.sort(key=lambda r: r["score"], reverse=True)
+    return results
+
+
 def run_opportunity_scan(
     limit: int | None = None,
     max_scored: int | None = None,

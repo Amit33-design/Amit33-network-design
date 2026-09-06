@@ -19,6 +19,7 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 
 from backend.alerts.engine import send_scan_digest
+from backend.exit_rules import DEFAULT_STOP_PCT
 from backend.config import settings
 from backend.scanners.runner import run_opportunity_scan, run_scan
 
@@ -174,6 +175,46 @@ def main() -> None:
         if not os.path.exists(paper_path):
             with open(paper_path, "w") as f:
                 json.dump({"error": "not generated yet", "holdings": []}, f)
+
+    # Income plan: what the MEASURED edge implies for an annual profit goal.
+    # Derived from the paper portfolio so it describes this system, not a
+    # hypothetical good one.
+    plan_path = os.path.join(os.path.dirname(FRONTEND_SNAPSHOT), "income_plan.json")
+    try:
+        from backend.income_plan import edge_from_history, project
+        with open(os.path.join(os.path.dirname(FRONTEND_SNAPSHOT), "paper.json")) as f:
+            holdings = json.load(f).get("holdings", [])
+        edge = edge_from_history(holdings)
+        if edge:
+            base = project(settings.account_size, trades_per_year=25,
+                           concurrent_positions=5,
+                           win_rate=edge["win_rate"],
+                           avg_win_pct=edge["avg_win_pct"],
+                           avg_loss_pct=edge["avg_loss_pct"])
+            # The same edge with losses actually cut at the stop. Arithmetic,
+            # not a backtest — a stop also turns some dips that recovered into
+            # realized losses — so it is published as a ceiling, not a promise.
+            with_stop = project(settings.account_size, trades_per_year=25,
+                                concurrent_positions=5,
+                                win_rate=edge["win_rate"],
+                                avg_win_pct=edge["avg_win_pct"],
+                                avg_loss_pct=abs(DEFAULT_STOP_PCT))
+            payload = {"edge": edge, "as_measured": base,
+                       "with_stop_enforced": with_stop,
+                       "stop_pct": DEFAULT_STOP_PCT,
+                       "generated": today}
+            with open(plan_path, "w") as f:
+                json.dump(payload, f, indent=2)
+            print(f"Income plan: edge {base['edge_per_trade_%']:+.2f}%/trade -> "
+                  f"{base['expected_annual_return_%']:+.1f}%/yr; with a "
+                  f"{DEFAULT_STOP_PCT:.0f}% stop {with_stop['expected_annual_return_%']:+.1f}%/yr")
+        else:
+            print("Income plan: not enough judged history yet.")
+    except Exception as e:  # pragma: no cover - CI only
+        print(f"Income plan skipped: {e}")
+        if not os.path.exists(plan_path):
+            with open(plan_path, "w") as f:
+                json.dump({"error": "not generated yet"}, f)
 
     # Portfolio-level backtest: what a mechanical "buy the top N, hold H days"
     # book would actually have returned vs SPY. Best-effort — never fails the

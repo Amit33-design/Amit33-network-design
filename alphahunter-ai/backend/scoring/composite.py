@@ -15,6 +15,7 @@ from backend.scoring import engines
 from backend.scoring.csp_signal import compute_csp_signal
 from backend.scoring.relative_strength import apply_rel_strength, compute_rel_strength
 from backend.scoring.risk import compute_risk_flags
+from backend.exit_rules import build_plan as build_exit_plan
 from backend.utils.market_data import MarketData, StockSnapshot
 
 _LEVELS = ["Low", "Medium", "High"]
@@ -234,6 +235,13 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
         "target1": target1,
         "target2": target2,
         "risk_reward": rr,
+        # Every Buy now ships with the way OUT of it. The portfolio backtest
+        # found the picks returned +21% held 10 trading days and roughly
+        # nothing held indefinitely — the entire difference is the exit — and
+        # the paper portfolio found 36 of 66 losses ran past -7%, costing 737
+        # percentage points between them. A recommendation with no exit is
+        # half a recommendation.
+        "exit_plan": (build_exit_plan(entry, atr=atr).to_dict() if entry else None),
         "covered_call": (opt_metrics or {}).get("covered_call_idea"),
         "cash_secured_put": (opt_metrics or {}).get("csp_idea"),
         "confidence": conf,

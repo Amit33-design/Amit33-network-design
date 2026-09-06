@@ -7,6 +7,7 @@ import { getWatchlist, onWatchlistChange, removeFromWatchlist,
 import { StatTile, Badge, Delta, SkeletonPanel, EmptyState } from "../components/ui";
 import BacktestPanel, { useBacktest } from "../components/BacktestPanel";
 import PaperPortfolio, { usePaper } from "../components/PaperPortfolio";
+import IncomePlan, { useIncomePlan } from "../components/IncomePlan";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 
 interface Stock {
@@ -361,6 +362,7 @@ export default function Dashboard() {
   const [theme, setTheme] = useState(getTheme);
   const backtest = useBacktest();
   const paper = usePaper();
+  const incomePlan = useIncomePlan();
 
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
 
@@ -452,6 +454,18 @@ export default function Dashboard() {
       </Section>
 
       {/* Strategy backtest — the equity curve of actually trading the picks */}
+      {/* Profit-target planner: what the measured edge and YOUR capital
+          actually support, rather than what anyone would like them to. */}
+      {incomePlan && (
+        <Section
+          title="🎯 Profit Target Planner"
+          subtitle="what your capital and this system's measured edge support"
+          defaultOpen
+        >
+          <IncomePlan d={incomePlan} />
+        </Section>
+      )}
+
       {/* $100 into every Buy — the plainest possible scoreboard, above the
           statistical ones because it is the question people actually ask. */}
       {paper && (

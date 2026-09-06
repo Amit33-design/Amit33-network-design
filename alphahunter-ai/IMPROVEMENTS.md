@@ -279,6 +279,26 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   expanding anything. If a gap takes price through both levels the **stop
   wins**, because the risk side is the one a trader needs to see first.
 
+- [x] **Growth scanner, exit rules, and an honest profit-target planner.**
+  Three linked pieces aimed at "find growth stocks and book profit".
+  **`scanners/growth.py`** is the structural opposite of every existing screen:
+  it wants a growing business (revenue/earnings growth, real margins) whose
+  stock is already working (above the 200-day, near its 52-week high, beating
+  SPY) — and it *rejects* overheated names, because buying a vertical chart is
+  how growth screens lose money. **`exit_rules.py`** finally gives the product
+  a way out: stop, target, time-stop and trailing stop, checked in that order
+  (the stop is checked first, because if a gap breaches both levels the loss
+  is what actually happened). Every recommendation now ships an `exit_plan`.
+  **`income_plan.py`** does the arithmetic on a yearly income goal using the
+  edge measured from the paper portfolio, and refuses to flatter it.
+
+  **The finding that matters:** the system's average loss (12.2%) is *bigger*
+  than its average win (11.8%), which is why a 53% win rate nets ~0.46% per
+  trade. 36 of 66 losses ran past -7%, costing 737 percentage points between
+  them. Capping losses at the stop takes the edge from **0.46% to 2.92% per
+  trade** (arithmetic on the same names, published as a ceiling — a real stop
+  also converts some recovered dips into realized losses).
+
 ## Next (prioritized)
 - [x] **Iter 5 — Position sizing & risk/reward gates.** Each recommendation
   now includes a `position` (shares/value/risk-$) sized so the ATR-stop risks
