@@ -270,6 +270,15 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   `rel_strength` in the payload/CSV, "RS vs SPY" + "Sector" grid columns, and
   an RS line on mobile cards. Degrades to None offline.
 
+- [x] **Watchlist price alerts.** Each starred ticker takes a **target** and a
+  **stop**, edited inline in the Dashboard watchlist row. Levels are checked
+  against the price the row already fetched, so an alert costs no extra
+  request and no backend — it works on the static deploy with no account.
+  Crossings surface as a 🔔 badge on the row *and* in the collapsed section
+  header (with a red count badge), so a triggered alert is visible without
+  expanding anything. If a gap takes price through both levels the **stop
+  wins**, because the risk side is the one a trader needs to see first.
+
 ## Next (prioritized)
 - [x] **Iter 5 — Position sizing & risk/reward gates.** Each recommendation
   now includes a `position` (shares/value/risk-$) sized so the ATR-stop risks

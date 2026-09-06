@@ -2,7 +2,8 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import Plot from "react-plotly.js";
 import { ErrorBox } from "../components/Loading";
-import { getWatchlist, removeFromWatchlist, onWatchlistChange } from "../lib/watchlist";
+import { getWatchlist, onWatchlistChange, removeFromWatchlist,
+         getAlerts, setAlert, alertState, type Alert } from "../lib/watchlist";
 import { StatTile, Badge, Delta, SkeletonPanel, EmptyState } from "../components/ui";
 import BacktestPanel, { useBacktest } from "../components/BacktestPanel";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
@@ -195,13 +196,68 @@ interface WatchRow {
 }
 
 // Personal watchlist — starred tickers with live quotes/verdicts pulled from
+// Per-ticker target / stop editor. Levels are device-local and evaluated
+// against the price the row already fetched, so setting one costs no request.
+function AlertCell({ ticker, price, alert }: {
+  ticker: string; price?: number | null; alert: Alert;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [target, setTarget] = useState(alert.target != null ? String(alert.target) : "");
+  const [stop, setStop] = useState(alert.stop != null ? String(alert.stop) : "");
+  const state = alertState(price, alert);
+
+  function commit() {
+    setAlert(ticker, { target: parseFloat(target), stop: parseFloat(stop) });
+    setEditing(false);
+  }
+
+  if (!editing) {
+    const has = alert.target != null || alert.stop != null;
+    return (
+      <button
+        onClick={() => setEditing(true)}
+        className="text-xs text-left hover:underline"
+        title={`Set a target / stop alert for ${ticker}`}
+      >
+        {state === "target" && <Badge tone="gain">🔔 target hit</Badge>}
+        {state === "stop" && <Badge tone="loss">🔔 stop hit</Badge>}
+        {!state && has && (
+          <span className="num text-ink-secondary">
+            {alert.target != null ? `▲$${alert.target}` : ""}
+            {alert.target != null && alert.stop != null ? " · " : ""}
+            {alert.stop != null ? `▼$${alert.stop}` : ""}
+          </span>
+        )}
+        {!state && !has && <span className="text-ink-muted">+ alert</span>}
+      </button>
+    );
+  }
+  return (
+    <div className="flex items-center gap-1">
+      <input type="number" step="0.01" value={target} placeholder="target"
+             onChange={(e) => setTarget(e.target.value)}
+             onKeyDown={(e) => e.key === "Enter" && commit()}
+             className="w-20 px-1 py-0.5 text-xs num" aria-label={`${ticker} target`} />
+      <input type="number" step="0.01" value={stop} placeholder="stop"
+             onChange={(e) => setStop(e.target.value)}
+             onKeyDown={(e) => e.key === "Enter" && commit()}
+             className="w-20 px-1 py-0.5 text-xs num" aria-label={`${ticker} stop`} />
+      <button onClick={commit} className="text-xs text-brand hover:underline">save</button>
+    </div>
+  );
+}
+
 // /api/thesis. Entirely client-side so it works on the static deploy.
 function WatchlistSection() {
   const [tickers, setTickers] = useState<string[]>(getWatchlist);
   const [rows, setRows] = useState<WatchRow[]>([]);
   const [loading, setLoading] = useState(false);
+  const [alerts, setAlerts] = useState<Record<string, Alert>>(getAlerts);
 
-  useEffect(() => onWatchlistChange(() => setTickers(getWatchlist())), []);
+  useEffect(() => onWatchlistChange(() => {
+    setTickers(getWatchlist());
+    setAlerts(getAlerts());
+  }), []);
 
   useEffect(() => {
     if (!tickers.length) { setRows([]); return; }
@@ -225,13 +281,21 @@ function WatchlistSection() {
   }, [tickers.join(",")]);
 
   const up = rows.filter((r) => (r.day_change_pct ?? 0) > 0).length;
+  // Anything that crossed a level goes in the section header, so a triggered
+  // alert is visible without expanding the section.
+  const triggered = rows
+    .map((r) => ({ t: r.ticker, s: alertState(r.price, alerts[r.ticker] ?? {}) }))
+    .filter((x) => x.s);
 
   return (
     <Section
       title="⭐ My Watchlist"
-      subtitle={tickers.length ? `${up} of ${rows.length} up today` : ""}
-      badge={tickers.length ? `${tickers.length}` : "empty"}
-      badgeColor="#b7791f"
+      subtitle={triggered.length
+        ? `🔔 ${triggered.map((x) => `${x.t} ${x.s === "target" ? "hit target" : "hit stop"}`).join(" · ")}`
+        : tickers.length ? `${up} of ${rows.length} up today` : ""}
+      badge={triggered.length ? `${triggered.length} alert${triggered.length > 1 ? "s" : ""}`
+                              : tickers.length ? `${tickers.length}` : "empty"}
+      badgeColor={triggered.length ? "#e2574c" : "#b7791f"}
       defaultOpen={tickers.length > 0}
     >
       {!tickers.length ? (
@@ -247,7 +311,7 @@ function WatchlistSection() {
           <div className="overflow-x-auto thin-scroll -mx-4">
             <table className="table-data">
               <thead>
-                <tr>{["Ticker", "Price", "Today", "Score", "Verdict", ""].map((h) => (
+                <tr>{["Ticker", "Price", "Today", "Score", "Verdict", "Alert", ""].map((h) => (
                   <th key={h}>{h}</th>))}
                 </tr>
               </thead>
@@ -268,6 +332,10 @@ function WatchlistSection() {
                         : <span className="text-ink-muted">—</span>}
                     </td>
                     <td className="text-ink-secondary">{r.error ? "No data" : r.verdict ?? "—"}</td>
+                    <td>
+                      <AlertCell ticker={r.ticker} price={r.price}
+                                 alert={alerts[r.ticker] ?? {}} />
+                    </td>
                     <td className="text-right">
                       <button onClick={() => removeFromWatchlist(r.ticker)}
                               title={`Remove ${r.ticker}`} aria-label={`Remove ${r.ticker}`}
