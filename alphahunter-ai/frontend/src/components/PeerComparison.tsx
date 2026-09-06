@@ -12,6 +12,9 @@ interface PeersResp {
   peers: PeerRow[];
   standing?: { rank: number; of: number; vs_peer_median_pp: number; verdict: string } | null;
   note?: string;
+  basis?: "competitors" | "sector" | "none";
+  sector?: string | null;
+  basis_note?: string;
 }
 
 const pct = (x?: number | null) =>
@@ -52,7 +55,23 @@ export default function PeerComparison({ ticker }: { ticker: string }) {
   return (
     <div className="panel p-4">
       <div className="flex items-center gap-3 flex-wrap mb-2">
-        <div className="font-semibold text-ink">🏳️ Sector peers</div>
+        <div className="font-semibold text-ink">
+          {data.basis === "sector" ? "🏳️ Sector comparison" : "🏳️ Direct competitors"}
+        </div>
+        {/* Say which kind of comparison this is. "#2 of 5 vs its competitors"
+            is a real read; "#2 of 5 vs the sector's mega-caps" is much weaker,
+            and the two must not look identical. */}
+        {data.basis && data.basis !== "none" && (
+          <span className={`text-2xs px-2 py-0.5 rounded-full border ${
+            data.basis === "competitors"
+              ? "border-line text-ink-secondary"
+              : "border-warn/30 bg-warn-soft text-warn"}`}
+            title={data.basis_note}>
+            {data.basis === "competitors"
+              ? "curated peer set"
+              : `broad ${data.sector ?? "sector"} proxy`}
+          </span>
+        )}
         {data.standing && (
           <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
             data.standing.verdict === "lagging its peers"

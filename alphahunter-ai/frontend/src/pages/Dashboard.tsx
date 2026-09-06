@@ -6,6 +6,7 @@ import { getWatchlist, onWatchlistChange, removeFromWatchlist,
          getAlerts, setAlert, alertState, type Alert } from "../lib/watchlist";
 import { StatTile, Badge, Delta, SkeletonPanel, EmptyState } from "../components/ui";
 import BacktestPanel, { useBacktest } from "../components/BacktestPanel";
+import PaperPortfolio, { usePaper } from "../components/PaperPortfolio";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 
 interface Stock {
@@ -359,6 +360,7 @@ export default function Dashboard() {
   const [error, setError] = useState("");
   const [theme, setTheme] = useState(getTheme);
   const backtest = useBacktest();
+  const paper = usePaper();
 
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
 
@@ -450,6 +452,21 @@ export default function Dashboard() {
       </Section>
 
       {/* Strategy backtest — the equity curve of actually trading the picks */}
+      {/* $100 into every Buy — the plainest possible scoreboard, above the
+          statistical ones because it is the question people actually ask. */}
+      {paper && (
+        <Section
+          title="💵 $100 in every Buy"
+          subtitle={`${paper.positions} names since the first scan · still held`}
+          badge={paper["return_%"] != null
+            ? `${paper["return_%"] >= 0 ? "+" : ""}${paper["return_%"]}%` : undefined}
+          badgeColor={(paper["return_%"] ?? 0) >= 0 ? "#31a05c" : "#e2574c"}
+          defaultOpen
+        >
+          <PaperPortfolio p={paper} />
+        </Section>
+      )}
+
       {backtest && (
         <Section
           title="🧪 Strategy Backtest"

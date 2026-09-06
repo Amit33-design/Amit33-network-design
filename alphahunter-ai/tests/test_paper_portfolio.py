@@ -1,0 +1,111 @@
+"""Offline tests for the $100-per-Buy paper portfolio."""
+from backend.paper_portfolio import simulate, _is_buy
+
+
+def _rec(ticker, action, price, score=70):
+    return {"ticker": ticker, "company": f"{ticker} Inc", "action": action,
+            "score": score, "metrics": {"price": price}}
+
+
+def test_one_hundred_dollars_goes_into_each_buy():
+    history = [("2026-01-05", [_rec("AAA", "Buy", 50.0), _rec("BBB", "Buy", 200.0)])]
+    r = simulate(history, lambda t: {"AAA": 75.0, "BBB": 150.0}[t])
+
+    assert r["positions"] == 2
+    assert r["invested"] == 200.0
+    # AAA +50%, BBB -25% ⇒ $150 + $75 = $225
+    assert r["value"] == 225.0
+    assert r["pnl"] == 25.0
+    assert r["return_%"] == 12.5
+    assert r["win_rate"] == 0.5
+
+
+def test_only_buy_verdicts_are_funded():
+    history = [("2026-01-05", [
+        _rec("BUY1", "Buy", 100.0), _rec("ACC1", "Accumulate", 100.0),
+        _rec("HOLD", "Hold", 100.0), _rec("RED", "Reduce", 100.0),
+        _rec("SELL", "Sell", 100.0),
+    ])]
+    r = simulate(history, lambda t: 100.0)
+
+    assert {h["ticker"] for h in r["holdings"]} == {"BUY1", "ACC1"}
+    assert _is_buy("Strong Buy") and not _is_buy("Hold") and not _is_buy(None)
+
+
+def test_a_repeated_buy_is_the_same_idea_not_a_second_hundred():
+    """The screen re-surfaces the same names daily. Funding each repeat would
+    silently overweight whatever the screen is most obsessed with."""
+    history = [
+        ("2026-01-05", [_rec("AAA", "Buy", 50.0)]),
+        ("2026-01-06", [_rec("AAA", "Buy", 60.0)]),
+        ("2026-01-07", [_rec("AAA", "Buy", 70.0)]),
+    ]
+    r = simulate(history, lambda t: 100.0)
+
+    assert r["positions"] == 1
+    assert r["invested"] == 100.0
+    assert r["holdings"][0]["entry"] == 50.0      # the FIRST buy is the entry
+    assert r["holdings"][0]["repeats"] == 2
+
+
+def test_unpriced_positions_are_carried_at_cost_not_dropped():
+    """Dropping a name we can't price would quietly delete losers."""
+    history = [("2026-01-05", [_rec("AAA", "Buy", 50.0), _rec("GONE", "Buy", 10.0)])]
+    r = simulate(history, lambda t: 100.0 if t == "AAA" else None)
+
+    assert r["positions"] == 2 and r["priced"] == 1
+    assert r["invested"] == 200.0
+    assert r["value"] == 300.0                   # $200 for AAA + $100 held at cost
+    assert r["holdings"][-1]["priced"] is False
+
+
+def test_benchmark_control_uses_the_same_money_on_the_same_days():
+    history = [("2026-01-05", [_rec("AAA", "Buy", 100.0)])]
+    prices = {"AAA": 120.0, "SPY": 550.0}
+    r = simulate(history, lambda t: prices[t],
+                 bench_price=lambda _t, _d: 500.0)
+
+    assert r["return_%"] == 20.0
+    assert r["benchmark_return_%"] == 10.0       # 500 → 550
+    assert r["alpha_%"] == 10.0
+    assert r["beat_benchmark"] is True
+
+
+def test_a_losing_book_reports_losing():
+    history = [("2026-01-05", [_rec("AAA", "Buy", 100.0), _rec("BBB", "Buy", 100.0)])]
+    # Both picks fall 40% while the index rises 10% — the case the panel must
+    # not be able to dress up.
+    prices = {"AAA": 60.0, "BBB": 60.0, "SPY": 550.0}
+    r = simulate(history, lambda t: prices[t], bench_price=lambda _t, _d: 500.0)
+
+    assert r["return_%"] == -40.0
+    assert r["win_rate"] == 0.0
+    assert r["winners"] == 0 and r["losers"] == 2
+    assert r["beat_benchmark"] is False
+
+
+def test_score_bands_are_reported_and_a_flat_score_is_called_out():
+    """If a higher score doesn't mean a better outcome, the product must not
+    keep presenting the score as conviction."""
+    history = [("2026-01-05", [
+        _rec("HI", "Buy", 100.0, score=85),      # top band, worst outcome
+        _rec("MID", "Buy", 100.0, score=75),
+        _rec("LO", "Buy", 100.0, score=62),      # bottom band, best outcome
+    ])]
+    prices = {"HI": 80.0, "MID": 100.0, "LO": 130.0}
+    r = simulate(history, lambda t: prices[t])
+
+    bands = {b["band"]: b["avg_return_%"] for b in r["by_score_band"]}
+    assert bands == {"80+": -20.0, "70-79": 0.0, "60-69": 30.0}
+    assert r["score_separates"] is False        # inverted, and said so
+
+
+def test_a_score_that_does_separate_is_recognised():
+    history = [("2026-01-05", [
+        _rec("HI", "Buy", 100.0, score=85),
+        _rec("MID", "Buy", 100.0, score=75),
+        _rec("LO", "Buy", 100.0, score=62),
+    ])]
+    prices = {"HI": 130.0, "MID": 100.0, "LO": 80.0}
+    r = simulate(history, lambda t: prices[t])
+    assert r["score_separates"] is True

@@ -157,6 +157,24 @@ def main() -> None:
             with open(perf_path, "w") as f:
                 json.dump({"picks": [], "summary": None, "generated": today}, f)
 
+    # Paper portfolio: $100 into every distinct Buy, valued today. The most
+    # literal possible answer to "are these picks any good?".
+    paper_path = os.path.join(os.path.dirname(FRONTEND_SNAPSHOT), "paper.json")
+    try:
+        from backend.paper_portfolio import build as build_paper
+        pp = build_paper(RESULTS_DIR, paper_path)
+        if pp.get("holdings"):
+            print(f"Paper portfolio: {pp['positions']} x ${pp['stake']:.0f} = "
+                  f"${pp['invested']:,.0f} -> ${pp['value']:,.0f} "
+                  f"({pp['return_%']:+.1f}%, {pp['winners']}W/{pp['losers']}L)")
+        else:
+            print(f"Paper portfolio: {pp.get('error', 'no result')}")
+    except Exception as e:  # pragma: no cover - CI only
+        print(f"Paper portfolio skipped: {e}")
+        if not os.path.exists(paper_path):
+            with open(paper_path, "w") as f:
+                json.dump({"error": "not generated yet", "holdings": []}, f)
+
     # Portfolio-level backtest: what a mechanical "buy the top N, hold H days"
     # book would actually have returned vs SPY. Best-effort — never fails the
     # scan. Costs a price-history fetch, so it runs after the scan is safe.

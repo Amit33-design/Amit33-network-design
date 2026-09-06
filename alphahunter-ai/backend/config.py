@@ -46,7 +46,15 @@ class Settings(BaseSettings):
 
     # Tradability floors — keep penny stocks, warrants/units and illiquid
     # names out of every screen (a $0.05 warrant once scored 61 and lost 43%).
-    min_price: float = 5.0                 # minimum share price
+    #
+    # Raised $5 -> $10 from the paper-portfolio evidence ($100 into every Buy,
+    # 140 names): the two cheapest buckets were by far the worst, <$5 averaging
+    # -9.4% and $5-10 averaging -10.7% with a 0% win rate (0 of 8), against a
+    # -4.2% book average. Sub-$10 names in an oversold screen are overwhelmingly
+    # distressed (LESL fell to $0.60, HTZ, ACH, OPTU), and the quoted price is
+    # not what you would get filled at. Small sample (16 names) — treat this as
+    # a universe-quality decision that the data supports, not a proven edge.
+    min_price: float = 10.0                # minimum share price
     min_dollar_volume: float = 5_000_000   # minimum avg daily $ volume (20d)
     exclude_derivative_tickers: bool = True  # warrants / units / rights
 
