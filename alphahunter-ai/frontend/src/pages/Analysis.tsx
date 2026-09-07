@@ -203,12 +203,24 @@ export default function Analysis() {
 
           {/* Trade plan — the actionable half: entry, invalidation, targets, size */}
           {data.trade_plan && (
-            <div className="panel p-4 border-l-4 border-alpha">
+            <div className="panel p-3 border-l-4 border-alpha">
               <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
-                <div className="font-semibold text-ink">🎯 Trade plan</div>
-                <div className="flex items-center gap-2 text-xs text-ink-secondary">
-                  <label className="flex items-center gap-1">
-                    Account $
+                <div className="flex items-center gap-1.5">
+                  <span className="font-semibold text-ink text-sm">🎯 Trade plan</span>
+                  {/* The methodology was four lines of body text under the
+                      numbers. It is reference material, not something to read
+                      every visit, so it lives on hover now. */}
+                  <span
+                    className="cursor-help text-ink-muted text-xs leading-none"
+                    title={PLAN_METHOD + (data.trade_plan.nearest_support != null
+                      ? ` Nearest support is $${data.trade_plan.nearest_support}, which is where a stop is most likely to get run.`
+                      : "") + " Not financial advice."}
+                    aria-label="How these levels are calculated"
+                  >ⓘ</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-2xs text-ink-muted">
+                  <label className="flex items-center gap-1" title="Account size used for position sizing">
+                    $
                     <input type="number" min={100} step={1000} value={account}
                            onChange={(e) => {
                              const v = Number(e.target.value) || 0;
@@ -216,10 +228,10 @@ export default function Analysis() {
                              localStorage.setItem("alphahunter.account", String(v));
                            }}
                            onBlur={() => data && run()}
-                           className="border rounded px-2 py-1 w-24" />
+                           className="px-1 py-0.5 w-20 text-xs num" />
                   </label>
-                  <label className="flex items-center gap-1">
-                    Risk %
+                  <label className="flex items-center gap-1" title="Percent of the account risked on this trade">
+                    risk
                     <input type="number" min={0.1} max={10} step={0.1} value={riskPct}
                            onChange={(e) => {
                              const v = Number(e.target.value) || 0;
@@ -227,47 +239,43 @@ export default function Analysis() {
                              localStorage.setItem("alphahunter.riskPct", String(v));
                            }}
                            onBlur={() => data && run()}
-                           className="border rounded px-2 py-1 w-16" />
+                           className="px-1 py-0.5 w-12 text-xs num" />%
                   </label>
                 </div>
               </div>
 
               {data.trade_plan.actionable ? (
                 <>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-sm">
-                    <PlanCell label="Entry" value={`$${data.trade_plan.entry}`} />
-                    <PlanCell label="Stop" value={`$${data.trade_plan.stop}`} sub={`-${data.trade_plan.stop_pct}%`} tone="red" />
-                    <PlanCell label="Take profit" value={`$${data.trade_plan.target1}`}
-                              sub={data.trade_plan.target_pct != null ? `+${data.trade_plan.target_pct}%` : "2R"}
-                              tone="green" />
-                    <PlanCell label="Stretch" value={`$${data.trade_plan.target2}`} tone="green" />
-                    <PlanCell label="R:R" value={`${data.trade_plan.risk_reward}:1`}
-                              tone={data.trade_plan.risk_reward >= 2 ? "green" : "amber"} />
-                    <PlanCell label="Review in"
-                              value={data.trade_plan.horizon_days != null ? `${data.trade_plan.horizon_days}d` : "—"}
-                              sub="then it's stale" />
-                    <PlanCell label="Size" value={`${data.trade_plan.shares} sh`}
-                              sub={`$${Math.round(data.trade_plan.position_value).toLocaleString()}`} />
+                  {/* Four levels in one strip, read left to right in the order
+                      they matter: where you get in, where you're wrong, where
+                      you take it, where it could stretch to. */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 rounded border border-line
+                                  divide-x divide-y sm:divide-y-0 divide-line overflow-hidden">
+                    <Level label="Entry" value={`$${data.trade_plan.entry}`} />
+                    <Level label="Stop" value={`$${data.trade_plan.stop}`}
+                           delta={`-${data.trade_plan.stop_pct}%`} tone="loss" />
+                    <Level label="Take profit" value={`$${data.trade_plan.target1}`}
+                           delta={data.trade_plan.target_pct != null ? `+${data.trade_plan.target_pct}%` : undefined}
+                           tone="gain" />
+                    <Level label="Stretch" value={`$${data.trade_plan.target2}`} tone="gain" />
                   </div>
-                  <div className="mt-2 text-xs text-ink-secondary">
-                    Risking <b>${Math.round(data.trade_plan.risk_amount).toLocaleString()}</b> ({data.trade_plan.basis}).
-                    {" "}{data.trade_plan.note}
+                  <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-2xs text-ink-secondary">
+                    <span>R:R <b className={data.trade_plan.risk_reward >= 2 ? "text-gain" : "text-warn"}>
+                      {data.trade_plan.risk_reward}:1</b></span>
+                    <span><b className="text-ink">{data.trade_plan.shares} sh</b> ≈ ${Math.round(data.trade_plan.position_value).toLocaleString()}</span>
+                    <span title={data.trade_plan.basis}>
+                      risking <b className="text-ink">${Math.round(data.trade_plan.risk_amount).toLocaleString()}</b>
+                    </span>
+                    {data.trade_plan.horizon_days != null && (
+                      <span title="If neither level is hit by then, the setup has not worked">
+                        review in <b className="text-ink">{data.trade_plan.horizon_days}d</b>
+                      </span>
+                    )}
                   </div>
                 </>
               ) : (
-                <div className="text-sm text-ink-secondary">{data.trade_plan.note}</div>
+                <div className="text-xs text-ink-secondary">{data.trade_plan.note}</div>
               )}
-              <div className="mt-2 text-xs text-ink-muted">
-                Levels are sized to the <b>holding period</b>, not to a single day: volatility
-                grows with the square root of time, so a 10-day plan gets roughly 3× a daily
-                ATR of room, at a consistent 1.67:1 reward-to-risk. Same arithmetic as the
-                dashboard cards and the opportunities grid — one ticker, one plan.
-                {data.trade_plan.nearest_support != null && (
-                  <> Nearest support is <b>${data.trade_plan.nearest_support}</b>, which is where
-                  a stop is most likely to get run.</>
-                )}
-                {" "}Not financial advice.
-              </div>
             </div>
           )}
 
@@ -639,18 +647,28 @@ function Row({ k, v }: { k: string; v: any }) {
     </>
   );
 }
-function PlanCell({ label, value, sub, tone }:
-  { label: string; value: string; sub?: string; tone?: "red" | "green" | "amber" }) {
-  const color = tone === "red" ? "text-loss" : tone === "green" ? "text-brand"
-    : tone === "amber" ? "text-warn" : "text-ink";
+// One price level in the trade-plan strip. Two lines, not three: the percentage
+// sits beside the price rather than under it, which is what made the old
+// six-column grid three rows tall.
+function Level({ label, value, delta, tone }:
+  { label: string; value: string; delta?: string; tone?: "loss" | "gain" }) {
+  const color = tone === "loss" ? "text-loss" : tone === "gain" ? "text-gain" : "text-ink";
   return (
-    <div>
-      <div className="text-[10px] uppercase tracking-wide text-ink-muted">{label}</div>
-      <div className={`font-bold ${color}`}>{value}</div>
-      {sub && <div className="text-[10px] text-ink-muted">{sub}</div>}
+    <div className="px-2 py-1.5">
+      <div className="text-2xs uppercase tracking-wide text-ink-muted leading-none">{label}</div>
+      <div className="mt-0.5 flex items-baseline gap-1">
+        <span className={`font-bold text-sm num ${color}`}>{value}</span>
+        {delta && <span className="text-2xs text-ink-muted num">{delta}</span>}
+      </div>
     </div>
   );
 }
+
+const PLAN_METHOD =
+  "Levels are sized to the holding period, not to a single day: volatility grows " +
+  "with the square root of time, so a 10-day plan gets roughly 3x a daily ATR of " +
+  "room, at a consistent 1.67:1 reward-to-risk. Same arithmetic as the dashboard " +
+  "cards and the opportunities grid \u2014 one ticker, one plan.";
 
 const fmt = (x: any) => (x == null ? "—" : `$${Number(x).toFixed(2)}`);
 const pct = (x: any) => (x == null ? "—" : `${x >= 0 ? "+" : ""}${Number(x).toFixed(1)}%`);
