@@ -214,3 +214,52 @@ def test_the_exit_plan_scales_with_atr_end_to_end():
         plans.append(build_plan(snap.last_close, atr=ind["atr"]))
 
     assert plans[1].target_pct > plans[0].target_pct
+
+
+# --------------------------- explanations ----------------------------------
+def test_a_growth_pick_explains_itself_in_growth_terms():
+    """The setup line hardcoded the oversold criteria, so every growth pick
+    rendered the literal text "Setup: ." — worse than empty, it reads as a
+    broken explanation."""
+    from backend.scoring.composite import _setup_line
+    from backend.scanners.base import ScanHit
+
+    hit = ScanHit(ticker="LEADER", criteria=[], metrics={
+        "profile": "growth", "growth_score": 97.1,
+        "reasons": ["revenue growing 63% year over year",
+                    "beating the market by 22 points over 3 months",
+                    "trading above its 200-day average",
+                    "free cash flow positive"],
+    })
+    line = _setup_line(hit)
+
+    assert line != "" and "." != line
+    assert "growth leader (97.1/100)" in line
+    assert "revenue growing 63%" in line
+    assert "free cash flow positive" not in line     # capped at the top three
+
+
+def test_an_oversold_pick_still_explains_itself_as_a_crash():
+    from backend.scoring.composite import _setup_line
+    from backend.scanners.base import Criterion, ScanHit
+
+    hit = ScanHit(ticker="FELL", metrics={"profile": "opportunity"}, criteria=[
+        Criterion("down_5pct_day", True, "day -7.2%"),
+        Criterion("down_20pct_month", True, "month -24.0%"),
+        Criterion("rsi_below_35", True, "RSI 28.0"),
+    ])
+    assert _setup_line(hit) == "day -7.2%, month -24.0%"
+
+
+def test_an_unrecognised_setup_falls_back_instead_of_going_blank():
+    from backend.scoring.composite import _setup_line
+    from backend.scanners.base import Criterion, ScanHit
+
+    hit = ScanHit(ticker="NEW", metrics={"profile": "something_new"}, criteria=[
+        Criterion("some_new_rule", True, "the new thing fired"),
+        Criterion("another_rule", False, "this one did not"),
+    ])
+    assert _setup_line(hit) == "the new thing fired"
+
+    bare = ScanHit(ticker="BARE", metrics={}, criteria=[])
+    assert _setup_line(bare) == "no criteria recorded"

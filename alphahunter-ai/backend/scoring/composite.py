@@ -302,11 +302,37 @@ def _build_explanation(ticker, composite, weights, by_name, hit: ScanHit) -> str
     for n in ("technical", "fundamental", "sentiment", "options", "momentum"):
         top_factors += by_name[n].factors[:2]
 
-    crash = ", ".join(c.detail for c in hit.criteria if c.name in
-                      {"down_5pct_day", "down_20pct_month", "revenue_over_1b"})
     return (
         f"{ticker} scored {composite}/100. "
-        f"Setup: {crash}. "
+        f"Setup: {_setup_line(hit)}. "
         f"Contributions — {'; '.join(contribs)}. "
         f"Key drivers: {'; '.join(top_factors) if top_factors else 'mixed signals'}."
     )
+
+
+# The oversold criteria names, kept here so the setup line and the scanners
+# can't drift apart silently.
+_CRASH_CRITERIA = {"down_5pct_day", "down_20pct_month", "revenue_over_1b"}
+
+
+def _setup_line(hit: ScanHit) -> str:
+    """What the screen actually found, in the screen's own terms.
+
+    This used to hardcode the oversold criteria names, so a growth hit — which
+    has none of them — rendered as the literal text "Setup: ." in every
+    recommendation. Worse than empty: it says the reasoning is broken. Growth
+    picks now lead with their growth thesis, which is the whole point of them,
+    and anything unrecognised falls back to the criteria it did pass.
+    """
+    metrics = hit.metrics or {}
+    if metrics.get("profile") == "growth":
+        reasons = [r for r in (metrics.get("reasons") or []) if r]
+        score = metrics.get("growth_score")
+        head = f"growth leader ({score}/100)" if score is not None else "growth leader"
+        return f"{head} — {'; '.join(reasons[:3])}" if reasons else head
+
+    crash = ", ".join(c.detail for c in hit.criteria if c.name in _CRASH_CRITERIA)
+    if crash:
+        return crash
+    passed = ", ".join(c.detail for c in hit.criteria if c.passed)
+    return passed or "no criteria recorded"
