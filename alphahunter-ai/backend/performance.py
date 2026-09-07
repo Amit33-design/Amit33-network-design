@@ -24,9 +24,15 @@ MAX_TICKER_FETCHES = 80 # bound the pricing cost
 BENCHMARK = "SPY"       # what every pick is measured against
 
 
-def load_history(results_dir: str) -> list[tuple[str, list[dict]]]:
+def load_history(results_dir: str, pattern: str = "alphahunter_*.json") -> list[tuple[str, list[dict]]]:
+    """Dated scan results as (date, results) pairs.
+
+    ``pattern`` selects which screen's history to read — the growth screen
+    writes growth_<date>.json alongside the oversold alphahunter_<date>.json,
+    and they are judged separately so we can tell which screen actually works.
+    """
     hist = []
-    for path in sorted(glob.glob(os.path.join(results_dir, "alphahunter_*.json"))):
+    for path in sorted(glob.glob(os.path.join(results_dir, pattern))):
         try:
             with open(path) as f:
                 d = json.load(f)

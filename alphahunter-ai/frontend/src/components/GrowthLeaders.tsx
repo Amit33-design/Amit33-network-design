@@ -49,6 +49,15 @@ export default function GrowthLeaders({ feed }: { feed: GrowthFeed }) {
         vertical chart after the move is how growth screens lose money. Each row
         carries the exit that goes with it.
       </div>
+      {/* Say plainly that this screen has no track record yet. The oversold
+          screen has months of measured results; this one started today, and
+          presenting them as equally proven would be dishonest. */}
+      <div className="text-2xs text-warn border border-warn/30 bg-warn-soft rounded-panel px-3 py-1.5">
+        <b>New screen, no track record yet.</b> These picks are now recorded daily
+        and judged alongside the oversold ones, so the paper portfolio will show
+        whether this screen actually works. Until it has months behind it, treat
+        it as a reasoned starting point rather than a measured edge.
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {rows.slice(0, 12).map((r) => {
           const m = r.metrics || {};

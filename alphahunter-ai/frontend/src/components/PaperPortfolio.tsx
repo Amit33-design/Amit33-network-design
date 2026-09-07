@@ -24,6 +24,7 @@ export type Paper = {
   score_separates?: boolean;
   by_quality_grade?: Band[];
   grade_separates?: boolean;
+  by_screen?: Band[];
   holdings?: Holding[];
   generated?: string;
 };
@@ -132,6 +133,27 @@ export default function PaperPortfolio({ p }: { p: Paper }) {
         good="Higher-scored names did do better — the score is carrying real information."
         bad="Higher-scored names did NOT do better. On this history the score does not separate winners from losers, so treat it as a filter for what the screen found, not as conviction."
       />
+      {/* Which screen is actually working. The two are opposite bets — one
+          buys wreckage, one buys strength — so pooling them hides the answer. */}
+      {p.by_screen && p.by_screen.length > 1 && (
+        <div className="border-t border-line pt-2">
+          <div className="label-eyebrow mb-1">Which screen is working?</div>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+            {p.by_screen.map((b) => (
+              <span key={b.band} className="text-ink-secondary">
+                <b className="text-ink">{b.band === "growth" ? "Growth leaders"
+                  : b.band === "opportunity" ? "Pullbacks" : "Crash dips"}</b>{" "}
+                <span className="text-ink-muted">n={b.n}</span>{" "}
+                <b className={b["avg_return_%"] >= 0 ? "text-gain" : "text-loss"}>
+                  {pct(b["avg_return_%"])}
+                </b>{" "}
+                <span className="text-ink-muted">{(b.win_rate * 100).toFixed(0)}% win</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
       <RatingCheck
         label="Does the quality grade predict the outcome?"
         bands={p.by_quality_grade}

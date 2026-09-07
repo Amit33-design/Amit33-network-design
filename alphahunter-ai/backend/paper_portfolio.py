@@ -62,6 +62,11 @@ def simulate(
                 "entry": round(float(entry), 2),
                 "shares": stake / float(entry),
                 "score": r.get("score"), "quality_grade": r.get("quality_grade"),
+                # Which screen produced this pick. The two screens are opposite
+                # bets — one buys wreckage, one buys strength — and pooling
+                # them would hide whichever is working.
+                "screen": (r.get("metrics") or {}).get("profile") or "crash",
+                "growth_score": (r.get("metrics") or {}).get("growth_score"),
                 "repeats": 0,
             }
 
@@ -122,6 +127,7 @@ def simulate(
         return len(vals) > 1 and all(a >= b for a, b in zip(vals, vals[1:]))
 
     by_score = _group(_band)
+    by_screen = _group(lambda h: h.get("screen") or "crash")
     by_grade = _group(lambda h: h.get("quality_grade") or "—",
                       order=["A", "B", "C", "D", "F", "—"])
     score_separates = _descends(by_score)
@@ -133,6 +139,7 @@ def simulate(
         "score_separates": score_separates,
         "by_quality_grade": by_grade,
         "grade_separates": grade_separates,
+        "by_screen": by_screen,
         "positions": len(rows),
         "priced": len(priced),
         "invested": round(invested, 2),
@@ -161,7 +168,8 @@ def build(results_dir: str, out_path: str, *, stake: float = STAKE) -> dict:
     """Network wrapper: price every held name once, then simulate."""
     import yfinance as yf
 
-    history = load_history(results_dir)
+    # Both screens, judged in one book but reported separately.
+    history = load_history(results_dir) + load_history(results_dir, "growth_*.json")
     if not history:
         return {"error": "no scan history", "holdings": []}
 

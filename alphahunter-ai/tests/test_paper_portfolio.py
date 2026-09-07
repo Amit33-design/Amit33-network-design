@@ -139,3 +139,27 @@ def test_quality_grade_is_held_to_the_same_standard_as_the_score():
     grades = {b["band"]: b["avg_return_%"] for b in r["by_quality_grade"]}
     assert grades == {"A": -10.0, "B": 0.0, "C": 5.0, "D": 15.0}
     assert r["grade_separates"] is False
+
+
+def test_the_two_screens_are_judged_separately():
+    """The oversold and growth screens are opposite bets. Pooling them would
+    hide whichever one is actually working."""
+    def growth_rec(t, price, score=80):
+        r = _rec(t, "Buy", price, score)
+        r["metrics"] = {"price": price, "profile": "growth", "growth_score": 92.0}
+        return r
+
+    history = [("2026-01-05", [
+        _rec("FELL1", "Buy", 100.0), _rec("FELL2", "Buy", 100.0),
+        growth_rec("GROW1", 100.0), growth_rec("GROW2", 100.0),
+    ])]
+    prices = {"FELL1": 80.0, "FELL2": 80.0, "GROW1": 120.0, "GROW2": 120.0}
+    r = simulate(history, lambda t: prices[t])
+
+    screens = {b["band"]: b for b in r["by_screen"]}
+    assert screens["growth"]["avg_return_%"] == 20.0
+    assert screens["crash"]["avg_return_%"] == -20.0
+    assert screens["growth"]["n"] == 2 and screens["crash"]["n"] == 2
+
+    grow = next(h for h in r["holdings"] if h["ticker"] == "GROW1")
+    assert grow["screen"] == "growth" and grow["growth_score"] == 92.0

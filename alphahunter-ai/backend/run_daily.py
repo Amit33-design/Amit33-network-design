@@ -184,6 +184,12 @@ def main() -> None:
         growth = run_growth_scan(limit=args.limit or None, max_scored=40)
         with open(growth_path, "w") as f:
             json.dump({"date": today, "count": len(growth), "results": growth}, f, indent=2)
+        # Also keep a DATED copy in results/, so the paper portfolio can judge
+        # growth picks the same way it judges oversold ones. Without this the
+        # growth screen would stay permanently unmeasured — the frontend file
+        # is overwritten daily and keeps no history.
+        with open(os.path.join(RESULTS_DIR, f"growth_{today}.json"), "w") as f:
+            json.dump({"date": today, "count": len(growth), "results": growth}, f)
         if growth:
             top = growth[0]
             print(f"Growth leaders: {len(growth)} names, best {top['ticker']} "
