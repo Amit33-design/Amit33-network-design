@@ -272,7 +272,13 @@ def score_ticker_general(snap: StockSnapshot, md: MarketData | None = None) -> d
         "fundamental": engines.fundamental_score(snap.info),
         "options": engines.options_score(None),   # skip chain fetch for speed
         "momentum": engines.momentum_score(ind),
-        "sentiment": engines.sentiment_score(snap.info, last),
+        # The dashboard is the surface people actually look at, so it gets the
+        # full six-source read too. This was missed on the first pass and the
+        # board silently kept scoring on the two old analyst fields — the exact
+        # failure mode multi-source scoring invites.
+        "sentiment": engines.sentiment_score(
+            snap.info, last,
+            md.sentiment_bundle(snap.ticker) if md is not None else None),
     }
     rs = compute_rel_strength(snap, ind, md)
     apply_rel_strength(subs["momentum"], rs)
@@ -295,6 +301,10 @@ def score_ticker_general(snap: StockSnapshot, md: MarketData | None = None) -> d
         "analyst_upside_%": round(analyst_upside, 1) if analyst_upside is not None else None,
         "rel_strength": rs,
         "subscores": {n: round(subs[n].score, 1) for n in weights},
+        # Published so it is visible whether the extra sources actually fired,
+        # rather than having to infer it from a score that looks plausible
+        # either way.
+        "sentiment_detail": subs["sentiment"].detail or None,
     }
 
 

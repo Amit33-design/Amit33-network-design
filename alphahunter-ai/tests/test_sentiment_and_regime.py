@@ -186,3 +186,39 @@ def test_volatility_and_breadth_helpers():
 def test_too_little_history_refuses_to_call_a_regime():
     r = assess([100.0] * 10)
     assert r.regime == "unknown" and r.position_scale == 1.0
+
+
+# --------------------------- wiring ----------------------------------------
+def test_both_scoring_paths_actually_use_the_extra_sentiment_sources():
+    """Regression: score_ticker_general (the dashboard path) was calling the
+    sentiment engine without the bundle, so the board silently kept scoring on
+    the two original analyst fields while appearing to use six sources."""
+    import inspect
+    from backend.scoring import composite
+
+    for fn in (composite.score_snapshot, composite.score_ticker_general):
+        src = inspect.getsource(fn)
+        assert "sentiment_bundle" in src, (
+            f"{fn.__name__} does not pass the sentiment bundle — the extra "
+            f"sources will silently do nothing on that path")
+
+
+def test_the_engine_reports_which_sources_it_actually_had():
+    from backend.scoring import engines
+
+    info = {"recommendationMean": 1.6, "numberOfAnalystOpinions": 20,
+            "targetMeanPrice": 140.0}
+    thin = engines.sentiment_score(info, 100.0)
+    rich = engines.sentiment_score(info, 100.0, {
+        "recommendation_periods": [
+            {"period": "-3m", "strongBuy": 1, "buy": 2, "hold": 7},
+            {"period": "0m", "strongBuy": 6, "buy": 3, "hold": 1},
+        ],
+        "insider_purchases": {"bought_shares": 250_000, "sold_shares": 5_000},
+        "headlines": ["Acme beats estimates and raises guidance"],
+    })
+
+    assert rich.detail["coverage"] > thin.detail["coverage"]
+    assert rich.detail["sources"]["revisions"]["confidence"] > 0
+    assert thin.detail["sources"]["revisions"]["confidence"] == 0
+    assert rich.score > thin.score          # upgrades + insider buying help
