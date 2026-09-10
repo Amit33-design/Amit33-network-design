@@ -17,6 +17,12 @@ DOMAINS: dict[str, list[str]] = {
     "Enterprise Software": ["CRM", "NOW", "SNOW", "PANW"],
     "Healthcare / Pharma": ["LLY", "UNH", "JNJ", "PFE"],
     "Defense / Aerospace": ["LMT", "RTX", "NOC"],
+    # Space is its own trade, not a defense-prime proxy: these are pre-profit,
+    # high-beta names that move on launch cadence and contracts rather than on
+    # the budget cycle. RKLB in particular gets asked about and is excluded
+    # from the oversold scanner by the $1B revenue floor, so without this it
+    # never gets a daily read anywhere in the product.
+    "Space": ["RKLB", "ASTS", "LUNR"],
     "Retail / Consumer": ["WMT", "COST", "TGT"],
 }
 
