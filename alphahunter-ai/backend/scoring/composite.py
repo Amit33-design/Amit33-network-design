@@ -85,7 +85,12 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
         engines.fundamental_score(snap.info),
         engines.options_score(opt_metrics),
         engines.momentum_score(ind),
-        engines.sentiment_score(snap.info, last),
+        # The extra sentiment sources cost three network calls, so they are
+        # fetched only here — for names that already passed a screen — never
+        # across the whole universe.
+        engines.sentiment_score(
+            snap.info, last,
+            md.sentiment_bundle(snap.ticker) if md is not None else None),
     ]
     by_name = {s.name: s for s in subs}
 

@@ -28,6 +28,15 @@ interface Dash {
   as_of: string;
   count: number;
   domains: Record<string, Stock[]>;
+  /** Read from the market itself — SPY structure, breadth and realized
+   *  volatility — with an explicit multiplier on position size. */
+  market_regime?: {
+    regime: "risk-on" | "neutral" | "risk-off" | "unknown";
+    score: number;
+    position_scale: number;
+    factors: string[];
+    detail?: Record<string, any>;
+  } | null;
 }
 
 const scoreColor = (s: number) => {
@@ -334,7 +343,14 @@ export default function Dashboard() {
   const all = Object.values(dash.domains).flat();
   const bullish = all.filter((s) => s.above_ema200 || s.score >= 60).length;
   const avg = all.length ? all.reduce((a, s) => a + s.score, 0) / all.length : 0;
-  const regime = avg >= 60 ? "Risk-on" : avg >= 48 ? "Neutral" : "Risk-off";
+  // Prefer the real market read (SPY structure + breadth + realized vol).
+  // The old fallback averaged our OWN scores, which measured how bullish this
+  // product was rather than what the market was doing — kept only so the tile
+  // still renders against a dashboard.json written before the regime existed.
+  const mr = dash.market_regime;
+  const regime = mr
+    ? mr.regime === "risk-on" ? "Risk-on" : mr.regime === "risk-off" ? "Risk-off" : "Neutral"
+    : avg >= 60 ? "Risk-on" : avg >= 48 ? "Neutral" : "Risk-off";
   const movers = [...all].filter((s) => s["day_%"] != null).sort((a, b) => (b["day_%"] ?? 0) - (a["day_%"] ?? 0));
   const gainers = movers.filter((s) => (s["day_%"] ?? 0) > 0);
   const topGainers = gainers.slice(0, 10);
@@ -366,8 +382,24 @@ export default function Dashboard() {
                   sub={`${Math.round((bullish / Math.max(all.length, 1)) * 100)}% of universe`} />
         <StatTile label="Average score" value={avg.toFixed(1)} sub="0–100 composite" />
         <StatTile label="Market regime" value={regime}
+                  sub={mr
+                    ? `${mr.score}/100 · size at ${Math.round(mr.position_scale * 100)}% of normal`
+                    : undefined}
                   tone={regime === "Risk-on" ? "gain" : regime === "Risk-off" ? "loss" : "warn"} />
       </div>
+
+      {mr?.factors?.length ? (
+        <div className="mb-3 panel px-4 py-2 text-xs text-ink-secondary">
+          <span className="label-eyebrow">Why this regime</span>{" "}
+          {mr.factors.join(" · ")}
+          {mr.position_scale < 1 && (
+            <span className="text-warn">
+              {" "}Positions sized to {Math.round(mr.position_scale * 100)}% of normal
+              while the tape looks like this.
+            </span>
+          )}
+        </div>
+      ) : null}
 
       <WatchlistSection />
 

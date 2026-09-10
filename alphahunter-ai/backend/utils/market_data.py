@@ -128,6 +128,68 @@ class MarketData:
             f"hist:{ticker}:{period}", lambda: with_retries(_fetch)
         )
 
+    def sentiment_bundle(self, ticker: str) -> dict[str, Any]:
+        """Extra sentiment sources: ratings history, insider flow, headlines.
+
+        Fetched separately from the main snapshot and only for names that
+        already passed a screen — these are three more network round-trips per
+        ticker, which is fine for the dozens of hits and absurd for a
+        1,900-name universe. Every piece degrades to absent rather than
+        raising, so a missing source costs a signal and never the scan.
+        """
+        if yf is None:
+            return {}
+
+        def _fetch() -> dict[str, Any]:
+            t = yf.Ticker(ticker)
+            out: dict[str, Any] = {}
+
+            try:                       # ratings breakdown by period
+                rec = t.recommendations
+                if rec is not None and not rec.empty:
+                    out["recommendation_periods"] = rec.to_dict("records")
+            except Exception:
+                pass
+
+            try:                       # aggregate insider buying/selling
+                ip = t.insider_purchases
+                if ip is not None and not ip.empty:
+                    rows = ip.to_dict("records")
+                    bought = sold = 0.0
+                    for r in rows:
+                        label = str(r.get(ip.columns[0], "")).lower()
+                        val = r.get("Shares") or r.get("shares") or 0
+                        try:
+                            val = float(val)
+                        except (TypeError, ValueError):
+                            continue
+                        if "purchase" in label or "buy" in label:
+                            bought += val
+                        elif "sale" in label or "sell" in label:
+                            sold += val
+                    if bought or sold:
+                        out["insider_purchases"] = {"bought_shares": bought,
+                                                    "sold_shares": sold}
+            except Exception:
+                pass
+
+            try:                       # recent headlines
+                news = t.news or []
+                titles = []
+                for n in news[:12]:
+                    title = (n.get("title")
+                             or (n.get("content") or {}).get("title"))
+                    if title:
+                        titles.append(str(title))
+                if titles:
+                    out["headlines"] = titles
+            except Exception:
+                pass
+
+            return out
+
+        return _cache.get_or_set(f"sent:{ticker}", lambda: with_retries(_fetch)) or {}
+
     def options_chain(self, ticker: str) -> dict[str, Any] | None:
         if yf is None:
             return None
