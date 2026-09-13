@@ -265,7 +265,12 @@ def news_tone_signal(headlines: list[str]) -> Signal:
     if total == 0:
         return Signal("news", 0.0, 0.25, [f"{len(heads)} headlines, none with clear tone"])
 
-    score = _clamp((pos - neg) / total * 100.0)
+    # Damp by how much evidence there actually was. Straight (pos-neg)/total
+    # gives a maxed-out 100 for two positive words across ten headlines, which
+    # is what NVDA scored on 2 hits and 0 misses — a unanimous reading of
+    # almost nothing. Full strength needs ~8 tone words.
+    evidence = min(1.0, total / 8.0)
+    score = _clamp((pos - neg) / total * 100.0 * evidence)
     # Confidence grows with how many headlines carried any tone at all.
     confidence = min(0.7, total / 12.0)
     lean = "positive" if score > 15 else "negative" if score < -15 else "mixed"

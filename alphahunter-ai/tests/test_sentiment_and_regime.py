@@ -222,3 +222,75 @@ def test_the_engine_reports_which_sources_it_actually_had():
     assert rich.detail["sources"]["revisions"]["confidence"] > 0
     assert thin.detail["sources"]["revisions"]["confidence"] == 0
     assert rich.score > thin.score          # upgrades + insider buying help
+
+
+# --------------------------- insider parsing -------------------------------
+def _yahoo_insider_table():
+    """The real shape of Yahoo's insider_purchases table, aggregate rows and
+    all. NVDA came back as 117 million shares bought because these were being
+    summed as if they were transactions."""
+    col = "Insider Purchases Last 6m"
+    return col, [
+        {col: "Purchases", "Shares": 120_000},
+        {col: "Sales", "Shares": 500_000},
+        {col: "Net Shares Purchased (Sold)", "Shares": -380_000},
+        {col: "Total Insider Shares Held", "Shares": 117_073_303},
+        {col: "% Net Shares Purchased (Sold)", "Shares": -0.32},
+    ]
+
+
+def test_only_real_transactions_count_not_yahoos_summary_rows():
+    from backend.utils.market_data import parse_insider_purchases
+
+    col, rows = _yahoo_insider_table()
+    out = parse_insider_purchases(rows, col)
+
+    assert out == {"bought_shares": 120_000.0, "sold_shares": 500_000.0}
+    assert out["bought_shares"] < 1_000_000          # not the 117M held total
+
+
+def test_a_negative_share_count_is_never_treated_as_buying():
+    """MU reported '-335,845 bought', which is not a thing that can happen."""
+    from backend.utils.market_data import parse_insider_purchases
+
+    col = "Insider Purchases Last 6m"
+    out = parse_insider_purchases([
+        {col: "Purchases", "Shares": -335_845},
+        {col: "Sales", "Shares": 337_619},
+    ], col)
+    assert out["bought_shares"] == 0.0 and out["sold_shares"] == 337_619.0
+
+
+def test_a_table_with_no_transactions_yields_nothing_rather_than_zeroes():
+    from backend.utils.market_data import parse_insider_purchases
+
+    col = "Insider Purchases Last 6m"
+    assert parse_insider_purchases(
+        [{col: "Total Insider Shares Held", "Shares": 9_000_000}], col) is None
+
+
+def test_the_fixed_parser_flips_nvidias_bogus_bullish_read():
+    from backend.sentiment_sources import insider_signal
+    from backend.utils.market_data import parse_insider_purchases
+
+    col, rows = _yahoo_insider_table()
+    fixed = insider_signal(parse_insider_purchases(rows, col))
+    bogus = insider_signal({"bought_shares": 117_073_303, "sold_shares": 5_413_597})
+
+    assert bogus.score > 80          # what it used to say
+    assert fixed.score < 0           # what the real transactions say
+    assert "net sellers" in " ".join(fixed.factors)
+
+
+# --------------------------- news damping ----------------------------------
+def test_a_couple_of_tone_words_cannot_max_out_the_news_score():
+    """NVDA scored 100 on 2 positive words across 10 headlines — a unanimous
+    reading of almost nothing."""
+    thin = news_tone_signal(["Acme wins contract"] + ["Acme to present at conference"] * 9)
+    rich = news_tone_signal([
+        "Acme beats and raises guidance", "Analysts upgrade Acme to strong buy",
+        "Acme wins record contract", "Acme profit surges on strong growth",
+        "Acme approval expands its market",
+    ])
+    assert 0 < thin.score < 40           # directionally positive, not maxed
+    assert rich.score > thin.score * 2   # real evidence scores much higher

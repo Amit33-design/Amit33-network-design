@@ -92,6 +92,44 @@ class StockSnapshot:
         return float(t) if t is not None else None
 
 
+# Yahoo's insider_purchases table mixes per-action rows with AGGREGATE rows:
+# "Purchases", "Sales", "Net Shares Purchased (Sold)", "Total Insider Shares
+# Held", "% Net Shares Purchased (Sold)". A substring match on "purchase"/"buy"
+# hits four of those, so the first version summed the net and percentage rows
+# into the buy total — which is how NVDA came back as 117 million insider
+# shares bought and MU as NEGATIVE 335,845 bought. Only the two plain action
+# rows count.
+_INSIDER_BUY_ROWS = {"purchases", "purchase"}
+_INSIDER_SELL_ROWS = {"sales", "sale"}
+
+
+def parse_insider_purchases(rows: list[dict], label_column: str) -> dict | None:
+    """Net insider buying from Yahoo's table, ignoring its aggregate rows."""
+    bought = sold = 0.0
+    for r in rows:
+        label = str(r.get(label_column, "")).strip().lower()
+        # Anything summarising other rows is not itself a transaction.
+        if not label or "%" in label or "net" in label or "total" in label:
+            continue
+        val = r.get("Shares", r.get("shares"))
+        try:
+            val = float(val)
+        except (TypeError, ValueError):
+            continue
+        # A share count is never negative; a negative here means an aggregate
+        # row slipped through, so drop it rather than corrupt the total.
+        if val < 0:
+            continue
+        if label in _INSIDER_BUY_ROWS:
+            bought += val
+        elif label in _INSIDER_SELL_ROWS:
+            sold += val
+
+    if bought <= 0 and sold <= 0:
+        return None
+    return {"bought_shares": bought, "sold_shares": sold}
+
+
 class MarketData:
     """Fetches snapshots and options chains, with TTL caching."""
 
@@ -154,22 +192,10 @@ class MarketData:
             try:                       # aggregate insider buying/selling
                 ip = t.insider_purchases
                 if ip is not None and not ip.empty:
-                    rows = ip.to_dict("records")
-                    bought = sold = 0.0
-                    for r in rows:
-                        label = str(r.get(ip.columns[0], "")).lower()
-                        val = r.get("Shares") or r.get("shares") or 0
-                        try:
-                            val = float(val)
-                        except (TypeError, ValueError):
-                            continue
-                        if "purchase" in label or "buy" in label:
-                            bought += val
-                        elif "sale" in label or "sell" in label:
-                            sold += val
-                    if bought or sold:
-                        out["insider_purchases"] = {"bought_shares": bought,
-                                                    "sold_shares": sold}
+                    parsed = parse_insider_purchases(
+                        ip.to_dict("records"), str(ip.columns[0]))
+                    if parsed:
+                        out["insider_purchases"] = parsed
             except Exception:
                 pass
 
