@@ -28,7 +28,10 @@ jobs:
 
       - name: Run the pair study
         working-directory: alphahunter-ai
-        run: python -m backend.run_pair_study
+        run: |
+          python -m backend.run_pair_study
+          # The dashboard's Pair Trading section reads this from /public.
+          cp results/pair_study.json frontend/public/pair_study.json
 
       - name: Run the wheel + doubler study
         working-directory: alphahunter-ai
@@ -38,7 +41,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add alphahunter-ai/results/pair_study.json alphahunter-ai/results/strategy_study.json
+          git add alphahunter-ai/results/pair_study.json alphahunter-ai/results/strategy_study.json \
+              alphahunter-ai/frontend/public/pair_study.json
           git diff --staged --quiet || git commit -m "Strategy studies $(date -u +%Y-%m-%d)"
           pushed=0
           for i in 1 2 3 4; do

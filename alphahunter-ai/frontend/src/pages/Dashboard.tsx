@@ -7,6 +7,7 @@ import { getWatchlist, onWatchlistChange, removeFromWatchlist,
 import { StatTile, Badge, Delta, SkeletonPanel, EmptyState, Section } from "../components/ui";
 import BacktestPanel, { useBacktest } from "../components/BacktestPanel";
 import GrowthLeaders, { useGrowth } from "../components/GrowthLeaders";
+import PairTrader, { usePairStudy } from "../components/PairTrader";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 
 interface Stock {
@@ -317,6 +318,7 @@ export default function Dashboard() {
   const [theme, setTheme] = useState(getTheme);
   const backtest = useBacktest();
   const growth = useGrowth();
+  const pairStudy = usePairStudy();
 
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
 
@@ -438,6 +440,16 @@ export default function Dashboard() {
           defaultOpen
         >
           <GrowthLeaders feed={growth} />
+        </Section>
+      )}
+
+      {pairStudy && (
+        <Section
+          title="⚖️ Pair Trading"
+          subtitle="hold two stocks at fixed weights — today's buy/sell order"
+          badge={`${pairStudy.pairs.length} pairs`}
+        >
+          <PairTrader study={pairStudy} />
         </Section>
       )}
 
