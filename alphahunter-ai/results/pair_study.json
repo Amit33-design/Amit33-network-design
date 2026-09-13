@@ -1,11 +1,33 @@
 {
-  "generated": "2026-09-13T20:50:59+00:00",
+  "generated": "2026-09-13T20:53:23+00:00",
   "lookback": "3y",
   "goal": 100000.0,
   "assumptions": {
     "cost_bps": 5.0,
     "band": 0.02,
     "tax_rate": 0.35
+  },
+  "walk_forward": {
+    "train_days": 376,
+    "test_days": 377,
+    "by_formula": {
+      "pair": "SMCI/ASTS",
+      "in_sample_cagr_%": 202.1,
+      "out_of_sample_cagr_%": 54.98,
+      "out_of_sample_bonus_%": 14.59,
+      "out_of_sample_maxdd_%": -50.23,
+      "beat_both_legs_out_of_sample": false,
+      "decay_pp": -147.1
+    },
+    "by_past_profit": {
+      "pair": "MSTR/ASTS",
+      "in_sample_cagr_%": 377.94,
+      "out_of_sample_cagr_%": 20.64,
+      "out_of_sample_bonus_%": -4.33,
+      "out_of_sample_maxdd_%": -52.54,
+      "beat_both_legs_out_of_sample": false,
+      "decay_pp": -357.3
+    }
   },
   "pairs": [
     {
