@@ -84,13 +84,31 @@ def main() -> None:  # pragma: no cover - CI entrypoint
     with open(path, "w") as f:
         json.dump(out, f, indent=2)
 
-    print(f"\n{'pair':<14}{'vols':<14}{'corr':>7}{'bonus(ideal)':>14}{'bonus(real)':>13}{'beat best?':>12}")
-    for r in results[:10]:
-        print(f"{r['pair']:<14}{r['vol_a_%']:.0f}%/{r['vol_b_%']:.0f}%".ljust(28)
+    # The bonus column alone is misleading and the first run proved it: ranking
+    # on bonus put VXX pairs on top, and VXX bleeds structurally, so a big
+    # harvest sat on top of a large loss. TOTAL RETURN is what you keep.
+    print(f"\n{'pair':<13}{'vols':>12}{'corr':>7}{'bonus':>8}{'CAGR':>9}"
+          f"{'vs hold A':>11}{'vs hold B':>11}{'maxDD':>9}")
+    for r in results[:12]:
+        real = r["realistic"]
+        print(f"{r['pair']:<13}"
+              + f"{r['vol_a_%']:.0f}/{r['vol_b_%']:.0f}%".rjust(12)
               + f"{r['correlation']:>7.2f}"
-              + f"{r['ideal']['rebalancing_bonus_%']:>13.2f}%"
-              + f"{r['realistic']['rebalancing_bonus_%']:>12.2f}%"
-              + f"{str(r['realistic']['beat_best_single_stock']):>12}")
+              + f"{real['rebalancing_bonus_%']:>7.1f}%"
+              + f"{real['cagr_%']:>8.1f}%"
+              + f"{(real['final_value'] / real['hold_a_value'] - 1) * 100:>10.0f}%"
+              + f"{(real['final_value'] / real['hold_b_value'] - 1) * 100:>10.0f}%"
+              + f"{real['max_drawdown_%']:>8.0f}%")
+
+    profitable = [r for r in results if r["realistic"]["cagr_%"] > 0]
+    print(f"\n{len(profitable)} of {len(results)} pairs actually made money after "
+          f"costs and tax.")
+    if profitable:
+        best = max(profitable, key=lambda r: r["realistic"]["cagr_%"])
+        need = capital_for_goal(GOAL, best["realistic"]["cagr_%"])
+        print(f"Best by total return: {best['pair']} at "
+              f"{best['realistic']['cagr_%']:.1f}%/yr -> "
+              f"${need:,.0f} needed for ${GOAL:,.0f}/yr")
     print(f"\nwrote {path}")
 
 
