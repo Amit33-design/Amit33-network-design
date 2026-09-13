@@ -299,6 +299,28 @@ inputs (explainability); add thresholds to `config.py`/`.env`, never hardcode.
   trade** (arithmetic on the same names, published as a ceiling — a real stop
   also converts some recovered dips into realized losses).
 
+- [x] **Two-stock daily rebalancing (Shannon's Demon) — built, measured, NOT
+  recommended.** `backend/pair_rebalance.py` simulates volatility harvesting
+  with costs, a no-trade band and tax; `run_pair_study.py` screens 28 names
+  across tech, biotech, energy, gold, bonds and volatility.
+
+  **Full-sample results looked excellent**: SMCI/MRNA 36.7%/yr and SMCI/NVAX
+  32.9%/yr after 5bps costs and 35% tax, both beating each of their own legs.
+  **Walk-forward destroyed them.** Selecting on the earlier half and measuring
+  on the later half: picking by the analytic bonus gave 202%/yr in-sample →
+  55%/yr out (decay −147pp); picking by past profit gave 378% → 20.6%
+  (decay −357pp). **Neither beat simply holding the better of its two legs
+  out of sample.** The out-of-sample returns came from owning two stocks that
+  went up in a bull market, not from rebalancing.
+
+  Two findings worth keeping. (1) Selecting pairs by realized profit decayed
+  2.4× worse than selecting by the volatility/correlation formula — that gap
+  is the overfitting, quantified. (2) Ranking by the rebalancing *bonus* is
+  itself a trap: MARA/VXX harvested 11.3% and returned −0.1%, because VXX
+  bleeds structurally. The bonus is what rebalancing adds, not what you keep.
+
+  Max drawdowns for the best pairs were −70% to −77%.
+
 ## Next (prioritized)
 - [x] **Iter 5 — Position sizing & risk/reward gates.** Each recommendation
   now includes a `position` (shares/value/risk-$) sized so the ATR-stop risks
