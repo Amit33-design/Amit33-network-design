@@ -1,4 +1,4 @@
-name: Pair Rebalancing Study
+name: Strategy Studies
 
 # Manual only. This is a research run, not part of the daily pipeline.
 on:
@@ -30,12 +30,16 @@ jobs:
         working-directory: alphahunter-ai
         run: python -m backend.run_pair_study
 
+      - name: Run the wheel + doubler study
+        working-directory: alphahunter-ai
+        run: python -m backend.run_strategy_study
+
       - name: Commit results
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add alphahunter-ai/results/pair_study.json
-          git diff --staged --quiet || git commit -m "Pair rebalancing study $(date -u +%Y-%m-%d)"
+          git add alphahunter-ai/results/pair_study.json alphahunter-ai/results/strategy_study.json
+          git diff --staged --quiet || git commit -m "Strategy studies $(date -u +%Y-%m-%d)"
           pushed=0
           for i in 1 2 3 4; do
             if git pull --rebase -X theirs origin main && git push origin HEAD:main; then
