@@ -103,8 +103,62 @@ _INSIDER_BUY_ROWS = {"purchases", "purchase"}
 _INSIDER_SELL_ROWS = {"sales", "sale"}
 
 
+# Words that mark a row as something other than a decision to buy or sell at
+# market. Option exercises, vesting, grants and gifts move shares without
+# expressing any view, and lumping them in is why NVIDIA still showed 61
+# million shares "bought" after the aggregate rows were excluded.
+_NON_MARKET = (
+    "conversion", "exercise", "exercisable", "award", "grant", "vest",
+    "gift", "inherit", "tax", "withhold", "option", "deferred", "plan",
+)
+_BUY_WORDS = ("purchase", "buy", "bought", "acquisition")
+_SELL_WORDS = ("sale", "sell", "sold", "disposition")
+
+
+def parse_insider_transactions(rows: list[dict]) -> dict | None:
+    """Open-market insider buying and selling, from the per-transaction table.
+
+    Yahoo's `insider_purchases` summary counts option exercises and share
+    grants as "Purchases", which carry no information about what an insider
+    thinks — they are compensation mechanics. This reads the itemised
+    transaction list instead and keeps only rows whose description is an
+    actual market purchase or sale.
+    """
+    bought = sold = 0.0
+    buys = sells = 0
+    for r in rows or []:
+        text = " ".join(
+            str(r.get(k, "")) for k in ("Text", "text", "Transaction", "transaction")
+        ).lower()
+        if not text or any(w in text for w in _NON_MARKET):
+            continue
+        shares = r.get("Shares", r.get("shares"))
+        try:
+            shares = abs(float(shares))
+        except (TypeError, ValueError):
+            continue
+        if shares <= 0:
+            continue
+        if any(w in text for w in _BUY_WORDS):
+            bought += shares
+            buys += 1
+        elif any(w in text for w in _SELL_WORDS):
+            sold += shares
+            sells += 1
+
+    if bought <= 0 and sold <= 0:
+        return None
+    return {"bought_shares": bought, "sold_shares": sold,
+            "buy_count": buys, "sell_count": sells, "source": "transactions"}
+
+
 def parse_insider_purchases(rows: list[dict], label_column: str) -> dict | None:
-    """Net insider buying from Yahoo's table, ignoring its aggregate rows."""
+    """Net insider buying from Yahoo's SUMMARY table, ignoring aggregate rows.
+
+    Fallback only. The summary cannot separate open-market buying from option
+    exercises, so `parse_insider_transactions` is preferred whenever the
+    itemised list is available.
+    """
     bought = sold = 0.0
     for r in rows:
         label = str(r.get(label_column, "")).strip().lower()
@@ -127,7 +181,7 @@ def parse_insider_purchases(rows: list[dict], label_column: str) -> dict | None:
 
     if bought <= 0 and sold <= 0:
         return None
-    return {"bought_shares": bought, "sold_shares": sold}
+    return {"bought_shares": bought, "sold_shares": sold, "source": "summary"}
 
 
 class MarketData:
@@ -189,15 +243,26 @@ class MarketData:
             except Exception:
                 pass
 
-            try:                       # aggregate insider buying/selling
-                ip = t.insider_purchases
-                if ip is not None and not ip.empty:
-                    parsed = parse_insider_purchases(
-                        ip.to_dict("records"), str(ip.columns[0]))
-                    if parsed:
-                        out["insider_purchases"] = parsed
+            # Itemised transactions first — only they distinguish an open-market
+            # purchase from an option exercise. The summary table is the
+            # fallback when the itemised list is unavailable.
+            parsed = None
+            try:
+                it = t.insider_transactions
+                if it is not None and not it.empty:
+                    parsed = parse_insider_transactions(it.to_dict("records"))
             except Exception:
                 pass
+            if parsed is None:
+                try:
+                    ip = t.insider_purchases
+                    if ip is not None and not ip.empty:
+                        parsed = parse_insider_purchases(
+                            ip.to_dict("records"), str(ip.columns[0]))
+                except Exception:
+                    pass
+            if parsed:
+                out["insider_purchases"] = parsed
 
             try:                       # recent headlines
                 news = t.news or []

@@ -245,8 +245,9 @@ def test_only_real_transactions_count_not_yahoos_summary_rows():
     col, rows = _yahoo_insider_table()
     out = parse_insider_purchases(rows, col)
 
-    assert out == {"bought_shares": 120_000.0, "sold_shares": 500_000.0}
+    assert out["bought_shares"] == 120_000.0 and out["sold_shares"] == 500_000.0
     assert out["bought_shares"] < 1_000_000          # not the 117M held total
+    assert out["source"] == "summary"                # and flagged as the weaker read
 
 
 def test_a_negative_share_count_is_never_treated_as_buying():
@@ -294,3 +295,53 @@ def test_a_couple_of_tone_words_cannot_max_out_the_news_score():
     ])
     assert 0 < thin.score < 40           # directionally positive, not maxed
     assert rich.score > thin.score * 2   # real evidence scores much higher
+
+
+# --------------------------- open-market vs compensation -------------------
+def _nvda_transactions():
+    """The shape that made NVIDIA look like a 61-million-share insider buy:
+    a handful of real sales alongside enormous option exercises."""
+    return [
+        {"Text": "Conversion of Exercisable Securities", "Shares": 55_000_000},
+        {"Text": "Stock Award(Grant)", "Shares": 6_000_000},
+        {"Text": "Sale at price 178.00 per share.", "Shares": 400_000},
+        {"Text": "Purchase at price 165.00 per share.", "Shares": 12_000},
+    ]
+
+
+def test_option_exercises_and_grants_are_not_insider_buying():
+    from backend.utils.market_data import parse_insider_transactions
+
+    out = parse_insider_transactions(_nvda_transactions())
+    assert out["bought_shares"] == 12_000.0      # the one real purchase
+    assert out["sold_shares"] == 400_000.0
+    assert out["buy_count"] == 1 and out["sell_count"] == 1
+    assert out["source"] == "transactions"
+
+
+def test_the_transaction_read_reverses_the_summary_read():
+    from backend.sentiment_sources import insider_signal
+    from backend.utils.market_data import parse_insider_transactions
+
+    honest = insider_signal(parse_insider_transactions(_nvda_transactions()))
+    assert honest.score < 0                       # actually net selling
+    assert "open-market transactions" in " ".join(honest.factors)
+
+
+def test_summary_figures_are_held_at_half_confidence_and_labelled():
+    from backend.sentiment_sources import insider_signal
+
+    same = {"bought_shares": 300_000, "sold_shares": 0}
+    summary = insider_signal({**same, "source": "summary"})
+    itemised = insider_signal({**same, "source": "transactions",
+                               "buy_count": 4, "sell_count": 0})
+
+    assert summary.score == itemised.score                  # same reading...
+    assert summary.confidence == itemised.confidence / 2    # ...trusted less
+    assert "include option exercises" in " ".join(summary.factors)
+
+
+def test_an_unlabelled_bundle_is_treated_as_the_weaker_summary():
+    from backend.sentiment_sources import insider_signal
+    s = insider_signal({"bought_shares": 300_000, "sold_shares": 0})
+    assert "include option exercises" in " ".join(s.factors)

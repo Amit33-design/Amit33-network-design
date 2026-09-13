@@ -176,10 +176,26 @@ def insider_signal(purchases: dict | None) -> Signal:
     # Buying counts full; selling is damped to a third.
     score = _clamp(ratio * 100.0 if ratio > 0 else ratio * 33.0)
     confidence = min(1.0, total / 200_000.0)
+
+    # Where the numbers came from matters more than their size. The itemised
+    # transaction list can tell an open-market purchase from an option
+    # exercise; the summary table cannot, and counts compensation mechanics as
+    # "Purchases". A summary-derived read is therefore held at half confidence
+    # and says so, rather than being presented as conviction buying.
+    source = purchases.get("source", "summary")
+    if source != "transactions":
+        confidence *= 0.5
+
     if net > 0:
         detail = f"insiders net buyers ({bought:,.0f} bought vs {sold:,.0f} sold)"
     else:
-        detail = f"insiders net sellers ({sold:,.0f} sold vs {bought:,.0f} bought) — weak evidence, selling has many innocent reasons"
+        detail = (f"insiders net sellers ({sold:,.0f} sold vs {bought:,.0f} bought)"
+                  " — weak evidence, selling has many innocent reasons")
+    if source == "transactions":
+        n_buy, n_sell = purchases.get("buy_count", 0), purchases.get("sell_count", 0)
+        detail += f" across {n_buy + n_sell} open-market transactions"
+    else:
+        detail += " — summary figures, which include option exercises and grants"
     return Signal("insiders", score, confidence, [detail])
 
 
