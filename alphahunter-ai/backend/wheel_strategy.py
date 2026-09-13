@@ -193,6 +193,20 @@ def simulate_wheel(
         if peak > 0:
             mdd = min(mdd, v / peak - 1)
 
+    # A cash-secured put needs the full strike x 100 in collateral. On $25k,
+    # SPY at ~$550 needs ~$55k for a single contract, so the strategy is not
+    # merely unprofitable there — it is impossible. Reporting that as "0.0%
+    # CAGR" makes it look like a bad result rather than an unavailable one.
+    if not trades:
+        cheapest = min(px[60:]) * (1 - put_otm) * 100
+        return {
+            "capital": capital,
+            "error": "no trades possible",
+            "reason": (f"a cash-secured put needs about ${cheapest:,.0f} of collateral "
+                       f"per contract at this price; ${capital:,.0f} is not enough"),
+            "min_capital_needed": round(cheapest, 2),
+        }
+
     return {
         "capital": capital,
         "final_value": round(final, 2),

@@ -83,10 +83,16 @@ def test_taking_profit_early_frees_capital_and_trades_more():
 
 
 def test_cash_secured_means_no_leverage():
-    """Contracts must be sized to the cash actually on hand."""
-    small = simulate_wheel(_walk(400, vol=0.02), capital=5_000)
-    big = simulate_wheel(_walk(400, vol=0.02), capital=100_000)
+    """Contracts are sized to the cash on hand, so premium scales with it —
+    and below one contract's collateral the strategy is unavailable, not just
+    small."""
+    px = _walk(400, start=50.0, vol=0.02)
+    small = simulate_wheel(px, capital=10_000)
+    big = simulate_wheel(px, capital=100_000)
     assert big["premium_collected"] > small["premium_collected"] * 3
+
+    too_small = simulate_wheel(px, capital=1_000)
+    assert too_small.get("error") == "no trades possible"
 
 
 def test_a_short_series_is_refused():
@@ -143,3 +149,18 @@ def test_build_observations_strides_rather_than_double_counting():
     dense = build_observations(series, stride=1)
     sparse = build_observations(series, stride=21)
     assert len(dense) > len(sparse) * 15
+
+
+def test_a_stock_too_expensive_to_collateralise_says_so():
+    """On $25k, SPY at ~$550 needs ~$55k per contract. That is impossible,
+    not unprofitable, and reporting 0.0% CAGR conflates the two."""
+    expensive = _walk(400, start=600.0, vol=0.015)
+    r = simulate_wheel(expensive, capital=25_000)
+
+    assert "error" in r and r["error"] == "no trades possible"
+    assert r["min_capital_needed"] > 25_000
+    assert "collateral" in r["reason"]
+
+    # With enough capital the same series trades normally.
+    ok = simulate_wheel(expensive, capital=200_000)
+    assert "error" not in ok and ok["trades"] > 0
