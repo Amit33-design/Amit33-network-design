@@ -180,8 +180,16 @@ async function growthFeed(limit = 100) {
   return { results: (j.results || []).slice(0, limit), live: false };
 }
 
+async function moonshotFeed(limit = 100) {
+  const r = await fetch("/moonshot.json");
+  if (!r.ok) throw new Error("moonshot screen has not run yet");
+  const j = await r.json();
+  return { results: (j.results || []).slice(0, limit), live: false };
+}
+
 export const api = {
   growth: (limit = 100) => growthFeed(limit),
+  moonshot: (limit = 100) => moonshotFeed(limit),
   marketTop: (limit = 50) => scanWithFallback(`/market/top?limit=${limit}`),
   oversold: (limit = 50) =>
     scanWithFallback(`/market/oversold?limit=${limit}`,

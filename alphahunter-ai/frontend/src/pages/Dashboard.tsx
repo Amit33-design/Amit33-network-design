@@ -8,6 +8,7 @@ import { StatTile, Badge, Delta, SkeletonPanel, EmptyState, Section } from "../c
 import BacktestPanel, { useBacktest } from "../components/BacktestPanel";
 import GrowthLeaders, { useGrowth } from "../components/GrowthLeaders";
 import PairTrader, { usePairStudy } from "../components/PairTrader";
+import Moonshots, { useMoonshots } from "../components/Moonshots";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 
 interface Stock {
@@ -319,6 +320,7 @@ export default function Dashboard() {
   const backtest = useBacktest();
   const growth = useGrowth();
   const pairStudy = usePairStudy();
+  const moonshots = useMoonshots();
 
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
 
@@ -440,6 +442,17 @@ export default function Dashboard() {
           defaultOpen
         >
           <GrowthLeaders feed={growth} />
+        </Section>
+      )}
+
+      {moonshots && (
+        <Section
+          title="🎲 Moonshots"
+          subtitle="volatile and beaten down — 19% doubled vs a 4.8% base rate"
+          badge={`${moonshots.results.length}`}
+          badgeColor="#b7791f"
+        >
+          <Moonshots feed={moonshots} />
         </Section>
       )}
 

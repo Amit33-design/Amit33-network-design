@@ -5,7 +5,7 @@ import RecGrid from "../components/RecGrid";
 import { ErrorBox, Loading } from "../components/Loading";
 import SnapshotBanner from "../components/SnapshotBanner";
 
-type Feed = "growth" | "top" | "oversold" | "breakouts";
+type Feed = "growth" | "moonshot" | "top" | "oversold" | "breakouts";
 
 function FilterSelect({
   label, value, options, onChange,
@@ -41,6 +41,7 @@ export default function Opportunities() {
     setError("");
     const call =
       feed === "growth" ? api.growth
+      : feed === "moonshot" ? api.moonshot
       : feed === "top" ? api.marketTop
       : feed === "oversold" ? api.oversold
       : api.breakouts;
@@ -68,7 +69,7 @@ export default function Opportunities() {
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h1 className="text-xl font-semibold tracking-tight text-ink">Opportunities</h1>
         <div className="flex gap-1 panel p-1">
-          {(["growth", "top", "oversold", "breakouts"] as Feed[]).map((f) => (
+          {(["growth", "moonshot", "top", "oversold", "breakouts"] as Feed[]).map((f) => (
             <button
               key={f}
               onClick={() => setFeed(f)}
@@ -82,6 +83,14 @@ export default function Opportunities() {
         </div>
       </div>
       {snap && feed !== "growth" && <SnapshotBanner />}
+      {feed === "moonshot" && (
+        <div className="panel px-3 py-2 mb-4 text-xs text-warn border-warn/30">
+          <b>Odds, not picks.</b> Measured over 62,202 samples: this profile doubled
+          <b> 19%</b> of the time against a <b>4.8%</b> base rate — but the median
+          outcome was only <b>+6.7%</b>. Size small, hold many. The opposite of the
+          Growth tab in every respect.
+        </div>
+      )}
       {feed === "growth" && (
         <div className="panel px-3 py-2 mb-4 text-xs text-ink-secondary">
           A different screen from the other three: these are growing businesses
@@ -93,7 +102,7 @@ export default function Opportunities() {
       )}
 
       {/* Filter bar */}
-      {!loading && rows.length > 0 && feed !== "growth" && (
+      {!loading && rows.length > 0 && feed !== "growth" && feed !== "moonshot" && (
         <div className="panel px-3 py-2 mb-4 flex items-center gap-4 flex-wrap">
           <FilterSelect label="Setup" value={setup} onChange={setSetup}
             options={[["all", "All"], ["crash", "Crash dip"], ["pullback", "Pullback"]]} />
@@ -130,7 +139,7 @@ export default function Opportunities() {
           </div>
         </div>
       ) : (
-        <RecGrid rows={filtered} sortBy={feed === "growth" ? "growth_score" : "score"} />
+        <RecGrid rows={filtered} sortBy={feed === "growth" ? "growth_score" : feed === "moonshot" ? "moonshot_score" : "score"} />
       )}
     </div>
   );

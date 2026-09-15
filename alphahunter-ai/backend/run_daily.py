@@ -202,6 +202,29 @@ def main() -> None:
             with open(growth_path, "w") as f:
                 json.dump({"date": today, "count": 0, "results": []}, f)
 
+    # Moonshot leaders: the lottery-ticket profile, measured at a 19% hit rate
+    # against a 4.8% base. Dated copy kept so it gets judged like the others.
+    moon_path = os.path.join(os.path.dirname(FRONTEND_SNAPSHOT), "moonshot.json")
+    try:
+        from backend.scanners.runner import run_moonshot_scan
+        moon = run_moonshot_scan(limit=args.limit or None, max_scored=30)
+        payload = {"date": today, "count": len(moon), "results": moon}
+        with open(moon_path, "w") as f:
+            json.dump(payload, f, indent=2)
+        with open(os.path.join(RESULTS_DIR, f"moonshot_{today}.json"), "w") as f:
+            json.dump(payload, f)
+        if moon:
+            top = moon[0]
+            print(f"Moonshots: {len(moon)} names, best {top['ticker']} "
+                  f"(score {(top['metrics'] or {}).get('moonshot_score')})")
+        else:
+            print("Moonshots: none passed the screen today.")
+    except Exception as e:  # pragma: no cover - CI only
+        print(f"Moonshot scan skipped: {e}")
+        if not os.path.exists(moon_path):
+            with open(moon_path, "w") as f:
+                json.dump({"date": today, "count": 0, "results": []}, f)
+
     # Income plan: what the MEASURED edge implies for an annual profit goal.
     # Derived from the paper portfolio so it describes this system, not a
     # hypothetical good one.

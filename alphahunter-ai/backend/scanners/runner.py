@@ -55,6 +55,46 @@ def run_scan(
     return results
 
 
+def run_moonshot_scan(
+    limit: int | None = None,
+    max_scored: int | None = 40,
+) -> list[dict]:
+    """Rank the lottery-ticket profile: volatile and beaten down.
+
+    Ranked by moonshot score rather than the composite, for the same reason
+    the growth scan is: the composite was tuned for oversold bounce setups and
+    scores a different thing entirely.
+    """
+    from backend.scanners.moonshot import MoonshotScanner
+
+    md = MarketData()
+    scanner = MoonshotScanner()
+    tickers = load_universe()
+    if limit:
+        tickers = tickers[:limit]
+
+    hits = []
+    for ticker in tickers:
+        snap = md.snapshot(ticker)
+        if snap is None:
+            continue
+        hit = scanner.evaluate(snap)
+        if hit is not None:
+            hits.append((hit.metrics.get("moonshot_score", 0), snap, hit))
+        time.sleep(settings.request_sleep)
+
+    hits.sort(key=lambda x: -x[0])
+    results = []
+    for _score, snap, hit in hits[: (max_scored or len(hits))]:
+        try:
+            results.append(score_snapshot(snap, hit, md=md))
+        except Exception:
+            continue
+    results.sort(key=lambda r: ((r.get("metrics") or {}).get("moonshot_score") or 0,
+                                r.get("score") or 0), reverse=True)
+    return results
+
+
 def run_growth_scan(
     limit: int | None = None,
     max_scored: int | None = 60,

@@ -94,7 +94,8 @@ jobs:
                   alphahunter-ai/frontend/public/backtest.json \
                   alphahunter-ai/frontend/public/paper.json \
                   alphahunter-ai/frontend/public/income_plan.json \
-                  alphahunter-ai/frontend/public/growth.json
+                  alphahunter-ai/frontend/public/growth.json \
+                  alphahunter-ai/frontend/public/moonshot.json
           git commit -m "AlphaHunter daily scan $(TZ=America/Los_Angeles date +%F)" \
             || { echo "No changes to commit"; exit 0; }
           # The scan owns the generated files (snapshot.json, results/), so on a

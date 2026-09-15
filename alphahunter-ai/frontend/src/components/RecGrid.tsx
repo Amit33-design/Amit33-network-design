@@ -29,7 +29,7 @@ const pct = (p: any) => (p.value == null ? "—" : `${Number(p.value).toFixed(1)
 // hardcoded as the sort, which quietly re-ordered the growth feed by a score
 // tuned for oversold bounces — the exact thing the growth ranking exists to
 // avoid.
-const buildColumns = (sortBy: "score" | "growth_score"): ColDef<Recommendation>[] => [
+const buildColumns = (sortBy: "score" | "growth_score" | "moonshot_score"): ColDef<Recommendation>[] => [
   // Ticker links to the full Analysis chart for that symbol (client-side nav).
   { field: "ticker", pinned: "left", width: 95, cellRenderer: TickerCell },
   { field: "company", width: 170 },
@@ -58,12 +58,14 @@ const buildColumns = (sortBy: "score" | "growth_score"): ColDef<Recommendation>[
       // they fell through to the else-branch and were labelled "Crash dip",
       // which is the opposite of what they are.
       return profile === "growth" ? "Growth"
+           : profile === "moonshot" ? "Moonshot"
            : profile === "opportunity" ? "Pullback" : "Crash dip";
     },
     cellStyle: (p) => {
       const profile = (p.data?.metrics as any)?.profile;
       return {
         color: profile === "growth" ? C().gain
+             : profile === "moonshot" ? "#b7791f"
              : profile === "opportunity" ? "#d9a441" : C().loss,
         fontWeight: 600,
       };
@@ -83,6 +85,15 @@ const buildColumns = (sortBy: "score" | "growth_score"): ColDef<Recommendation>[
     valueFormatter: (p: any) => (p.value == null ? "—" : Number(p.value).toFixed(1)),
     cellStyle: (p) => ({ color: (p.value ?? 0) >= 85 ? C().gain : C().ink,
                          fontWeight: (p.value ?? 0) >= 85 ? 700 : 400 }) },
+  { headerName: "Moonshot", width: 110,
+    sort: sortBy === "moonshot_score" ? "desc" : null,
+    comparator: (a, b) => (a ?? -1) - (b ?? -1),
+    valueGetter: (p) => (p.data?.metrics as any)?.moonshot_score ?? null,
+    valueFormatter: (p: any) => (p.value == null ? "—" : Number(p.value).toFixed(0)),
+    cellStyle: () => ({ color: "#b7791f", fontWeight: 600 }) },
+  { headerName: "Vol", width: 90,
+    valueGetter: (p) => (p.data?.metrics as any)?.["volatility_%"] ?? null,
+    valueFormatter: (p: any) => (p.value == null ? "—" : `${Number(p.value).toFixed(0)}%`) },
   { headerName: "Rev growth", width: 115,
     valueGetter: (p) => (p.data?.metrics as any)?.revenue_growth ?? null,
     valueFormatter: (p: any) => (p.value == null ? "—" : `${(p.value * 100).toFixed(0)}%`),
@@ -214,7 +225,7 @@ function Cell({ k, v, accent }: { k: string; v: any; accent?: string }) {
 }
 
 export default function RecGrid(
-  { rows, sortBy = "score" }: { rows: Recommendation[]; sortBy?: "score" | "growth_score" },
+  { rows, sortBy = "score" }: { rows: Recommendation[]; sortBy?: "score" | "growth_score" | "moonshot_score" },
 ) {
   const [theme, setTheme] = useState(getTheme);
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
