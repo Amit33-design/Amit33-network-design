@@ -168,8 +168,14 @@ def build(results_dir: str, out_path: str, *, stake: float = STAKE) -> dict:
     """Network wrapper: price every held name once, then simulate."""
     import yfinance as yf
 
-    # Both screens, judged in one book but reported separately.
-    history = load_history(results_dir) + load_history(results_dir, "growth_*.json")
+    # EVERY screen in the registry, judged in one book but reported separately.
+    # Reading the registry rather than hardcoding globs is what stops a new
+    # screen from shipping without a track record — which has happened twice.
+    from .screens import globs
+
+    history: list[tuple[str, list[dict]]] = []
+    for pattern in globs():
+        history += load_history(results_dir, pattern)
     if not history:
         return {"error": "no scan history", "holdings": []}
 
