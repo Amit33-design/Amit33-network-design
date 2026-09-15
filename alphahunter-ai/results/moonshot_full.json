@@ -1,0 +1,133 @@
+{
+  "observations": 62202,
+  "tickers": 1775,
+  "horizon_days": 252,
+  "base_double_rate_%": 4.8,
+  "traits": [
+    {
+      "trait": "very high volatility (>80%)",
+      "n_with": 2326,
+      "double_rate_with_%": 18.6,
+      "double_rate_without_%": 4.3,
+      "base_rate_%": 4.8,
+      "lift": 3.84,
+      "median_forward_%": 6.0
+    },
+    {
+      "trait": "down >50% in 12m",
+      "n_with": 2531,
+      "double_rate_with_%": 14.3,
+      "double_rate_without_%": 4.4,
+      "base_rate_%": 4.8,
+      "lift": 2.96,
+      "median_forward_%": 6.7
+    },
+    {
+      "trait": "more than 50% off the high",
+      "n_with": 4108,
+      "double_rate_with_%": 14.3,
+      "double_rate_without_%": 4.2,
+      "base_rate_%": 4.8,
+      "lift": 2.95,
+      "median_forward_%": 9.0
+    },
+    {
+      "trait": "cheap (<$10)",
+      "n_with": 5950,
+      "double_rate_with_%": 13.5,
+      "double_rate_without_%": 3.9,
+      "base_rate_%": 4.8,
+      "lift": 2.79,
+      "median_forward_%": 15.5
+    },
+    {
+      "trait": "high volatility (50-80%)",
+      "n_with": 10377,
+      "double_rate_with_%": 12.7,
+      "double_rate_without_%": 3.3,
+      "base_rate_%": 4.8,
+      "lift": 2.62,
+      "median_forward_%": 11.9
+    },
+    {
+      "trait": "already up >50% in 12m",
+      "n_with": 7805,
+      "double_rate_with_%": 9.3,
+      "double_rate_without_%": 4.2,
+      "base_rate_%": 4.8,
+      "lift": 1.93,
+      "median_forward_%": 14.6
+    },
+    {
+      "trait": "6m momentum >30%",
+      "n_with": 8338,
+      "double_rate_with_%": 8.3,
+      "double_rate_without_%": 4.3,
+      "base_rate_%": 4.8,
+      "lift": 1.71,
+      "median_forward_%": 13.0
+    },
+    {
+      "trait": "below the 200-day",
+      "n_with": 26060,
+      "double_rate_with_%": 5.6,
+      "double_rate_without_%": 4.3,
+      "base_rate_%": 4.8,
+      "lift": 1.17,
+      "median_forward_%": 10.0
+    },
+    {
+      "trait": "above the 200-day",
+      "n_with": 36142,
+      "double_rate_with_%": 4.3,
+      "double_rate_without_%": 5.6,
+      "base_rate_%": 4.8,
+      "lift": 0.88,
+      "median_forward_%": 10.9
+    },
+    {
+      "trait": "near the 52w low (<20% above)",
+      "n_with": 19769,
+      "double_rate_with_%": 3.6,
+      "double_rate_without_%": 5.4,
+      "base_rate_%": 4.8,
+      "lift": 0.74,
+      "median_forward_%": 8.9
+    },
+    {
+      "trait": "within 10% of 52w high",
+      "n_with": 21416,
+      "double_rate_with_%": 2.9,
+      "double_rate_without_%": 5.8,
+      "base_rate_%": 4.8,
+      "lift": 0.61,
+      "median_forward_%": 10.9
+    },
+    {
+      "trait": "low volatility (<30%)",
+      "n_with": 22642,
+      "double_rate_with_%": 0.8,
+      "double_rate_without_%": 7.1,
+      "base_rate_%": 4.8,
+      "lift": 0.17,
+      "median_forward_%": 9.8
+    }
+  ],
+  "best_two_combined": {
+    "trait": "very high volatility (>80%) AND down >50% in 12m",
+    "n_with": 974,
+    "double_rate_with_%": 19.0,
+    "double_rate_without_%": 4.6,
+    "base_rate_%": 4.8,
+    "lift": 3.93,
+    "median_forward_%": 4.6
+  },
+  "generated": "2026-09-15T18:58:53+00:00",
+  "universe_size": 1909,
+  "universe_history": {
+    "note": "0 calendar days of universe history (2026-09-15 to 2026-09-15). NOT enough for a 252-session horizon \u2014 a study run against this would still be survivor-only. It accumulates daily.",
+    "days": 0,
+    "usable_for_horizon": false
+  },
+  "survivorship_note": "The universe contains only companies listed with >$1B revenue TODAY. Names that fell and were delisted, acquired at a discount or dropped below the revenue floor are absent, so the beaten-down buckets (down >50%, far off the high, cheap) are overstated \u2014 those are exactly the cohorts whose failures disappear. Treat their lift as an upper bound."
+}
