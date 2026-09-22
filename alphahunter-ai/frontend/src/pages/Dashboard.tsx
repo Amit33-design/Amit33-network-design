@@ -544,7 +544,7 @@ export default function Dashboard() {
         );
       })}
 
-      <div className="bg-white rounded-xl shadow-sm p-4 mt-2">
+      <div className="bg-surface rounded-xl shadow-sm p-4 mt-2">
         <div className="font-semibold text-ink mb-2">Score distribution</div>
         <Plot
           data={[{ type: "bar", x: buckets.map((b) => b.label), y: buckets.map((b) => b.count), marker: { color: chartColors(theme).series[0] } }]}

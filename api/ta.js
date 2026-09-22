@@ -5,6 +5,7 @@
 // trend/momentum Buy-Hold-Sell verdict with explainable factors.
 
 import { rsiSeries } from "./_indicators.js";
+import { rangeRegime } from "./_regime.js";
 
 const CHART = (t, range) =>
   `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=${range}&interval=1d`;
@@ -461,13 +462,45 @@ function analyze(dates, o, h, l, c, v, accountSize, riskPct) {
   if (ltDir === "up") recommendation = st >= 55 ? "Buy" : st >= 40 ? "Accumulate" : "Hold";
   else if (ltDir === "down") recommendation = st >= 60 ? "Reduce" : st >= 40 ? "Reduce" : "Sell";
   else recommendation = st >= 60 ? "Accumulate" : st >= 35 ? "Hold" : "Reduce";
+
+  // THIRD LAYER: where in the year's range are we actually buying?
+  //
+  // The two layers above answer "is this a good stock" and "is this a good
+  // moment", and both can say yes at a price that is simply too high. A stock
+  // that has oscillated between $80 and $120 all year is a buy at $85 and a
+  // bad trade at $118 on identical technicals. When the year has been lateral
+  // and price sits in the upper part of the range, the verdict becomes WAIT
+  // with a price attached, rather than a Buy the buyer regrets.
+  const regime = rangeRegime(c);
+  let entry_timing = null;
+  if (regime.regime === "lateral" && regime.action !== "none") {
+    entry_timing = {
+      action: regime.action,
+      entry_target: regime.entry_target,
+      position_in_range: regime.position_in_range,
+      range_low: regime.range_low,
+      range_high: regime.range_high,
+      typical_wait_sessions: regime.typical_wait_sessions,
+      "upside_to_range_high_%": regime["upside_to_range_high_%"],
+      reason: regime.reason,
+    };
+    // Only downgrades, never upgrades: range position is a reason to be
+    // patient with a name you already like, not a reason to buy one you do
+    // not. A Sell stays a Sell whatever the range says.
+    if (regime.action === "wait" && (recommendation === "Buy" || recommendation === "Accumulate")) {
+      recommendation = "Wait";
+    }
+  }
   const score = Math.round(0.7 * lt + 0.3 * st);
 
   const factors = [...trendFactors, ...timingFactors];
   const dirWord = ltDir === "up" ? "UP" : ltDir === "down" ? "DOWN" : "MIXED";
   let verdict_reason =
-    `${recommendation} — driven by the LONG-TERM trend, which is ${dirWord} (trend score ${lt}/100), ` +
-    `not by this week's move. `;
+    recommendation === "Wait"
+      ? `WAIT — the stock itself reads ${ltDir === "up" ? "constructive" : "mixed"} `
+        + `(trend score ${lt}/100), but the PRICE is wrong: ${regime.reason} `
+      : `${recommendation} — driven by the LONG-TERM trend, which is ${dirWord} (trend score ${lt}/100), `
+        + `not by this week's move. `;
   const tf = trendFactors.slice(0, 3).map((f) => f.s);
   if (tf.length) verdict_reason += `Structure: ${tf.join("; ")}. `;
   const tm = timingFactors.slice(0, 2).map((f) => f.s);
@@ -480,6 +513,10 @@ function analyze(dates, o, h, l, c, v, accountSize, riskPct) {
     day_change_pct: dayChange,
     verdict_reason,
     trade_plan: plan,
+    // Range regime + entry timing. `entry_timing` is non-null only when the
+    // year was lateral and position in the range changes what to do.
+    range_regime: regime,
+    entry_timing,
     score,
     recommendation,
     trend: { score: lt, direction: ltDir, factors: trendFactors },

@@ -120,6 +120,15 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   shaped jumps and a bad latest bar (quarantined, shown as "data delayed"). It
   does NOT catch a series that is internally consistent but wrong in level —
   that needs a second price source.
+- **A verdict needs a price.** `api/ta.js` applies a THIRD layer after
+  trend and timing: if the year was lateral and price sits in the upper part
+  of the range, a Buy/Accumulate becomes **Wait** with a target entry. It only
+  ever downgrades — range position is a reason to be patient with a name you
+  like, never a reason to buy one you don't.
+- **"Lateral" needs all three conditions** (small net move, low trend R², and
+  ≥3 midline crossings). Dropping the crossings check makes a stock that rose
+  40% and gave it all back look range-bound, and "buy its range low" then
+  means buying a downtrend.
 - **Never surface exception text or an upstream status to the user.** The API
   returns `{code, message}`; 404/422 mean the user's input, 502 means us. The
   UI branches on that — see `ApiError` in `lib/api.ts`.
@@ -136,6 +145,10 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | A sub-score | `backend/scoring/engines.py` |
 | Risk flags / CSP / relative strength | `backend/scoring/{risk,csp_signal,relative_strength}.py` |
 | Live single-ticker TA / thesis / bottom / cycle | `api/ta.js` |
+| Range-vs-trend regime & entry timing | `api/_regime.js` + `backend/indicators/range_regime.py` |
+| Shared indicator maths (RSI) | `api/_indicators.js` |
+| Company profiles (sector/industry/summary) | `backend/build_profiles.py` → `frontend/public/profiles.json` |
+| Price-series validation | `backend/data_quality.py` |
 | Live portfolio prices/recs | `api/quote.js` |
 | Dashboard watchlist | `backend/watchlist.py` + `backend/run_dashboard.py` |
 | Scan output columns | `backend/run_daily.py` |

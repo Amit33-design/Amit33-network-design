@@ -3,6 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import Plot from "react-plotly.js";
 import { api } from "../lib/api";
 import { ErrorBox, Loading } from "../components/Loading";
+import CompanyProfile, { useProfile } from "../components/CompanyProfile";
+import EntryTimingPanel from "../components/EntryTiming";
 import ChartExplainer from "../components/ChartExplainer";
 import PeerComparison from "../components/PeerComparison";
 import { isWatched, toggleWatchlist, onWatchlistChange } from "../lib/watchlist";
@@ -80,6 +82,7 @@ export default function Analysis() {
   }, [data?.ticker]);
 
   const ind = data?.indicators;
+  const profile = useProfile(data?.ticker);
   const ch = data?.chart;
 
   // Explicit axis bounds, computed from the data actually plotted.
@@ -238,7 +241,10 @@ export default function Analysis() {
               )}
               {data.timing && (
                 <div className="text-center" title="Short-term entry timing (RSI, MACD, weekly move). Only tunes the entry — never flips the direction.">
-                  <div className="text-xs uppercase tracking-wide text-ink-muted">Entry timing</div>
+                  <div className="text-xs uppercase tracking-wide text-ink-muted"
+                       title="Short-term momentum quality — how the setup looks right now. Separate from WHERE IN THE RANGE you would be buying, which is the Entry timing panel below.">
+                    Momentum
+                  </div>
                   <div className={`text-2xl font-bold ${data.timing.score >= 55 ? "text-brand" : data.timing.score >= 40 ? "text-warn" : "text-loss"}`}>
                     {data.timing.score >= 55 ? "Good" : data.timing.score >= 40 ? "OK" : "Poor"}
                     <span className="text-sm font-semibold text-ink-muted"> {data.timing.score}</span>
@@ -266,6 +272,12 @@ export default function Analysis() {
               </div>
             )}
           </div>
+
+          {profile && <CompanyProfile profile={profile} />}
+
+          {data.entry_timing && (
+            <EntryTimingPanel t={data.entry_timing} price={data.price} />
+          )}
 
           {/* Trade plan — the actionable half: entry, invalidation, targets, size */}
           {data.trade_plan && (
@@ -360,7 +372,7 @@ export default function Analysis() {
             <div className={`rounded-xl shadow-sm p-4 border ${
               data.bottom.likelihood === "high" ? "bg-gain-soft border-gain/30"
                 : data.bottom.likelihood === "possible" ? "bg-warn-soft border-warn/30"
-                : "bg-white border-line"
+                : "bg-surface border-line"
             }`}>
               <div className="flex items-center gap-3 flex-wrap">
                 <span className="font-bold text-ink">🔻 Potential bottom</span>
@@ -413,7 +425,7 @@ export default function Analysis() {
             <div className={`rounded-xl shadow-sm p-4 border ${
               data.csp_signal.active
                 ? "bg-gain-soft border-gain/30"
-                : "bg-white border-line"
+                : "bg-surface border-line"
             }`}>
               <div className="flex items-center gap-3 flex-wrap">
                 <span className={`font-bold ${data.csp_signal.active ? "text-gain" : "text-ink-secondary"}`}>
@@ -680,7 +692,7 @@ export default function Analysis() {
                 </div>
                 <div>
                   <div className="text-xs uppercase tracking-wide text-ink-muted mb-2">
-                    Entry timing — tunes the entry, never flips the direction
+                    Momentum — tunes the entry, never flips the direction
                   </div>
                   <ul className="space-y-1.5">
                     {data.timing.factors.map((f: any, i: number) => (
