@@ -2,6 +2,17 @@
 export interface Recommendation {
   /** Where to get out: stop, take-profit and the day count after which the
    *  setup is stale. Mirrors backend/exit_rules.py. */
+  /** Where in a year-long range this would be bought. Non-null only when the
+   *  year was lateral and position in the range changes what to do. */
+  entry_timing?: {
+    action: "buy_zone" | "wait";
+    entry_target?: number | null;
+    position_in_range?: number;
+    range_low?: number; range_high?: number;
+    typical_wait_sessions?: number | null;
+    "upside_to_range_high_%"?: number | null;
+    reason?: string;
+  } | null;
   exit_plan?: {
     entry: number; target: number; stop: number;
     horizon_days: number; target_pct: number; stop_pct: number;

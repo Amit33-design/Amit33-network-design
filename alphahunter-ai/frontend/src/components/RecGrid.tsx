@@ -115,6 +115,22 @@ const buildColumns = (sortBy: "score" | "growth_score" | "moonshot_score"): ColD
     valueGetter: (p) => p.data?.exit_plan?.target ?? p.data?.target1 ?? null,
     valueFormatter: num,
     cellStyle: () => ({ color: C().gain }) },
+  // A range-bound name near the top of its range is a bad entry however good
+  // the score is, so this sits beside the price levels rather than buried.
+  { headerName: "Entry", width: 130,
+    valueGetter: (p) => {
+      const t = p.data?.entry_timing;
+      if (!t) return null;
+      return t.action === "wait" ? `WAIT → $${t.entry_target ?? "?"}` : "BUY ZONE";
+    },
+    valueFormatter: (p: any) => p.value ?? "—",
+    cellStyle: (p) => ({
+      color: p.value == null ? C().ink
+        : String(p.value).startsWith("WAIT") ? "#b7791f" : C().gain,
+      fontWeight: p.value == null ? 400 : 700,
+    }),
+    tooltipValueGetter: (p) => p.data?.entry_timing?.reason
+      ?? "Not range-bound — position in the high/low band isn't meaningful here." },
   { headerName: "Review in", width: 100,
     valueGetter: (p) => p.data?.exit_plan?.horizon_days ?? null,
     valueFormatter: (p: any) => (p.value == null ? "—" : `${p.value}d`),
@@ -191,6 +207,15 @@ function RecCard({ r }: { r: Recommendation }) {
           Size: {r.position.shares} sh (~${Math.round(r.position.value).toLocaleString()},
           risking ${Math.round(r.position["risk_$"])})
           {r.rr_pass === false && <span className="text-loss font-semibold"> · R:R below floor</span>}
+        </div>
+      )}
+      {r.entry_timing && (
+        <div className={`mt-2 text-xs font-semibold rounded px-2 py-1 ${
+          r.entry_timing.action === "wait"
+            ? "text-warn bg-warn-soft" : "text-gain bg-gain-soft"}`}>
+          {r.entry_timing.action === "wait"
+            ? `⏳ WAIT — range-bound, better entry near $${r.entry_timing.entry_target}`
+            : "✓ In the buy zone of its yearly range"}
         </div>
       )}
       {r.csp_signal?.active && (

@@ -247,6 +247,9 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
         # percentage points between them. A recommendation with no exit is
         # half a recommendation.
         "exit_plan": (build_exit_plan(entry, atr=atr).to_dict() if entry else None),
+        # Entry timing. Built with JS parity for the Analysis page and then
+        # wired only there — so every scan pick shipped without it until now.
+        "entry_timing": _entry_timing_for(snap),
         "covered_call": (opt_metrics or {}).get("covered_call_idea"),
         "cash_secured_put": (opt_metrics or {}).get("csp_idea"),
         "confidence": conf,
@@ -268,6 +271,26 @@ def _quality_for(snap: StockSnapshot) -> dict:
     closes = [float(c) if c is not None else None for c in hist["Close"]]
     vols = [float(v or 0) for v in hist.get("Volume", [0] * len(closes))]
     return validate_bars(dates, closes, vols, ticker=snap.ticker).to_dict()
+
+
+def _entry_timing_for(snap: StockSnapshot) -> dict | None:
+    """Where in the year's range would you be buying?
+
+    A verdict without a price is close to useless: a stock that oscillated
+    between $80 and $120 all year is a buy at $85 and a bad trade at $118 on
+    identical technicals. Non-null only when the year was lateral AND position
+    in the range changes what to do, so a trending name is unaffected.
+    """
+    from backend.indicators.range_regime import analyse
+
+    hist = snap.history
+    if hist is None or hist.empty:
+        return None
+    closes = [float(c) for c in hist["Close"].dropna()]
+    read = analyse(closes)
+    if read.regime != "lateral" or read.action == "none":
+        return None
+    return read.to_dict()
 
 
 def score_ticker_general(snap: StockSnapshot, md: MarketData | None = None) -> dict:
@@ -322,6 +345,7 @@ def score_ticker_general(snap: StockSnapshot, md: MarketData | None = None) -> d
         # last good price with a badge rather than a wrong number — one
         # obviously-wrong figure discredits every other number on the page.
         "quality": _quality_for(snap) or None,
+        "entry_timing": _entry_timing_for(snap),
     }
 
 

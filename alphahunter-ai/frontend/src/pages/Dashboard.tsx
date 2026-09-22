@@ -26,6 +26,11 @@ interface Stock {
   "analyst_upside_%": number | null;
   spark?: number[];
   quality?: Quality | null;
+  entry_timing?: {
+    action: "buy_zone" | "wait";
+    entry_target?: number | null;
+    reason?: string;
+  } | null;
 }
 interface Quality {
   data_quality?: "ok" | "stale" | "unusable";
@@ -137,7 +142,16 @@ function StockCard({ s }: { s: Stock }) {
       {s.domain && <div className="text-2xs text-ink-muted truncate">{s.domain}</div>}
       <Sparkline data={s.spark} />
       <div className="mt-1 flex items-center justify-between text-xs">
-        <span className="font-medium num">{s.price != null ? `$${s.price}` : "—"}<QualityBadge q={s.quality} /></span>
+        <span className="font-medium num">
+          {s.price != null ? `$${s.price}` : "—"}
+          <QualityBadge q={s.quality} />
+          {s.entry_timing?.action === "wait" && (
+            <span className="ml-1 align-middle text-2xs px-1 py-0.5 rounded border border-warn/40 bg-warn-soft text-warn"
+                  title={s.entry_timing.reason}>
+              wait ≈${s.entry_timing.entry_target}
+            </span>
+          )}
+        </span>
         <Delta value={s["day_%"]} digits={1} />
       </div>
       <div className="mt-1 flex items-center justify-between text-xs">
