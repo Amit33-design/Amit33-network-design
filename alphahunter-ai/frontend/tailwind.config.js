@@ -29,8 +29,14 @@ export default {
         dip: v("info"),
       },
       fontFamily: {
+        // The emoji faces at the end are load-bearing: section icons (📈 🎲 ⚖️)
+        // are inline text, and without an emoji family in the stack Inter has
+        // no glyph for them and the browser draws tofu boxes. Listing them
+        // last means Latin text still renders in Inter.
         sans: ['"Inter var"', "Inter", "ui-sans-serif", "system-ui",
-               "-apple-system", "Segoe UI", "sans-serif"],
+               "-apple-system", "Segoe UI", "sans-serif",
+               '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"',
+               '"Noto Color Emoji"', '"Twemoji Mozilla"'],
         mono: ['"JetBrains Mono"', "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
       fontSize: { "2xs": ["0.6875rem", { lineHeight: "1rem", letterSpacing: "0.02em" }] },

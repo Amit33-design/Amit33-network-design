@@ -24,7 +24,9 @@ const tone = (x?: number | null) =>
 
 // Sector peers — a name down 20% means something very different when its whole
 // group is down 20% than when the group is flat.
-export default function PeerComparison({ ticker }: { ticker: string }) {
+export default function PeerComparison(
+  { ticker, subjectRsi }: { ticker: string; subjectRsi?: number | null },
+) {
   const [data, setData] = useState<PeersResp | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -50,7 +52,13 @@ export default function PeerComparison({ ticker }: { ticker: string }) {
   }
   if (!data || (!data.peers?.length && !data.note)) return null;
 
-  const rows = [data.subject, ...(data.peers || [])].filter(Boolean) as PeerRow[];
+  // The subject appears in this table AND in the indicator grid above it. Even
+  // with one shared RSI implementation the windows differ (peers always fetch
+  // 1y; the analysis uses the selected range), so the displayed value is taken
+  // from the analysis rather than recomputed — one ticker, one number.
+  const rows = ([data.subject, ...(data.peers || [])].filter(Boolean) as PeerRow[])
+    .map((r) => (r.ticker === ticker && subjectRsi != null
+      ? { ...r, rsi: subjectRsi } : r));
 
   return (
     <div className="panel p-4">

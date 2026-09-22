@@ -150,7 +150,14 @@ export default function Analysis() {
         : data.cycle.current === "bear" ? "bg-loss-soft text-loss" : "bg-surface-sunken text-ink-secondary"
     }`}>
       {data.cycle.current === "bull" ? "▲ Bullish cycle" : data.cycle.current === "bear" ? "▼ Bearish cycle" : "Neutral"}
-      {data.cycle.days_in_phase != null && ` · ${data.cycle.days_in_phase}d`}
+      {/* The count is bounded by the fetched window, so the same stock reads
+          52d on a 1y range and 95d on 2y. Rather than silently imply an
+          absolute age, it is labelled as measured within the range. */}
+      {data.cycle.days_in_phase != null && (
+        <span title={`${data.cycle.days_in_phase} sessions of the selected ${range} window have been in this cycle. A longer range may show a longer run.`}>
+          {` · ${data.cycle.days_in_phase}d in range`}
+        </span>
+      )}
     </span>
   );
 
@@ -346,7 +353,7 @@ export default function Analysis() {
             </div>
           )}
 
-          {data.ticker && <PeerComparison ticker={data.ticker} />}
+          {data.ticker && <PeerComparison ticker={data.ticker} subjectRsi={data.rsi?.[data.rsi.length - 1] ?? null} />}
 
           {/* Potential bottom */}
           {data.bottom && (
@@ -378,7 +385,10 @@ export default function Analysis() {
                   {data.bottom.checks.map((ch: any, i: number) => (
                     <li key={i} className={`flex items-start gap-2 ${ch.ok ? "text-gain" : "text-ink-muted"}`}>
                       <span>{ch.ok ? "✓" : "✗"}</span>
-                      <span>{ch.s}{ch.ok ? ` (+${ch.pts})` : ""}</span>
+                      <span className={bottomTellDef(ch.s) ? "cursor-help underline decoration-dotted decoration-line" : undefined}
+                            title={bottomTellDef(ch.s)}>
+                        {ch.s}{ch.ok ? ` (+${ch.pts})` : ""}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -736,6 +746,23 @@ const PLAN_METHOD =
   "with the square root of time, so a 10-day plan gets roughly 3x a daily ATR of " +
   "room, at a consistent 1.67:1 reward-to-risk. Same arithmetic as the dashboard " +
   "cards and the opportunities grid \u2014 one ticker, one plan.";
+
+// Plain definitions for the six bottoming tells. Users should not have to
+// guess what "capitulation volume" means to read a checklist about their money.
+const BOTTOM_TELLS: [string, string][] = [
+  ["rsi", "RSI below 30 means the stock has fallen faster than usual over the last two weeks — stretched to the downside, which often precedes a bounce. It is not a buy signal on its own."],
+  ["diverg", "Bullish divergence: price made a lower low but RSI made a HIGHER low. Selling pressure is easing even as the price falls — one of the earliest reversal tells."],
+  ["52-week low", "How far above its 52-week low the stock is trading. Sitting right on the low means the decline has not paused yet; lifting off it is the first sign of a floor."],
+  ["support", "The price is testing a level where buyers stepped in before. Holding it suggests those buyers are still there; breaking it says they are gone."],
+  ["volume", "Capitulation volume: an unusually heavy down day. It often marks the point where the last forced sellers are done, because there is nobody left to sell."],
+  ["ema", "Reclaiming the 20-day average means the short-term trend has turned up, not just paused. Usually the last of the six to fire, and the most confirming."],
+  ["macd", "MACD turning up means downward momentum is decelerating — the rate of decline is slowing even if the price is still falling."],
+];
+
+function bottomTellDef(label: string): string | undefined {
+  const l = (label || "").toLowerCase();
+  return BOTTOM_TELLS.find(([k]) => l.includes(k))?.[1];
+}
 
 const fmt = (x: any) => (x == null ? "—" : `$${Number(x).toFixed(2)}`);
 const pct = (x: any) => (x == null ? "—" : `${x >= 0 ? "+" : ""}${Number(x).toFixed(1)}%`);

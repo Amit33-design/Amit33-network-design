@@ -78,6 +78,12 @@ the logic in one, change the other to match.
 ## 5. How to add a serverless endpoint
 
 - Add `api/<name>.js` (Node, `export default handler`, uses global `fetch`).
+- **Shared maths goes in `api/_indicators.js`** — files prefixed `_` aren't
+  routed by Vercel. Do NOT re-implement an indicator locally: RSI was written
+  three times, two of them as a plain 14-day average instead of Wilder's, so
+  one ticker showed RSI 48.5 in the peer table and 52.7 in the indicator grid,
+  and `quote.js` drove Buy/Hold/Sell thresholds off a number up to ~7 points
+  out. Import it.
 - Data source: Yahoo **v8 chart** endpoint `/v8/finance/chart/{sym}` with a
   browser `User-Agent` (no auth). Avoid `quoteSummary`/`v7 quote` (need a crumb).
 - If it must be reachable as a real path, confirm the `vercel.json` rewrite
@@ -107,6 +113,16 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   in the reporting currency). Don't remove it.
 - **403 without a browser User-Agent** on Yahoo/Wikipedia/NASDAQ.
 - **Day % = last two closes**, not `meta.chartPreviousClose`.
+- **RSI means Wilder's RSI.** One implementation, `api/_indicators.js`, in
+  parity with `backend/indicators/technical.py` (`ewm(alpha=1/period)`).
+- **Every fetched series goes through `backend/data_quality.validate_bars()`**
+  before it is computed on or displayed. It catches impossible values, split-
+  shaped jumps and a bad latest bar (quarantined, shown as "data delayed"). It
+  does NOT catch a series that is internally consistent but wrong in level —
+  that needs a second price source.
+- **Never surface exception text or an upstream status to the user.** The API
+  returns `{code, message}`; 404/422 mean the user's input, 502 means us. The
+  UI branches on that — see `ApiError` in `lib/api.ts`.
 - **Score weights must sum to 1.0** (a test enforces it).
 - **Tests never hit the network.**
 

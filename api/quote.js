@@ -10,27 +10,19 @@ const CHART = (t) =>
     t
   )}?range=1y&interval=1d`;
 
+import { rsiLast } from "./_indicators.js";
+
+// RSI comes from the shared module: this file drives Buy/Hold/Sell
+// thresholds at 35 and 70, and its old plain-average RSI sat up to ~7
+// points away from Wilder's, which is enough to flip a verdict.
+const rsi = (closes, period = 14) => rsiLast(closes, period);
+
 function sma(arr, n) {
   if (arr.length < n) return null;
   const s = arr.slice(-n).reduce((a, b) => a + b, 0);
   return s / n;
 }
 
-function rsi(closes, period = 14) {
-  if (closes.length < period + 1) return null;
-  let gain = 0;
-  let loss = 0;
-  for (let i = closes.length - period; i < closes.length; i++) {
-    const d = closes[i] - closes[i - 1];
-    if (d >= 0) gain += d;
-    else loss -= d;
-  }
-  const ag = gain / period;
-  const al = loss / period;
-  if (al === 0) return 100;
-  const rs = ag / al;
-  return 100 - 100 / (1 + rs);
-}
 
 // Average true range, approximated from closes alone (the chart payload we
 // keep is close-only). Close-to-close movement understates a real ATR

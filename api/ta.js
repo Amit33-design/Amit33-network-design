@@ -4,6 +4,8 @@
 // the price history + EMA overlays + RSI series + a full indicator panel and a
 // trend/momentum Buy-Hold-Sell verdict with explainable factors.
 
+import { rsiSeries } from "./_indicators.js";
+
 const CHART = (t, range) =>
   `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=${range}&interval=1d`;
 
@@ -22,24 +24,6 @@ const ema = (arr, span) => {
 const smaLast = (arr, n) =>
   arr.length < n ? null : arr.slice(-n).reduce((a, b) => a + b, 0) / n;
 
-function rsiSeries(closes, period = 14) {
-  const out = closes.map(() => null);
-  if (closes.length < period + 1) return out;
-  let ag = 0, al = 0;
-  for (let i = 1; i <= period; i++) {
-    const d = closes[i] - closes[i - 1];
-    if (d >= 0) ag += d; else al -= d;
-  }
-  ag /= period; al /= period;
-  out[period] = al === 0 ? 100 : 100 - 100 / (1 + ag / al);
-  for (let i = period + 1; i < closes.length; i++) {
-    const d = closes[i] - closes[i - 1];
-    ag = (ag * (period - 1) + Math.max(d, 0)) / period;
-    al = (al * (period - 1) + Math.max(-d, 0)) / period;
-    out[i] = al === 0 ? 100 : 100 - 100 / (1 + ag / al);
-  }
-  return out;
-}
 
 function macdSeries(closes) {
   const e12 = ema(closes, 12), e26 = ema(closes, 26);
@@ -388,7 +372,24 @@ function analyze(dates, o, h, l, c, v, accountSize, riskPct) {
   const csp = cspSignal(dayChange, last, s200, cyc, sr, a, bounce);
   const bottom = bottomSignal(o, h, l, c, v, rsis, e20, sr);
   const hi52 = Math.max(...c.slice(-252)), lo52 = Math.min(...c.slice(-252));
-  const ret = (n) => (c.length > n ? ((last - c[c.length - 1 - n]) / c[c.length - 1 - n]) * 100 : null);
+  // Trailing return over n sessions.
+  //
+  // A 1y fetch returns about 252 bars, so the exact 252-session lookback
+  // needed one more bar than existed and the 1-year cell came back blank
+  // precisely when the user selected 1y — the range where they most expect it.
+  // Falling back to the oldest bar available gives a 251-session return
+  // instead of nothing; `MIN_RET_COVERAGE` stops that degrading silently into
+  // a "1-year return" measured over three months.
+  const MIN_RET_COVERAGE = 0.9;
+  const ret = (n) => {
+    if (c.length < 2) return null;
+    const want = c.length - 1 - n;
+    const idx = want >= 0 ? want : 0;
+    const have = c.length - 1 - idx;
+    if (have < n * MIN_RET_COVERAGE) return null;
+    const base = c[idx];
+    return base > 0 ? ((last - base) / base) * 100 : null;
+  };
   const avgVol = v.length >= 20 ? v.slice(-20).reduce((a, b) => a + b, 0) / 20 : null;
   const distHigh = hi52 ? ((last - hi52) / hi52) * 100 : null;
   const distLow = lo52 ? ((last - lo52) / lo52) * 100 : null;

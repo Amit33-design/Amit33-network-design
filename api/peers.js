@@ -4,6 +4,8 @@
 // with 6-month return, RSI, distance from the 52-week high and a trend read,
 // so you can see if a name is leading or lagging its own sector.
 
+import { rsiLast } from "./_indicators.js";
+
 const CHART = (t, range) =>
   `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=${range}&interval=1d`;
 const UA = { "User-Agent": "Mozilla/5.0 (compatible; alphahunter-ai/1.0)" };
@@ -135,16 +137,6 @@ async function peersFor(ticker, limit = 4) {
   return { peers: [], basis: "none", sector };
 }
 
-const rsiLast = (c, period = 14) => {
-  if (c.length < period + 1) return null;
-  let ag = 0, al = 0;
-  for (let i = c.length - period; i < c.length; i++) {
-    const d = c[i] - c[i - 1];
-    if (d >= 0) ag += d; else al -= d;
-  }
-  ag /= period; al /= period;
-  return al === 0 ? 100 : 100 - 100 / (1 + ag / al);
-};
 const smaLast = (a, n) => (a.length < n ? null : a.slice(-n).reduce((x, y) => x + y, 0) / n);
 const r1 = (x) => (x == null ? null : Math.round(x * 10) / 10);
 
