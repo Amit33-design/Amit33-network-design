@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Plot from "react-plotly.js";
 import { api } from "../lib/api";
@@ -15,9 +15,13 @@ export default function Analysis() {
   // tickers link here), so the chart loads without retyping it.
   const [params, setParams] = useSearchParams();
   const linked = (params.get("ticker") || "").toUpperCase();
+  const linkedRange = params.get("range") || "";
   const [ticker, setTicker] = useState(linked || "AAPL");
-  // 2y default so the chart shows the long-term structure the verdict uses.
-  const [range, setRange] = useState("2y");
+  // 2y default so the chart shows the long-term structure the verdict uses —
+  // but a ?range= in the URL wins, so a shared link reproduces the view it
+  // was copied from rather than silently snapping back to the default.
+  const [range, setRange] = useState(
+    ["6mo", "1y", "2y", "5y"].includes(linkedRange) ? linkedRange : "2y");
   // Position sizing is per-user; persist it so the plan is yours, not a demo.
   const [account, setAccount] = useState<number>(() => {
     const v = Number(localStorage.getItem("alphahunter.account"));
@@ -31,19 +35,26 @@ export default function Analysis() {
   const [theme, setTheme] = useState(getTheme);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<unknown>(null);
 
   async function run(sym = ticker, rng = range) {
     const symbol = sym.toUpperCase();
     setLoading(true);
-    setError("");
+    setError(null);
     // Keep the URL in sync so the view is shareable and the back button works.
-    if (symbol && symbol !== linked) setParams({ ticker: symbol }, { replace: true });
+    // Include the range: the URL previously dropped it, so a shared link
+    // silently reopened on the default range and showed a different chart.
+    setParams({ ticker: symbol, range: rng }, { replace: true });
     try {
       setData(await api.technicalAnalysis(symbol, rng, account, riskPct));
     } catch (e) {
-      setError(String(e));
-      setData(null);
+      setError(e);
+      // A bad symbol is the user's typo, not a failure of the page: keep the
+      // last good analysis on screen so they do not lose their place. A real
+      // outage does blank it, because showing stale numbers during one is
+      // worse than showing nothing.
+      const status = (e as { status?: number })?.status;
+      if (status !== 404 && status !== 422) setData(null);
     } finally {
       setLoading(false);
     }
@@ -54,9 +65,11 @@ export default function Analysis() {
   useEffect(() => {
     if (!linked) return;
     setTicker(linked);
-    run(linked, range);
+    const rng = ["6mo", "1y", "2y", "5y"].includes(linkedRange) ? linkedRange : range;
+    if (rng !== range) setRange(rng);
+    run(linked, rng);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [linked]);
+  }, [linked, linkedRange]);
 
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
 
@@ -68,6 +81,42 @@ export default function Analysis() {
 
   const ind = data?.indicators;
   const ch = data?.chart;
+
+  // Explicit axis bounds, computed from the data actually plotted.
+  //
+  // With autorange, a single null or undefined y-value makes Plotly fall back
+  // to a default window — which is how the price chart ended up spanning
+  // 2015-2035 with a y-axis reaching -2000 on a $258 stock. The usual source
+  // is indicator warm-up (EMA200 is null for its first 200 bars) and the
+  // signal traces, which looked up closes by date and produced `undefined`
+  // for any date not in the series.
+  const bounds = useMemo(() => {
+    if (!ch?.dates?.length) return null;
+    const nums = (xs: any[]) =>
+      (xs || []).filter((v) => typeof v === "number" && Number.isFinite(v) && v > 0);
+    const price = nums([...(ch.close || []), ...(ch.high || []), ...(ch.low || [])]);
+    const vol = nums(ch.volume || []);
+    if (!price.length) return null;
+    const lo = Math.min(...price), hi = Math.max(...price);
+    return {
+      x: [ch.dates[0], ch.dates[ch.dates.length - 1]] as [string, string],
+      // A little headroom, and never below zero — a price axis that dips
+      // negative is always a bug, never data.
+      price: [Math.max(0, lo * 0.98), hi * 1.02] as [number, number],
+      volume: [0, (vol.length ? Math.max(...vol) : 1) * 1.1] as [number, number],
+    };
+  }, [ch]);
+
+  // Signal markers, with any date missing from the price series dropped
+  // rather than plotted as undefined.
+  const cleanSignals = (sigs: any[]) => {
+    const pts = (sigs || [])
+      .map((sg) => ({ date: sg.date, y: closeByDate[sg.date], label: sg.label }))
+      .filter((pt) => typeof pt.y === "number" && Number.isFinite(pt.y));
+    return { x: pts.map((pt) => pt.date), y: pts.map((pt) => pt.y),
+             text: pts.map((pt) => pt.label) };
+  };
+
     const C = chartColors(theme);
   const verdictColor = data?.score >= 70 ? C.gain : data?.score >= 45 ? "#d9a441" : C.loss;
 
@@ -138,7 +187,7 @@ export default function Analysis() {
       </div>
 
       {loading && <Loading label="Fetching real-time data…" />}
-      {error && <ErrorBox error={error} />}
+      {error ? <ErrorBox error={error} onRetry={() => run()} /> : null}
 
       {data && !loading && ch && (
         <div className="space-y-6">
@@ -194,6 +243,16 @@ export default function Analysis() {
                 <div className="text-2xl font-bold" style={{ color: verdictColor }}>{data.recommendation}</div>
               </div>
             </div>
+            {ch?.dates?.length ? (
+              <div className="w-full text-2xs text-ink-muted">
+                Data as of <b>{ch.dates[ch.dates.length - 1]}</b> close · Yahoo Finance
+                {data.quality?.data_quality === "stale" && (
+                  <span className="ml-1 text-warn">
+                    · latest bar failed validation, showing the last good close
+                  </span>
+                )}
+              </div>
+            ) : null}
             {data.verdict_reason && (
               <div className="w-full mt-1 pt-2 border-t border-line text-sm text-ink-secondary">
                 <span className="font-semibold text-ink">Why: </span>{data.verdict_reason}
@@ -399,14 +458,14 @@ export default function Analysis() {
                   line: { color: "#94a3b8", width: 1 }, fill: "tonexty", fillcolor: "rgba(120,130,125,0.10)" },
                 { x: ch.dates, y: ch.ema50, type: "scatter", mode: "lines", name: "EMA50", line: { color: C.series[2], width: 1.5 } },
                 { x: ch.dates, y: ch.ema200, type: "scatter", mode: "lines", name: "EMA200", line: { color: C.series[3], width: 1.5 } },
-                { x: bullSig.map((s: any) => s.date), y: bullSig.map((s: any) => closeByDate[s.date]),
+                { ...cleanSignals(bullSig),
                   type: "scatter", mode: "markers", name: "Bull signal",
                   marker: { symbol: "triangle-up", size: 11, color: C.gain },
-                  text: bullSig.map((s: any) => s.label), hoverinfo: "text+x" },
-                { x: bearSig.map((s: any) => s.date), y: bearSig.map((s: any) => closeByDate[s.date]),
+                  hoverinfo: "text+x" },
+                { ...cleanSignals(bearSig),
                   type: "scatter", mode: "markers", name: "Bear signal",
                   marker: { symbol: "triangle-down", size: 11, color: C.loss },
-                  text: bearSig.map((s: any) => s.label), hoverinfo: "text+x" },
+                  hoverinfo: "text+x" },
               ]) as any}
               layout={{
                 ...plotTheme(theme),
@@ -416,6 +475,10 @@ export default function Analysis() {
                 // drag pans (no distorted zoom boxes), scroll/pinch zooms.
                 dragmode: "pan",
                 xaxis: {
+                  // Set from the data, not inferred. Panning and the range
+                  // buttons still work; this only fixes the initial window.
+                  range: bounds?.x,
+                  autorange: false,
                   rangeslider: { visible: true, thickness: 0.07 },
                   rangeselector: {
                     x: 0, y: 1.06, yanchor: "bottom",
@@ -431,7 +494,8 @@ export default function Analysis() {
                   },
                 },
                 // Re-fit the y axis to whatever window is in view.
-                yaxis: { title: { text: "Price" }, autorange: true, fixedrange: false },
+                yaxis: { title: { text: "Price" }, range: bounds?.price,
+                         autorange: false, fixedrange: false },
                 shapes: [...cycleShapes, ...levelShapes],
               } as any}
               useResizeHandler style={{ width: "100%" }}
@@ -469,7 +533,8 @@ export default function Analysis() {
               <Plot
                 data={[{ type: "bar", x: ch.dates, y: ch.volume, name: "Volume",
                          marker: { color: ch.close.map((c: number, i: number) => (i > 0 && c >= ch.close[i - 1] ? C.gain : C.loss)) } }]}
-                layout={{ ...plotTheme(theme), autosize: true, height: 220, margin: { l: 50, r: 10, t: 10, b: 30 }, yaxis: { title: { text: "Vol" } } }}
+                layout={{ ...plotTheme(theme), autosize: true, height: 220, margin: { l: 50, r: 10, t: 10, b: 30 }, yaxis: { title: { text: "Vol" }, range: bounds?.volume, autorange: false },
+                              xaxis: { range: bounds?.x, autorange: false } }}
                 useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: true, doubleClick: "reset" } as any}
               />
             </div>
@@ -527,7 +592,9 @@ export default function Analysis() {
               data={[{ x: ch.dates, y: ch.rsi, type: "scatter", mode: "lines", name: "RSI", line: { color: C.series[0] } }]}
               layout={{
                 ...plotTheme(theme),
-                autosize: true, height: 200, margin: { l: 50, r: 10, t: 10, b: 30 }, yaxis: { range: [0, 100] },
+                autosize: true, height: 200, margin: { l: 50, r: 10, t: 10, b: 30 },
+                yaxis: { range: [0, 100], autorange: false },
+                xaxis: { range: bounds?.x, autorange: false },
                 shapes: [30, 70].map((y) => ({ type: "line", x0: ch.dates[0], x1: ch.dates[ch.dates.length - 1], y0: y, y1: y,
                   line: { color: y === 70 ? C.loss : C.gain, width: 1, dash: "dot" } })),
               }}

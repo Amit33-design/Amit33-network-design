@@ -617,21 +617,60 @@ function buildThesis(t, out, spyCloses) {
   return parts.join(" ");
 }
 
+// A real symbol: 1-6 letters, optionally a class suffix (BRK.B, BRK-B).
+// Validating BEFORE the fetch means a typo gets an instant, specific answer
+// instead of an upstream error the UI has to guess the meaning of.
+const TICKER_RE = /^[A-Z]{1,6}([.-][A-Z]{1,2})?$/;
+
 export default async function handler(req, res) {
   const ticker = String(req.query?.ticker || req.body?.ticker || "").toUpperCase().trim();
   const range = ["6mo", "1y", "2y", "5y"].includes(req.query?.range) ? req.query.range : "1y";
-  if (!ticker) return res.status(400).json({ error: "ticker required" });
+  if (!ticker) {
+    return res.status(400).json({
+      code: "ticker_required",
+      message: "Enter a ticker symbol to analyse.",
+    });
+  }
+  if (!TICKER_RE.test(ticker)) {
+    return res.status(422).json({
+      code: "invalid_ticker",
+      ticker,
+      message: `'${ticker}' isn't a valid ticker symbol. Use 1-6 letters, e.g. AAPL or BRK.B.`,
+    });
+  }
   try {
     const r = await fetch(CHART(ticker, range), {
       headers: { "User-Agent": "Mozilla/5.0 (compatible; alphahunter-ai/1.0)" },
     });
-    if (!r.ok) return res.status(502).json({ error: `Yahoo returned ${r.status}` });
+    // Yahoo answers 404 for symbols it does not know. That is "not found",
+    // not "our data service is broken", and conflating the two is what made
+    // a typo look like an outage.
+    if (r.status === 404) {
+      return res.status(404).json({
+        code: "ticker_not_found",
+        ticker,
+        message: `No market data found for '${ticker}'. Check the symbol and try again.`,
+      });
+    }
+    if (!r.ok) {
+      // Deliberately generic: the upstream status is logged, not shown.
+      console.error(`[ta] upstream ${r.status} for ${ticker}`);
+      return res.status(502).json({
+        code: "data_unavailable",
+        message: "Market data is temporarily unavailable. Please try again in a minute.",
+      });
+    }
     const j = await r.json();
     const result = j?.chart?.result?.[0];
     const meta = result?.meta;
     const ts = result?.timestamp || [];
     const q = result?.indicators?.quote?.[0] || {};
-    if (!meta || !ts.length || !q.close) return res.status(404).json({ error: "no data" });
+    if (!meta || !ts.length || !q.close) {
+      return res.status(404).json({
+        code: "ticker_not_found", ticker,
+        message: `No market data found for '${ticker}'. Check the symbol and try again.`,
+      });
+    }
 
     // Drop any null bars so indicators line up.
     const dates = [], o = [], h = [], l = [], c = [], v = [];
@@ -640,7 +679,12 @@ export default async function handler(req, res) {
       dates.push(new Date(t * 1000).toISOString().slice(0, 10));
       o.push(q.open[i]); h.push(q.high[i]); l.push(q.low[i]); c.push(q.close[i]); v.push(q.volume[i] || 0);
     });
-    if (c.length < 30) return res.status(422).json({ error: "insufficient history" });
+    if (c.length < 30) {
+      return res.status(422).json({
+        code: "insufficient_history", ticker,
+        message: `'${ticker}' has only ${c.length} days of price history — not enough to analyse. Try a longer range or a more established name.`,
+      });
+    }
 
     // Position sizing inputs are per-user, so they ride on the query string
     // (the UI persists them locally); sane defaults when absent.
@@ -675,6 +719,12 @@ export default async function handler(req, res) {
       ...out,
     });
   } catch (e) {
-    return res.status(500).json({ error: String(e) });
+    // Never surface the exception text: it leaks module paths and internals.
+    // It goes to the server log, the user gets something actionable.
+    console.error(`[ta] ${ticker}:`, e);
+    return res.status(500).json({
+      code: "analysis_failed",
+      message: "Something went wrong analysing that ticker. Please try again.",
+    });
   }
 }

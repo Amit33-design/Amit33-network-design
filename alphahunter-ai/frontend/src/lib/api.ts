@@ -32,9 +32,48 @@ async function loadSnapshot(): Promise<Recommendation[]> {
   return snapshotCache;
 }
 
+/** An API failure that carries WHY, so the UI can tell a typo from an outage.
+ *
+ *  Before this, every failure arrived as "502 Bad Gateway" and the UI printed
+ *  the same "start it with uvicorn" message — so a mistyped ticker looked like
+ *  a broken deployment.
+ */
+export class ApiError extends Error {
+  status: number;
+  code: string;
+  ticker?: string;
+
+  constructor(status: number, code: string, message: string, ticker?: string) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.code = code;
+    this.ticker = ticker;
+  }
+
+  /** The user's input is wrong — not the service. */
+  get isUserError() {
+    return this.status === 404 || this.status === 422;
+  }
+}
+
 async function get<T>(path: string, raw = false): Promise<T> {
   const res = await fetch(raw ? path : `${BASE}${path}`);
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+  if (!res.ok) {
+    let code = "request_failed";
+    let message = "";
+    let ticker: string | undefined;
+    try {
+      const body = await res.json();
+      // FastAPI nests under `detail`; the serverless functions are flat.
+      const d = body?.detail && typeof body.detail === "object" ? body.detail : body;
+      code = d?.code || code;
+      message = d?.message || d?.error || "";
+      ticker = d?.ticker;
+    } catch { /* non-JSON error body — fall through to the default */ }
+    throw new ApiError(res.status, code,
+      message || "That request could not be completed.", ticker);
+  }
   return res.json() as Promise<T>;
 }
 

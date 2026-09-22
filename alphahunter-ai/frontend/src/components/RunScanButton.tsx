@@ -34,8 +34,10 @@ export default function RunScanButton() {
   // mobile and desktop.
   if (state === "link") {
     return (
-      <a href={actionsUrl} target="_blank" rel="noopener noreferrer" className={cls}>
-        Run Scan on GitHub ↗
+      <a href={actionsUrl} target="_blank" rel="noopener noreferrer"
+         className={cls}
+         title="This deploy has no dispatch token, so the scan can't be started from here. Opens the workflow on GitHub.">
+        Start scan on GitHub ↗
       </a>
     );
   }
@@ -44,14 +46,16 @@ export default function RunScanButton() {
     state === "running"
       ? "Starting…"
       : state === "done"
-      ? "✓ Scan started"
+      // The scan takes roughly half an hour, so "started" on its own reads as
+      // "done" and users reload expecting fresh numbers.
+      ? "✓ Started — results in ~30 min"
       : state === "error"
-      ? "Failed — retry"
+      ? "Couldn't start — retry"
       : "▶ Run Scan";
 
   return (
     <button onClick={onClick} disabled={state === "running"} className={cls}
-            title="Run a fresh AlphaHunter scan; results refresh the site automatically.">
+            title="Runs a fresh scan of the whole universe. It takes about 30 minutes; the site updates itself when it finishes.">
       {label}
     </button>
   );

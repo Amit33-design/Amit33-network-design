@@ -257,6 +257,19 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
     }
 
 
+def _quality_for(snap: StockSnapshot) -> dict:
+    """Validate the price series before anything is displayed from it."""
+    from backend.data_quality import validate_bars
+
+    hist = snap.history
+    if hist is None or hist.empty:
+        return {}
+    dates = [d.strftime("%Y-%m-%d") for d in hist.index]
+    closes = [float(c) if c is not None else None for c in hist["Close"]]
+    vols = [float(v or 0) for v in hist.get("Volume", [0] * len(closes))]
+    return validate_bars(dates, closes, vols, ticker=snap.ticker).to_dict()
+
+
 def score_ticker_general(snap: StockSnapshot, md: MarketData | None = None) -> dict:
     """Score ANY ticker (no oversold gate) for the dashboard watchlist.
 
@@ -305,6 +318,10 @@ def score_ticker_general(snap: StockSnapshot, md: MarketData | None = None) -> d
         # rather than having to infer it from a score that looks plausible
         # either way.
         "sentiment_detail": subs["sentiment"].detail or None,
+        # Whether this row's price can be trusted. A quarantined bar shows the
+        # last good price with a badge rather than a wrong number — one
+        # obviously-wrong figure discredits every other number on the page.
+        "quality": _quality_for(snap) or None,
     }
 
 

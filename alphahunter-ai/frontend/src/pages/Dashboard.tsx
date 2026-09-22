@@ -25,7 +25,15 @@ interface Stock {
   cycle: string;
   "analyst_upside_%": number | null;
   spark?: number[];
+  quality?: Quality | null;
 }
+interface Quality {
+  data_quality?: "ok" | "stale" | "unusable";
+  display_close?: number | null;
+  display_date?: string | null;
+  flags?: { date: string; kind: string; detail?: string }[];
+}
+
 interface Dash {
   as_of: string;
   count: number;
@@ -60,6 +68,24 @@ function Sparkline({ data }: { data?: number[] }) {
     <svg viewBox="0 0 100 28" className="w-full h-7" preserveAspectRatio="none">
       <polyline points={pts} fill="none" stroke={up ? chartColors().gain : chartColors().loss} strokeWidth="1.6" />
     </svg>
+  );
+}
+
+/** "Data delayed" badge for a row whose latest bar was quarantined. */
+function QualityBadge({ q }: { q?: Quality | null }) {
+  if (!q || q.data_quality === "ok" || !q.data_quality) return null;
+  const stale = q.data_quality === "stale";
+  return (
+    <span
+      className={`ml-1 align-middle text-2xs px-1.5 py-0.5 rounded border ${
+        stale ? "border-warn/40 bg-warn-soft text-warn"
+              : "border-loss/40 bg-loss-soft text-loss"}`}
+      title={stale
+        ? `Today's bar failed validation (${q.flags?.[0]?.detail ?? "out of range"}). Showing the last good close${q.display_date ? ` from ${q.display_date}` : ""}.`
+        : "Not enough usable price history to validate this series."}
+    >
+      {stale ? "data delayed" : "unverified"}
+    </span>
   );
 }
 
@@ -111,7 +137,7 @@ function StockCard({ s }: { s: Stock }) {
       {s.domain && <div className="text-2xs text-ink-muted truncate">{s.domain}</div>}
       <Sparkline data={s.spark} />
       <div className="mt-1 flex items-center justify-between text-xs">
-        <span className="font-medium num">{s.price != null ? `$${s.price}` : "—"}</span>
+        <span className="font-medium num">{s.price != null ? `$${s.price}` : "—"}<QualityBadge q={s.quality} /></span>
         <Delta value={s["day_%"]} digits={1} />
       </div>
       <div className="mt-1 flex items-center justify-between text-xs">

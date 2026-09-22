@@ -88,9 +88,10 @@ export default function App() {
 
       <footer className="max-w-[1400px] mx-auto px-3 sm:px-5 pb-8 pt-2">
         <p className="text-2xs text-ink-muted">
-          AlphaHunter AI — research tooling, not financial advice. Signals are
-          generated from public market data and measured against SPY.
-        </p>
+          AlphaHunter AI — research tooling, not financial advice.{" "}
+          <b>Price data: Yahoo Finance</b> — intraday quotes are delayed (typically
+          15 minutes) and all analysis runs on end-of-day closes. Signals are
+          generated from public market data and measured against SPY.</p>
       </footer>
     </div>
   );
