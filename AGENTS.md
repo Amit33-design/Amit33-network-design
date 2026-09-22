@@ -132,6 +132,10 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 - **Never surface exception text or an upstream status to the user.** The API
   returns `{code, message}`; 404/422 mean the user's input, 502 means us. The
   UI branches on that — see `ApiError` in `lib/api.ts`.
+- **Seed every generated file** (§4.4). A component that fetches a file CI has
+  not written yet renders nothing and looks like a feature that was never
+  built — that is exactly what happened to the company profile panel. Prefer a
+  live fallback so the feature never depends on a cron having run.
 - **Score weights must sum to 1.0** (a test enforces it).
 - **Tests never hit the network.**
 
@@ -147,7 +151,7 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | Live single-ticker TA / thesis / bottom / cycle | `api/ta.js` |
 | Range-vs-trend regime & entry timing | `api/_regime.js` + `backend/indicators/range_regime.py` |
 | Shared indicator maths (RSI) | `api/_indicators.js` |
-| Company profiles (sector/industry/summary) | `backend/build_profiles.py` → `frontend/public/profiles.json` |
+| Company profiles (sector/industry/summary) | `api/profile.js` (live) + `backend/build_profiles.py` → `frontend/public/profiles.json` (summaries) |
 | Price-series validation | `backend/data_quality.py` |
 | Live portfolio prices/recs | `api/quote.js` |
 | Dashboard watchlist | `backend/watchlist.py` + `backend/run_dashboard.py` |
