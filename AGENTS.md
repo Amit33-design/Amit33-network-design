@@ -153,6 +153,7 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | Shared indicator maths (RSI) | `api/_indicators.js` |
 | Company profiles (sector/industry/summary) | `api/profile.js` (live) + `backend/build_profiles.py` → `frontend/public/profiles.json` (summaries) |
 | Price-series validation | `backend/data_quality.py` |
+| Pick-list concentration (effective bets) | `backend/concentration.py` |
 | Live portfolio prices/recs | `api/quote.js` |
 | Dashboard watchlist | `backend/watchlist.py` + `backend/run_dashboard.py` |
 | Scan output columns | `backend/run_daily.py` |

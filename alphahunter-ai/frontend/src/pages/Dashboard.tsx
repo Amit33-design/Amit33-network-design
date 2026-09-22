@@ -32,6 +32,16 @@ interface Stock {
     reason?: string;
   } | null;
 }
+interface ConcentrationRead {
+  count: number;
+  effective_bets: number;
+  top_sector?: string | null;
+  top_sector_share: number;
+  by_sector?: { sector: string; count: number; share: number }[];
+  concentrated: boolean;
+  note: string;
+}
+
 interface Quality {
   data_quality?: "ok" | "stale" | "unusable";
   display_close?: number | null;
@@ -45,6 +55,11 @@ interface Dash {
   domains: Record<string, Stock[]>;
   /** Read from the market itself — SPY structure, breadth and realized
    *  volatility — with an explicit multiplier on position size. */
+  /** How many independent bets the board really is. */
+  concentration?: {
+    top_picks?: ConcentrationRead;
+    whole_board?: ConcentrationRead;
+  } | null;
   market_regime?: {
     regime: "risk-on" | "neutral" | "risk-off" | "unknown";
     score: number;
@@ -458,6 +473,27 @@ export default function Dashboard() {
         <div className="text-xs text-ink-muted mb-3">
           Highest AI-scored names across every domain right now — the system's best identifications, ranked by conviction.
         </div>
+        {/* Eight names is not eight bets if five are the same sector. Every
+            screen here ranks names on their own merits and presents a list,
+            which quietly implies the entries are independent. */}
+        {dash.concentration?.top_picks && (
+          <div className={`mb-3 text-xs rounded-panel border px-3 py-2 ${
+            dash.concentration.top_picks.concentrated
+              ? "border-warn/30 bg-warn-soft text-warn"
+              : "border-line bg-surface-sunken text-ink-secondary"}`}>
+            <b>
+              {dash.concentration.top_picks.effective_bets} effective bets
+            </b>{" "}
+            from {dash.concentration.top_picks.count} picks ·{" "}
+            {dash.concentration.top_picks.note}
+            {dash.concentration.top_picks.by_sector?.length ? (
+              <span className="ml-1 text-ink-muted">
+                ({dash.concentration.top_picks.by_sector
+                  .map((b) => `${b.sector} ${b.count}`).join(" · ")})
+              </span>
+            ) : null}
+          </div>
+        )}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {topPicks.map((s, i) => (
             <div key={s.ticker} className="relative">

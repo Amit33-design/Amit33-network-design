@@ -53,6 +53,27 @@ def main() -> None:
         rows.sort(key=lambda r: r["score"], reverse=True)
         out_domains[domain] = rows
 
+    # Concentration: is the board eight bets, or two? Computed here because
+    # this is where the whole scored list exists; the UI only renders it.
+    concentration = None
+    try:
+        from backend.concentration import from_records
+
+        prof_path = os.path.join(os.path.dirname(OUT), "profiles.json")
+        profiles = {}
+        if os.path.exists(prof_path):
+            with open(prof_path) as f:
+                profiles = json.load(f).get("profiles", {}) or {}
+        rows = [r for rs in out_domains.values() for r in rs]
+        top = sorted(rows, key=lambda r: -(r.get("score") or 0))[:8]
+        concentration = {
+            "top_picks": from_records(top, profiles).to_dict(),
+            "whole_board": from_records(rows, profiles).to_dict(),
+        }
+        print(f"Concentration: top picks = {concentration['top_picks']['note']}")
+    except Exception as e:  # pragma: no cover - CI only
+        print(f"Concentration skipped: {e}")
+
     # Market regime, read from the market rather than from our own scores.
     # The dashboard used to label the regime by averaging the board's AI
     # scores, which is circular: it reported how bullish WE were, not what the
@@ -102,6 +123,7 @@ def main() -> None:
             "count": total,
             "missing": missing,
             "market_regime": regime_payload,
+            "concentration": concentration,
             "domains": out_domains,
         }, f, indent=2, default=str)
     print(f"\nWrote {total} scored tickers across {len(out_domains)} domains -> {OUT}")
