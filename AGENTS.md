@@ -164,6 +164,18 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   track record is `exit_judged` — each pick run through its own exit plan
   (target / stop / trailing / 10-day review). The held-to-today figures score
   a buy-and-forget strategy the product advises against.
+- **Warrants, units and rights are not stocks.** yfinance gives them the
+  parent's revenue, so they pass the >$1B floor — GRABW, a two-cent warrant,
+  was picked 32 times. `utils/universe.is_common_share()` drops them from the
+  scan universe and `exit_judged` excludes (and counts) them in the record.
+  Share classes (BRK-B, GOOGL) are equity and stay.
+- **A record is judged on the market calendar and labels exits honestly.**
+  Holding days count SPY sessions, not the ticker's own bars (a gappy series
+  made "day 1" twelve weeks later). A trailing stop that closes below target
+  is `trail`, never `take_profit`. A screen needs `MIN_TRADES` closed trades
+  AND `MIN_DATES` distinct scan dates before it earns a verdict — same-day
+  picks share one market. Re-judge without a scan: dispatch
+  `alphahunter-scan.yml` with `record_only`.
 - **Never lend one list another list's evidence.** Top Picks are the watchlist
   ranked by composite score, not a scan screen; showing a scan screen's
   track record on them would claim proof they do not have.

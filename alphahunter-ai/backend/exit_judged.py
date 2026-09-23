@@ -28,6 +28,8 @@ from statistics import median
 
 from .exit_rules import build_plan, check_exit
 
+MAX_GAP_SESSIONS = 5
+
 
 def recover_atr(rec: dict) -> float | None:
     """ATR at the moment of the pick, from the levels it was published with."""
@@ -61,8 +63,16 @@ def judge_pick(entry: float, path: list[float], *, atr: float | None = None,
         peak = max(peak, px)
         out = check_exit(plan, float(px), days_held=day, peak_price=peak)
         if out["action"] != "hold":
+            action = out["action"]
+            # check_exit calls the trailing stop "take_profit" because that is
+            # the instruction to the holder. For a RECORD it is a different
+            # event: judged on closes, a stock that was up 8% and gapped down
+            # overnight exits below entry, and TRMD's -2% was being counted as
+            # profit-taking. Only a close at or above the target is a target hit.
+            if action == "take_profit" and px < plan.target:
+                action = "trail"
             return {
-                "exit": out["action"],          # take_profit | sell | close_stale
+                "exit": action,                 # take_profit | trail | sell | close_stale
                 "days_held": day,
                 "exit_price": round(float(px), 2),
                 "return_%": round((px / entry - 1) * 100, 2),
@@ -82,9 +92,13 @@ def summarise(trades: list[dict]) -> dict | None:
     for t in trades:
         exits[t["exit"]] = exits.get(t["exit"], 0) + 1
     wins = [r for r in rets if r > 0]
+    # Picks made on the same day share one market; 36 trades from three scan
+    # dates are closer to three observations than to 36.
+    dates = len({t["picked"] for t in trades if t.get("picked")})
     losses = [r for r in rets if r <= 0]
     return {
         "trades": len(trades),
+        "dates": dates,
         "win_rate": round(len(wins) / len(rets), 3),
         "avg_return_%": round(sum(rets) / len(rets), 2),
         "median_return_%": round(median(rets), 2),
@@ -109,8 +123,15 @@ def judge_history(history: list[tuple[str, list[dict]]],
     """
     from .screens import name_for
 
+    from .utils.universe import is_common_share
+
     bench = closes.get(benchmark) or {}
-    trades, still_open, unpriced = [], 0, 0
+    # Days are counted on the benchmark's trading calendar, not on the ticker's
+    # own bars. A thinly traded series with a months-long gap otherwise turns
+    # "day 1" into twelve weeks later: PGYWW was picked on 30 Jun and "exited
+    # after 1 day" on 23 Sep.
+    calendar = sorted(bench)
+    trades, still_open, unpriced, excluded = [], 0, 0, []
     for date_str, results in history:
         picks = sorted(results, key=lambda r: -(r.get("score") or 0))
         if top_n:
@@ -122,8 +143,17 @@ def judge_history(history: list[tuple[str, list[dict]]],
             if not t or not series or not entry:
                 unpriced += 1
                 continue
-            days = sorted(d for d in series if d > date_str)
-            path = [series[d] for d in days]
+            if not is_common_share(t):
+                excluded.append(t)
+                continue
+            days = ([d for d in calendar if d > date_str] if calendar
+                    else sorted(d for d in series if d > date_str))
+            path = [series.get(d) for d in days]
+            # No close in the first week after the pick: it could not have
+            # been traded as recommended, so it is not a result either way.
+            if days and not any(px for px in path[:MAX_GAP_SESSIONS]):
+                unpriced += 1
+                continue
             res = judge_pick(float(entry), path, atr=recover_atr(rec))
             if res is None:
                 still_open += 1
@@ -150,6 +180,11 @@ def judge_history(history: list[tuple[str, list[dict]]],
         "by_screen": by_screen,
         "still_open": still_open,
         "unpriced": unpriced,
+        # Warrants, units and rights reached the pick lists because yfinance
+        # gives them the parent's revenue. They are left out of the record
+        # rather than silently dropped: the count stays visible.
+        "excluded_non_common": {"picks": len(excluded),
+                                "tickers": sorted(set(excluded))},
         "recent": sorted(trades, key=lambda x: x["exit_date"], reverse=True)[:25],
     }
 

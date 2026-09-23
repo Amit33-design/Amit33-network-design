@@ -1,7 +1,7 @@
 // The frontend's own pure logic — previously checked only by hand.
 import { describe, expect, it } from "vitest";
 import { tradingDaysSince } from "../components/FreshnessBanner";
-import { MIN_TRADES, statusFor } from "./evidence";
+import { MIN_DATES, MIN_TRADES, statusFor } from "./evidence";
 
 describe("tradingDaysSince", () => {
   // An earlier version subtracted one "so today counts as zero" — it already
@@ -38,6 +38,14 @@ describe("statusFor — evidence per screen", () => {
   it("says trailing when alpha is not positive", () => {
     expect(statusFor({ trades: 40, win_rate: 0.5, "avg_return_%": 1,
                        "avg_alpha_%": -0.5, beat_spy_rate: 0.45 }).label).toBe("Trailing SPY");
+  });
+  it("many trades from a few dates are one market window, not proof", () => {
+    const s = statusFor({ trades: 36, dates: 3, win_rate: 0.14, "avg_return_%": -4.7,
+                          "avg_alpha_%": -6.3, beat_spy_rate: 0.11 });
+    expect(s.label).toBe("Unproven");
+    expect(s.detail).toContain("3 scan dates");
+    expect(statusFor({ trades: 36, dates: MIN_DATES, win_rate: 0.14, "avg_return_%": -4.7,
+                       "avg_alpha_%": -6.3, beat_spy_rate: 0.11 }).label).toBe("Trailing SPY");
   });
   it("handles no record at all", () => {
     expect(statusFor(null).label).toBe("Unproven");

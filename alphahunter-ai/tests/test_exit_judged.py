@@ -77,3 +77,58 @@ def test_summary_reports_how_each_trade_ended():
     assert s["win_rate"] == pytest.approx(0.667, abs=0.001)
     assert s["avg_loss_%"] == -7.0              # the stop caps it
     assert summarise([]) is None
+
+
+def test_a_trailing_stop_that_gaps_below_entry_is_not_called_take_profit():
+    """Up 10%, then a gap down to -2% on the next close. The trail fires (the
+    holder's instruction is still "take profit"), but a record that files a
+    loss under take-profit flatters itself. TRMD did exactly this."""
+    r = judge_pick(100.0, [104, 110, 98])            # default plan: +12% target
+    assert r["exit"] == "trail"
+    assert r["return_%"] == -2.0
+
+
+def _spy(dates, start="2026-01-05"):
+    return {start: 500.0, **{d: 500.0 for d in dates}}
+
+
+def test_days_are_counted_on_the_market_calendar_not_the_tickers_own_bars():
+    """A series with a three-week hole must not turn week four into "day 1"."""
+    cal = [f"2026-02-{d:02d}" for d in range(2, 28)]
+    history = [("2026-01-30", [{"ticker": "THIN", "score": 60, "entry": 10.0}])]
+    closes = {"THIN": {"2026-02-25": 5.0},          # first bar weeks later
+              "SPY": _spy(cal, "2026-01-30")}
+    out = judge_history(history, closes)
+    assert out["summary"] is None                   # not tradable as recommended
+    assert out["unpriced"] == 1
+
+
+def test_warrants_units_and_rights_are_left_out_of_the_record_visibly():
+    cal = [f"2026-01-{d:02d}" for d in range(6, 20)]
+    history = [("2026-01-05", [
+        {"ticker": "GRABW", "score": 90, "entry": 0.02},
+        {"ticker": "AAA", "score": 80, "entry": 100.0},
+    ])]
+    closes = {"GRABW": {d: 0.04 for d in cal},       # +100% "win"
+              "AAA": dict(zip(cal, [99, 96, 92] + [92] * 11)),
+              "SPY": _spy(cal)}
+    out = judge_history(history, closes)
+    assert out["summary"]["trades"] == 1 and out["summary"]["avg_return_%"] < 0
+    assert out["excluded_non_common"] == {"picks": 1, "tickers": ["GRABW"]}
+
+
+def test_the_summary_counts_distinct_pick_dates():
+    s = summarise([
+        {"exit": "sell", "return_%": -7.0, "days_held": 2, "picked": "2026-01-05"},
+        {"exit": "sell", "return_%": -6.0, "days_held": 2, "picked": "2026-01-05"},
+        {"exit": "sell", "return_%": -5.0, "days_held": 2, "picked": "2026-01-06"},
+    ])
+    assert s["trades"] == 3 and s["dates"] == 2
+
+
+def test_share_classes_are_common_stock_and_warrants_are_not():
+    from backend.utils.universe import is_common_share
+    for t in ("AAPL", "BRK-B", "GOOGL", "SNOW", "F"):
+        assert is_common_share(t), t
+    for t in ("GRABW", "HTZWW", "BTSGU", "GENVR", "X-WS", "ABC-RT"):
+        assert not is_common_share(t), t

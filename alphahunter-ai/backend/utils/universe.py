@@ -9,6 +9,7 @@ AlphaHunter and the legacy screener share one source of truth.
 from __future__ import annotations
 
 import io
+import re
 import os
 
 import pandas as pd
@@ -50,9 +51,23 @@ def load_full_listing() -> list[str]:
         if not isinstance(s, str):
             continue
         s = s.strip().replace(".", "-")
-        if s and " " not in s and len(s) <= 6:
+        if s and " " not in s and len(s) <= 6 and is_common_share(s):
             cleaned.append(s)
     return sorted(set(cleaned))
+
+
+# NASDAQ gives a 5-letter symbol's 5th character a meaning: W = warrant,
+# U = unit, R = rights. NYSE writes them as suffixes (-WS, -U, -RT...). yfinance
+# reports the PARENT's revenue for these, so they sail through the >$1B floor:
+# GRABW, a two-cent warrant, was picked 32 times and a 60% one-day move in it
+# counted in the track record as if it were a stock. Share classes (BRK-B,
+# GOOGL) are ordinary equity and stay.
+_NON_COMMON = re.compile(r"^[A-Z]{4}[WUR]$|^[A-Z]{4}WW$|-(W|WS|WT|U|UN|R|RT)$")
+
+
+def is_common_share(ticker: str) -> bool:
+    """False for warrants, units and rights — instruments, not companies."""
+    return bool(ticker) and not _NON_COMMON.search(ticker.strip().upper())
 
 
 def load_cached_1b_universe() -> list[str]:
@@ -60,7 +75,7 @@ def load_cached_1b_universe() -> list[str]:
     if os.path.exists(CACHED_1B_UNIVERSE):
         try:
             df = pd.read_csv(CACHED_1B_UNIVERSE)
-            return df["ticker"].dropna().astype(str).tolist()
+            return [t for t in df["ticker"].dropna().astype(str) if is_common_share(t)]
         except Exception:
             return []
     return []

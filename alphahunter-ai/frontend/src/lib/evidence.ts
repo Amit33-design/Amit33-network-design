@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 
 export type ScreenRecord = {
-  trades: number; win_rate: number; avg_return_pct?: number;
+  trades: number; dates?: number; win_rate: number; avg_return_pct?: number;
   "avg_return_%": number; "avg_alpha_%"?: number | null;
   beat_spy_rate?: number | null; avg_days_held?: number;
 };
@@ -18,6 +18,10 @@ export type Judged = {
 
 // Below this many CLOSED trades, any figure is noise and is shown as such.
 export const MIN_TRADES = 20;
+// ...and from at least this many distinct scan dates. Picks made on the same
+// day ride the same market: Growth's first 36 trades came from three dates,
+// which is one market window, not 36 observations.
+export const MIN_DATES = 10;
 
 export type Status = {
   label: "Beating SPY" | "Trailing SPY" | "Mixed" | "Unproven";
@@ -35,6 +39,11 @@ export function statusFor(rec?: ScreenRecord | null): Status {
   if (n < MIN_TRADES) {
     return { label: "Unproven", tone: "neutral",
              detail: `Only ${n} closed trade${n === 1 ? "" : "s"} — under ${MIN_TRADES}, any result is noise.` };
+  }
+  if (rec.dates != null && rec.dates < MIN_DATES) {
+    return { label: "Unproven", tone: "neutral",
+             detail: `${n} trades, but from only ${rec.dates} scan date${rec.dates === 1 ? "" : "s"} — `
+               + `one stretch of market, not ${n} independent results. Needs ${MIN_DATES}+ dates.` };
   }
   const beat = rec.beat_spy_rate ?? 0;
   const base = `${n} trades judged at their exit plan: avg ${rec["avg_return_%"] >= 0 ? "+" : ""}${rec["avg_return_%"]}%`

@@ -24,6 +24,11 @@ on:
         type: boolean
         required: false
         default: false
+      record_only:
+        description: 'Skip the scan; only re-judge the pick history (exit_judged.json)'
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -85,7 +90,13 @@ jobs:
           if [ "${{ github.event.inputs.loose }}" = "true" ]; then
             ARGS="$ARGS --loose"
           fi
-          python -m backend.run_daily $ARGS
+          # record_only: a change to how picks are JUDGED should not need a
+          # 30-minute universe scan to show its effect.
+          if [ "${{ github.event.inputs.record_only }}" = "true" ]; then
+            python -m backend.exit_judged
+          else
+            python -m backend.run_daily $ARGS
+          fi
 
       - name: Commit results back to the repo
         # always(): the scan writes its results BEFORE the slow post-scan
