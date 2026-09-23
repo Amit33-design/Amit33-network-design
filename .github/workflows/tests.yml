@@ -1,0 +1,65 @@
+name: Tests
+
+# Every push to main auto-deploys to Vercel, and until this workflow existed
+# nothing ran the test suites on the way — 242 Python and 71 TypeScript tests
+# only ever ran when whoever committed remembered to. This makes the definition
+# of done in AGENTS.md §3 enforced rather than hoped for.
+on:
+  push:
+    branches: [main]
+    # Skip the data-only commits the scan bots make several times a day.
+    paths-ignore:
+      - "alphahunter-ai/results/**"
+      - "alphahunter-ai/frontend/public/*.json"
+      - "screener/universe_1b_revenue.csv"
+      - "results/**"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        working-directory: alphahunter-ai
+        run: pip install -r requirements.txt pytest
+      - name: pytest (offline)
+        working-directory: alphahunter-ai
+        run: python -m pytest -q
+
+  serverless:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: node --check api/*.js
+        run: for f in api/*.js; do node --check "$f" || exit 1; done
+
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: alphahunter-ai/frontend/package-lock.json
+      - name: Install
+        working-directory: alphahunter-ai/frontend
+        run: npm ci
+      - name: vitest (incl. Python / TypeScript / serverless parity)
+        working-directory: alphahunter-ai/frontend
+        run: npm test
+      - name: Type-check and build
+        working-directory: alphahunter-ai/frontend
+        run: npm run build

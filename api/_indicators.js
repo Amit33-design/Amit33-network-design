@@ -50,3 +50,39 @@ export function rsiLast(closes, period = 14) {
   }
   return null;
 }
+
+/** Round a price to cents, half away from zero.
+ *
+ *  Matches backend/exit_rules.money() and frontend/src/lib/exitRules.ts, all
+ *  pinned to one shared fixture. JavaScript's Math.round rounds -3.695 to
+ *  -3.69 (toward +infinity on a half) and Python's round() is banker's
+ *  rounding, so without a shared rule the same stop came out a cent apart on
+ *  different pages.
+ */
+export function money(x) {
+  return Math.sign(x) * Math.round((Math.abs(x) + Number.EPSILON) * 100) / 100;
+}
+
+/** Exit levels for a position — the serverless twin of build_plan().
+ *
+ *  Same arithmetic as backend/exit_rules.build_plan and the frontend port, and
+ *  pinned to the same fixture. ta.js used to inline this, which is why it
+ *  could not be tested and why its rounding had quietly drifted.
+ */
+export function exitLevels(price, atr, horizonDays = 10) {
+  let targetPct = 12.0;
+  let stopPct = -7.0;
+  if (atr && atr > 0 && price > 0) {
+    const horizonMove = (atr / price) * 100 * Math.sqrt(horizonDays);
+    targetPct = Math.max(5, Math.min(30, horizonMove));
+    stopPct = -Math.max(3, Math.min(15, horizonMove * 0.6));
+  }
+  return {
+    target: money(price * (1 + targetPct / 100)),
+    stop: money(price * (1 + stopPct / 100)),
+    target_pct: money(targetPct),
+    stop_pct: money(stopPct),
+    targetPctRaw: targetPct,
+    stopPctRaw: stopPct,
+  };
+}

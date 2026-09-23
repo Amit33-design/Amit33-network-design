@@ -4,7 +4,7 @@
 // the price history + EMA overlays + RSI series + a full indicator panel and a
 // trend/momentum Buy-Hold-Sell verdict with explainable factors.
 
-import { rsiSeries } from "./_indicators.js";
+import { exitLevels, money, rsiSeries } from "./_indicators.js";
 import { rangeRegime } from "./_regime.js";
 
 const CHART = (t, range) =>
@@ -310,15 +310,13 @@ function tradePlan(last, a, sr, ltDir, recommendation, accountSize, riskPct) {
   // worse than any one of them. Volatility scales with the square root of
   // time, so levels are sized to the holding period.
   const HORIZON_DAYS = 10;
-  const atrPct = (a / last) * 100;
-  const horizonMove = atrPct * Math.sqrt(HORIZON_DAYS);
-  const targetPct = Math.max(5, Math.min(30, horizonMove));
-  const stopPct = Math.max(3, Math.min(15, horizonMove * 0.6));   // ~1.67:1
-
-  const stop = last * (1 - stopPct / 100);
+  // Shared with the scan and the frontend via one fixture (see _indicators.js).
+  const lv = exitLevels(last, a, HORIZON_DAYS);
+  const targetPct = lv.targetPctRaw;
+  const stop = lv.stop;
   const risk = last - stop;
   if (!(risk > 0)) return null;
-  const target1 = last * (1 + targetPct / 100);
+  const target1 = lv.target;
   const resistance = (sr.resistance || []).find((x) => x > last);
   const target2 = resistance != null && resistance > target1
     ? resistance : last + 3 * risk;                      // next wall, or 3R
@@ -331,7 +329,7 @@ function tradePlan(last, a, sr, ltDir, recommendation, accountSize, riskPct) {
 
   const budget = (accountSize || 25000) * ((riskPct || 1) / 100);
   const shares = Math.floor(budget / risk);
-  const r2 = (x) => Math.round(x * 100) / 100;
+  const r2 = money;   // shared half-up rule — see _indicators.js
   return {
     actionable: true,
     entry: r2(last),
@@ -346,7 +344,7 @@ function tradePlan(last, a, sr, ltDir, recommendation, accountSize, riskPct) {
     risk_amount: r2(shares * risk),
     basis: `${riskPct || 1}% of $${(accountSize || 25000).toLocaleString()} risked at $${r2(risk)}/share`,
     horizon_days: HORIZON_DAYS,
-    target_pct: Math.round(targetPct * 100) / 100,
+    target_pct: money(targetPct),
     nearest_support: support != null ? r2(support) : null,
     note: recommendation === "Buy" || recommendation === "Accumulate"
       ? `Trend supports a long; size so the stop costs no more than your risk budget. Review after ${HORIZON_DAYS} trading days — if neither level is hit by then the setup has not worked.`

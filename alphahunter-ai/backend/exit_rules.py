@@ -24,6 +24,21 @@ Pure functions: prices and a plan in, a decision out. No network, no state.
 from __future__ import annotations
 
 from dataclasses import dataclass, asdict
+from decimal import ROUND_HALF_UP, Decimal
+
+
+def money(x: float) -> float:
+    """Round a price to cents, half UP — the same rule as the TypeScript port.
+
+    Python's round() is banker's rounding (half to even) and JavaScript's
+    Math.round is half up, so a level landing on exactly half a cent came out
+    a cent apart depending on which page you were looking at: $12.50 x 0.93 =
+    11.625 was $11.62 here and $11.63 in the browser. The shared parity
+    fixture caught it on its first run. Going through str() uses the shortest
+    repr, so 11.625 is treated as the half it looks like rather than as its
+    binary neighbour.
+    """
+    return float(Decimal(str(x)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
 
 # Defaults come from this repo's own measurements, not from convention.
 DEFAULT_HORIZON_DAYS = 10       # the holding period the backtest actually paid
@@ -80,12 +95,12 @@ def build_plan(
         sp = -max(3.0, min(15.0, horizon_move * 0.6))   # ~1.67:1 reward:risk
 
     return ExitPlan(
-        entry=round(entry, 2),
-        target=round(entry * (1 + tp / 100), 2),
-        stop=round(entry * (1 + sp / 100), 2),
+        entry=money(entry),
+        target=money(entry * (1 + tp / 100)),
+        stop=money(entry * (1 + sp / 100)),
         horizon_days=horizon_days,
-        target_pct=round(tp, 2),
-        stop_pct=round(sp, 2),
+        target_pct=money(tp),
+        stop_pct=money(sp),
         trail_arms_at_pct=TRAIL_ARMS_AT_PCT,
         trail_giveback_pct=TRAIL_GIVEBACK_PCT,
     )

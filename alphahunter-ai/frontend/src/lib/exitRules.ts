@@ -110,7 +110,11 @@ export function tradingDaysBetween(fromISO: string, toDate = new Date()): number
   return days;
 }
 
-const round2 = (v: number) => Math.round(v * 100) / 100;
+// Half up, matching backend/exit_rules.money(). The EPSILON nudge makes an
+// exact half (11.625) round up reliably instead of depending on whether the
+// multiplication landed a hair below it in binary.
+const round2 = (v: number) =>
+  Math.sign(v) * Math.round((Math.abs(v) + Number.EPSILON) * 100) / 100;
 
 export const ACTION_LABEL: Record<ExitAction, string> = {
   take_profit: "TAKE PROFIT",
