@@ -11,6 +11,7 @@ import PairTrader, { usePairStudy } from "../components/PairTrader";
 import FreshnessBanner from "../components/FreshnessBanner";
 import EvidenceBadge from "../components/EvidenceBadge";
 import DeferUntilVisible from "../components/DeferUntilVisible";
+import TodayPlan from "../components/TodayPlan";
 import { useJudged } from "../lib/evidence";
 import Moonshots, { useMoonshots } from "../components/Moonshots";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
@@ -468,6 +469,16 @@ export default function Dashboard() {
           )}
         </div>
       ) : null}
+
+      {/* One place for decide -> size -> act -> exit. First on the page,
+          because it is the only list here backed by out-of-sample evidence. */}
+      <Section
+        title="📋 Today's plan"
+        subtitle="the one rule with out-of-sample evidence, applied to today's scan"
+        defaultOpen
+      >
+        <TodayPlan positionScale={mr?.position_scale ?? 1} regime={mr?.regime} />
+      </Section>
 
       <WatchlistSection />
 
