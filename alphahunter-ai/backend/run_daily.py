@@ -282,6 +282,21 @@ def main() -> None:
             with open(bt_path, "w") as f:
                 json.dump({"error": "not generated yet", "points": []}, f)
 
+    # Track record judged at each pick's own exit plan — the way the product
+    # tells people to trade. The held-to-today paper portfolio stays for
+    # comparison, but this is the honest measure of the advice.
+    judged_path = os.path.join(os.path.dirname(FRONTEND_SNAPSHOT), "exit_judged.json")
+    try:
+        from backend.exit_judged import build as build_judged
+        jd = build_judged(RESULTS_DIR, judged_path)
+        s_ = jd.get("summary") or {}
+        if s_:
+            print(f"Exit-judged: {s_['trades']} closed trades, win {s_['win_rate']*100:.0f}%, "
+                  f"avg {s_['avg_return_%']:+.2f}%, alpha {s_.get('avg_alpha_%')}, "
+                  f"held {s_['avg_days_held']}d on average")
+    except Exception as e:  # pragma: no cover - CI only
+        print(f"Exit-judged record skipped: {e}")
+
     # Freshness manifest. Written as the LAST data step, so its timestamp is
     # the last run that genuinely finished. When the pipeline dies this file
     # simply stops updating, and the UI reads its age — which is how a dead

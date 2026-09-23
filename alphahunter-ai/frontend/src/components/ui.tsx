@@ -126,10 +126,13 @@ export const CHART = {
 
 // Collapsible category section — click the header to expand/collapse.
 export function Section({
-  title, subtitle, badge, badgeColor, defaultOpen, children,
+  title, subtitle, badge, badgeColor, defaultOpen, children, evidence,
 }: {
   title: string; subtitle?: string; badge?: string; badgeColor?: string;
   defaultOpen?: boolean; children: ReactNode;
+  /** The screen's measured track record, shown in the header so evidence is
+   *  visible without opening the section. */
+  evidence?: ReactNode;
 }) {
   const [open, setOpen] = useState(!!defaultOpen);
   return (
@@ -149,6 +152,7 @@ export function Section({
             {badge}
           </span>
         )}
+        {evidence}
         {subtitle && <span className="text-xs text-ink-muted hidden sm:inline truncate">{subtitle}</span>}
         <span className="ml-auto text-2xs text-ink-muted">{open ? "Hide" : "Show"}</span>
       </button>

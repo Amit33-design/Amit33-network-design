@@ -143,6 +143,13 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   mid-scan, blew the job timeout. A test asserts each ticker is fetched once.
 - **Dated results files only:** `SCREENS` globs are `<name>_YYYY-MM-DD.json`.
   Research outputs share `results/` and a bare `*` glob reads them as picks.
+- **Judge picks the way the product tells people to trade them.** The primary
+  track record is `exit_judged` — each pick run through its own exit plan
+  (target / stop / trailing / 10-day review). The held-to-today figures score
+  a buy-and-forget strategy the product advises against.
+- **Never lend one list another list's evidence.** Top Picks are the watchlist
+  ranked by composite score, not a scan screen; showing a scan screen's
+  track record on them would claim proof they do not have.
 - **Score weights must sum to 1.0** (a test enforces it).
 - **Tests never hit the network.**
 
@@ -161,6 +168,9 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | Company profiles (sector/industry/summary) | `api/profile.js` (live) + `backend/build_profiles.py` → `frontend/public/profiles.json` (summaries) |
 | Price-series validation | `backend/data_quality.py` |
 | Pick-list concentration (effective bets) | `backend/concentration.py` |
+| Track record judged at each pick's exit plan | `backend/exit_judged.py` → `exit_judged.json` |
+| Per-screen evidence status (proven / unproven / trailing) | `frontend/src/lib/evidence.ts` |
+| Scan freshness manifest + stale warning | `run_daily` → `freshness.json`, `components/FreshnessBanner.tsx` |
 | Live portfolio prices/recs | `api/quote.js` |
 | Dashboard watchlist | `backend/watchlist.py` + `backend/run_dashboard.py` |
 | Scan output columns | `backend/run_daily.py` |

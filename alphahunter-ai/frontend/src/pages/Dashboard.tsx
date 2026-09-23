@@ -9,6 +9,8 @@ import BacktestPanel, { useBacktest } from "../components/BacktestPanel";
 import GrowthLeaders, { useGrowth } from "../components/GrowthLeaders";
 import PairTrader, { usePairStudy } from "../components/PairTrader";
 import FreshnessBanner from "../components/FreshnessBanner";
+import EvidenceBadge from "../components/EvidenceBadge";
+import { useJudged } from "../lib/evidence";
 import Moonshots, { useMoonshots } from "../components/Moonshots";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 
@@ -377,6 +379,7 @@ export default function Dashboard() {
   const growth = useGrowth();
   const pairStudy = usePairStudy();
   const moonshots = useMoonshots();
+  const judged = useJudged();
 
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
 
@@ -470,6 +473,14 @@ export default function Dashboard() {
       {/* Top Picks — cross-domain highest-conviction names by AI score */}
       <Section
         title="🏆 AlphaHunter Top Picks"
+        // Top Picks are the WATCHLIST ranked by composite score, not a scan
+        // screen, so they must not borrow a scan screen's track record. What
+        // is actually known about ranking by that score is the held-out test.
+        evidence={<EvidenceBadge status={{
+          label: "Unproven", tone: "neutral",
+          detail: "Ranked by the composite score. On 894 held-out samples its rank-IC was -0.053, "
+            + "inside the ±0.067 noise floor — it has not been shown to rank future returns.",
+        }} />}
         subtitle={topPicks.length ? `${topPicks[0].ticker} leads at score ${topPicks[0].score}` : ""}
         badge={`best ${topPicks.length}`}
         badgeColor="#7c3aed"
@@ -517,6 +528,7 @@ export default function Dashboard() {
       {growth && (
         <Section
           title="🌱 Growth Leaders"
+          evidence={<EvidenceBadge rec={judged?.by_screen?.growth} />}
           subtitle="growing businesses whose stock is already working"
           badge={`${growth.results.length}`}
           badgeColor="#31a05c"
@@ -529,6 +541,7 @@ export default function Dashboard() {
       {moonshots && (
         <Section
           title="🎲 Moonshots"
+          evidence={<EvidenceBadge rec={judged?.by_screen?.moonshot} />}
           subtitle="volatile and beaten down — 19% doubled vs a 4.8% base rate"
           badge={`${moonshots.results.length}`}
           badgeColor="#b7791f"
