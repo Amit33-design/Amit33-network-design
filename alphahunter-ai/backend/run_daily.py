@@ -21,7 +21,7 @@ import pandas as pd
 from backend.alerts.engine import send_scan_digest
 from backend.exit_rules import DEFAULT_STOP_PCT
 from backend.config import settings
-from backend.scanners.runner import run_opportunity_scan, run_scan
+from backend.scanners.runner import run_all_screens
 
 PACIFIC = ZoneInfo("America/Los_Angeles")
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -94,25 +94,26 @@ def main() -> None:
 
     print(f"AlphaHunter daily scan for {today} (Pacific). "
           f"require_all={not args.loose} limit={args.limit}")
-    results = run_scan(
-        require_all=not args.loose,
+    # ONE pass over the universe for every screen. Four separate passes
+    # (crash, pullback, growth, moonshot) exceeded the 60-minute job timeout and
+    # every run from 18 Sep was cancelled — see run_all_screens.
+    started = dt.datetime.now()
+    screens = run_all_screens(
         limit=args.limit,
-        progress=lambda i, t, n: print(f"  ...{i}/{t} scanned, {n} hits"),
+        progress=lambda i, t, n: print(f"  ...{i}/{t} scanned, hits {n}"),
     )
+    stats = (screens.pop("_stats", None) or [{}])[0]
+    print(f"Single pass done in {(dt.datetime.now() - started).seconds // 60} min: {stats}")
 
+    results = list(screens.get("crash", []))
     # The strict crash screen finds nothing in a calm market. So the daily
-    # board is never empty, fall back to a broad "best pullback/dip" scan and
-    # merge in the top-scored opportunities (deduped, strict hits kept first).
-    if len(results) < settings.opp_min_results:
-        print(f"Strict scan yielded {len(results)}; running broad opportunity scan...")
-        opp = run_opportunity_scan(
-            limit=args.limit,
-            progress=lambda i, t, n: print(f"  ...opp {i}/{t} scanned, {n} candidates"),
-        )
+    # board is never empty, merge in the top pullback candidates (deduped,
+    # strict hits kept first).
+    if args.loose or len(results) < settings.opp_min_results:
         seen = {r["ticker"] for r in results}
-        results.extend(r for r in opp if r["ticker"] not in seen)
+        results.extend(r for r in screens.get("opportunity", []) if r["ticker"] not in seen)
         results.sort(key=lambda r: r["score"], reverse=True)
-        print(f"Opportunity scan added {len(results) - len(seen)} names; {len(results)} total.")
+        print(f"Pullback screen added {len(results) - len(seen)} names; {len(results)} total.")
 
     json_path = os.path.join(RESULTS_DIR, f"alphahunter_{today}.json")
     csv_path = os.path.join(RESULTS_DIR, f"alphahunter_{today}.csv")
@@ -180,8 +181,7 @@ def main() -> None:
     # things that fell; this finds growing businesses whose stock is working.
     growth_path = os.path.join(os.path.dirname(FRONTEND_SNAPSHOT), "growth.json")
     try:
-        from backend.scanners.runner import run_growth_scan
-        growth = run_growth_scan(limit=args.limit or None, max_scored=40)
+        growth = screens.get("growth", [])      # from the single pass
         with open(growth_path, "w") as f:
             json.dump({"date": today, "count": len(growth), "results": growth}, f, indent=2)
         # Also keep a DATED copy in results/, so the paper portfolio can judge
@@ -206,8 +206,7 @@ def main() -> None:
     # against a 4.8% base. Dated copy kept so it gets judged like the others.
     moon_path = os.path.join(os.path.dirname(FRONTEND_SNAPSHOT), "moonshot.json")
     try:
-        from backend.scanners.runner import run_moonshot_scan
-        moon = run_moonshot_scan(limit=args.limit or None, max_scored=30)
+        moon = screens.get("moonshot", [])      # from the single pass
         payload = {"date": today, "count": len(moon), "results": moon}
         with open(moon_path, "w") as f:
             json.dump(payload, f, indent=2)

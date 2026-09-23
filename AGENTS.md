@@ -136,6 +136,13 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   not written yet renders nothing and looks like a feature that was never
   built — that is exactly what happened to the company profile panel. Prefer a
   live fallback so the feature never depends on a cron having run.
+- **The daily scan is ONE pass over the universe** (`run_all_screens`). Every
+  screen evaluates the same fetched snapshot. Adding a screen as its own loop
+  over ~1,900 tickers is what killed the pipeline for nine days: four passes,
+  each sleeping per ticker and re-fetching because the 15-minute cache expired
+  mid-scan, blew the job timeout. A test asserts each ticker is fetched once.
+- **Dated results files only:** `SCREENS` globs are `<name>_YYYY-MM-DD.json`.
+  Research outputs share `results/` and a bare `*` glob reads them as picks.
 - **Score weights must sum to 1.0** (a test enforces it).
 - **Tests never hit the network.**
 

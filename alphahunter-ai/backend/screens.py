@@ -15,12 +15,17 @@ without measurement wiring now fails the suite instead of shipping silently.
 from __future__ import annotations
 
 # screen name -> glob for its dated results files in results/
+# DATED files only: <name>_YYYY-MM-DD.json. A bare `moonshot_*.json` also
+# matched `moonshot_full.json` — the 62,202-row research study — so the loop
+# that "judges every screen" was reading a research file as if it were a day's
+# picks. Research outputs live beside scan outputs in results/, so the pattern
+# has to be strict enough to tell them apart.
+_DATE = "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
+
 SCREENS: dict[str, str] = {
-    # The original oversold/crash screen. Its files are the ones every older
-    # study reads, so the glob stays as-is.
-    "crash": "alphahunter_*.json",
-    "growth": "growth_*.json",
-    "moonshot": "moonshot_*.json",
+    "crash": f"alphahunter_{_DATE}.json",
+    "growth": f"growth_{_DATE}.json",
+    "moonshot": f"moonshot_{_DATE}.json",
 }
 
 

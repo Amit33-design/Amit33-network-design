@@ -31,7 +31,11 @@ permissions:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # The single pass takes ~40 min; the post-scan steps (paper portfolio,
+    # backtest, income plan) fetch price history for ~250 more names. 60
+    # left no headroom, and a timeout cancels the WHOLE job — nothing is
+    # committed, not even the parts that finished.
+    timeout-minutes: 110
     defaults:
       run:
         working-directory: alphahunter-ai
@@ -84,7 +88,11 @@ jobs:
           python -m backend.run_daily $ARGS
 
       - name: Commit results back to the repo
-        if: steps.gate.outputs.run == 'true'
+        # always(): the scan writes its results BEFORE the slow post-scan
+        # analytics, so if those time out, the scan itself is still worth
+        # keeping. Without this a timeout discarded everything, including the
+        # parts that finished — nine days of scans were lost that way.
+        if: always() && steps.gate.outputs.run == 'true'
         working-directory: .
         run: |
           git config user.name  "alphahunter-bot"

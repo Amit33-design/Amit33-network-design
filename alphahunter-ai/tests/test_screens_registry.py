@@ -16,7 +16,7 @@ def test_every_dated_results_file_run_daily_writes_is_registered():
     written = set(re.findall(r'RESULTS_DIR,\s*f"([a-z_]+)_\{today\}\.json"', src))
     assert written, "expected run_daily to write dated results files"
 
-    registered = {g.replace("_*.json", "") for g in globs()}
+    registered = {g.split("_")[0] for g in globs()}
     missing = written - registered
     assert not missing, (
         f"{sorted(missing)} write dated results but are not in SCREENS, so the "
@@ -40,5 +40,21 @@ def test_profiles_map_onto_screen_names():
 
 def test_the_registry_is_not_empty_and_globs_are_well_formed():
     assert len(SCREENS) >= 3
-    assert all(g.endswith("_*.json") for g in globs())
+    assert all(g.endswith(".json") for g in globs())
     assert len(set(globs())) == len(globs()), "duplicate globs would double-count picks"
+
+
+def test_research_outputs_are_never_read_as_daily_picks(tmp_path):
+    """moonshot_full.json is a 62,202-row study, not a day of picks. The bare
+    moonshot_*.json glob matched it; the dated pattern must not."""
+    import glob, os
+    for name in ("moonshot_full.json", "growth_study.json", "alphahunter_summary.json",
+                 "moonshot_2026-09-14.json", "growth_2026-09-14.json",
+                 "alphahunter_2026-09-14.json"):
+        (tmp_path / name).write_text("{}")
+
+    matched = {os.path.basename(f) for g in globs()
+               for f in glob.glob(os.path.join(tmp_path, g))}
+    assert matched == {"moonshot_2026-09-14.json", "growth_2026-09-14.json",
+                       "alphahunter_2026-09-14.json"}
+    assert "moonshot_full.json" not in matched

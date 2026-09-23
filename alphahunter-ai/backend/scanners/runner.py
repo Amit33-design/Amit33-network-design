@@ -190,3 +190,118 @@ def run_opportunity_scan(
         results.append(score_snapshot(snap, hit, md=md))
     results.sort(key=lambda r: r["score"], reverse=True)
     return results
+
+# ---------------------------------------------------------------------------
+# One pass, every screen
+# ---------------------------------------------------------------------------
+def run_all_screens(
+    limit: int | None = None,
+    *,
+    max_crash: int | None = None,
+    max_opportunity: int | None = None,
+    max_growth: int = 40,
+    max_moonshot: int = 30,
+    progress: Callable[[int, int, dict], None] | None = None,
+) -> dict[str, list[dict]]:
+    """Fetch each ticker ONCE and run every scanner against it.
+
+    This replaces four separate passes over the universe (strict crash,
+    pullback, growth, moonshot) that together killed the daily pipeline. Each
+    pass slept 0.3 s per ticker unconditionally, and because the snapshot cache
+    expires after 15 minutes, passes three and four were not even reading
+    cache on a 38-minute scan — they re-fetched all ~1,900 tickers from the
+    network. Four full scans against a 60-minute timeout: every run from 18 Sep
+    onward was cancelled and nothing was committed for nine days.
+
+    Fetching once is the fix; sleeping only on a real network fetch is the
+    second half of it. Scoring (the expensive part) still runs only on each
+    screen's top candidates.
+    """
+    from backend.indicators import technical as ta
+    from backend.scanners.growth import GrowthScanner
+    from backend.scanners.moonshot import MoonshotScanner
+
+    md = MarketData()
+    tickers = load_universe()
+    if settings.max_universe and not limit:
+        limit = settings.max_universe
+    if limit:
+        tickers = tickers[:limit]
+
+    spy_ret = None
+    spy = md.snapshot("SPY")
+    if spy is not None:
+        spy_ret = ta.indicator_bundle(spy.history).get("ret_60d")
+
+    scanners = {
+        "crash": AlphaHunterScanner(require_all=True),
+        "opportunity": OpportunityScanner(),
+        "growth": GrowthScanner(spy_ret_60d=spy_ret),
+        "moonshot": MoonshotScanner(),
+    }
+    # (rank key, snapshot, hit) per screen. Each screen ranks candidates its
+    # own way before the expensive scoring step.
+    hits: dict[str, list[tuple[float, object, object]]] = {k: [] for k in scanners}
+
+    total = len(tickers)
+    fetched = 0
+    for i, ticker in enumerate(tickers, 1):
+        cached = md.is_cached(ticker)
+        try:
+            snap = md.snapshot(ticker)
+        except Exception:
+            snap = None
+        if not cached:
+            fetched += 1
+            time.sleep(settings.request_sleep)   # courtesy only on a real fetch
+        if snap is None:
+            continue
+
+        for name, scanner in scanners.items():
+            try:
+                hit = scanner.evaluate(snap)
+            except Exception:
+                continue
+            if hit is None:
+                continue
+            m = hit.metrics or {}
+            rank = {
+                "crash": 0.0,                                  # scored in full
+                "opportunity": -(m.get("month_%") or 0.0),     # most oversold first
+                "growth": m.get("growth_score") or 0.0,
+                "moonshot": m.get("moonshot_score") or 0.0,
+            }[name]
+            hits[name].append((rank, snap, hit))
+
+        if progress and i % 100 == 0:
+            progress(i, total, {k: len(v) for k, v in hits.items()})
+
+    caps = {
+        "crash": max_crash,
+        "opportunity": max_opportunity or settings.opp_max_scored,
+        "growth": max_growth,
+        "moonshot": max_moonshot,
+    }
+    out: dict[str, list[dict]] = {}
+    for name, rows in hits.items():
+        rows.sort(key=lambda x: -x[0])
+        cap = caps[name]
+        scored = []
+        for _rank, snap, hit in (rows[:cap] if cap else rows):
+            try:
+                scored.append(score_snapshot(snap, hit, md=md))
+            except Exception:
+                continue
+        # Growth and moonshot rank by their own score; the composite was tuned
+        # for oversold bounces and would reorder them by the wrong measure.
+        key = {"growth": "growth_score", "moonshot": "moonshot_score"}.get(name)
+        if key:
+            scored.sort(key=lambda r: ((r.get("metrics") or {}).get(key) or 0,
+                                       r.get("score") or 0), reverse=True)
+        else:
+            scored.sort(key=lambda r: r["score"], reverse=True)
+        out[name] = scored
+
+    out["_stats"] = [{"tickers": total, "network_fetches": fetched,
+                      **{f"{k}_hits": len(v) for k, v in hits.items()}}]
+    return out

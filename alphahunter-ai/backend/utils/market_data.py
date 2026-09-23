@@ -191,6 +191,10 @@ class MarketData:
         # 260d ≈ one trading year, enough for EMA200 / 252-day momentum.
         self.period = period
 
+    def is_cached(self, ticker: str) -> bool:
+        """True when the snapshot would come from cache, not the network."""
+        return _cache.get(f"snap:{ticker}:{self.period}") is not None
+
     def snapshot(self, ticker: str) -> StockSnapshot | None:
         if yf is None:
             raise RuntimeError("yfinance is not installed; cannot fetch live data")
