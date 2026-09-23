@@ -282,6 +282,35 @@ def main() -> None:
             with open(bt_path, "w") as f:
                 json.dump({"error": "not generated yet", "points": []}, f)
 
+    # Freshness manifest. Written as the LAST data step, so its timestamp is
+    # the last run that genuinely finished. When the pipeline dies this file
+    # simply stops updating, and the UI reads its age — which is how a dead
+    # pipeline becomes visible to users instead of silently serving week-old
+    # screens under a header dated today.
+    try:
+        public = os.path.dirname(FRONTEND_SNAPSHOT)
+        feeds = {}
+        for name in ("snapshot", "growth", "moonshot", "paper", "backtest"):
+            fp = os.path.join(public, f"{name}.json")
+            if os.path.exists(fp):
+                try:
+                    with open(fp) as f:
+                        d = json.load(f)
+                    feeds[name] = {
+                        "date": d.get("date") or (d.get("generated") or "")[:10] or None,
+                        "count": d.get("count"),
+                    }
+                except Exception:
+                    feeds[name] = {"date": None, "count": None}
+        with open(os.path.join(public, "freshness.json"), "w") as f:
+            json.dump({
+                "scan_date": today,
+                "completed_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+                "feeds": feeds,
+            }, f, indent=2)
+    except Exception as e:  # pragma: no cover - CI only
+        print(f"Freshness manifest skipped: {e}")
+
     # Push the day's best high-conviction setups to configured channels
     # (Slack/Discord webhooks via env/secrets); logs and no-ops when unset.
     outcome = send_scan_digest(today, results)

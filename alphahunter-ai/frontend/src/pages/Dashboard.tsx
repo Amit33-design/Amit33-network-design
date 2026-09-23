@@ -8,6 +8,7 @@ import { StatTile, Badge, Delta, SkeletonPanel, EmptyState, Section } from "../c
 import BacktestPanel, { useBacktest } from "../components/BacktestPanel";
 import GrowthLeaders, { useGrowth } from "../components/GrowthLeaders";
 import PairTrader, { usePairStudy } from "../components/PairTrader";
+import FreshnessBanner from "../components/FreshnessBanner";
 import Moonshots, { useMoonshots } from "../components/Moonshots";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 
@@ -446,6 +447,10 @@ export default function Dashboard() {
                     : undefined}
                   tone={regime === "Risk-on" ? "gain" : regime === "Risk-off" ? "loss" : "warn"} />
       </div>
+
+      {/* The dashboard's own date is today (its workflow is separate), which
+          is exactly why the SCAN's age has to be stated on its own. */}
+      <FreshnessBanner what="Screen data (picks, growth, moonshots, backtest)" />
 
       {mr?.factors?.length ? (
         <div className="mb-3 panel px-4 py-2 text-xs text-ink-secondary">

@@ -4,6 +4,7 @@ import type { Recommendation } from "../lib/types";
 import RecGrid from "../components/RecGrid";
 import { ErrorBox, Loading } from "../components/Loading";
 import SnapshotBanner from "../components/SnapshotBanner";
+import FreshnessBanner from "../components/FreshnessBanner";
 
 type Feed = "growth" | "moonshot" | "top" | "oversold" | "breakouts";
 
@@ -82,7 +83,8 @@ export default function Opportunities() {
           ))}
         </div>
       </div>
-      {snap && feed !== "growth" && <SnapshotBanner />}
+      <FreshnessBanner />
+      {snap && feed !== "growth" && feed !== "moonshot" && <SnapshotBanner />}
       {feed === "moonshot" && (
         <div className="panel px-3 py-2 mb-4 text-xs text-warn border-warn/30">
           <b>Odds, not picks.</b> Measured over 62,202 samples: this profile doubled
