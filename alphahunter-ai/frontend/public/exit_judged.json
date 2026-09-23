@@ -1,106 +1,95 @@
 {
   "method": "each pick judged at its own exit plan \u2014 take-profit, stop, trailing stop or 10-trading-day review, whichever came first",
   "summary": {
-    "trades": 2295,
-    "win_rate": 0.441,
-    "avg_return_%": 1.49,
-    "median_return_%": -1.25,
-    "avg_win_%": 14.85,
-    "avg_loss_%": -9.06,
-    "avg_alpha_%": 1.2,
-    "beat_spy_rate": 0.437,
-    "avg_days_held": 7.8,
+    "trades": 2231,
+    "dates": 59,
+    "win_rate": 0.443,
+    "avg_return_%": 1.37,
+    "median_return_%": -1.26,
+    "avg_win_%": 14.4,
+    "avg_loss_%": -8.99,
+    "avg_alpha_%": 1.08,
+    "beat_spy_rate": 0.436,
+    "avg_days_held": 7.9,
     "exits": {
-      "take_profit": 623,
-      "sell": 495,
-      "close_stale": 1177
+      "take_profit": 118,
+      "trail": 481,
+      "close_stale": 1174,
+      "sell": 458
     }
   },
   "by_screen": {
     "crash": {
-      "trades": 13,
-      "win_rate": 0.769,
-      "avg_return_%": -0.91,
-      "median_return_%": 3.06,
+      "trades": 11,
+      "dates": 3,
+      "win_rate": 0.909,
+      "avg_return_%": 6.91,
+      "median_return_%": 6.53,
       "avg_win_%": 8.47,
-      "avg_loss_%": -32.17,
-      "avg_alpha_%": -2.06,
-      "beat_spy_rate": 0.692,
-      "avg_days_held": 6.8,
+      "avg_loss_%": -8.77,
+      "avg_alpha_%": 6.08,
+      "beat_spy_rate": 0.818,
+      "avg_days_held": 7.8,
       "exits": {
-        "take_profit": 6,
-        "sell": 2,
+        "take_profit": 1,
+        "trail": 5,
         "close_stale": 5
       }
     },
     "growth": {
-      "trades": 36,
-      "win_rate": 0.139,
+      "trades": 37,
+      "dates": 2,
+      "win_rate": 0.135,
       "avg_return_%": -4.73,
-      "median_return_%": -5.21,
-      "avg_win_%": 4.25,
-      "avg_loss_%": -6.18,
+      "median_return_%": -5.26,
+      "avg_win_%": 4.22,
+      "avg_loss_%": -6.12,
       "avg_alpha_%": -6.25,
-      "beat_spy_rate": 0.111,
-      "avg_days_held": 5.6,
+      "beat_spy_rate": 0.108,
+      "avg_days_held": 5.9,
       "exits": {
-        "sell": 29,
-        "take_profit": 7
+        "sell": 30,
+        "take_profit": 1,
+        "trail": 6
       }
     },
     "opportunity": {
-      "trades": 2246,
-      "win_rate": 0.444,
-      "avg_return_%": 1.61,
-      "median_return_%": -1.08,
-      "avg_win_%": 14.97,
-      "avg_loss_%": -9.08,
-      "avg_alpha_%": 1.34,
-      "beat_spy_rate": 0.441,
-      "avg_days_held": 7.8,
+      "trades": 2183,
+      "dates": 58,
+      "win_rate": 0.446,
+      "avg_return_%": 1.45,
+      "median_return_%": -1.2,
+      "avg_win_%": 14.51,
+      "avg_loss_%": -9.06,
+      "avg_alpha_%": 1.18,
+      "beat_spy_rate": 0.44,
+      "avg_days_held": 8.0,
       "exits": {
-        "close_stale": 1172,
-        "take_profit": 610,
-        "sell": 464
+        "close_stale": 1169,
+        "trail": 470,
+        "sell": 428,
+        "take_profit": 116
       }
     }
   },
-  "still_open": 228,
-  "unpriced": 0,
+  "still_open": 226,
+  "unpriced": 1,
+  "excluded_non_common": {
+    "picks": 65,
+    "tickers": [
+      "GRABW",
+      "HTZWW",
+      "OPENW",
+      "PGYWW",
+      "PSNYW"
+    ]
+  },
   "recent": [
     {
       "exit": "sell",
-      "days_held": 1,
-      "exit_price": 0.02,
-      "return_%": -67.2,
-      "target_pct": 30.0,
-      "stop_pct": -15.0,
-      "ticker": "PGYWW",
-      "picked": "2026-06-30",
-      "exit_date": "2026-09-23",
-      "score": 61.3,
-      "screen": "crash",
-      "spy_%": 2.97
-    },
-    {
-      "exit": "sell",
-      "days_held": 1,
-      "exit_price": 0.87,
-      "return_%": -20.55,
-      "target_pct": 21.76,
-      "stop_pct": -13.06,
-      "ticker": "HTZWW",
-      "picked": "2026-06-30",
-      "exit_date": "2026-09-23",
-      "score": 53.4,
-      "screen": "crash",
-      "spy_%": 2.97
-    },
-    {
-      "exit": "sell",
-      "days_held": 7,
-      "exit_price": 9.23,
-      "return_%": -12.23,
+      "days_held": 8,
+      "exit_price": 9.16,
+      "return_%": -12.8,
       "target_pct": 15.8,
       "stop_pct": -9.48,
       "ticker": "COMP",
@@ -108,13 +97,13 @@
       "exit_date": "2026-09-23",
       "score": 66.8,
       "screen": "opportunity",
-      "spy_%": 1.06
+      "spy_%": 1.11
     },
     {
-      "exit": "take_profit",
-      "days_held": 6,
-      "exit_price": 20.01,
-      "return_%": 10.09,
+      "exit": "trail",
+      "days_held": 7,
+      "exit_price": 19.99,
+      "return_%": 9.96,
       "target_pct": 29.14,
       "stop_pct": -15.0,
       "ticker": "INIO",
@@ -122,13 +111,13 @@
       "exit_date": "2026-09-23",
       "score": 56.5,
       "screen": "opportunity",
-      "spy_%": 1.06
+      "spy_%": 1.11
     },
     {
       "exit": "take_profit",
       "days_held": 8,
-      "exit_price": 192.02,
-      "return_%": 14.82,
+      "exit_price": 191.77,
+      "return_%": 14.67,
       "target_pct": 14.05,
       "stop_pct": -8.43,
       "ticker": "PLTR",
@@ -136,13 +125,13 @@
       "exit_date": "2026-09-23",
       "score": 76.2,
       "screen": "growth",
-      "spy_%": 1.06
+      "spy_%": 1.11
     },
     {
-      "exit": "take_profit",
-      "days_held": 7,
-      "exit_price": 34.38,
-      "return_%": -2.0,
+      "exit": "trail",
+      "days_held": 8,
+      "exit_price": 34.42,
+      "return_%": -1.88,
       "target_pct": 10.5,
       "stop_pct": -6.3,
       "ticker": "TRMD",
@@ -150,13 +139,13 @@
       "exit_date": "2026-09-23",
       "score": 69.7,
       "screen": "growth",
-      "spy_%": 1.06
+      "spy_%": 1.11
     },
     {
       "exit": "sell",
-      "days_held": 7,
-      "exit_price": 22.89,
-      "return_%": -7.86,
+      "days_held": 8,
+      "exit_price": 22.96,
+      "return_%": -7.57,
       "target_pct": 8.98,
       "stop_pct": -5.39,
       "ticker": "SLDE",
@@ -164,13 +153,13 @@
       "exit_date": "2026-09-23",
       "score": 69.0,
       "screen": "growth",
-      "spy_%": 1.06
+      "spy_%": 1.11
     },
     {
       "exit": "sell",
-      "days_held": 7,
-      "exit_price": 94.08,
-      "return_%": -6.69,
+      "days_held": 8,
+      "exit_price": 94.47,
+      "return_%": -6.31,
       "target_pct": 10.46,
       "stop_pct": -6.28,
       "ticker": "TNK",
@@ -178,13 +167,13 @@
       "exit_date": "2026-09-23",
       "score": 68.8,
       "screen": "growth",
-      "spy_%": 1.06
+      "spy_%": 1.11
     },
     {
       "exit": "sell",
-      "days_held": 7,
-      "exit_price": 26.72,
-      "return_%": -4.56,
+      "days_held": 8,
+      "exit_price": 26.69,
+      "return_%": -4.64,
       "target_pct": 5.93,
       "stop_pct": -3.56,
       "ticker": "PAGP",
@@ -192,13 +181,13 @@
       "exit_date": "2026-09-23",
       "score": 66.8,
       "screen": "growth",
-      "spy_%": 1.06
+      "spy_%": 1.11
     },
     {
-      "exit": "take_profit",
-      "days_held": 6,
-      "exit_price": 375.67,
-      "return_%": -1.13,
+      "exit": "trail",
+      "days_held": 7,
+      "exit_price": 375.82,
+      "return_%": -1.09,
       "target_pct": 9.99,
       "stop_pct": -5.99,
       "ticker": "VLO",
@@ -206,13 +195,27 @@
       "exit_date": "2026-09-23",
       "score": 77.0,
       "screen": "growth",
-      "spy_%": 1.06
+      "spy_%": 1.11
     },
     {
       "exit": "sell",
-      "days_held": 6,
-      "exit_price": 47.47,
-      "return_%": -6.17,
+      "days_held": 7,
+      "exit_price": 81.17,
+      "return_%": -5.34,
+      "target_pct": 8.5,
+      "stop_pct": -5.1,
+      "ticker": "STNG",
+      "picked": "2026-09-14",
+      "exit_date": "2026-09-23",
+      "score": 76.9,
+      "screen": "growth",
+      "spy_%": 1.11
+    },
+    {
+      "exit": "sell",
+      "days_held": 7,
+      "exit_price": 47.55,
+      "return_%": -6.01,
       "target_pct": 9.56,
       "stop_pct": -5.74,
       "ticker": "FRO",
@@ -220,13 +223,13 @@
       "exit_date": "2026-09-23",
       "score": 70.3,
       "screen": "growth",
-      "spy_%": 1.06
+      "spy_%": 1.11
     },
     {
       "exit": "sell",
-      "days_held": 6,
-      "exit_price": 26.72,
-      "return_%": -4.49,
+      "days_held": 7,
+      "exit_price": 26.69,
+      "return_%": -4.58,
       "target_pct": 5.99,
       "stop_pct": -3.6,
       "ticker": "PAGP",
@@ -234,13 +237,13 @@
       "exit_date": "2026-09-23",
       "score": 67.6,
       "screen": "growth",
-      "spy_%": 1.06
+      "spy_%": 1.11
     },
     {
       "exit": "sell",
-      "days_held": 6,
-      "exit_price": 24.43,
-      "return_%": -5.16,
+      "days_held": 7,
+      "exit_price": 24.44,
+      "return_%": -5.12,
       "target_pct": 5.95,
       "stop_pct": -3.57,
       "ticker": "PAA",
@@ -248,10 +251,10 @@
       "exit_date": "2026-09-23",
       "score": 67.5,
       "screen": "growth",
-      "spy_%": 1.06
+      "spy_%": 1.11
     },
     {
-      "exit": "take_profit",
+      "exit": "trail",
       "days_held": 6,
       "exit_price": 548.92,
       "return_%": 2.04,
@@ -417,7 +420,21 @@
       "score": 63.6,
       "screen": "opportunity",
       "spy_%": 0.68
+    },
+    {
+      "exit": "close_stale",
+      "days_held": 10,
+      "exit_price": 401.57,
+      "return_%": -1.05,
+      "target_pct": 22.56,
+      "stop_pct": -13.54,
+      "ticker": "FN",
+      "picked": "2026-09-04",
+      "exit_date": "2026-09-21",
+      "score": 63.5,
+      "screen": "opportunity",
+      "spy_%": 0.68
     }
   ],
-  "generated": "2026-09-23T19:54:58+00:00"
+  "generated": "2026-09-23T20:00:32+00:00"
 }
