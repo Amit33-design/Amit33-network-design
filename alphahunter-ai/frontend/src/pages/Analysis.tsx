@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import Plot from "react-plotly.js";
+import Plot from "../components/LazyPlot";
 import { api } from "../lib/api";
 import { ErrorBox, Loading } from "../components/Loading";
 import CompanyProfile, { useProfile } from "../components/CompanyProfile";

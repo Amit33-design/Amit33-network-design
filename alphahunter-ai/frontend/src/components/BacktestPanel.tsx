@@ -4,7 +4,7 @@
 // answers the different and more honest question "would running this have
 // made money?".
 import { useEffect, useState } from "react";
-import Plot from "react-plotly.js";
+import Plot from "./LazyPlot";
 import { StatTile, Badge } from "./ui";
 import { chartColors, getTheme, onThemeChange, plotTheme } from "../lib/theme";
 

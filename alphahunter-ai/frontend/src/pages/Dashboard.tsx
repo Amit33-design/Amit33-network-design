@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Plot from "react-plotly.js";
+import Plot from "../components/LazyPlot";
 import { ErrorBox } from "../components/Loading";
 import { getWatchlist, onWatchlistChange, removeFromWatchlist,
          getAlerts, setAlert, alertState, type Alert } from "../lib/watchlist";
@@ -10,6 +10,7 @@ import GrowthLeaders, { useGrowth } from "../components/GrowthLeaders";
 import PairTrader, { usePairStudy } from "../components/PairTrader";
 import FreshnessBanner from "../components/FreshnessBanner";
 import EvidenceBadge from "../components/EvidenceBadge";
+import DeferUntilVisible from "../components/DeferUntilVisible";
 import { useJudged } from "../lib/evidence";
 import Moonshots, { useMoonshots } from "../components/Moonshots";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
@@ -614,6 +615,7 @@ export default function Dashboard() {
 
       <div className="bg-surface rounded-xl shadow-sm p-4 mt-2">
         <div className="font-semibold text-ink mb-2">Score distribution</div>
+        <DeferUntilVisible height={260}>
         <Plot
           data={[{ type: "bar", x: buckets.map((b) => b.label), y: buckets.map((b) => b.count), marker: { color: chartColors(theme).series[0] } }]}
           layout={{ autosize: true, height: 260, margin: { l: 44, r: 12, t: 8, b: 40 },
@@ -622,6 +624,7 @@ export default function Dashboard() {
                     yaxis: { ...plotTheme(theme).yaxis, title: { text: "Instruments" } } } as any}
           useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false }}
         />
+        </DeferUntilVisible>
       </div>
     </div>
   );

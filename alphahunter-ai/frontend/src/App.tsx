@@ -1,12 +1,13 @@
+import { lazy, Suspense } from "react";
 import { NavLink, Navigate, Route, Routes } from "react-router-dom";
 import RunScanButton from "./components/RunScanButton";
 import TickerSearch from "./components/TickerSearch";
 import ThemeToggle from "./components/ThemeToggle";
-import Dashboard from "./pages/Dashboard";
-import Opportunities from "./pages/Opportunities";
-import Analysis from "./pages/Analysis";
-import Options from "./pages/Options";
-import Portfolio from "./pages/Portfolio";
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Opportunities = lazy(() => import("./pages/Opportunities"));
+const Analysis = lazy(() => import("./pages/Analysis"));
+const Options = lazy(() => import("./pages/Options"));
+const Portfolio = lazy(() => import("./pages/Portfolio"));
 
 const tabs = [
   { to: "/dashboard", label: "Dashboard" },
@@ -73,6 +74,7 @@ export default function App() {
       </header>
 
       <main className="max-w-[1400px] mx-auto px-3 sm:px-5 py-5 sm:py-6">
+        <Suspense fallback={<div className="py-16 text-center text-sm text-ink-muted">Loading…</div>}>
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -84,6 +86,7 @@ export default function App() {
           <Route path="/gainers" element={<Navigate to="/dashboard" replace />} />
           <Route path="/backtest" element={<Navigate to="/dashboard" replace />} />
         </Routes>
+        </Suspense>
       </main>
 
       <footer className="max-w-[1400px] mx-auto px-3 sm:px-5 pb-8 pt-2">
