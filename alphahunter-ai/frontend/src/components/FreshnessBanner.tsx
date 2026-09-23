@@ -28,15 +28,34 @@ export function tradingDaysSince(iso: string, now = new Date()): number {
 
 export const STALE_AFTER = 2;   // trading days
 
+/** The scan's age, read off the scan output itself.
+ *
+ *  The first version read a separate manifest, freshness.json. That gave the
+ *  banner its own source of truth, and the two disagreed within a day: a scan
+ *  built before the manifest existed wrote fresh data but never rewrote the
+ *  manifest, so the page warned that current data was a week old. A staleness
+ *  warning that cries wolf teaches people to ignore it, which is worse than
+ *  having none. snapshot.json's date is written by the same step that
+ *  produces the data, so it cannot drift from it. The manifest is still read,
+ *  and the NEWER of the two wins — neither can make fresh data look stale.
+ */
 export function useScanFreshness(): { date: string | null; age: number | null } {
-  const [m, setM] = useState<Manifest | null>(null);
+  const [dates, setDates] = useState<(string | null)[]>([]);
   useEffect(() => {
-    fetch("/freshness.json", { cache: "no-store" })
-      .then((r) => (r.ok ? r.json() : null))
-      .then(setM)
-      .catch(() => setM(null));
+    let cancelled = false;
+    const grab = (url: string, pick: (j: any) => string | null | undefined) =>
+      fetch(url, { cache: "no-store" })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((j) => (j ? pick(j) ?? null : null))
+        .catch(() => null);
+    Promise.all([
+      grab("/snapshot.json", (j) => j.date),
+      grab("/freshness.json", (j) => (j as Manifest).scan_date),
+    ]).then((ds) => { if (!cancelled) setDates(ds); });
+    return () => { cancelled = true; };
   }, []);
-  const date = m?.scan_date ?? null;
+  const valid = dates.filter((d): d is string => !!d && /^\d{4}-\d{2}-\d{2}$/.test(d));
+  const date = valid.length ? valid.sort()[valid.length - 1] : null;
   return { date, age: date ? tradingDaysSince(date) : null };
 }
 
