@@ -192,3 +192,12 @@ def build(results_dir: str, out_path: str) -> dict:  # pragma: no cover - networ
     with open(out_path, "w") as f:
         json.dump(out, f, indent=2)
     return out
+
+
+if __name__ == "__main__":  # pragma: no cover - CI/manual entrypoint
+    here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    out = build(os.path.join(here, "results"),
+                os.path.join(here, "frontend", "public", "exit_judged.json"))
+    s = out.get("summary") or {}
+    print(json.dumps({"summary": s, "by_screen": out.get("by_screen"),
+                      "still_open": out.get("still_open")}, indent=2))
