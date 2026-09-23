@@ -7,7 +7,8 @@
 import { useEffect, useState } from "react";
 
 export type ScreenRecord = {
-  trades: number; dates?: number; win_rate: number; avg_return_pct?: number;
+  trades: number; dates?: number; alpha_t_by_date?: number | null;
+  dates_beating_spy?: number | null; win_rate: number; avg_return_pct?: number;
   "avg_return_%": number; "avg_alpha_%"?: number | null;
   beat_spy_rate?: number | null; avg_days_held?: number;
 };
@@ -22,6 +23,8 @@ export const MIN_TRADES = 20;
 // day ride the same market: Growth's first 36 trades came from three dates,
 // which is one market window, not 36 observations.
 export const MIN_DATES = 10;
+// Date-clustered t-statistic an edge must reach to be called "Beating SPY".
+export const T_PROVEN = 2;
 
 export type Status = {
   label: "Beating SPY" | "Trailing SPY" | "Mixed" | "Unproven";
@@ -49,9 +52,19 @@ export function statusFor(rec?: ScreenRecord | null): Status {
   const base = `${n} trades judged at their exit plan: avg ${rec["avg_return_%"] >= 0 ? "+" : ""}${rec["avg_return_%"]}%`
     + (alpha != null ? `, ${alpha >= 0 ? "+" : ""}${alpha}pp vs SPY over the same days` : "")
     + `, ${(rec.win_rate * 100).toFixed(0)}% winners.`;
-  if (alpha != null && alpha > 0 && beat > 0.5) return { label: "Beating SPY", tone: "gain", detail: base };
   if (alpha != null && alpha <= 0) return { label: "Trailing SPY", tone: "loss", detail: base };
-  return { label: "Mixed", tone: "warn", detail: base };
+  // A positive average is not an edge until it holds across scan DATES. One
+  // big day can carry a trade-weighted mean; t is computed per date, so ~2
+  // means the edge is unlikely to be luck. Older records lack t and fall back
+  // to "beats SPY on most trades".
+  const t = rec.alpha_t_by_date;
+  const proven = alpha != null && alpha > 0 && (t != null ? t >= T_PROVEN : beat > 0.5);
+  if (proven) return { label: "Beating SPY", tone: "gain",
+                       detail: base + (t != null ? ` Holds across dates (t = ${t}).` : "") };
+  return { label: "Mixed", tone: "warn",
+           detail: base + (t != null
+             ? ` Not yet distinguishable from luck across ${rec.dates ?? "its"} scan dates (t = ${t}; needs ${T_PROVEN}).`
+             : "") };
 }
 
 export function useJudged(): Judged | null {

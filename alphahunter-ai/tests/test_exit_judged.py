@@ -132,3 +132,21 @@ def test_share_classes_are_common_stock_and_warrants_are_not():
         assert is_common_share(t), t
     for t in ("GRABW", "HTZWW", "BTSGU", "GENVR", "X-WS", "ABC-RT"):
         assert not is_common_share(t), t
+
+
+def test_significance_is_measured_across_dates_not_trades():
+    """Ten identical trades on one date are one observation."""
+    def day(d, alphas):
+        return [{"exit": "sell", "return_%": a, "spy_%": 0.0, "days_held": 3,
+                 "picked": d} for a in alphas]
+    # A consistent edge across dates → large t.
+    steady = sum((day(f"2026-01-{i:02d}", [2.0 + (i % 3) * 0.1] * 5) for i in range(5, 15)), [])
+    assert summarise(steady)["alpha_t_by_date"] > 10
+    # One great date and nine flat-to-negative ones: the trade-weighted mean is
+    # positive, but across dates it is noise.
+    lumpy = day("2026-01-05", [40.0] * 30) + sum(
+        (day(f"2026-01-{i:02d}", [-1.0, 0.5]) for i in range(6, 15)), [])
+    s = summarise(lumpy)
+    assert s["avg_alpha_%"] > 5 and abs(s["alpha_t_by_date"]) < 2
+    assert s["dates_beating_spy"] == 0.1
+    assert summarise(day("2026-01-05", [1.0, 2.0]))["alpha_t_by_date"] is None

@@ -96,9 +96,27 @@ def summarise(trades: list[dict]) -> dict | None:
     # dates are closer to three observations than to 36.
     dates = len({t["picked"] for t in trades if t.get("picked")})
     losses = [r for r in rets if r <= 0]
+    # Is the edge distinguishable from zero? Same-day picks move together, so
+    # the honest unit is the scan DATE: average each date's alpha, then take
+    # the t-statistic across dates. Treating 2,000 correlated trades as
+    # independent would make almost any average look significant.
+    by_date: dict[str, list[float]] = {}
+    for t in trades:
+        if t.get("spy_%") is not None and t.get("picked"):
+            by_date.setdefault(t["picked"], []).append(t["return_%"] - t["spy_%"])
+    date_alphas = [sum(v) / len(v) for v in by_date.values()]
+    alpha_t = None
+    if len(date_alphas) >= 3:
+        m = sum(date_alphas) / len(date_alphas)
+        var = sum((a - m) ** 2 for a in date_alphas) / (len(date_alphas) - 1)
+        if var > 0:
+            alpha_t = round(m / (var / len(date_alphas)) ** 0.5, 2)
     return {
         "trades": len(trades),
         "dates": dates,
+        "alpha_t_by_date": alpha_t,
+        "dates_beating_spy": (round(sum(1 for a in date_alphas if a > 0) / len(date_alphas), 3)
+                              if date_alphas else None),
         "win_rate": round(len(wins) / len(rets), 3),
         "avg_return_%": round(sum(rets) / len(rets), 2),
         "median_return_%": round(median(rets), 2),

@@ -47,6 +47,13 @@ describe("statusFor — evidence per screen", () => {
     expect(statusFor({ trades: 36, dates: MIN_DATES, win_rate: 0.14, "avg_return_%": -4.7,
                        "avg_alpha_%": -6.3, beat_spy_rate: 0.11 }).label).toBe("Trailing SPY");
   });
+  it("a positive average is Mixed until it holds across dates", () => {
+    const rec = { trades: 2183, dates: 58, win_rate: 0.45, "avg_return_%": 1.45,
+                  "avg_alpha_%": 1.18, beat_spy_rate: 0.44 };
+    expect(statusFor({ ...rec, alpha_t_by_date: 1.1 }).label).toBe("Mixed");
+    expect(statusFor({ ...rec, alpha_t_by_date: 1.1 }).detail).toContain("luck");
+    expect(statusFor({ ...rec, alpha_t_by_date: 2.4 }).label).toBe("Beating SPY");
+  });
   it("handles no record at all", () => {
     expect(statusFor(null).label).toBe("Unproven");
     expect(statusFor({ trades: 0, win_rate: 0, "avg_return_%": 0 }).label).toBe("Unproven");

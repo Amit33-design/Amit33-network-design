@@ -174,7 +174,9 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   made "day 1" twelve weeks later). A trailing stop that closes below target
   is `trail`, never `take_profit`. A screen needs `MIN_TRADES` closed trades
   AND `MIN_DATES` distinct scan dates before it earns a verdict — same-day
-  picks share one market. Re-judge without a scan: dispatch
+  picks share one market. "Beating SPY" additionally needs the alpha to
+  hold across dates (`alpha_t_by_date` ≥ `T_PROVEN` = 2), not just on
+  average — one great day can carry a trade-weighted mean. Re-judge without a scan: dispatch
   `alphahunter-scan.yml` with `record_only`.
 - **Never lend one list another list's evidence.** Top Picks are the watchlist
   ranked by composite score, not a scan screen; showing a scan screen's
