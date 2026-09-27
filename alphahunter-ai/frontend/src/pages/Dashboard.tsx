@@ -1,22 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Plot from "../components/LazyPlot";
+import { Link, useSearchParams } from "react-router-dom";
 import { ErrorBox } from "../components/Loading";
 import { getWatchlist, onWatchlistChange, removeFromWatchlist,
          getAlerts, setAlert, alertState, type Alert } from "../lib/watchlist";
-import { StatTile, Badge, Delta, SkeletonPanel, EmptyState, Section } from "../components/ui";
-import BacktestPanel, { useBacktest } from "../components/BacktestPanel";
+import { Badge, Delta, SkeletonPanel, EmptyState, Section } from "../components/ui";
 import GrowthLeaders, { useGrowth } from "../components/GrowthLeaders";
-import PairTrader, { usePairStudy } from "../components/PairTrader";
-import FreshnessBanner from "../components/FreshnessBanner";
+import { STALE_AFTER, useScanFreshness } from "../components/FreshnessBanner";
 import EvidenceBadge from "../components/EvidenceBadge";
-import DeferUntilVisible from "../components/DeferUntilVisible";
 import TodayPlan from "../components/TodayPlan";
 import { useJudged } from "../lib/evidence";
 import Moonshots, { useMoonshots } from "../components/Moonshots";
-import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
+import { chartColors } from "../lib/theme";
 import type { Story } from "../lib/story";
-import ThemeBoard, { rankThemes, useThemes, type ThemeRow } from "../components/ThemeBoard";
+import ThemeBoard, { rankThemes, useThemes } from "../components/ThemeBoard";
 
 interface Stock {
   ticker: string;
@@ -286,25 +282,6 @@ function AlertCell({ ticker, price, alert }: {
   );
 }
 
-// Collapsed by default: the header line alone says which themes lead and lag.
-function ThemeSection() {
-  const data = useThemes();
-  const ranked = rankThemes(data);
-  const top = ranked[0], bottom = ranked[ranked.length - 1];
-  const fmt = (t: ThemeRow) => `${t.name} ${(t.basket!.vs_spy_3m ?? 0) >= 0 ? "+" : ""}${t.basket!.vs_spy_3m}pp`;
-  return (
-    <Section
-      title="🧭 Where money is flowing"
-      subtitle={ranked.length > 1 ? `Leading: ${fmt(top)} · Lagging: ${fmt(bottom)}` : "themes measured on their own stocks"}
-      badge={ranked.length ? `${ranked.length} themes` : undefined}
-      badgeColor="#2563eb"
-      defaultOpen={false}
-    >
-      <ThemeBoard data={data} />
-    </Section>
-  );
-}
-
 // /api/thesis. Entirely client-side so it works on the static deploy.
 function WatchlistSection() {
   const [tickers, setTickers] = useState<string[]>(getWatchlist);
@@ -344,6 +321,10 @@ function WatchlistSection() {
   const triggered = rows
     .map((r) => ({ t: r.ticker, s: alertState(r.price, alerts[r.ticker] ?? {}) }))
     .filter((x) => x.s);
+
+  // Nothing saved: no section. The ☆ on the Analysis page is how you add one,
+  // and an empty panel on every visit is the kind of clutter this page lost.
+  if (!tickers.length) return null;
 
   return (
     <Section
@@ -410,18 +391,96 @@ function WatchlistSection() {
   );
 }
 
+type TabKey = "picks" | "growth" | "moonshots" | "themes" | "movers" | "sectors";
+const TAB_STORE = "alphahunter.dashTab";
+
+/** The regime, what it means for position size, whether the data is fresh,
+ *  and where money is going — one strip instead of four tiles and two
+ *  banners. The old tiles (instruments tracked, "bullish", average score)
+ *  measured this product's own scores, not the market. */
+function MarketStrip({ mr, asOf, onThemes }: {
+  mr: Dash["market_regime"]; asOf: string; onThemes: () => void;
+}) {
+  const themes = rankThemes(useThemes());
+  const { date: scanDate, age } = useScanFreshness();
+  const regime = mr?.regime === "risk-on" ? "Risk-on" : mr?.regime === "risk-off" ? "Risk-off"
+    : mr ? "Neutral" : null;
+  const tone = regime === "Risk-on" ? "text-gain" : regime === "Risk-off" ? "text-loss" : "text-warn";
+  const stale = age != null && age > STALE_AFTER;
+  const top = themes[0], bottom = themes[themes.length - 1];
+  const pp = (x?: number | null) => `${(x ?? 0) >= 0 ? "+" : ""}${(x ?? 0).toFixed(0)}pp`;
+
+  return (
+    <div className="panel px-4 py-3 mb-3">
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+        {regime && (
+          <div className="flex items-baseline gap-2">
+            <span className="label-eyebrow">Market</span>
+            <span className={`text-lg font-semibold ${tone}`}>{regime}</span>
+            <span className="text-xs text-ink-muted num">{mr!.score}/100</span>
+          </div>
+        )}
+        {mr && (
+          <div className="text-xs text-ink-secondary">
+            Size positions at{" "}
+            <b className={mr.position_scale < 1 ? "text-warn" : "text-ink"}>
+              {Math.round(mr.position_scale * 100)}%
+            </b>{" "}of normal
+          </div>
+        )}
+        {top && bottom && top !== bottom && (
+          <button onClick={onThemes} className="text-xs text-ink-secondary hover:underline text-left"
+                  title="Themes measured on their own stocks, 3-month return vs the S&P 500">
+            Money into <b className="text-gain">{top.name}</b> {pp(top.basket?.vs_spy_3m)}
+            {" · "}out of <b className="text-loss">{bottom.name}</b> {pp(bottom.basket?.vs_spy_3m)}
+          </button>
+        )}
+        <div className={`ml-auto text-2xs num ${stale ? "text-loss font-semibold" : "text-ink-muted"}`}>
+          {stale
+            ? `⚠ Scan data is ${age} trading days old — check live quotes before acting`
+            : `Scan ${scanDate ?? "—"} · watchlist ${asOf}`}
+        </div>
+      </div>
+      {mr?.factors?.length ? (
+        <div className="mt-1.5 text-2xs text-ink-muted">{mr.factors.join(" · ")}</div>
+      ) : null}
+    </div>
+  );
+}
+
+function TabButton({ active, onClick, children, count }: {
+  active: boolean; onClick: () => void; children: React.ReactNode; count?: number | string;
+}) {
+  return (
+    <button onClick={onClick} role="tab" aria-selected={active}
+            className={`px-3 py-2 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
+              active ? "border-brand text-ink" : "border-transparent text-ink-muted hover:text-ink"}`}>
+      {children}
+      {count != null && <span className="ml-1.5 text-2xs text-ink-muted num">{count}</span>}
+    </button>
+  );
+}
+
 export default function Dashboard() {
   const [dash, setDash] = useState<Dash | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [theme, setTheme] = useState(getTheme);
-  const backtest = useBacktest();
   const growth = useGrowth();
-  const pairStudy = usePairStudy();
   const moonshots = useMoonshots();
   const judged = useJudged();
-
-  useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
+  const themes = useThemes();
+  const [params, setParams] = useSearchParams();
+  const [tab, setTabState] = useState<TabKey>(() => {
+    const q = params.get("tab") as TabKey | null;
+    if (q) return q;
+    try { return (localStorage.getItem(TAB_STORE) as TabKey) || "picks"; } catch { return "picks"; }
+  });
+  const [sector, setSector] = useState<string | null>(null);
+  const setTab = (t: TabKey) => {
+    setTabState(t);
+    try { localStorage.setItem(TAB_STORE, t); } catch { /* private mode */ }
+    const next = new URLSearchParams(params); next.set("tab", t); setParams(next, { replace: true });
+  };
 
   useEffect(() => {
     fetch("/dashboard.json")
@@ -434,9 +493,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="space-y-3">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {Array.from({ length: 4 }).map((_, i) => <SkeletonPanel key={i} rows={1} />)}
-        </div>
+        <SkeletonPanel rows={1} />
         <SkeletonPanel rows={5} />
       </div>
     );
@@ -444,72 +501,29 @@ export default function Dashboard() {
   if (error || !dash) return <ErrorBox error={error || "no data"} />;
 
   const all = Object.values(dash.domains).flat();
-  const bullish = all.filter((s) => s.above_ema200 || s.score >= 60).length;
-  const avg = all.length ? all.reduce((a, s) => a + s.score, 0) / all.length : 0;
-  // Prefer the real market read (SPY structure + breadth + realized vol).
-  // The old fallback averaged our OWN scores, which measured how bullish this
-  // product was rather than what the market was doing — kept only so the tile
-  // still renders against a dashboard.json written before the regime existed.
   const mr = dash.market_regime;
-  const regime = mr
-    ? mr.regime === "risk-on" ? "Risk-on" : mr.regime === "risk-off" ? "Risk-off" : "Neutral"
-    : avg >= 60 ? "Risk-on" : avg >= 48 ? "Neutral" : "Risk-off";
   const movers = [...all].filter((s) => s["day_%"] != null).sort((a, b) => (b["day_%"] ?? 0) - (a["day_%"] ?? 0));
   const gainers = movers.filter((s) => (s["day_%"] ?? 0) > 0);
   const topGainers = gainers.slice(0, 10);
-  const losers = movers.slice(-3).reverse();
-  const buckets = [0, 20, 40, 50, 60, 70, 80].map((b, i, arr) => {
-    const hi = arr[i + 1] ?? 101;
-    return { label: `${b}-${hi === 101 ? 100 : hi}`, count: all.filter((s) => s.score >= b && s.score < hi).length };
-  });
-  // The identifying system: the highest-conviction names across ALL domains,
-  // ranked by AI score (tie-broken by day strength). This is the "what looks
-  // best right now" board, independent of category.
+  const losers = movers.slice(-5).reverse().filter((s) => (s["day_%"] ?? 0) < 0);
   const topPicks = [...all].sort((a, b) => b.score - a.score || (b["day_%"] ?? 0) - (a["day_%"] ?? 0)).slice(0, 8);
+  const domains = Object.entries(dash.domains).filter(([, v]) => v.length);
+  const activeSector = sector ?? domains[0]?.[0] ?? null;
+  const themeCount = rankThemes(themes).length;
 
   return (
     <div>
-      <div className="flex items-end justify-between mb-5 flex-wrap gap-3">
+      <div className="flex items-end justify-between mb-3 flex-wrap gap-2">
         <div>
           <div className="label-eyebrow">Market overview</div>
           <h1 className="text-xl font-semibold tracking-tight text-ink">Dashboard</h1>
         </div>
-        <div className="text-xs text-ink-muted num">
-          {dash.count} instruments · as of {dash.as_of}
-        </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
-        <StatTile label="Instruments tracked" value={dash.count} />
-        <StatTile label="Bullish" value={bullish} tone="gain"
-                  sub={`${Math.round((bullish / Math.max(all.length, 1)) * 100)}% of universe`} />
-        <StatTile label="Average score" value={avg.toFixed(1)} sub="0–100 composite" />
-        <StatTile label="Market regime" value={regime}
-                  sub={mr
-                    ? `${mr.score}/100 · size at ${Math.round(mr.position_scale * 100)}% of normal`
-                    : undefined}
-                  tone={regime === "Risk-on" ? "gain" : regime === "Risk-off" ? "loss" : "warn"} />
-      </div>
+      <MarketStrip mr={mr} asOf={dash.as_of} onThemes={() => setTab("themes")} />
 
-      {/* The dashboard's own date is today (its workflow is separate), which
-          is exactly why the SCAN's age has to be stated on its own. */}
-      <FreshnessBanner what="Screen data (picks, growth, moonshots, backtest)" />
-
-      {mr?.factors?.length ? (
-        <div className="mb-3 panel px-4 py-2 text-xs text-ink-secondary">
-          <span className="label-eyebrow">Why this regime</span>{" "}
-          {mr.factors.join(" · ")}
-          {mr.position_scale < 1 && (
-            <span className="text-warn">
-              {" "}Positions sized to {Math.round(mr.position_scale * 100)}% of normal
-              while the tape looks like this.
-            </span>
-          )}
-        </div>
-      ) : null}
-
-      {/* One place for decide -> size -> act -> exit. First on the page,
-          because it is the only list here backed by out-of-sample evidence. */}
+      {/* Decide -> size -> act -> exit. First, because it is the only list
+          here backed by out-of-sample evidence. */}
       <Section
         title="📋 Today's plan"
         subtitle="the one rule with out-of-sample evidence, applied to today's scan"
@@ -518,167 +532,127 @@ export default function Dashboard() {
         <TodayPlan positionScale={mr?.position_scale ?? 1} regime={mr?.regime} />
       </Section>
 
-      <ThemeSection />
-
       <WatchlistSection />
 
-      {/* Top Picks — cross-domain highest-conviction names by AI score */}
-      <Section
-        title="🏆 AlphaHunter Top Picks"
-        // Top Picks are the WATCHLIST ranked by composite score, not a scan
-        // screen, so they must not borrow a scan screen's track record. What
-        // is actually known about ranking by that score is the held-out test.
-        evidence={<EvidenceBadge status={{
-          label: "Unproven", tone: "neutral",
-          detail: "Ranked by the composite score. On 894 held-out samples its rank-IC was -0.053, "
-            + "inside the ±0.067 noise floor — it has not been shown to rank future returns.",
-        }} />}
-        subtitle={topPicks.length ? `${topPicks[0].ticker} leads at score ${topPicks[0].score}` : ""}
-        badge={`best ${topPicks.length}`}
-        badgeColor="#7c3aed"
-        defaultOpen
-      >
-        <div className="text-xs text-ink-muted mb-3">
-          Highest AI-scored names across every domain right now — the system's best identifications, ranked by conviction.
+      {/* Everything else is one panel with tabs. It used to be ten stacked
+          sections, three of them open by default with 8-10 cards each. */}
+      <section className="panel overflow-hidden">
+        <div role="tablist" className="flex overflow-x-auto no-scrollbar border-b border-line px-2">
+          <TabButton active={tab === "picks"} onClick={() => setTab("picks")} count={topPicks.length}>🏆 Top Picks</TabButton>
+          {growth && <TabButton active={tab === "growth"} onClick={() => setTab("growth")} count={growth.results.length}>🌱 Growth</TabButton>}
+          {moonshots && <TabButton active={tab === "moonshots"} onClick={() => setTab("moonshots")} count={moonshots.results.length}>🎲 Moonshots</TabButton>}
+          <TabButton active={tab === "themes"} onClick={() => setTab("themes")} count={themeCount || undefined}>🧭 Themes</TabButton>
+          <TabButton active={tab === "movers"} onClick={() => setTab("movers")} count={gainers.length}>🚀 Movers</TabButton>
+          <TabButton active={tab === "sectors"} onClick={() => setTab("sectors")} count={domains.length}>🗂 Sectors</TabButton>
         </div>
-        {/* Eight names is not eight bets if five are the same sector. Every
-            screen here ranks names on their own merits and presents a list,
-            which quietly implies the entries are independent. */}
-        {dash.concentration?.top_picks && (
-          <div className={`mb-3 text-xs rounded-panel border px-3 py-2 ${
-            dash.concentration.top_picks.concentrated
-              ? "border-warn/30 bg-warn-soft text-warn"
-              : "border-line bg-surface-sunken text-ink-secondary"}`}>
-            <b>
-              {dash.concentration.top_picks.effective_bets} effective bets
-            </b>{" "}
-            from {dash.concentration.top_picks.count} picks ·{" "}
-            {dash.concentration.top_picks.note}
-            {dash.concentration.top_picks.by_sector?.length ? (
-              <span className="ml-1 text-ink-muted">
-                ({dash.concentration.top_picks.by_sector
-                  .map((b) => `${b.sector} ${b.count}`).join(" · ")})
-              </span>
-            ) : null}
-          </div>
-        )}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {topPicks.map((s, i) => (
-            <div key={s.ticker} className="relative">
-              <span className="absolute -top-2 -left-2 z-10 bg-series-3 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow">
-                {i + 1}
-              </span>
-              <StockCard s={s} />
-            </div>
-          ))}
+
+        <div className="p-4">
+          {tab === "picks" && (
+            <>
+              <TabIntro evidence={<EvidenceBadge status={{
+                label: "Unproven", tone: "neutral",
+                detail: "Ranked by the composite score. On 894 held-out samples its rank-IC was -0.053, "
+                  + "inside the ±0.067 noise floor — it has not been shown to rank future returns.",
+              }} />}>
+                Highest composite scores across the watchlist. A ranking, not a proven edge.
+              </TabIntro>
+              {dash.concentration?.top_picks && (
+                <div className={`mb-3 text-xs rounded-panel border px-3 py-2 ${
+                  dash.concentration.top_picks.concentrated
+                    ? "border-warn/30 bg-warn-soft text-warn"
+                    : "border-line bg-surface-sunken text-ink-secondary"}`}>
+                  <b>{dash.concentration.top_picks.effective_bets} effective bets</b>{" "}
+                  from {dash.concentration.top_picks.count} picks · {dash.concentration.top_picks.note}
+                </div>
+              )}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                {topPicks.map((s, i) => (
+                  <div key={s.ticker} className="relative">
+                    <span className="absolute -top-2 -left-2 z-10 bg-series-3 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow">
+                      {i + 1}
+                    </span>
+                    <StockCard s={s} />
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {tab === "growth" && growth && (
+            <>
+              <TabIntro evidence={<EvidenceBadge rec={judged?.by_screen?.growth} />}>
+                Growing businesses whose stock is already working.
+              </TabIntro>
+              <GrowthLeaders feed={growth} />
+            </>
+          )}
+
+          {tab === "moonshots" && moonshots && (
+            <>
+              <TabIntro evidence={<EvidenceBadge rec={judged?.by_screen?.moonshot} />}>
+                Volatile and beaten down — historically 19% doubled vs a 4.8% base rate. Size small.
+              </TabIntro>
+              <Moonshots feed={moonshots} />
+            </>
+          )}
+
+          {tab === "themes" && <ThemeBoard data={themes} />}
+
+          {tab === "movers" && (
+            <>
+              <TabIntro>Biggest moves today across the watchlist. A move is news, not a signal.</TabIntro>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                {topGainers.map((s) => <StockCard key={s.ticker} s={s} />)}
+              </div>
+              {losers.length > 0 && (
+                <div className="mt-3 text-xs text-ink-muted">
+                  Biggest decliners: {losers.map((s, i) => (
+                    <span key={s.ticker}>{i > 0 && " · "}
+                      <Link to={`/analysis?ticker=${s.ticker}`} className="text-brand hover:underline">{s.ticker}</Link>{" "}
+                      {Number(s["day_%"]).toFixed(1)}%
+                    </span>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {tab === "sectors" && activeSector && (
+            <>
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {domains.map(([d, stocks]) => {
+                  const avg = stocks.reduce((a, s) => a + s.score, 0) / stocks.length;
+                  return (
+                    <button key={d} onClick={() => setSector(d)}
+                            className={`px-2.5 py-1 rounded-full text-xs border transition-colors ${
+                              d === activeSector ? "bg-brand text-white border-brand"
+                                : "border-line text-ink-secondary hover:border-brand"}`}>
+                      {d} <span className="opacity-70 num">{avg.toFixed(0)}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                {(dash.domains[activeSector] ?? []).map((s) => <StockCard key={s.ticker} s={s} />)}
+              </div>
+            </>
+          )}
         </div>
-      </Section>
+      </section>
 
-      {/* Strategy backtest — the equity curve of actually trading the picks */}
-      {/* Growth leaders — the "what should I buy" half, as opposed to the
-          "what fell" half every other screen here answers. */}
-      {growth && (
-        <Section
-          title="🌱 Growth Leaders"
-          evidence={<EvidenceBadge rec={judged?.by_screen?.growth} />}
-          subtitle="growing businesses whose stock is already working"
-          badge={`${growth.results.length}`}
-          badgeColor="#31a05c"
-          defaultOpen
-        >
-          <GrowthLeaders feed={growth} />
-        </Section>
-      )}
-
-      {moonshots && (
-        <Section
-          title="🎲 Moonshots"
-          evidence={<EvidenceBadge rec={judged?.by_screen?.moonshot} />}
-          subtitle="volatile and beaten down — 19% doubled vs a 4.8% base rate"
-          badge={`${moonshots.results.length}`}
-          badgeColor="#b7791f"
-        >
-          <Moonshots feed={moonshots} />
-        </Section>
-      )}
-
-      {pairStudy && (
-        <Section
-          title="⚖️ Pair Trading"
-          subtitle="hold two stocks at fixed weights — today's buy/sell order"
-          badge={`${pairStudy.pairs.length} pairs`}
-        >
-          <PairTrader study={pairStudy} />
-        </Section>
-      )}
-
-      {backtest && (
-        <Section
-          title="🧪 Strategy Backtest"
-          subtitle={`top ${backtest.params?.top_n ?? 5} bought each scan day, held ${backtest.params?.hold_days ?? 10} trading days, vs ${backtest.params?.benchmark ?? "SPY"}`}
-          badge={backtest["alpha_%"] != null
-            ? `alpha ${backtest["alpha_%"] >= 0 ? "+" : ""}${backtest["alpha_%"]}pp`
-            : undefined}
-          badgeColor={(backtest["alpha_%"] ?? 0) >= 0 ? "#31a05c" : "#e2574c"}
-        >
-          <BacktestPanel bt={backtest} />
-        </Section>
-      )}
-
-      {/* Top Gainers — a collapsible section like the domains, open by default */}
-      <Section
-        title="🚀 Top Gainers"
-        subtitle={`${topGainers.length ? topGainers[0].ticker + " leads +" + Number(topGainers[0]["day_%"]).toFixed(1) + "% today" : ""}`}
-        badge={`${gainers.length} up`}
-        badgeColor="#1b7f4b"
-        defaultOpen
-      >
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          {topGainers.map((s) => <StockCard key={s.ticker} s={s} />)}
-        </div>
-        {losers.length > 0 && (
-          <div className="mt-3 text-xs text-ink-muted">
-            Today's laggards: {losers.map((s) => `${s.ticker} ${Number(s["day_%"]).toFixed(1)}%`).join(" · ")}
-          </div>
-        )}
-      </Section>
-
-      {/* Domain sections — each a click-to-expand dropdown */}
-      {Object.entries(dash.domains).map(([domain, stocks]) => {
-        if (!stocks.length) return null;
-        const domAvg = stocks.reduce((a, s) => a + s.score, 0) / stocks.length;
-        const leader = stocks[0];
-        return (
-          <Section
-            key={domain}
-            title={domain}
-            subtitle={`leader ${leader.ticker} (${leader.score})`}
-            badge={`avg ${domAvg.toFixed(0)}`}
-            badgeColor={scoreColor(domAvg)}
-            defaultOpen={false}
-          >
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-              {stocks.map((s) => <StockCard key={s.ticker} s={s} />)}
-            </div>
-          </Section>
-        );
-      })}
-
-      <div className="bg-surface rounded-xl shadow-sm p-4 mt-2">
-        <div className="font-semibold text-ink mb-2">Score distribution</div>
-        <DeferUntilVisible height={260}>
-        <Plot
-          data={[{ type: "bar", x: buckets.map((b) => b.label), y: buckets.map((b) => b.count), marker: { color: chartColors(theme).series[0] } }]}
-          layout={{ autosize: true, height: 260, margin: { l: 44, r: 12, t: 8, b: 40 },
-                    ...plotTheme(theme),
-                    xaxis: { ...plotTheme(theme).xaxis, title: { text: "Composite score" } },
-                    yaxis: { ...plotTheme(theme).yaxis, title: { text: "Instruments" } } } as any}
-          useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false }}
-        />
-        </DeferUntilVisible>
+      <div className="mt-3 text-2xs text-ink-muted">
+        Backtests, pair trading and the score distribution are on{" "}
+        <Link to="/research" className="text-brand hover:underline">Research</Link>.
       </div>
     </div>
   );
 }
 
-
+function TabIntro({ children, evidence }: { children: React.ReactNode; evidence?: React.ReactNode }) {
+  return (
+    <div className="flex flex-wrap items-center gap-2 mb-3 text-xs text-ink-muted">
+      {evidence}
+      <span>{children}</span>
+    </div>
+  );
+}

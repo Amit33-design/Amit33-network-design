@@ -229,4 +229,5 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | Dashboard watchlist | `backend/watchlist.py` + `backend/run_dashboard.py` |
 | Scan output columns | `backend/run_daily.py` |
 | A frontend page/tab | `frontend/src/pages/*` + `frontend/src/App.tsx` |
+| Dashboard layout (market strip, Today's plan, watchlist, ONE tabbed Explore panel) | `frontend/src/pages/Dashboard.tsx` — add a list as a TAB, not a new stacked section; strategy/research tools go on `pages/Research.tsx` |
 | A CI schedule | `.github/workflows/*.yml` |

@@ -113,7 +113,7 @@ npm install
 npm run dev          # http://localhost:5173 (proxies /api → :8000)
 npm run build        # tsc -b + vite build (verify before committing FE changes)
 ```
-Views: Dashboard, Opportunities (AG Grid), Options, Portfolio, Backtest —
+Views: Dashboard, Opportunities (AG Grid), Analysis, Options, Portfolio, Research —
 each wired to the REST API via `src/lib/api.ts`. See `frontend/README.md`.
 
 **REST API** (15 endpoints): `/market/top`, `/market/oversold`,

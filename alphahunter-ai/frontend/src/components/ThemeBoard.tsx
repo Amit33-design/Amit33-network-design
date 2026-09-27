@@ -38,14 +38,20 @@ const pct = (x: number) => `${x >= 0 ? "+" : ""}${x.toFixed(1)}%`;
 
 export default function ThemeBoard({ data }: { data: ThemesFile | null }) {
   const [open, setOpen] = useState<string | null>(null);
-  const rows = rankThemes(data);
+  const [showAll, setShowAll] = useState(false);
+  const ranked = rankThemes(data);
+  // The ends are the information: where money is going and where it is
+  // leaving. The middle is "roughly in line" and stays one click away.
+  const EDGE = 6;
+  const rows = showAll || ranked.length <= EDGE * 2 + 2
+    ? ranked : [...ranked.slice(0, EDGE), ...ranked.slice(-EDGE)];
   if (!data) return <div className="text-xs text-ink-muted">Loading themes…</div>;
-  if (!rows.length) {
+  if (!ranked.length) {
     return <div className="text-xs text-ink-muted">
       Theme baskets are built by the morning dashboard job; none have been measured yet.
     </div>;
   }
-  const max = Math.max(...rows.map((r) => Math.abs(r.basket!.vs_spy_3m ?? 0)), 5);
+  const max = Math.max(...ranked.map((r) => Math.abs(r.basket!.vs_spy_3m ?? 0)), 5);
 
   return (
     <div>
@@ -59,8 +65,9 @@ export default function ThemeBoard({ data }: { data: ThemesFile | null }) {
           const b = t.basket!;
           const vs = b.vs_spy_3m ?? 0;
           const w = `${Math.min(100, (Math.abs(vs) / max) * 100) / 2}%`;
+          const gap = !showAll && rows.length < ranked.length && t === rows[EDGE];
           return (
-            <div key={t.key} className="py-1.5">
+            <div key={t.key} className={`py-1.5 ${gap ? "border-t-2 border-dashed" : ""}`}>
               <button className="w-full text-left" onClick={() => setOpen(open === t.key ? null : t.key)}>
                 <div className="flex items-center gap-2 text-xs">
                   <span className="w-44 sm:w-60 truncate text-ink font-medium" title={t.name}>{t.name}</span>
@@ -108,6 +115,11 @@ export default function ThemeBoard({ data }: { data: ThemesFile | null }) {
           );
         })}
       </div>
+      {ranked.length > rows.length || showAll ? (
+        <button onClick={() => setShowAll(!showAll)} className="mt-2 text-xs text-brand hover:underline">
+          {showAll ? "Show strongest and weakest only" : `Show all ${ranked.length} themes`}
+        </button>
+      ) : null}
       {data.generated && (
         <div className="mt-2 text-2xs text-ink-muted">
           Measured {data.generated.slice(0, 10)}. Past relative strength, not a forecast — themes

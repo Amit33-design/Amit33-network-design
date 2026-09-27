@@ -8,6 +8,7 @@ const Opportunities = lazy(() => import("./pages/Opportunities"));
 const Analysis = lazy(() => import("./pages/Analysis"));
 const Options = lazy(() => import("./pages/Options"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
+const Research = lazy(() => import("./pages/Research"));
 
 const tabs = [
   { to: "/dashboard", label: "Dashboard" },
@@ -15,6 +16,7 @@ const tabs = [
   { to: "/analysis", label: "Analysis" },
   { to: "/options", label: "Options" },
   { to: "/portfolio", label: "Portfolio" },
+  { to: "/research", label: "Research" },
 ];
 
 export default function App() {
@@ -82,9 +84,10 @@ export default function App() {
           <Route path="/analysis" element={<Analysis />} />
           <Route path="/options" element={<Options />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/research" element={<Research />} />
           {/* Retired tabs redirect to the dashboard */}
           <Route path="/gainers" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/backtest" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/backtest" element={<Navigate to="/research" replace />} />
         </Routes>
         </Suspense>
       </main>
