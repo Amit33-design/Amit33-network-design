@@ -15,6 +15,7 @@ import TodayPlan from "../components/TodayPlan";
 import { useJudged } from "../lib/evidence";
 import Moonshots, { useMoonshots } from "../components/Moonshots";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
+import type { Story } from "../lib/story";
 
 interface Stock {
   ticker: string;
@@ -117,6 +118,7 @@ function QualityBadge({ q }: { q?: Quality | null }) {
 function StockCard({ s }: { s: Stock }) {
   const [open, setOpen] = useState(false);
   const [thesis, setThesis] = useState<string | null>(null);
+  const [story, setStory] = useState<Story | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function toggle() {
@@ -125,9 +127,10 @@ function StockCard({ s }: { s: Stock }) {
     if (next && !thesis && !loading) {
       setLoading(true);
       try {
-        const r = await fetch(`/api/thesis?ticker=${s.ticker}`);
+        const r = await fetch(`/api/thesis?ticker=${s.ticker}&story=1`);
         const j = await r.json();
         setThesis(j.thesis || "No thesis available right now.");
+        setStory(j.story ?? null);
       } catch {
         setThesis("Live thesis unavailable — check your connection or try again.");
       } finally {
@@ -185,7 +188,22 @@ function StockCard({ s }: { s: Stock }) {
           {loading ? (
             <span className="text-ink-muted">Fetching live thesis…</span>
           ) : (
-            <><span className="font-semibold text-ink">📝 Live thesis: </span>{thesis}</>
+            <>
+              {story?.theme && (
+                <div className="mb-1 flex flex-wrap items-center gap-1">
+                  <Badge tone="brand">{story.theme.name}</Badge>
+                  <Badge>{story.type.style}</Badge>
+                </div>
+              )}
+              {story?.theme?.scope && <div className="mb-1 text-ink">{story.theme.scope}</div>}
+              {story?.pulse.reads.map((r) => (
+                <div key={r.text} className={r.tone > 0 ? "text-gain" : r.tone < 0 ? "text-loss" : ""}>
+                  {r.tone > 0 ? "▲" : r.tone < 0 ? "▼" : "•"} <span className="text-ink-secondary">{r.text}</span>
+                </div>
+              ))}
+              {story && <div className="mt-1 text-ink"><b>Bottom line: </b>{story.bottom_line}</div>}
+              <div className="mt-1"><span className="font-semibold text-ink">Chart: </span>{thesis}</div>
+            </>
           )}
         </div>
       )}

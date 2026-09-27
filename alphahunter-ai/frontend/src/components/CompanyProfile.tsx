@@ -11,6 +11,7 @@ export type Profile = {
   name?: string; sector?: string | null; industry?: string | null;
   summary?: string | null; employees?: number | null; country?: string | null;
   website?: string | null; market_cap?: number | null;
+  summary_source?: string | null; summary_url?: string | null;
 };
 
 let cache: Record<string, Profile> | null = null;
@@ -61,7 +62,10 @@ export function useProfile(ticker?: string): Profile | null {
           // fuller profile endpoint rather than from search.
           sector: stat?.sector ?? live.sector,
           industry: stat?.industry ?? live.industry,
-          summary: stat?.summary ?? null,
+          // Yahoo's summary (CI) first; else the live Wikipedia one.
+          summary: stat?.summary ?? live.summary ?? null,
+          summary_source: stat?.summary ? null : live.summary_source ?? null,
+          summary_url: stat?.summary ? null : live.summary_url ?? null,
           employees: stat?.employees ?? null,
           country: stat?.country ?? null,
           website: stat?.website ?? null,
@@ -119,6 +123,13 @@ export default function CompanyProfile({ profile }: { profile: Profile }) {
                     className="ml-1 text-brand hover:underline">
               {open ? "less" : "more"}
             </button>
+          )}
+          {profile.summary_source === "wikipedia" && (
+            <span className="ml-1 text-ink-muted">
+              — {profile.summary_url
+                ? <a href={profile.summary_url} target="_blank" rel="noreferrer" className="hover:underline">Wikipedia</a>
+                : "Wikipedia"}
+            </span>
           )}
         </div>
       )}

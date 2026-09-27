@@ -56,7 +56,9 @@ jobs:
         working-directory: alphahunter-ai
         # Sector/industry/summary for the watchlist and universe. Needs a
         # crumb, so it cannot run in a serverless function — it runs here and
-        # ships as a static file. Best-effort: never fail the dashboard.
+        # ships as a static file. Incremental: --limit is the FETCH budget per
+        # run; existing profiles are kept, so the whole universe is covered
+        # within ~5 runs. Best-effort: never fail the dashboard.
         continue-on-error: true
         run: python -m backend.build_profiles --limit 400
 

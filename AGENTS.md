@@ -178,6 +178,19 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   hold across dates (`alpha_t_by_date` ≥ `T_PROVEN` = 2), not just on
   average — one great day can carry a trade-weighted mean. Re-judge without a scan: dispatch
   `alphahunter-scan.yml` with `record_only`.
+- **"Why" and the thesis must say different things.** "Why" explains the
+  technical verdict. The thesis (`api/_story.js`) is the business case: what
+  kind of company, which theme (`api/_themes.js`), and how the market feels
+  about its group — MEASURED from the theme ETF vs SPY and the stock vs its
+  ETF, never written by hand. Theme text is structural (drivers/risks), never
+  a claim about this quarter. The old chart-only text is "Price action".
+  Both `ta.js` and `thesis.js` (`?story=1`) build from the same module.
+- **Company descriptions:** `profiles.json` is built INCREMENTALLY
+  (`build_profiles.plan_fetch`: missing/stale priority names, then never-
+  fetched universe names, then the stalest) so coverage grows each run; it
+  used to refetch the same first 400 forever. `api/profile.js` falls back to a
+  Wikipedia summary, guarded by `wikiMatches()` so a same-named page about a
+  fruit or a person is never shown as the company.
 - **Never lend one list another list's evidence.** Top Picks are the watchlist
   ranked by composite score, not a scan screen; showing a scan screen's
   track record on them would claim proof they do not have.
@@ -196,6 +209,7 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | Live single-ticker TA / thesis / bottom / cycle | `api/ta.js` |
 | Range-vs-trend regime & entry timing | `api/_regime.js` + `backend/indicators/range_regime.py` |
 | Shared indicator maths (RSI) | `api/_indicators.js` |
+| Investment thesis: theme, growth scope, measured group/market sentiment | `api/_themes.js` (theme map) + `api/_story.js` → `components/InvestmentThesis.tsx` |
 | Company profiles (sector/industry/summary) | `api/profile.js` (live) + `backend/build_profiles.py` → `frontend/public/profiles.json` (summaries) |
 | Price-series validation | `backend/data_quality.py` |
 | Pick-list concentration (effective bets) | `backend/concentration.py` |

@@ -6,21 +6,13 @@
 
 const CHART = (t, range) =>
   `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=${range}&interval=1d`;
+import { rsiLast } from "./_indicators.js";
+import { buildStory, fetchStoryInputs } from "./_story.js";
+
 const UA = { "User-Agent": "Mozilla/5.0 (compatible; alphahunter-ai/1.0)" };
 
 const smaLast = (a, n) => (a.length < n ? null : a.slice(-n).reduce((x, y) => x + y, 0) / n);
 const ret = (c, n) => (c.length > n ? ((c[c.length - 1] - c[c.length - 1 - n]) / c[c.length - 1 - n]) * 100 : null);
-
-function rsiLast(c, period = 14) {
-  if (c.length < period + 1) return null;
-  let ag = 0, al = 0;
-  for (let i = c.length - period; i < c.length; i++) {
-    const d = c[i] - c[i - 1];
-    if (d >= 0) ag += d; else al -= d;
-  }
-  ag /= period; al /= period;
-  return al === 0 ? 100 : 100 - 100 / (1 + ag / al);
-}
 
 async function closesFor(ticker, range) {
   const r = await fetch(CHART(ticker, range), { headers: UA });
@@ -102,19 +94,31 @@ function buildThesis(t, d, spy) {
     parts.push(rsi < 32 ? `RSI ${rsi.toFixed(0)} is oversold — stretched to the downside.` : `RSI ${rsi.toFixed(0)} is overbought — stretched to the upside.`);
   parts.push(`Net: ${verdict.toLowerCase()} at a technical score of ${score}/100.`);
 
-  return { day, score, verdict, thesis: parts.join(" ") };
+  return { day, score, verdict, thesis: parts.join(" "),
+           indicators: { ret_6m: r6, dist_52w_high: dHigh,
+                         atr: atrPct != null ? (atrPct / 100) * last : null } };
 }
 
 export default async function handler(req, res) {
   const ticker = String(req.query?.ticker || "").toUpperCase().trim();
   if (!ticker) return res.status(400).json({ error: "ticker required" });
   try {
-    const [d, spy] = await Promise.all([
-      closesFor(ticker, "1y"),
-      ticker === "SPY" ? null : closesFor("SPY", "3mo").then((x) => x?.c ?? null).catch(() => null),
+    // ?story=1 adds the investment story (theme, group sentiment, market).
+    // Opt-in: the watchlist calls this for every saved ticker and only needs
+    // the verdict, so it should not pay for three extra fetches each.
+    const wantStory = req.query?.story === "1";
+    const spyP = ticker === "SPY" ? Promise.resolve(null)
+      : closesFor("SPY", "1y").then((x) => x?.c ?? null).catch(() => null);
+    const [d, spy, inputs] = await Promise.all([
+      closesFor(ticker, "1y"), spyP,
+      wantStory ? fetchStoryInputs(ticker, spyP).catch(() => null) : null,
     ]);
     if (!d || d.c.length < 30) return res.status(404).json({ error: "no data" });
     const out = buildThesis(ticker, d, spy);
+    const story = inputs ? buildStory({
+      ticker, closes: d.c, indicators: out.indicators, price: d.c[d.c.length - 1],
+      recommendation: out.verdict, ...inputs,
+    }) : null;
     res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=600");
     return res.status(200).json({
       ticker,
@@ -124,8 +128,12 @@ export default async function handler(req, res) {
       score: out.score,
       verdict: out.verdict,
       thesis: out.thesis,
+      story,
     });
   } catch (e) {
-    return res.status(500).json({ error: String(e) });
+    // Never surface exception text (AGENTS.md §8).
+    console.error(`[thesis] ${ticker}:`, e);
+    return res.status(500).json({ code: "thesis_failed",
+                                  message: "Couldn't build a thesis right now." });
   }
 }

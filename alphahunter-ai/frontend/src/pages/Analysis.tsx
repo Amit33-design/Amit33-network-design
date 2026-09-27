@@ -5,6 +5,7 @@ import { api } from "../lib/api";
 import { ErrorBox, Loading } from "../components/Loading";
 import CompanyProfile, { useProfile } from "../components/CompanyProfile";
 import EntryTimingPanel from "../components/EntryTiming";
+import InvestmentThesis from "../components/InvestmentThesis";
 import ChartExplainer from "../components/ChartExplainer";
 import PeerComparison from "../components/PeerComparison";
 import { isWatched, toggleWatchlist, onWatchlistChange } from "../lib/watchlist";
@@ -275,6 +276,8 @@ export default function Analysis() {
 
           {profile && <CompanyProfile profile={profile} />}
 
+          {data.story && <InvestmentThesis story={data.story} profile={profile} />}
+
           {data.entry_timing && (
             <EntryTimingPanel t={data.entry_timing} price={data.price} />
           )}
@@ -357,11 +360,13 @@ export default function Analysis() {
             </div>
           )}
 
-          {/* Thesis: the story behind the move */}
+          {/* Price action: what the chart says about the recent move. It used
+              to be titled "Thesis", which is why it read like a second "Why" —
+              the actual thesis (business, theme, sentiment) is above. */}
           {data.thesis && (
-            <div className="panel p-4 border-l-4 border-alpha">
-              <div className="font-semibold text-ink mb-1">📝 Thesis</div>
-              <div className="text-sm text-ink leading-relaxed">{data.thesis}</div>
+            <div className="panel p-3">
+              <div className="label-eyebrow mb-1">📈 Price action</div>
+              <div className="text-xs text-ink-secondary leading-relaxed">{data.thesis}</div>
             </div>
           )}
 

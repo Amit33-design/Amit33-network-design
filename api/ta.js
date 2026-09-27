@@ -6,6 +6,7 @@
 
 import { exitLevels, money, rsiSeries } from "./_indicators.js";
 import { rangeRegime } from "./_regime.js";
+import { buildStory, fetchSpy, fetchStoryInputs } from "./_story.js";
 
 const CHART = (t, range) =>
   `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=${range}&interval=1d`;
@@ -649,7 +650,8 @@ function buildThesis(t, out, spyCloses) {
   else if (out.mtf?.trend === "down")
     parts.push(`The weekly timeframe is still down, so any daily strength is counter-trend — treat bounces cautiously.`);
 
-  parts.push(`Net: ${out.recommendation.toLowerCase()} at a technical score of ${out.score}/100.`);
+  // No "Net: buy at score N" line: that is the verdict, which "Why" already
+  // explains. Repeating it is what made the two panels read the same.
   return parts.join(" ");
 }
 
@@ -728,20 +730,17 @@ export default async function handler(req, res) {
     const riskPct = Number(req.query?.risk) > 0 ? Number(req.query.risk) : 1;
     const out = analyze(dates, o, h, l, c, v, accountSize, riskPct);
 
-    // Market context for the thesis (best-effort; skipped for SPY itself).
-    let spyCloses = null;
-    if (ticker !== "SPY") {
-      try {
-        const sr2 = await fetch(CHART("SPY", "3mo"), {
-          headers: { "User-Agent": "Mozilla/5.0 (compatible; alphahunter-ai/1.0)" },
-        });
-        if (sr2.ok) {
-          const sj = await sr2.json();
-          spyCloses = (sj?.chart?.result?.[0]?.indicators?.quote?.[0]?.close || []).filter((x) => x != null);
-        }
-      } catch { /* thesis degrades gracefully */ }
-    }
-    const thesis = buildThesis(ticker, out, spyCloses);
+    // Market + group context (best-effort; each piece may be missing).
+    // SPY is fetched once and shared by the price-action text and the story.
+    const spyP = fetchSpy();
+    const [spyCloses, inputs] = await Promise.all([
+      spyP, fetchStoryInputs(ticker, spyP).catch(() => null),
+    ]);
+    const thesis = buildThesis(ticker, out, ticker === "SPY" ? null : spyCloses);
+    const story = inputs ? buildStory({
+      ticker, closes: c, indicators: out.indicators, price: out.price,
+      recommendation: out.recommendation, ...inputs,
+    }) : null;
 
     // NOTE: day change comes from the last two closes in analyze() —
     // meta.chartPreviousClose is the close before the RANGE start (i.e. the
@@ -752,6 +751,7 @@ export default async function handler(req, res) {
       currency: meta.currency || "USD",
       range,
       thesis,
+      story,
       ...out,
     });
   } catch (e) {

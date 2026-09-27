@@ -19,7 +19,7 @@ import datetime as dt
 import json
 import os
 
-from backend.utils.universe import load_universe
+from backend.utils.universe import is_common_share, load_universe
 from backend.watchlist import all_tickers
 
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -67,28 +67,80 @@ def build(tickers: list[str]) -> dict:  # pragma: no cover - network
     return out
 
 
+MAX_AGE_DAYS = 30   # business descriptions change slowly; refresh monthly
+
+
+def plan_fetch(existing: dict, priority: list[str], universe: list[str],
+               limit: int | None, today: dt.date) -> list[str]:
+    """Which tickers to fetch this run. Pure, so it is tested.
+
+    The old run fetched the SAME first 400 tickers every day and rewrote the
+    file, so the other ~1,500 never got a description — the Analysis page
+    showed a sector badge and nothing about what most companies do. Now each
+    run spends its budget on: priority names that are missing or stale, then
+    universe names never fetched, then the stalest. Coverage grows every day
+    until the whole universe is in, and then stays fresh.
+    """
+    def age(t: str) -> int:
+        f = (existing.get(t) or {}).get("fetched")
+        try:
+            return (today - dt.date.fromisoformat(f)).days
+        except (TypeError, ValueError):
+            return 10_000          # fetched before dates were stamped
+    seen: set[str] = set()
+    ordered: list[str] = []
+    def add(ts):
+        for t in ts:
+            if t not in seen:
+                seen.add(t)
+                ordered.append(t)
+    add(t for t in priority if t not in existing or age(t) > MAX_AGE_DAYS)
+    add(t for t in universe if t not in existing)
+    add(sorted((t for t in universe if age(t) > MAX_AGE_DAYS), key=age, reverse=True))
+    return ordered[:limit] if limit else ordered
+
+
+def _scan_tickers() -> list[str]:
+    """Tickers on today's pick lists: the names people open next."""
+    base = os.path.dirname(OUT)
+    out: list[str] = []
+    for name in ("snapshot.json", "growth.json", "moonshot.json"):
+        try:
+            with open(os.path.join(base, name)) as f:
+                j = json.load(f)
+            rows = j.get("results") or j.get("picks") or j.get("recommendations") or []
+            out += [r.get("ticker") for r in rows if isinstance(r, dict) and r.get("ticker")]
+        except Exception:
+            continue
+    return out
+
+
 def main() -> None:  # pragma: no cover - CI entrypoint
     ap = argparse.ArgumentParser()
-    ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--limit", type=int, default=None,
+                    help="max profiles to FETCH this run (existing ones are kept)")
     args = ap.parse_args()
 
-    # Watchlist names first: they are always on screen, so they matter most if
-    # the run is cut short.
-    seen, tickers = set(), []
-    for t in all_tickers() + load_universe():
-        if t not in seen:
-            seen.add(t)
-            tickers.append(t)
-    if args.limit:
-        tickers = tickers[:args.limit]
+    existing: dict = {}
+    try:
+        with open(OUT) as f:
+            existing = json.load(f).get("profiles", {})
+    except Exception:
+        pass
+    today = dt.datetime.now(dt.timezone.utc).date()
+    universe = [t for t in load_universe() if is_common_share(t)]
+    todo = plan_fetch(existing, all_tickers() + _scan_tickers(), universe, args.limit, today)
 
-    profiles = build(tickers)
+    fresh = build(todo)
+    for p in fresh.values():
+        p["fetched"] = today.isoformat()
+    profiles = {**existing, **fresh}
     payload = {"generated": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
                "count": len(profiles), "profiles": profiles}
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w") as f:
         json.dump(payload, f, indent=1, sort_keys=True)
-    print(f"wrote {len(profiles)} profiles -> {OUT}")
+    print(f"fetched {len(fresh)}/{len(todo)}; {len(profiles)} profiles total -> {OUT}")
 
 
 if __name__ == "__main__":  # pragma: no cover
