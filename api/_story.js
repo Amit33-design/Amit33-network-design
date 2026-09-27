@@ -55,8 +55,29 @@ async function closes(ticker, range) {
  *  each piece may come back null and the story simply says less. */
 export function fetchSpy() { return closes("SPY", "1y"); }
 
-export async function fetchStoryInputs(ticker, spyPromise) {
+/** This deployment's own origin, for reading its static files. */
+export function originOf(req) {
+  const host = req?.headers?.["x-forwarded-host"] || req?.headers?.host;
+  return host ? `https://${host}` : null;
+}
+
+// themes.json is a static file on this same deployment, rebuilt daily in CI
+// (backend/theme_pulse.py). Warm function instances keep it for 10 minutes.
+let themesCache = { at: 0, data: null };
+async function themePulse(origin) {
+  if (!origin) return null;
+  if (themesCache.data && Date.now() - themesCache.at < 600_000) return themesCache.data;
+  try {
+    const r = await fetch(`${origin}/themes.json`);
+    if (!r.ok) return null;
+    themesCache = { at: Date.now(), data: await r.json() };
+    return themesCache.data;
+  } catch { return null; }
+}
+
+export async function fetchStoryInputs(ticker, spyPromise, origin) {
   const vixP = closes("^VIX", "5d");
+  const pulseP = themePulse(origin);
   const cls = await fetchClassification(ticker).catch(() => null);
   const theme = resolveTheme(ticker, cls?.sector, cls?.industry);
   const etf = theme?.etf && theme.etf !== ticker ? theme.etf : null;
@@ -65,12 +86,17 @@ export async function fetchStoryInputs(ticker, spyPromise) {
     vixP,
     Promise.resolve(spyPromise).then((x) => x || null).catch(() => null),
   ]);
-  return { classification: cls, theme, etfCloses, vix: vix?.length ? vix[vix.length - 1] : null, spyCloses: spy };
+  const pulse = await pulseP;
+  const entry = pulse?.themes?.find((x) => x.key === theme?.key);
+  return {
+    classification: cls, theme, etfCloses, vix: vix?.length ? vix[vix.length - 1] : null, spyCloses: spy,
+    basket: entry?.basket ? { ...entry.basket, as_of: pulse.generated?.slice(0, 10) || null } : null,
+  };
 }
 
 /** Pure: the story from already-fetched inputs. */
 export function buildStory({ ticker, closes: c, indicators = {}, price, recommendation,
-                             classification, theme, etfCloses, spyCloses, vix }) {
+                             classification, theme, etfCloses, spyCloses, vix, basket = null }) {
   const ind = indicators;
   const atrPct = ind.atr != null && price ? (ind.atr / price) * 100 : null;
   const growth = theme?.growth || null;
@@ -94,23 +120,37 @@ export function buildStory({ ticker, closes: c, indicators = {}, price, recommen
 
   // ---- Measured sentiment: the group vs the market, the stock vs its group.
   const s1 = pct(c, 21), s3 = pct(c, 63);
-  const e1 = pct(etfCloses, 21), e3 = pct(etfCloses, 63);
   const m1 = pct(spyCloses, 21), m3 = pct(spyCloses, 63);
+  // The group is the theme's own equal-weight basket when CI has built one:
+  // an ETF is often the wrong group (AI power vs XLU, mostly regulated
+  // utilities). Its spread vs SPY is taken from the same bars the basket was
+  // measured on, never mixed with today's live SPY.
+  const useBasket = basket && basket.n >= 4 && basket.ret_3m != null && basket.vs_spy_3m != null;
+  const e1 = useBasket ? basket.ret_1m : pct(etfCloses, 21);
+  const e3 = useBasket ? basket.ret_3m : pct(etfCloses, 63);
+  const g3 = useBasket ? basket.ret_3m - basket.vs_spy_3m : m3;
   const reads = [];
   let groupTone = 0, stockTone = 0;
   const etf = theme?.etf;
-  if (e3 != null && m3 != null) {
-    const d = e3 - m3;
+  if (e3 != null && g3 != null) {
+    const d = e3 - g3;
     groupTone = d >= 5 ? 1 : d <= -5 ? -1 : 0;
+    const who = useBasket
+      ? `${theme.name} (${basket.n} stocks, equal-weight)`
+      : `${theme.name} (${etf})`;
+    const breadth = useBasket && basket.breadth_50d != null
+      ? ` ${Math.round(basket.breadth_50d * 100)}% of them are above their 50-day — ` +
+        (basket.breadth_50d >= 0.65 ? "a broad move." : basket.breadth_50d <= 0.35 ? "most are in short-term downtrends." : "a mixed picture underneath.")
+      : "";
     reads.push({
       tone: groupTone,
-      text: `${theme.name} (${etf}) is ${sgn(e3)} over 3 months vs the S&P 500 ${sgn(m3)} — ` +
+      text: `${who} is ${sgn(e3)} over 3 months vs the S&P 500 ${sgn(g3)} — ` +
         (groupTone > 0 ? "money is flowing INTO this group."
           : groupTone < 0 ? "the market is rotating OUT of this group."
-          : "in line with the market; no strong view on the group."),
+          : "in line with the market; no strong view on the group.") + breadth,
     });
   }
-  if (s1 != null && e1 != null && etf && etf !== ticker) {
+  if (s1 != null && e1 != null && (useBasket || (etf && etf !== ticker))) {
     const d = s1 - e1;
     stockTone = d >= 5 ? 1 : d <= -5 ? -1 : 0;
     reads.push({
@@ -166,6 +206,9 @@ export function buildStory({ ticker, closes: c, indicators = {}, price, recommen
     pulse: {
       stock_1m: r1(s1), stock_3m: r1(s3), group_1m: r1(e1), group_3m: r1(e3),
       spy_1m: r1(m1), spy_3m: r1(m3), group_tone: groupTone, stock_tone: stockTone, reads,
+      group_source: useBasket ? "basket" : (e3 != null ? "etf" : null),
+      basket: useBasket ? { n: basket.n, breadth_50d: basket.breadth_50d, leaders: basket.leaders,
+                            laggards: basket.laggards, as_of: basket.as_of } : null,
     },
     market,
     bottom_line: bottom,

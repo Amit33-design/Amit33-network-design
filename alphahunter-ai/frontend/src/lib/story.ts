@@ -13,6 +13,12 @@ export type Story = {
     stock_1m: number | null; stock_3m: number | null; group_1m: number | null;
     group_3m: number | null; spy_1m: number | null; spy_3m: number | null;
     group_tone: number; stock_tone: number; reads: StoryRead[];
+    group_source?: "basket" | "etf" | null;
+    basket?: {
+      n: number; breadth_50d: number; as_of: string | null;
+      leaders: { ticker: string; ret_1m: number }[];
+      laggards: { ticker: string; ret_1m: number }[];
+    } | null;
   };
   market: { spy_above_200d: boolean; spy_1m: number | null; vix: number | null; text: string } | null;
   bottom_line: string;

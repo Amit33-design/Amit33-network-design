@@ -6,7 +6,7 @@
 
 import { exitLevels, money, rsiSeries } from "./_indicators.js";
 import { rangeRegime } from "./_regime.js";
-import { buildStory, fetchSpy, fetchStoryInputs } from "./_story.js";
+import { buildStory, fetchSpy, fetchStoryInputs, originOf } from "./_story.js";
 
 const CHART = (t, range) =>
   `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=${range}&interval=1d`;
@@ -734,7 +734,7 @@ export default async function handler(req, res) {
     // SPY is fetched once and shared by the price-action text and the story.
     const spyP = fetchSpy();
     const [spyCloses, inputs] = await Promise.all([
-      spyP, fetchStoryInputs(ticker, spyP).catch(() => null),
+      spyP, fetchStoryInputs(ticker, spyP, originOf(req)).catch(() => null),
     ]);
     const thesis = buildThesis(ticker, out, ticker === "SPY" ? null : spyCloses);
     const story = inputs ? buildStory({

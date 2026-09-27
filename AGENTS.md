@@ -185,6 +185,11 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   ETF, never written by hand. Theme text is structural (drivers/risks), never
   a claim about this quarter. The old chart-only text is "Price action".
   Both `ta.js` and `thesis.js` (`?story=1`) build from the same module.
+  The "group" is the theme's own equal-weight basket from `themes.json`
+  (`backend/theme_pulse.py`, dashboard workflow) when it has ≥4 members; the
+  ETF is only a fallback — XLU is the wrong group for AI-power names.
+  `api/_themes.js` is the ONE theme definition: Python reads the exported
+  `backend/themes_def.json` (`npm run themes:export`); vitest fails on drift.
 - **Company descriptions:** `profiles.json` is built INCREMENTALLY
   (`build_profiles.plan_fetch`: missing/stale priority names, then never-
   fetched universe names, then the stalest) so coverage grows each run; it
@@ -210,6 +215,7 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | Range-vs-trend regime & entry timing | `api/_regime.js` + `backend/indicators/range_regime.py` |
 | Shared indicator maths (RSI) | `api/_indicators.js` |
 | Investment thesis: theme, growth scope, measured group/market sentiment | `api/_themes.js` (theme map) + `api/_story.js` → `components/InvestmentThesis.tsx` |
+| Theme baskets / "where money is flowing" | `backend/theme_pulse.py` → `frontend/public/themes.json` → `components/ThemeBoard.tsx` |
 | Company profiles (sector/industry/summary) | `api/profile.js` (live) + `backend/build_profiles.py` → `frontend/public/profiles.json` (summaries) |
 | Price-series validation | `backend/data_quality.py` |
 | Pick-list concentration (effective bets) | `backend/concentration.py` |

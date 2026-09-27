@@ -7,7 +7,7 @@
 const CHART = (t, range) =>
   `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=${range}&interval=1d`;
 import { rsiLast } from "./_indicators.js";
-import { buildStory, fetchStoryInputs } from "./_story.js";
+import { buildStory, fetchStoryInputs, originOf } from "./_story.js";
 
 const UA = { "User-Agent": "Mozilla/5.0 (compatible; alphahunter-ai/1.0)" };
 
@@ -111,7 +111,7 @@ export default async function handler(req, res) {
       : closesFor("SPY", "1y").then((x) => x?.c ?? null).catch(() => null);
     const [d, spy, inputs] = await Promise.all([
       closesFor(ticker, "1y"), spyP,
-      wantStory ? fetchStoryInputs(ticker, spyP).catch(() => null) : null,
+      wantStory ? fetchStoryInputs(ticker, spyP, originOf(req)).catch(() => null) : null,
     ]);
     if (!d || d.c.length < 30) return res.status(404).json({ error: "no data" });
     const out = buildThesis(ticker, d, spy);

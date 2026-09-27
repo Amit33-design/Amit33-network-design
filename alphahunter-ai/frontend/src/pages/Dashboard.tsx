@@ -16,6 +16,7 @@ import { useJudged } from "../lib/evidence";
 import Moonshots, { useMoonshots } from "../components/Moonshots";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 import type { Story } from "../lib/story";
+import ThemeBoard, { rankThemes, useThemes, type ThemeRow } from "../components/ThemeBoard";
 
 interface Stock {
   ticker: string;
@@ -285,6 +286,25 @@ function AlertCell({ ticker, price, alert }: {
   );
 }
 
+// Collapsed by default: the header line alone says which themes lead and lag.
+function ThemeSection() {
+  const data = useThemes();
+  const ranked = rankThemes(data);
+  const top = ranked[0], bottom = ranked[ranked.length - 1];
+  const fmt = (t: ThemeRow) => `${t.name} ${(t.basket!.vs_spy_3m ?? 0) >= 0 ? "+" : ""}${t.basket!.vs_spy_3m}pp`;
+  return (
+    <Section
+      title="🧭 Where money is flowing"
+      subtitle={ranked.length > 1 ? `Leading: ${fmt(top)} · Lagging: ${fmt(bottom)}` : "themes measured on their own stocks"}
+      badge={ranked.length ? `${ranked.length} themes` : undefined}
+      badgeColor="#2563eb"
+      defaultOpen={false}
+    >
+      <ThemeBoard data={data} />
+    </Section>
+  );
+}
+
 // /api/thesis. Entirely client-side so it works on the static deploy.
 function WatchlistSection() {
   const [tickers, setTickers] = useState<string[]>(getWatchlist);
@@ -497,6 +517,8 @@ export default function Dashboard() {
       >
         <TodayPlan positionScale={mr?.position_scale ?? 1} regime={mr?.regime} />
       </Section>
+
+      <ThemeSection />
 
       <WatchlistSection />
 

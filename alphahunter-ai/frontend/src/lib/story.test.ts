@@ -2,7 +2,8 @@
 // guard in api/profile.js — pure logic, no network.
 import { describe, expect, it } from "vitest";
 // @ts-expect-error — plain ESM JS outside the frontend project, no types.
-import { resolveTheme, THEMES } from "../../../../api/_themes.js";
+import { resolveTheme, THEMES, themesAsJson } from "../../../../api/_themes.js";
+import themesDef from "../../../backend/themes_def.json";
 // @ts-expect-error — plain ESM JS outside the frontend project, no types.
 import { buildStory } from "../../../../api/_story.js";
 // @ts-expect-error — plain ESM JS outside the frontend project, no types.
@@ -46,6 +47,12 @@ describe("resolveTheme", () => {
   });
 });
 
+describe("theme definitions shared with Python", () => {
+  it("backend/themes_def.json matches api/_themes.js (run `npm run themes:export`)", () => {
+    expect(themesDef).toEqual(themesAsJson());
+  });
+});
+
 describe("buildStory", () => {
   const spy = series(260, 10);                 // market +10% over a year
   const base = {
@@ -85,6 +92,26 @@ describe("buildStory", () => {
       closes: series(130, 40), etfCloses: series(130, 25) });
     expect(s.type.style).toMatch(/Speculative/);
     expect(s.bottom_line).toMatch(/size it small/);
+  });
+
+  it("uses the theme's own basket over its ETF when CI has built one", () => {
+    // ETF says the group is down; the theme's actual members are up and broad.
+    const s = buildStory({ ...base, recommendation: "Hold",
+      theme: resolveTheme("VST", "Utilities", "Utilities - Independent Power Producers"),
+      closes: series(130, 30), etfCloses: series(130, -15),
+      basket: { n: 10, ret_1m: 4, ret_3m: 18, vs_spy_3m: 12, breadth_50d: 0.8,
+                leaders: [], laggards: [], as_of: "2026-09-26" } });
+    expect(s.pulse.group_source).toBe("basket");
+    expect(s.pulse.group_tone).toBe(1);
+    expect(s.pulse.reads[0].text).toMatch(/10 stocks, equal-weight/);
+    expect(s.pulse.reads[0].text).toMatch(/80% of them are above their 50-day/);
+  });
+
+  it("ignores a basket too thin to be a group", () => {
+    const s = buildStory({ ...base, recommendation: "Hold", closes: series(130, 5),
+      etfCloses: series(130, 25),
+      basket: { n: 2, ret_1m: 1, ret_3m: -30, vs_spy_3m: -35, breadth_50d: 0 } });
+    expect(s.pulse.group_source).toBe("etf");
   });
 
   it("reports the market backdrop and degrades without a group ETF", () => {

@@ -2,6 +2,7 @@
 // cannot give. "Why" explains the technical verdict; this explains what the
 // business is, what drives it, how the market currently feels about its group
 // (measured, not written), and whether that story agrees with the chart.
+import { Link } from "react-router-dom";
 import type { Profile } from "./CompanyProfile";
 import { Badge } from "./ui";
 import { GROWTH_LABEL, typeLabel, type Story } from "../lib/story";
@@ -76,6 +77,18 @@ export default function InvestmentThesis({ story, profile }: { story: Story; pro
               </li>
             )}
           </ul>
+          {story.pulse.basket && story.pulse.basket.leaders.length > 0 && (
+            <div className="mt-1.5 text-2xs text-ink-muted">
+              Group leaders this month:{" "}
+              {story.pulse.basket.leaders.map((l, i) => (
+                <span key={l.ticker}>{i > 0 && ", "}
+                  <Link to={`/analysis?ticker=${l.ticker}`} className="text-brand hover:underline">{l.ticker}</Link>
+                  {" "}{l.ret_1m >= 0 ? "+" : ""}{l.ret_1m}%
+                </span>
+              ))}
+              {story.pulse.basket.as_of && <> · basket as of {story.pulse.basket.as_of}</>}
+            </div>
+          )}
         </div>
       )}
 

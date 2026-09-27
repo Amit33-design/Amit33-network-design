@@ -318,3 +318,17 @@ export function resolveTheme(ticker, sector, industry) {
   }
   return null;
 }
+
+/** Plain-JSON copy of THEMES for the Python basket builder
+ *  (backend/theme_pulse.py). Regexes become their source strings; they use
+ *  only syntax Python's `re` reads identically. Regenerate the committed copy
+ *  with `npm run themes:export` in alphahunter-ai/frontend — a vitest check
+ *  fails when it drifts from this file. */
+export function themesAsJson() {
+  return {
+    themes: THEMES.map((t) => ({
+      key: t.key, name: t.name, etf: t.etf, growth: t.growth,
+      tickers: t.tickers || [], industries: (t.industries || []).map((re) => re.source),
+    })),
+  };
+}
