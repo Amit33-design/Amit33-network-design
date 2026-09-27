@@ -168,7 +168,10 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   parent's revenue, so they pass the >$1B floor — GRABW, a two-cent warrant,
   was picked 32 times. `utils/universe.is_common_share()` drops them from the
   scan universe and `exit_judged` excludes (and counts) them in the record.
-  Share classes (BRK-B, GOOGL) are equity and stay.
+  Same for preferreds (NASDAQ 5th letter P/O/N/M/I, Z = misc; NYSE `-P…`):
+  ~50 were in the universe. L is NOT a rule (GOOGL is common) — share
+  classes and L-suffixed preferreds are handled by `dedupe_by_company()`,
+  one ticker per company, largest listing kept, in every basket.
 - **A record is judged on the market calendar and labels exits honestly.**
   Holding days count SPY sessions, not the ticker's own bars (a gappy series
   made "day 1" twelve weeks later). A trailing stop that closes below target

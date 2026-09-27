@@ -62,12 +62,45 @@ def load_full_listing() -> list[str]:
 # GRABW, a two-cent warrant, was picked 32 times and a 60% one-day move in it
 # counted in the track record as if it were a stock. Share classes (BRK-B,
 # GOOGL) are ordinary equity and stay.
-_NON_COMMON = re.compile(r"^[A-Z]{4}[WUR]$|^[A-Z]{4}WW$|-(W|WS|WT|U|UN|R|RT)$")
+#
+# The same convention marks preferred stock: P/O/N/M/I = a class of preferred,
+# Z = miscellaneous (depositary shares, notes). HBANL, FITBO, AGNCZ and ~70
+# others were in the universe; a preferred trades like a bond and has no
+# business in a stock screen or a theme basket. L is left out on purpose —
+# GOOGL is common stock — and share classes are deduped by company instead
+# (dedupe_by_company).
+_NON_COMMON = re.compile(
+    r"^[A-Z]{4}[WURPONMIZ]$|^[A-Z]{4}WW$|-(W|WS|WT|U|UN|R|RT|P[A-Z]?)$")
 
 
 def is_common_share(ticker: str) -> bool:
     """False for warrants, units and rights — instruments, not companies."""
     return bool(ticker) and not _NON_COMMON.search(ticker.strip().upper())
+
+
+def _company_key(name: str | None) -> str:
+    n = re.sub(r"[^a-z0-9 ]", " ", (name or "").lower())
+    n = re.sub(r"\b(inc|incorporated|corp|corporation|co|ltd|plc|lp|l p|holdings?|group|the|class [a-z])\b", " ", n)
+    return re.sub(r"\s+", " ", n).strip()
+
+
+def dedupe_by_company(tickers: list[str], profiles: dict) -> list[str]:
+    """One ticker per company, keeping the order given and, within a company,
+    the largest listing. RUSHA/RUSHB, GOOG/GOOGL, BRK-A/BRK-B and a common
+    share next to its preferred (HBAN / HBANL, which has no market cap) are
+    one business; counting both double-weights it. Unprofiled tickers pass."""
+    best: dict[str, tuple[float, str]] = {}
+    for t in tickers:
+        p = profiles.get(t) or {}
+        k = _company_key(p.get("name"))
+        if not k:
+            continue
+        cap = p.get("market_cap") or -1
+        if k not in best or cap > best[k][0]:
+            best[k] = (cap, t)
+    keep = {t for _, t in best.values()}
+    return [t for t in tickers
+            if t in keep or not _company_key((profiles.get(t) or {}).get("name"))]
 
 
 def load_cached_1b_universe() -> list[str]:

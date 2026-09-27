@@ -128,10 +128,25 @@ def test_the_summary_counts_distinct_pick_dates():
 
 def test_share_classes_are_common_stock_and_warrants_are_not():
     from backend.utils.universe import is_common_share
-    for t in ("AAPL", "BRK-B", "GOOGL", "SNOW", "F"):
+    for t in ("AAPL", "BRK-B", "GOOGL", "SNOW", "F", "FWONK", "LBTYK", "RUSHA", "IMKTA"):
         assert is_common_share(t), t
-    for t in ("GRABW", "HTZWW", "BTSGU", "GENVR", "X-WS", "ABC-RT"):
+    for t in ("GRABW", "HTZWW", "BTSGU", "GENVR", "X-WS", "ABC-RT",
+              # preferreds: NASDAQ 5th letter P/O/N/M/I, Z = misc; NYSE -P
+              "MCHPP", "FITBO", "BHFAN", "BHFAM", "FITBI", "AGNCZ", "BAC-PK"):
         assert not is_common_share(t), t
+
+
+def test_one_company_counts_once_keeping_its_largest_listing():
+    from backend.utils.universe import dedupe_by_company
+    profiles = {
+        "HBAN": {"name": "Huntington Bancshares Incorporated", "market_cap": 3e10},
+        "HBANL": {"name": "Huntington Bancshares Incorporated", "market_cap": None},
+        "RUSHA": {"name": "Rush Enterprises, Inc.", "market_cap": 5.6e9},
+        "RUSHB": {"name": "Rush Enterprises, Inc.", "market_cap": 6.4e9},
+        "AAPL": {"name": "Apple Inc.", "market_cap": 3e12},
+    }
+    out = dedupe_by_company(["HBANL", "HBAN", "RUSHA", "RUSHB", "AAPL", "UNPROFILED"], profiles)
+    assert out == ["HBAN", "RUSHB", "AAPL", "UNPROFILED"]
 
 
 def test_significance_is_measured_across_dates_not_trades():

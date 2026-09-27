@@ -28,6 +28,7 @@ import re
 from statistics import median
 
 from backend.data_quality import validate_bars
+from backend.utils.universe import dedupe_by_company, is_common_share
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFS = os.path.join(HERE, "themes_def.json")
@@ -78,7 +79,8 @@ def members(defs: list[dict], profiles: dict) -> dict[str, list[str]]:
             extra.setdefault(k, []).append((p.get("market_cap") or 0, t))
     for k, lst in extra.items():
         by_key[k] += [t for _, t in sorted(lst, reverse=True)]
-    return {k: v[:MAX_MEMBERS] for k, v in by_key.items()}
+    return {k: dedupe_by_company([t for t in v if is_common_share(t)], profiles)[:MAX_MEMBERS]
+            for k, v in by_key.items()}
 
 
 def _ret(c: list[float], n: int) -> float | None:
