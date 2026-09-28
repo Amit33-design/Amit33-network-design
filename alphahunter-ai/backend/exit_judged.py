@@ -204,6 +204,7 @@ def judge_history(history: list[tuple[str, list[dict]]],
         "excluded_non_common": {"picks": len(excluded),
                                 "tickers": sorted(set(excluded))},
         "recent": sorted(trades, key=lambda x: x["exit_date"], reverse=True)[:25],
+        "_trades": trades,       # for build(); popped before writing
     }
 
 
@@ -239,7 +240,20 @@ def build(results_dir: str, out_path: str) -> dict:  # pragma: no cover - networ
             except Exception:
                 continue
 
+    # Longer SPY + VIX history for the pick-date conditions: a 50-day trend
+    # on the first scan date needs bars from before it.
+    try:
+        early = (dt.date.fromisoformat(start) - dt.timedelta(days=120)).isoformat()
+        ctx = yf.download(["SPY", "^VIX"], start=early, auto_adjust=True, progress=False,
+                          group_by="ticker")
+        spy_long = {d.strftime("%Y-%m-%d"): float(v) for d, v in ctx["SPY"]["Close"].dropna().items()}
+        vix = {d.strftime("%Y-%m-%d"): float(v) for d, v in ctx["^VIX"]["Close"].dropna().items()}
+    except Exception:
+        spy_long, vix = closes.get("SPY", {}), {}
+
     out = judge_history(history, closes)
+    from .date_conditions import analyse
+    out["pick_date_conditions"] = analyse(out.pop("_trades", []), spy_long, vix)
     out["generated"] = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, "w") as f:

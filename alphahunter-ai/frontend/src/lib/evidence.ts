@@ -12,9 +12,19 @@ export type ScreenRecord = {
   "avg_return_%": number; "avg_alpha_%"?: number | null;
   beat_spy_rate?: number | null; avg_days_held?: number;
 };
+export type ConditionSide = {
+  dates: number; trades: number; "avg_alpha_%": number | null;
+  alpha_t: number | null; dates_beating_spy: number | null;
+};
+export type PickDateCondition = {
+  key: string; question: string; yes: ConditionSide; no: ConditionSide;
+  diff_t: number | null; notable: boolean; verdict: string;
+};
 export type Judged = {
   summary?: ScreenRecord | null;
   by_screen?: Record<string, ScreenRecord>;
+  pick_date_conditions?: { conditions: PickDateCondition[]; method?: string } | null;
+  generated?: string;
 };
 
 // Below this many CLOSED trades, any figure is noise and is shown as such.

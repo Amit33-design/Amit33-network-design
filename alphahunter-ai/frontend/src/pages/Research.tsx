@@ -8,12 +8,15 @@ import BacktestPanel, { useBacktest } from "../components/BacktestPanel";
 import PairTrader, { usePairStudy } from "../components/PairTrader";
 import DeferUntilVisible from "../components/DeferUntilVisible";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
+import PickDateConditions from "../components/PickDateConditions";
+import { useJudged } from "../lib/evidence";
 
 type Dash = { domains: Record<string, { score: number }[]> };
 
 export default function Research() {
   const backtest = useBacktest();
   const pairStudy = usePairStudy();
+  const judged = useJudged();
   const [dash, setDash] = useState<Dash | null>(null);
   const [theme, setTheme] = useState(getTheme);
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
@@ -51,6 +54,16 @@ export default function Research() {
           <BacktestPanel bt={backtest} />
         </Section>
       )}
+
+      <Section
+        title="🗓 When do the picks work?"
+        subtitle="does the market on the pick date predict which days beat SPY?"
+        badge={judged?.pick_date_conditions?.conditions?.some((c) => c.notable) ? "pattern found" : undefined}
+        badgeColor="#31a05c"
+        defaultOpen
+      >
+        <PickDateConditions judged={judged} />
+      </Section>
 
       {pairStudy && (
         <Section

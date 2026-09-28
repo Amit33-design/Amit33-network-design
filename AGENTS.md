@@ -179,7 +179,10 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   AND `MIN_DATES` distinct scan dates before it earns a verdict — same-day
   picks share one market. "Beating SPY" additionally needs the alpha to
   hold across dates (`alpha_t_by_date` ≥ `T_PROVEN` = 2), not just on
-  average — one great day can carry a trade-weighted mean. Re-judge without a scan: dispatch
+  average — one great day can carry a trade-weighted mean. Conditioning
+  on the pick date (`date_conditions.py`) tests several splits of ~60
+  dates, so "notable" needs |t| ≥ 2.5 and 10+ dates per side — never add
+  a "sit today out" rule to the product unless it clears that bar. Re-judge without a scan: dispatch
   `alphahunter-scan.yml` with `record_only`.
 - **"Why" and the thesis must say different things.** "Why" explains the
   technical verdict. The thesis (`api/_story.js`) is the business case: what
@@ -224,6 +227,7 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | Pick-list concentration (effective bets) | `backend/concentration.py` |
 | Track record judged at each pick's exit plan | `backend/exit_judged.py` → `exit_judged.json` |
 | Per-screen evidence status (proven / unproven / trailing) | `frontend/src/lib/evidence.ts` |
+| "When do the picks work?" — pick-date conditions vs date-level alpha | `backend/date_conditions.py` (in `exit_judged.json`) → `components/PickDateConditions.tsx` on Research |
 | Scan freshness manifest + stale warning | `run_daily` → `freshness.json`, `components/FreshnessBanner.tsx` |
 | Live portfolio prices/recs | `api/quote.js` |
 | Dashboard watchlist | `backend/watchlist.py` + `backend/run_dashboard.py` |
