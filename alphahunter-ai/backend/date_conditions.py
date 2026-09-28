@@ -22,6 +22,7 @@ from __future__ import annotations
 from statistics import mean, median, stdev
 
 NOTABLE_T = 2.5
+SUGGESTIVE_T = 2.0      # would pass a single test, not four — a lead, not a rule
 MIN_SIDE_DATES = 10
 
 
@@ -99,6 +100,10 @@ def analyse(trades: list[dict], spy: dict[str, float], vix: dict[str, float] | N
         elif notable:
             better = "when it holds" if diff_t > 0 else "when it does not"
             verdict = f"Picks did measurably better {better} (t = {diff_t})."
+        elif enough and diff_t is not None and abs(diff_t) >= SUGGESTIVE_T:
+            better = "when it holds" if diff_t > 0 else "when it does not"
+            verdict = (f"Suggestive: picks did better {better} (t = {diff_t}), but below the "
+                       f"{NOTABLE_T} bar for {len(CONDITIONS)} tests. A lead to keep watching, not a rule.")
         else:
             verdict = f"No measurable difference (t = {diff_t}) — this condition does not predict good days."
         out.append({
@@ -106,6 +111,8 @@ def analyse(trades: list[dict], spy: dict[str, float], vix: dict[str, float] | N
             "yes": _side(ay, sum(counts[d] for d in yes)),
             "no": _side(an, sum(counts[d] for d in no)),
             "diff_t": diff_t, "notable": notable, "verdict": verdict,
+            "suggestive": bool(enough and not notable and diff_t is not None
+                               and abs(diff_t) >= SUGGESTIVE_T),
         })
     return {
         "conditions": out,

@@ -69,3 +69,22 @@ def test_too_few_dates_on_a_side_gives_no_verdict():
     trades = _trades_for(CAL[60:66], lambda d: 1.0)
     for c in analyse(trades, spy)["conditions"]:
         assert not c["notable"]
+
+
+def test_a_near_miss_is_labelled_suggestive_not_notable():
+    from backend.date_conditions import CONDITIONS, NOTABLE_T, SUGGESTIVE_T
+    spy = _spy_alternating_trend()
+    pick_dates = CAL[60:180:2]
+
+    def above50(d):
+        ds = [x for x in CAL if x <= d][-50:]
+        return spy[d] > sum(spy[x] for x in ds) / 50
+    # A modest effect buried in noise: tune it until it lands in the band.
+    for eff in [x / 10 for x in range(1, 40)]:
+        trades = _trades_for(pick_dates, lambda d: (eff if above50(d) else -eff) + (int(d[-2:]) % 11 - 5) * 0.8)
+        c = {x["key"]: x for x in analyse(trades, spy)["conditions"]}["spy_uptrend"]
+        if c["diff_t"] and SUGGESTIVE_T <= abs(c["diff_t"]) < NOTABLE_T:
+            assert c["suggestive"] and not c["notable"]
+            assert c["verdict"].startswith("Suggestive")
+            return
+    raise AssertionError("no effect size landed in the suggestive band")

@@ -18,7 +18,7 @@ export type ConditionSide = {
 };
 export type PickDateCondition = {
   key: string; question: string; yes: ConditionSide; no: ConditionSide;
-  diff_t: number | null; notable: boolean; verdict: string;
+  diff_t: number | null; notable: boolean; suggestive?: boolean; verdict: string;
 };
 export type Judged = {
   summary?: ScreenRecord | null;

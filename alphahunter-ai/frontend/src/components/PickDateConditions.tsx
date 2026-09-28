@@ -30,7 +30,9 @@ export default function PickDateConditions({ judged }: { judged: Judged | null }
         ? "border-gain/30 bg-gain-soft text-gain" : "border-line bg-surface-sunken text-ink-secondary"}`}>
         {anyNotable
           ? "At least one condition measurably separates good days from bad — see below. Still a short history: treat it as a lead to keep testing, not a rule."
-          : "None of these conditions measurably predicts which days work. There is no evidence-based \"sit today out\" signal yet — say so, rather than invent one."}
+          : pdc.conditions.some((c) => c.suggestive)
+            ? "Nothing clears the bar yet. One condition is suggestive (amber) — a lead the record keeps testing as dates accumulate, not a rule to trade on."
+            : "None of these conditions measurably predicts which days work. There is no evidence-based \"sit today out\" signal yet — say so, rather than invent one."}
       </div>
       <div className="overflow-x-auto thin-scroll">
         <table className="table-data">
@@ -47,7 +49,7 @@ export default function PickDateConditions({ judged }: { judged: Judged | null }
               <tr key={c.key}>
                 <td className="max-w-[280px]">
                   <div className="text-ink">{c.question}</div>
-                  <div className={`text-2xs ${c.notable ? "text-gain" : "text-ink-muted"}`}>{c.verdict}</div>
+                  <div className={`text-2xs ${c.notable ? "text-gain" : c.suggestive ? "text-warn" : "text-ink-muted"}`}>{c.verdict}</div>
                 </td>
                 {[c.yes, c.no].map((sd, i) => (
                   <td key={i} className="text-right num text-xs">
@@ -56,7 +58,7 @@ export default function PickDateConditions({ judged }: { judged: Judged | null }
                   </td>
                 ))}
                 <td className="text-right num text-xs">
-                  <span className={c.notable ? "text-gain font-semibold" : "text-ink-muted"}>
+                  <span className={c.notable ? "text-gain font-semibold" : c.suggestive ? "text-warn font-semibold" : "text-ink-muted"}>
                     t = {c.diff_t ?? "—"}
                   </span>
                 </td>

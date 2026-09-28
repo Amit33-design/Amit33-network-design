@@ -468,7 +468,8 @@
         },
         "diff_t": 0.08,
         "notable": false,
-        "verdict": "Too few dates on one side (51 vs 9) to compare."
+        "verdict": "Too few dates on one side (51 vs 9) to compare.",
+        "suggestive": false
       },
       {
         "key": "spy_down_week",
@@ -489,7 +490,8 @@
         },
         "diff_t": -0.89,
         "notable": false,
-        "verdict": "No measurable difference (t = -0.89) \u2014 this condition does not predict good days."
+        "verdict": "No measurable difference (t = -0.89) \u2014 this condition does not predict good days.",
+        "suggestive": false
       },
       {
         "key": "vix_elevated",
@@ -510,7 +512,8 @@
         },
         "diff_t": null,
         "notable": false,
-        "verdict": "Too few dates on one side (1 vs 59) to compare."
+        "verdict": "Too few dates on one side (1 vs 59) to compare.",
+        "suggestive": false
       },
       {
         "key": "broad_selloff",
@@ -531,7 +534,8 @@
         },
         "diff_t": -2.44,
         "notable": false,
-        "verdict": "No measurable difference (t = -2.44) \u2014 this condition does not predict good days."
+        "verdict": "Suggestive: picks did better when it does not (t = -2.44), but below the 2.5 bar for 4 tests. A lead to keep watching, not a rule.",
+        "suggestive": true
       }
     ],
     "method": "Each scan date's average alpha (picks judged at their exit plan, vs SPY over the same days), split by a condition known on the pick date. Notable needs |t| >= 2.5 and 10+ dates each side, because 4 splits are tested."
