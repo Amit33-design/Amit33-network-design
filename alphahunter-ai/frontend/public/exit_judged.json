@@ -447,5 +447,94 @@
       "spy_%": 1.63
     }
   ],
-  "generated": "2026-09-27T18:16:03+00:00"
+  "pick_date_conditions": {
+    "conditions": [
+      {
+        "key": "spy_uptrend",
+        "question": "S&P above its 50-day average on the pick date",
+        "yes": {
+          "dates": 51,
+          "trades": 1925,
+          "avg_alpha_%": 1.04,
+          "alpha_t": 0.71,
+          "dates_beating_spy": 0.235
+        },
+        "no": {
+          "dates": 9,
+          "trades": 345,
+          "avg_alpha_%": 0.79,
+          "alpha_t": 0.27,
+          "dates_beating_spy": 0.333
+        },
+        "diff_t": 0.08,
+        "notable": false,
+        "verdict": "Too few dates on one side (51 vs 9) to compare."
+      },
+      {
+        "key": "spy_down_week",
+        "question": "S&P down 1%+ over the prior week (market-wide pullback)",
+        "yes": {
+          "dates": 12,
+          "trades": 495,
+          "avg_alpha_%": -0.66,
+          "alpha_t": -0.38,
+          "dates_beating_spy": 0.167
+        },
+        "no": {
+          "dates": 48,
+          "trades": 1775,
+          "avg_alpha_%": 1.42,
+          "alpha_t": 0.9,
+          "dates_beating_spy": 0.271
+        },
+        "diff_t": -0.89,
+        "notable": false,
+        "verdict": "No measurable difference (t = -0.89) \u2014 this condition does not predict good days."
+      },
+      {
+        "key": "vix_elevated",
+        "question": "VIX at 20 or higher (fear elevated)",
+        "yes": {
+          "dates": 1,
+          "trades": 37,
+          "avg_alpha_%": 17.43,
+          "alpha_t": null,
+          "dates_beating_spy": 1.0
+        },
+        "no": {
+          "dates": 59,
+          "trades": 2233,
+          "avg_alpha_%": 0.72,
+          "alpha_t": 0.56,
+          "dates_beating_spy": 0.237
+        },
+        "diff_t": null,
+        "notable": false,
+        "verdict": "Too few dates on one side (1 vs 59) to compare."
+      },
+      {
+        "key": "broad_selloff",
+        "question": "The screen caught more names than usual (broad selloff)",
+        "yes": {
+          "dates": 39,
+          "trades": 1566,
+          "avg_alpha_%": -1.62,
+          "alpha_t": -1.43,
+          "dates_beating_spy": 0.103
+        },
+        "no": {
+          "dates": 21,
+          "trades": 704,
+          "avg_alpha_%": 5.88,
+          "alpha_t": 2.06,
+          "dates_beating_spy": 0.524
+        },
+        "diff_t": -2.44,
+        "notable": false,
+        "verdict": "No measurable difference (t = -2.44) \u2014 this condition does not predict good days."
+      }
+    ],
+    "method": "Each scan date's average alpha (picks judged at their exit plan, vs SPY over the same days), split by a condition known on the pick date. Notable needs |t| >= 2.5 and 10+ dates each side, because 4 splits are tested."
+  },
+  "generated": "2026-09-28T01:24:33+00:00"
 }
