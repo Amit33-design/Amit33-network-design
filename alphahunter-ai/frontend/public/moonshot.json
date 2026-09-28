@@ -1,210 +1,15 @@
 {
-  "date": "2026-09-27",
+  "date": "2026-09-28",
   "count": 30,
   "results": [
     {
-      "ticker": "KVYO",
-      "company": "Klaviyo, Inc. Series A",
-      "score": 56.6,
-      "action": "Hold",
-      "quality_grade": "B",
-      "analyst_upside_%": 68.7,
-      "expected_gain_%": 27.5,
-      "hist_win_rate": 0.2,
-      "hist_avg_return_%": -2.2,
-      "hist_trades": 5,
-      "risk_flags": [
-        {
-          "level": "warn",
-          "text": "high short interest (16%)"
-        }
-      ],
-      "rel_strength": {
-        "vs_spy": -9.5,
-        "vs_sector": -11.9,
-        "sector": "Technology",
-        "sector_etf": "XLK"
-      },
-      "mtf": {
-        "weekly_trend": "down",
-        "weekly_return_%": -6.4,
-        "confirms": false
-      },
-      "position": {
-        "shares": 166,
-        "value": 2622.8,
-        "risk_$": 249.0,
-        "basis": "1.0% of $25,000 at $1.50/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 42.0,
-        "fundamental": 79.0,
-        "options": 68.0,
-        "momentum": 36.0,
-        "sentiment": 54.3
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 15.8,
-      "stop_loss": 14.3,
-      "target1": 17.8,
-      "target2": 26.65,
-      "risk_reward": 7.23,
-      "exit_plan": {
-        "entry": 15.8,
-        "target": 18.96,
-        "stop": 13.9,
-        "horizon_days": 10,
-        "target_pct": 20.02,
-        "stop_pct": -12.01,
-        "trail_arms_at_pct": 8.0,
-        "trail_giveback_pct": 5.0
-      },
-      "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $18 call ~$0.48 (58% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $15 put ~$0.57 (74% ann.)",
-      "confidence": "Low",
-      "criteria_passed": [
-        "high_volatility",
-        "not_calm",
-        "beaten_down"
-      ],
-      "criteria_failed": [],
-      "metrics": {
-        "profile": "moonshot",
-        "price": 15.8,
-        "moonshot_score": 88.0,
-        "volatility_%": 91.4,
-        "ret_12m_%": -55.2,
-        "dist_52w_high_%": -52.5,
-        "reasons": [
-          "91% volatility \u2014 the strongest measured trait (lift 3.8)",
-          "down 55% over 12 months (lift 3.0)",
-          "52% below its 52-week high (lift 2.9)"
-        ],
-        "measured_double_rate_%": 19.0,
-        "base_rate_%": 4.8,
-        "median_outcome_%": 6.7,
-        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
-      },
-      "reasoning": "KVYO scored 56.6/100. Setup: 91% annualised, volatile enough, 12m -55%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 79/100 (x0.25 = 19.8); sentiment 54/100 (x0.25 = 13.6); options 68/100 (x0.10 = 6.8); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; high gross margin (74%); +69% to the $26.65 mean target; insiders net sellers (22,847,521 sold vs 16,339 bought) \u2014 weak evidence, selling has many innocent reasons across 75 open-market transactions; rich CSP yield (74% ann.); wide bid/ask (illiquid); negative 1y trend (-55%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 5x historically, bounced 20% of the time (avg -2.2% over the hold). Sector thesis: lagging Technology by 12pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
-    },
-    {
-      "ticker": "HUBS",
-      "company": "HubSpot, Inc.",
-      "score": 56.4,
-      "action": "Hold",
-      "quality_grade": "A",
-      "analyst_upside_%": 16.8,
-      "expected_gain_%": 14.3,
-      "hist_win_rate": 0.8,
-      "hist_avg_return_%": 7.21,
-      "hist_trades": 5,
-      "risk_flags": [],
-      "rel_strength": {
-        "vs_spy": 7.8,
-        "vs_sector": 5.4,
-        "sector": "Technology",
-        "sector_etf": "XLK"
-      },
-      "mtf": {
-        "weekly_trend": "flat",
-        "weekly_return_%": 3.1,
-        "confirms": false
-      },
-      "position": {
-        "shares": 11,
-        "value": 2351.14,
-        "risk_$": 230.78,
-        "basis": "1.0% of $25,000 at $20.98/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": true,
-        "strength": "strong",
-        "suggested_strike": 192.76,
-        "idea": "Sell 2026-10-16 $210 put ~$10.70 (98% ann.)",
-        "reason": "down -3.5% today; 17% upside to target; historically bounced 80% of 5 similar dips (avg +7.2%)"
-      },
-      "subscores": {
-        "technical": 42.0,
-        "fundamental": 81.0,
-        "options": 70.0,
-        "momentum": 56.0,
-        "sentiment": 46.5
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 213.74,
-      "stop_loss": 192.76,
-      "target1": 241.71,
-      "target2": 249.71677,
-      "risk_reward": 1.71,
-      "exit_plan": {
-        "entry": 213.74,
-        "target": 257.97,
-        "stop": 187.2,
-        "horizon_days": 10,
-        "target_pct": 20.69,
-        "stop_pct": -12.42,
-        "trail_arms_at_pct": 8.0,
-        "trail_giveback_pct": 5.0
-      },
-      "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $220 call ~$10.05 (90% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $210 put ~$10.70 (98% ann.)",
-      "confidence": "High",
-      "criteria_passed": [
-        "high_volatility",
-        "not_calm",
-        "beaten_down"
-      ],
-      "criteria_failed": [],
-      "metrics": {
-        "profile": "moonshot",
-        "price": 213.74,
-        "moonshot_score": 88.0,
-        "volatility_%": 86.4,
-        "ret_12m_%": -58.5,
-        "dist_52w_high_%": -58.9,
-        "reasons": [
-          "86% volatility \u2014 the strongest measured trait (lift 3.8)",
-          "down 59% over 12 months (lift 3.0)",
-          "59% below its 52-week high (lift 2.9)"
-        ],
-        "measured_double_rate_%": 19.0,
-        "base_rate_%": 4.8,
-        "median_outcome_%": 6.7,
-        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
-      },
-      "reasoning": "HUBS scored 56.4/100. Setup: 86% annualised, volatile enough, 12m -59%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 81/100 (x0.25 = 20.2); sentiment 46/100 (x0.25 = 11.6); options 70/100 (x0.10 = 7.0); momentum 56/100 (x0.05 = 2.8). Key drivers: below EMA200; positive free cash flow; high gross margin (83%); ratings cut: 2.11 \u2192 2.50 over the last quarter; buy consensus (2.35) from 31 analysts; rich CSP yield (98% ann.); negative 1y trend (-59%); outperforming SPY by +8pp (3mo). Backtest: this setup fired 5x historically, bounced 80% of the time (avg +7.2% over the hold). Sector thesis: outperforming Technology by 5pp \u2014 a relative leader in its group."
-    },
-    {
       "ticker": "FIG",
       "company": "Figma, Inc.",
-      "score": 55.9,
+      "score": 59.2,
       "action": "Hold",
       "quality_grade": "C",
-      "analyst_upside_%": 47.7,
-      "expected_gain_%": 19.1,
+      "analyst_upside_%": 52.1,
+      "expected_gain_%": 20.8,
       "hist_win_rate": 0.333,
       "hist_avg_return_%": -1.47,
       "hist_trades": 6,
@@ -215,21 +20,21 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": 0.9,
-        "vs_sector": -1.5,
+        "vs_spy": -8.7,
+        "vs_sector": -10.1,
         "sector": "Technology",
         "sector_etf": "XLK"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": 5.8,
+        "weekly_return_%": -7.8,
         "confirms": false
       },
       "position": {
-        "shares": 121,
-        "value": 2522.85,
-        "risk_$": 248.05,
-        "basis": "1.0% of $25,000 at $2.05/share stop distance"
+        "shares": 122,
+        "value": 2470.5,
+        "risk_$": 248.88,
+        "basis": "1.0% of $25,000 at $2.04/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
@@ -237,14 +42,14 @@
         "strength": null,
         "suggested_strike": null,
         "idea": null,
-        "reason": "down -2.3% with upside signals, but history is against it (bounced only 33% of 6 dips)"
+        "reason": "down -2.9% with upside signals, but history is against it (bounced only 33% of 6 dips)"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 54.0,
         "fundamental": 65.0,
-        "options": 70.0,
+        "options": 62.0,
         "momentum": 36.0,
-        "sentiment": 64.4
+        "sentiment": 64.3
       },
       "weights": {
         "technical": 0.35,
@@ -253,24 +58,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 20.85,
-      "stop_loss": 18.8,
-      "target1": 23.59,
+      "entry": 20.25,
+      "stop_loss": 18.21,
+      "target1": 22.98,
       "target2": 30.8,
-      "risk_reward": 4.85,
+      "risk_reward": 5.17,
       "exit_plan": {
-        "entry": 20.85,
-        "target": 25.18,
-        "stop": 18.25,
+        "entry": 20.25,
+        "target": 24.56,
+        "stop": 17.66,
         "horizon_days": 10,
-        "target_pct": 20.78,
-        "stop_pct": -12.47,
+        "target_pct": 21.28,
+        "stop_pct": -12.77,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-02 $21 call ~$0.67 (235% ann.)",
-      "cash_secured_put": "Sell 2026-10-02 $20 put ~$0.45 (162% ann.)",
+      "covered_call": "Sell 2026-10-02 $20 call ~$0.52 (234% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $20 put ~$0.53 (244% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
@@ -280,22 +85,217 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 20.85,
+        "price": 20.25,
         "moonshot_score": 88.0,
-        "volatility_%": 82.7,
-        "ret_12m_%": -62.2,
-        "dist_52w_high_%": -70.7,
+        "volatility_%": 82.8,
+        "ret_12m_%": -62.8,
+        "dist_52w_high_%": -71.5,
         "reasons": [
           "83% volatility \u2014 the strongest measured trait (lift 3.8)",
-          "down 62% over 12 months (lift 3.0)",
-          "71% below its 52-week high (lift 2.9)"
+          "down 63% over 12 months (lift 3.0)",
+          "72% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "FIG scored 55.9/100. Setup: 83% annualised, volatile enough, 12m -62%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 65/100 (x0.25 = 16.2); sentiment 64/100 (x0.25 = 16.1); options 70/100 (x0.10 = 7.0); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; unprofitable; +48% to the $30.80 mean target; ratings upgraded: 2.62 \u2192 2.47 over the last quarter; rich CSP yield (162% ann.); negative 1y trend (-62%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 6x historically, bounced 33% of the time (avg -1.5% over the hold). Sector thesis: moving WITH Technology (-2pp vs XLK) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "FIG scored 59.2/100. Setup: 83% annualised, volatile enough, 12m -63%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 65/100 (x0.25 = 16.2); sentiment 64/100 (x0.25 = 16.1); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: oversold (RSI 33); below EMA200; positive free cash flow; unprofitable; +52% to the $30.80 mean target; ratings upgraded: 2.62 \u2192 2.47 over the last quarter; rich CSP yield (244% ann.); wide bid/ask (illiquid); negative 1y trend (-63%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 6x historically, bounced 33% of the time (avg -1.5% over the hold). Sector thesis: lagging Technology by 10pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+    },
+    {
+      "ticker": "KVYO",
+      "company": "Klaviyo, Inc. Series A",
+      "score": 56.5,
+      "action": "Hold",
+      "quality_grade": "B",
+      "analyst_upside_%": 73.1,
+      "expected_gain_%": 29.2,
+      "hist_win_rate": 0.333,
+      "hist_avg_return_%": 0.58,
+      "hist_trades": 6,
+      "risk_flags": [
+        {
+          "level": "warn",
+          "text": "high short interest (16%)"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": -12.5,
+        "vs_sector": -13.9,
+        "sector": "Technology",
+        "sector_etf": "XLK"
+      },
+      "mtf": {
+        "weekly_trend": "down",
+        "weekly_return_%": -9.1,
+        "confirms": false
+      },
+      "position": {
+        "shares": 166,
+        "value": 2556.4,
+        "risk_$": 249.0,
+        "basis": "1.0% of $25,000 at $1.50/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": false,
+        "strength": null,
+        "suggested_strike": null,
+        "idea": null,
+        "reason": "down -2.5% with upside signals, but history is against it (bounced only 33% of 6 dips)"
+      },
+      "subscores": {
+        "technical": 42.0,
+        "fundamental": 79.0,
+        "options": 68.0,
+        "momentum": 36.0,
+        "sentiment": 54.0
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 15.4,
+      "stop_loss": 13.9,
+      "target1": 17.4,
+      "target2": 26.65,
+      "risk_reward": 7.5,
+      "exit_plan": {
+        "entry": 15.4,
+        "target": 18.57,
+        "stop": 13.5,
+        "horizon_days": 10,
+        "target_pct": 20.58,
+        "stop_pct": -12.35,
+        "trail_arms_at_pct": 8.0,
+        "trail_giveback_pct": 5.0
+      },
+      "entry_timing": null,
+      "covered_call": "Sell 2026-10-16 $18 call ~$0.30 (40% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $15 put ~$0.73 (98% ann.)",
+      "confidence": "Low",
+      "criteria_passed": [
+        "high_volatility",
+        "not_calm",
+        "beaten_down"
+      ],
+      "criteria_failed": [],
+      "metrics": {
+        "profile": "moonshot",
+        "price": 15.4,
+        "moonshot_score": 88.0,
+        "volatility_%": 91.4,
+        "ret_12m_%": -52.6,
+        "dist_52w_high_%": -53.7,
+        "reasons": [
+          "91% volatility \u2014 the strongest measured trait (lift 3.8)",
+          "down 53% over 12 months (lift 3.0)",
+          "54% below its 52-week high (lift 2.9)"
+        ],
+        "measured_double_rate_%": 19.0,
+        "base_rate_%": 4.8,
+        "median_outcome_%": 6.7,
+        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
+      },
+      "reasoning": "KVYO scored 56.5/100. Setup: 91% annualised, volatile enough, 12m -53%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 79/100 (x0.25 = 19.8); sentiment 54/100 (x0.25 = 13.5); options 68/100 (x0.10 = 6.8); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; high gross margin (74%); +73% to the $26.65 mean target; insiders net sellers (22,847,521 sold vs 16,339 bought) \u2014 weak evidence, selling has many innocent reasons across 75 open-market transactions; rich CSP yield (98% ann.); wide bid/ask (illiquid); negative 1y trend (-53%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 6x historically, bounced 33% of the time (avg +0.6% over the hold). Sector thesis: lagging Technology by 14pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+    },
+    {
+      "ticker": "HUBS",
+      "company": "HubSpot, Inc.",
+      "score": 55.6,
+      "action": "Hold",
+      "quality_grade": "A",
+      "analyst_upside_%": 23.1,
+      "expected_gain_%": 19.6,
+      "hist_win_rate": 0.8,
+      "hist_avg_return_%": 7.21,
+      "hist_trades": 5,
+      "risk_flags": [],
+      "rel_strength": {
+        "vs_spy": 2.0,
+        "vs_sector": 0.5,
+        "sector": "Technology",
+        "sector_etf": "XLK"
+      },
+      "mtf": {
+        "weekly_trend": "down",
+        "weekly_return_%": 0.1,
+        "confirms": false
+      },
+      "position": {
+        "shares": 11,
+        "value": 2231.24,
+        "risk_$": 242.22,
+        "basis": "1.0% of $25,000 at $22.02/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": true,
+        "strength": "strong",
+        "suggested_strike": 180.82,
+        "idea": "Sell 2026-10-16 $200 put ~$9.50 (96% ann.)",
+        "reason": "down -5.1% today; 23% upside to target; historically bounced 80% of 5 similar dips (avg +7.2%)"
+      },
+      "subscores": {
+        "technical": 42.0,
+        "fundamental": 81.0,
+        "options": 70.0,
+        "momentum": 36.0,
+        "sentiment": 47.6
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 202.84,
+      "stop_loss": 180.82,
+      "target1": 232.2,
+      "target2": 249.71677,
+      "risk_reward": 2.13,
+      "exit_plan": {
+        "entry": 202.84,
+        "target": 249.26,
+        "stop": 174.99,
+        "horizon_days": 10,
+        "target_pct": 22.89,
+        "stop_pct": -13.73,
+        "trail_arms_at_pct": 8.0,
+        "trail_giveback_pct": 5.0
+      },
+      "entry_timing": null,
+      "covered_call": "Sell 2026-10-16 $210 call ~$8.70 (87% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $200 put ~$9.50 (96% ann.)",
+      "confidence": "High",
+      "criteria_passed": [
+        "high_volatility",
+        "not_calm",
+        "beaten_down"
+      ],
+      "criteria_failed": [],
+      "metrics": {
+        "profile": "moonshot",
+        "price": 202.84,
+        "moonshot_score": 88.0,
+        "volatility_%": 86.1,
+        "ret_12m_%": -60.0,
+        "dist_52w_high_%": -61.0,
+        "reasons": [
+          "86% volatility \u2014 the strongest measured trait (lift 3.8)",
+          "down 60% over 12 months (lift 3.0)",
+          "61% below its 52-week high (lift 2.9)"
+        ],
+        "measured_double_rate_%": 19.0,
+        "base_rate_%": 4.8,
+        "median_outcome_%": 6.7,
+        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
+      },
+      "reasoning": "HUBS scored 55.6/100. Setup: 86% annualised, volatile enough, 12m -60%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 81/100 (x0.25 = 20.2); sentiment 48/100 (x0.25 = 11.9); options 70/100 (x0.10 = 7.0); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; high gross margin (83%); ratings cut: 2.11 \u2192 2.50 over the last quarter; +23% to the $249.72 mean target; rich CSP yield (96% ann.); negative 1y trend (-60%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 5x historically, bounced 80% of the time (avg +7.2% over the hold). Sector thesis: moving WITH Technology (+0pp vs XLK) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "REAX",
@@ -303,12 +303,16 @@
       "score": 55.0,
       "action": "Hold",
       "quality_grade": "C",
-      "analyst_upside_%": 82.0,
-      "expected_gain_%": 32.8,
+      "analyst_upside_%": 86.5,
+      "expected_gain_%": 34.6,
       "hist_win_rate": 0.25,
       "hist_avg_return_%": -4.83,
       "hist_trades": 4,
       "risk_flags": [
+        {
+          "level": "info",
+          "text": "near 52-week low (support test)"
+        },
         {
           "level": "info",
           "text": "small cap (thinner liquidity)"
@@ -319,21 +323,21 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -23.1,
-        "vs_sector": -9.7,
+        "vs_spy": -29.7,
+        "vs_sector": -19.0,
         "sector": "Real Estate",
         "sector_etf": "XLRE"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -16.0,
+        "weekly_return_%": -17.2,
         "confirms": false
       },
       "position": {
-        "shares": 93,
-        "value": 1527.99,
-        "risk_$": 249.24,
-        "basis": "1.0% of $25,000 at $2.68/share stop distance"
+        "shares": 95,
+        "value": 1522.85,
+        "risk_$": 248.9,
+        "basis": "1.0% of $25,000 at $2.62/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
@@ -341,7 +345,7 @@
         "strength": null,
         "suggested_strike": null,
         "idea": null,
-        "reason": "no meaningful dip today"
+        "reason": "down -2.4% with upside signals, but history is against it (bounced only 25% of 4 dips)"
       },
       "subscores": {
         "technical": 42.0,
@@ -357,15 +361,15 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 16.43,
-      "stop_loss": 13.75,
-      "target1": 20.01,
+      "entry": 16.03,
+      "stop_loss": 13.41,
+      "target1": 19.52,
       "target2": 29.9,
-      "risk_reward": 5.03,
+      "risk_reward": 5.29,
       "exit_plan": {
-        "entry": 16.43,
-        "target": 21.36,
-        "stop": 13.97,
+        "entry": 16.03,
+        "target": 20.84,
+        "stop": 13.63,
         "horizon_days": 10,
         "target_pct": 30.0,
         "stop_pct": -15.0,
@@ -373,8 +377,8 @@
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $18 call ~$1.15 (134% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $15 put ~$0.77 (99% ann.)",
+      "covered_call": "Sell 2026-10-16 $18 call ~$0.95 (120% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $15 put ~$0.82 (112% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
@@ -384,14 +388,14 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 16.43,
+        "price": 16.03,
         "moonshot_score": 88.0,
         "volatility_%": 92.8,
-        "ret_12m_%": -65.0,
-        "dist_52w_high_%": -64.7,
+        "ret_12m_%": -65.5,
+        "dist_52w_high_%": -64.6,
         "reasons": [
           "93% volatility \u2014 the strongest measured trait (lift 3.8)",
-          "down 65% over 12 months (lift 3.0)",
+          "down 66% over 12 months (lift 3.0)",
           "65% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
@@ -399,7 +403,7 @@
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "REAX scored 55.0/100. Setup: 93% annualised, volatile enough, 12m -65%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 57/100 (x0.25 = 14.2); sentiment 73/100 (x0.25 = 18.3); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; positive free cash flow; unprofitable; strong buy consensus (1.00) from 5 analysts; +82% to the $29.90 mean target; rich CSP yield (99% ann.); wide bid/ask (illiquid); negative 1y trend (-65%); lagging SPY by -23pp (3mo). Backtest: this setup fired 4x historically, bounced 25% of the time (avg -4.8% over the hold). Sector thesis: lagging Real Estate by 10pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "REAX scored 55.0/100. Setup: 93% annualised, volatile enough, 12m -66%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 57/100 (x0.25 = 14.2); sentiment 73/100 (x0.25 = 18.3); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; positive free cash flow; unprofitable; strong buy consensus (1.00) from 5 analysts; +87% to the $29.90 mean target; rich CSP yield (112% ann.); wide bid/ask (illiquid); negative 1y trend (-66%); sharp recent pullback (bounce setup). Backtest: this setup fired 4x historically, bounced 25% of the time (avg -4.8% over the hold). Sector thesis: lagging Real Estate by 19pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "WIX",
@@ -407,8 +411,8 @@
       "score": 52.3,
       "action": "Hold",
       "quality_grade": "C",
-      "analyst_upside_%": 7.9,
-      "expected_gain_%": 3.2,
+      "analyst_upside_%": 14.4,
+      "expected_gain_%": 5.8,
       "hist_win_rate": 0.375,
       "hist_avg_return_%": 1.3,
       "hist_trades": 8,
@@ -419,25 +423,25 @@
         },
         {
           "level": "warn",
-          "text": "R:R 0.73 below 1.5 floor"
+          "text": "R:R 1.26 below 1.5 floor"
         }
       ],
       "rel_strength": {
-        "vs_spy": 44.9,
-        "vs_sector": 42.5,
+        "vs_spy": 37.5,
+        "vs_sector": 36.0,
         "sector": "Technology",
         "sector_etf": "XLK"
       },
       "mtf": {
         "weekly_trend": "up",
-        "weekly_return_%": 66.6,
+        "weekly_return_%": 52.8,
         "confirms": true
       },
       "position": {
         "shares": 31,
-        "value": 2287.49,
-        "risk_$": 248.93,
-        "basis": "1.0% of $25,000 at $8.03/share stop distance"
+        "value": 2157.6,
+        "risk_$": 246.45,
+        "basis": "1.0% of $25,000 at $7.95/share stop distance"
       },
       "rr_pass": false,
       "csp_signal": {
@@ -445,14 +449,14 @@
         "strength": null,
         "suggested_strike": null,
         "idea": null,
-        "reason": "down -4.8% but no upside signal (below EMA200, <10% target upside)"
+        "reason": "down -5.7% with upside signals, but history is against it (bounced only 38% of 8 dips)"
       },
       "subscores": {
         "technical": 42.0,
         "fundamental": 61.0,
-        "options": 70.0,
+        "options": 68.0,
         "momentum": 62.0,
-        "sentiment": 49.0
+        "sentiment": 49.9
       },
       "weights": {
         "technical": 0.35,
@@ -461,24 +465,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 73.79,
-      "stop_loss": 65.76,
-      "target1": 84.49,
+      "entry": 69.6,
+      "stop_loss": 61.65,
+      "target1": 80.2,
       "target2": 79.65,
-      "risk_reward": 0.73,
+      "risk_reward": 1.26,
       "exit_plan": {
-        "entry": 73.79,
-        "target": 90.71,
-        "stop": 63.64,
+        "entry": 69.6,
+        "target": 86.35,
+        "stop": 59.55,
         "horizon_days": 10,
-        "target_pct": 22.93,
-        "stop_pct": -13.76,
+        "target_pct": 24.07,
+        "stop_pct": -14.44,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $75 call ~$4.45 (116% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $72 put ~$4.10 (109% ann.)",
+      "covered_call": "Sell 2026-10-16 $70 call ~$4.17 (122% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $68 put ~$3.25 (98% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
@@ -488,34 +492,34 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 73.79,
+        "price": 69.6,
         "moonshot_score": 88.0,
-        "volatility_%": 89.1,
-        "ret_12m_%": -59.3,
-        "dist_52w_high_%": -59.2,
+        "volatility_%": 89.3,
+        "ret_12m_%": -59.9,
+        "dist_52w_high_%": -61.5,
         "reasons": [
           "89% volatility \u2014 the strongest measured trait (lift 3.8)",
-          "down 59% over 12 months (lift 3.0)",
-          "59% below its 52-week high (lift 2.9)"
+          "down 60% over 12 months (lift 3.0)",
+          "61% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "WIX scored 52.3/100. Setup: 89% annualised, volatile enough, 12m -59%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 61/100 (x0.25 = 15.2); sentiment 49/100 (x0.25 = 12.2); options 70/100 (x0.10 = 7.0); momentum 62/100 (x0.05 = 3.1). Key drivers: below EMA200; positive free cash flow; unprofitable; 18.9% of float short; buy consensus (2.18) from 20 analysts; rich CSP yield (109% ann.); negative 1y trend (-59%); outperforming SPY by +45pp (3mo). Backtest: this setup fired 8x historically, bounced 38% of the time (avg +1.3% over the hold). Sector thesis: outperforming Technology by 42pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
+      "reasoning": "WIX scored 52.3/100. Setup: 89% annualised, volatile enough, 12m -60%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 61/100 (x0.25 = 15.2); sentiment 50/100 (x0.25 = 12.5); options 68/100 (x0.10 = 6.8); momentum 62/100 (x0.05 = 3.1). Key drivers: below EMA200; positive free cash flow; unprofitable; 18.9% of float short; buy consensus (2.18) from 20 analysts; rich CSP yield (98% ann.); wide bid/ask (illiquid); negative 1y trend (-60%); outperforming SPY by +38pp (3mo). Backtest: this setup fired 8x historically, bounced 38% of the time (avg +1.3% over the hold). Sector thesis: outperforming Technology by 36pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "QDEL",
       "company": "QuidelOrtho Corporation",
-      "score": 48.9,
+      "score": 50.7,
       "action": "Hold",
       "quality_grade": "D",
-      "analyst_upside_%": 34.1,
-      "expected_gain_%": 20.4,
-      "hist_win_rate": 0.6,
-      "hist_avg_return_%": 3.16,
-      "hist_trades": 10,
+      "analyst_upside_%": 35.4,
+      "expected_gain_%": 14.2,
+      "hist_win_rate": 0.545,
+      "hist_avg_return_%": 2.63,
+      "hist_trades": 11,
       "risk_flags": [
         {
           "level": "warn",
@@ -527,21 +531,21 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -45.9,
-        "vs_sector": -46.7,
+        "vs_spy": -44.2,
+        "vs_sector": -47.6,
         "sector": "Healthcare",
         "sector_etf": "XLV"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -40.6,
+        "weekly_return_%": -38.8,
         "confirms": false
       },
       "position": {
-        "shares": 215,
-        "value": 2352.1,
-        "risk_$": 249.4,
-        "basis": "1.0% of $25,000 at $1.16/share stop distance"
+        "shares": 225,
+        "value": 2436.75,
+        "risk_$": 249.75,
+        "basis": "1.0% of $25,000 at $1.11/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
@@ -552,11 +556,11 @@
         "reason": "no meaningful dip today"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 47.0,
         "fundamental": 54.0,
         "options": 62.0,
         "momentum": 30.0,
-        "sentiment": 51.9
+        "sentiment": 52.2
       },
       "weights": {
         "technical": 0.35,
@@ -565,25 +569,25 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 10.94,
-      "stop_loss": 9.78,
-      "target1": 12.48,
+      "entry": 10.83,
+      "stop_loss": 9.72,
+      "target1": 12.32,
       "target2": 14.66667,
-      "risk_reward": 3.21,
+      "risk_reward": 3.46,
       "exit_plan": {
-        "entry": 10.94,
-        "target": 13.38,
-        "stop": 9.48,
+        "entry": 10.83,
+        "target": 13.18,
+        "stop": 9.42,
         "horizon_days": 10,
-        "target_pct": 22.26,
-        "stop_pct": -13.36,
+        "target_pct": 21.7,
+        "stop_pct": -13.02,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $12 call ~$0.30 (53% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $10 put ~$0.35 (67% ann.)",
-      "confidence": "Medium",
+      "covered_call": "Sell 2026-10-16 $12 call ~$0.40 (75% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $10 put ~$0.43 (86% ann.)",
+      "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
         "not_calm",
@@ -592,11 +596,11 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 10.94,
+        "price": 10.83,
         "moonshot_score": 88.0,
-        "volatility_%": 104.4,
-        "ret_12m_%": -59.0,
-        "dist_52w_high_%": -69.1,
+        "volatility_%": 104.1,
+        "ret_12m_%": -59.2,
+        "dist_52w_high_%": -69.4,
         "reasons": [
           "104% volatility \u2014 the strongest measured trait (lift 3.8)",
           "down 59% over 12 months (lift 3.0)",
@@ -607,16 +611,16 @@
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "QDEL scored 48.9/100. Setup: 104% annualised, volatile enough, 12m -59%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 54/100 (x0.25 = 13.5); sentiment 52/100 (x0.25 = 13.0); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; positive free cash flow; unprofitable; +34% to the $14.67 mean target; 28.2% of float short; rich CSP yield (67% ann.); wide bid/ask (illiquid); negative 1y trend (-59%); sharp recent pullback (bounce setup). Backtest: this setup fired 10x historically, bounced 60% of the time (avg +3.2% over the hold). Sector thesis: lagging Healthcare by 47pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "QDEL scored 50.7/100. Setup: 104% annualised, volatile enough, 12m -59%. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 54/100 (x0.25 = 13.5); sentiment 52/100 (x0.25 = 13.1); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; MACD histogram turning up; positive free cash flow; unprofitable; +35% to the $14.67 mean target; 28.2% of float short; rich CSP yield (86% ann.); wide bid/ask (illiquid); negative 1y trend (-59%); sharp recent pullback (bounce setup). Backtest: this setup fired 11x historically, bounced 55% of the time (avg +2.6% over the hold). Sector thesis: lagging Healthcare by 48pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "RBLX",
       "company": "Roblox Corporation",
-      "score": 46.7,
+      "score": 47.1,
       "action": "Hold",
       "quality_grade": "F",
-      "analyst_upside_%": 5.5,
-      "expected_gain_%": 3.1,
+      "analyst_upside_%": 17.0,
+      "expected_gain_%": 9.5,
       "hist_win_rate": 0.6,
       "hist_avg_return_%": 2.45,
       "hist_trades": 5,
@@ -624,39 +628,35 @@
         {
           "level": "warn",
           "text": "high leverage (D/E 1423%)"
-        },
-        {
-          "level": "warn",
-          "text": "R:R 0.69 below 1.5 floor"
         }
       ],
       "rel_strength": {
-        "vs_spy": -25.9,
-        "vs_sector": -26.6,
+        "vs_spy": -28.0,
+        "vs_sector": -27.9,
         "sector": "Communication Services",
         "sector_etf": "XLC"
       },
       "mtf": {
         "weekly_trend": "up",
-        "weekly_return_%": -7.4,
+        "weekly_return_%": -9.4,
         "confirms": true
       },
       "position": {
-        "shares": 67,
-        "value": 3111.48,
-        "risk_$": 246.56,
-        "basis": "1.0% of $25,000 at $3.68/share stop distance"
+        "shares": 63,
+        "value": 2637.18,
+        "risk_$": 246.33,
+        "basis": "1.0% of $25,000 at $3.91/share stop distance"
       },
-      "rr_pass": false,
+      "rr_pass": true,
       "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "down -4.9% but no upside signal (below EMA200, <10% target upside)"
+        "active": true,
+        "strength": "strong",
+        "suggested_strike": 37.95,
+        "idea": "Sell 2026-10-02 $42 put ~$0.99 (219% ann.)",
+        "reason": "down -9.9% today; 17% upside to target; historically bounced 60% of 5 similar dips (avg +2.5%)"
       },
       "subscores": {
-        "technical": 47.0,
+        "technical": 48.0,
         "fundamental": 39.0,
         "options": 70.0,
         "momentum": 38.0,
@@ -669,24 +669,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 46.44,
-      "stop_loss": 42.76,
-      "target1": 51.35,
+      "entry": 41.86,
+      "stop_loss": 37.95,
+      "target1": 47.07,
       "target2": 48.97471,
-      "risk_reward": 0.69,
+      "risk_reward": 1.82,
       "exit_plan": {
-        "entry": 46.44,
-        "target": 54.2,
-        "stop": 41.79,
+        "entry": 41.86,
+        "target": 50.1,
+        "stop": 36.92,
         "horizon_days": 10,
-        "target_pct": 16.7,
-        "stop_pct": -10.02,
+        "target_pct": 19.68,
+        "stop_pct": -11.81,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-02 $46 call ~$1.59 (250% ann.)",
-      "cash_secured_put": "Sell 2026-10-02 $46 put ~$1.34 (213% ann.)",
+      "covered_call": "Sell 2026-10-02 $42 call ~$1.27 (277% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $42 put ~$0.99 (219% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "high_volatility",
@@ -696,31 +696,147 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 46.44,
+        "price": 41.86,
         "moonshot_score": 88.0,
-        "volatility_%": 80.4,
-        "ret_12m_%": -65.1,
-        "dist_52w_high_%": -67.2,
+        "volatility_%": 81.7,
+        "ret_12m_%": -68.3,
+        "dist_52w_high_%": -70.4,
         "reasons": [
-          "80% volatility \u2014 the strongest measured trait (lift 3.8)",
-          "down 65% over 12 months (lift 3.0)",
-          "67% below its 52-week high (lift 2.9)"
+          "82% volatility \u2014 the strongest measured trait (lift 3.8)",
+          "down 68% over 12 months (lift 3.0)",
+          "70% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "RBLX scored 46.7/100. Setup: 80% annualised, volatile enough, 12m -65%. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 39/100 (x0.25 = 9.8); sentiment 46/100 (x0.25 = 11.6); options 70/100 (x0.10 = 7.0); momentum 38/100 (x0.05 = 1.9). Key drivers: below EMA200; MACD histogram turning up; positive free cash flow; unprofitable; ratings cut: 2.24 \u2192 2.46 over the last quarter; buy consensus (2.26) from 34 analysts; rich CSP yield (213% ann.); negative 1y trend (-65%); lagging SPY by -26pp (3mo). Backtest: this setup fired 5x historically, bounced 60% of the time (avg +2.5% over the hold). Sector thesis: lagging Communication Services by 27pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
+      "reasoning": "RBLX scored 47.1/100. Setup: 82% annualised, volatile enough, 12m -68%. Contributions \u2014 technical 48/100 (x0.35 = 16.8); fundamental 39/100 (x0.25 = 9.8); sentiment 46/100 (x0.25 = 11.6); options 70/100 (x0.10 = 7.0); momentum 38/100 (x0.05 = 1.9). Key drivers: below EMA200; volume spike (x1.5); positive free cash flow; unprofitable; ratings cut: 2.24 \u2192 2.49 over the last quarter; buy consensus (2.26) from 34 analysts; rich CSP yield (219% ann.); negative 1y trend (-68%); lagging SPY by -28pp (3mo). Backtest: this setup fired 5x historically, bounced 60% of the time (avg +2.5% over the hold). Sector thesis: lagging Communication Services by 28pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
+    },
+    {
+      "ticker": "PGY",
+      "company": "Pagaya Technologies Ltd.",
+      "score": 71.9,
+      "action": "Accumulate",
+      "quality_grade": "A",
+      "analyst_upside_%": 70.1,
+      "expected_gain_%": 42.0,
+      "hist_win_rate": 0.286,
+      "hist_avg_return_%": -8.64,
+      "hist_trades": 7,
+      "risk_flags": [
+        {
+          "level": "warn",
+          "text": "high short interest (14%)"
+        },
+        {
+          "level": "info",
+          "text": "small cap (thinner liquidity)"
+        },
+        {
+          "level": "warn",
+          "text": "high beta (5.4)"
+        },
+        {
+          "level": "good",
+          "text": "strong-buy consensus"
+        },
+        {
+          "level": "good",
+          "text": "golden-cross regime"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": -8.0,
+        "vs_sector": -9.5,
+        "sector": "Technology",
+        "sector_etf": "XLK"
+      },
+      "mtf": {
+        "weekly_trend": "up",
+        "weekly_return_%": 18.1,
+        "confirms": true
+      },
+      "position": {
+        "shares": 135,
+        "value": 2295.0,
+        "risk_$": 249.75,
+        "basis": "1.0% of $25,000 at $1.85/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": false,
+        "strength": null,
+        "suggested_strike": null,
+        "idea": null,
+        "reason": "down -3.5% with upside signals, but history is against it (bounced only 29% of 7 dips)"
+      },
+      "subscores": {
+        "technical": 60.0,
+        "fundamental": 100.0,
+        "options": 62.0,
+        "momentum": 56.0,
+        "sentiment": 67.5
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 17.0,
+      "stop_loss": 15.15,
+      "target1": 19.46,
+      "target2": 28.90909,
+      "risk_reward": 6.44,
+      "exit_plan": {
+        "entry": 17.0,
+        "target": 20.89,
+        "stop": 14.66,
+        "horizon_days": 10,
+        "target_pct": 22.9,
+        "stop_pct": -13.74,
+        "trail_arms_at_pct": 8.0,
+        "trail_giveback_pct": 5.0
+      },
+      "entry_timing": null,
+      "covered_call": "Sell 2026-10-16 $17 call ~$0.93 (110% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $17 put ~$0.88 (104% ann.)",
+      "confidence": "Medium",
+      "criteria_passed": [
+        "high_volatility",
+        "not_calm",
+        "beaten_down"
+      ],
+      "criteria_failed": [],
+      "metrics": {
+        "profile": "moonshot",
+        "price": 17.0,
+        "moonshot_score": 74.0,
+        "volatility_%": 69.8,
+        "ret_12m_%": -51.1,
+        "dist_52w_high_%": -50.9,
+        "reasons": [
+          "70% volatility (lift 2.6)",
+          "down 51% over 12 months (lift 3.0)",
+          "51% below its 52-week high (lift 2.9)"
+        ],
+        "measured_double_rate_%": 19.0,
+        "base_rate_%": 4.8,
+        "median_outcome_%": 6.7,
+        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
+      },
+      "reasoning": "PGY scored 71.9/100. Setup: 70% annualised, volatile enough, 12m -51%. Contributions \u2014 technical 60/100 (x0.35 = 21.0); fundamental 100/100 (x0.25 = 25.0); sentiment 68/100 (x0.25 = 16.9); options 62/100 (x0.10 = 6.2); momentum 56/100 (x0.05 = 2.8). Key drivers: oversold (RSI 32); below EMA200; positive free cash flow; high gross margin (43%); strong buy consensus (1.18) from 11 analysts; +70% to the $28.91 mean target; rich CSP yield (104% ann.); wide bid/ask (illiquid); negative 1y trend (-51%); positive 6m trend. Backtest: this setup fired 7x historically, bounced 29% of the time (avg -8.6% over the hold). Sector thesis: lagging Technology by 10pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "PLNT",
       "company": "Planet Fitness, Inc.",
-      "score": 66.7,
+      "score": 65.8,
       "action": "Accumulate",
       "quality_grade": "A",
-      "analyst_upside_%": 58.3,
-      "expected_gain_%": 35.0,
+      "analyst_upside_%": 66.8,
+      "expected_gain_%": 40.1,
       "hist_win_rate": 1.0,
       "hist_avg_return_%": 14.7,
       "hist_trades": 1,
@@ -735,36 +851,36 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -25.1,
-        "vs_sector": -15.9,
+        "vs_spy": -27.8,
+        "vs_sector": -17.5,
         "sector": "Consumer Cyclical",
         "sector_etf": "XLY"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -8.3,
+        "weekly_return_%": -15.6,
         "confirms": false
       },
       "position": {
-        "shares": 77,
-        "value": 3286.36,
-        "risk_$": 247.94,
-        "basis": "1.0% of $25,000 at $3.22/share stop distance"
+        "shares": 76,
+        "value": 3078.0,
+        "risk_$": 247.0,
+        "basis": "1.0% of $25,000 at $3.25/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
+        "active": true,
+        "strength": "moderate",
+        "suggested_strike": 37.25,
+        "idea": "Sell 2026-10-16 $40 put ~$1.50 (76% ann.)",
+        "reason": "down -5.1% today; 67% upside to target; limited dip history"
       },
       "subscores": {
         "technical": 54.0,
         "fundamental": 93.0,
-        "options": 76.0,
+        "options": 68.0,
         "momentum": 24.0,
-        "sentiment": 62.9
+        "sentiment": 62.5
       },
       "weights": {
         "technical": 0.35,
@@ -773,24 +889,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 42.68,
-      "stop_loss": 39.46,
-      "target1": 46.98,
+      "entry": 40.5,
+      "stop_loss": 37.25,
+      "target1": 44.84,
       "target2": 67.54118,
-      "risk_reward": 7.72,
+      "risk_reward": 8.32,
       "exit_plan": {
-        "entry": 42.68,
-        "target": 49.48,
-        "stop": 38.6,
+        "entry": 40.5,
+        "target": 47.36,
+        "stop": 36.38,
         "horizon_days": 10,
-        "target_pct": 15.93,
-        "stop_pct": -9.56,
+        "target_pct": 16.94,
+        "stop_pct": -10.17,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $45 call ~$1.02 (46% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $42 put ~$1.90 (86% ann.)",
+      "covered_call": "Sell 2026-10-16 $42 call ~$1.10 (55% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $40 put ~$1.50 (76% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "high_volatility",
@@ -800,31 +916,131 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 42.68,
+        "price": 40.5,
         "moonshot_score": 74.0,
-        "volatility_%": 67.5,
-        "ret_12m_%": -58.7,
-        "dist_52w_high_%": -61.9,
+        "volatility_%": 67.8,
+        "ret_12m_%": -60.8,
+        "dist_52w_high_%": -63.8,
         "reasons": [
-          "67% volatility (lift 2.6)",
-          "down 59% over 12 months (lift 3.0)",
-          "62% below its 52-week high (lift 2.9)"
+          "68% volatility (lift 2.6)",
+          "down 61% over 12 months (lift 3.0)",
+          "64% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "PLNT scored 66.7/100. Setup: 67% annualised, volatile enough, 12m -59%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 93/100 (x0.25 = 23.2); sentiment 63/100 (x0.25 = 15.7); options 76/100 (x0.10 = 7.6); momentum 24/100 (x0.05 = 1.2). Key drivers: oversold (RSI 30); below EMA200; positive free cash flow; strong net margin (18%); buy consensus (1.83) from 17 analysts; 13.8% of float short; rich CSP yield (86% ann.); liquid open interest; negative 1y trend (-59%); lagging SPY by -25pp (3mo). Sector thesis: lagging Consumer Cyclical by 16pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "PLNT scored 65.8/100. Setup: 68% annualised, volatile enough, 12m -61%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 93/100 (x0.25 = 23.2); sentiment 62/100 (x0.25 = 15.6); options 68/100 (x0.10 = 6.8); momentum 24/100 (x0.05 = 1.2). Key drivers: oversold (RSI 26); below EMA200; positive free cash flow; strong net margin (18%); buy consensus (1.83) from 17 analysts; 13.8% of float short; rich CSP yield (76% ann.); wide bid/ask (illiquid); negative 1y trend (-61%); lagging SPY by -28pp (3mo). Sector thesis: lagging Consumer Cyclical by 18pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+    },
+    {
+      "ticker": "INTU",
+      "company": "Intuit Inc.",
+      "score": 65.6,
+      "action": "Accumulate",
+      "quality_grade": "A",
+      "analyst_upside_%": 50.6,
+      "expected_gain_%": 30.3,
+      "hist_win_rate": 0.5,
+      "hist_avg_return_%": -3.3,
+      "hist_trades": 2,
+      "risk_flags": [
+        {
+          "level": "info",
+          "text": "near 52-week low (support test)"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": -5.3,
+        "vs_sector": -6.8,
+        "sector": "Technology",
+        "sector_etf": "XLK"
+      },
+      "mtf": {
+        "weekly_trend": "down",
+        "weekly_return_%": 0.9,
+        "confirms": false
+      },
+      "position": {
+        "shares": 12,
+        "value": 3232.8,
+        "risk_$": 242.16,
+        "basis": "1.0% of $25,000 at $20.18/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": true,
+        "strength": "moderate",
+        "suggested_strike": 249.22,
+        "idea": "Sell 2026-10-02 $268 put ~$5.08 (173% ann.)",
+        "reason": "down -2.3% today; 51% upside to target; limited dip history"
+      },
+      "subscores": {
+        "technical": 54.0,
+        "fundamental": 100.0,
+        "options": 70.0,
+        "momentum": 36.0,
+        "sentiment": 51.7
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 269.4,
+      "stop_loss": 249.22,
+      "target1": 296.3,
+      "target2": 405.6,
+      "risk_reward": 6.75,
+      "exit_plan": {
+        "entry": 269.4,
+        "target": 311.94,
+        "stop": 243.88,
+        "horizon_days": 10,
+        "target_pct": 15.79,
+        "stop_pct": -9.47,
+        "trail_arms_at_pct": 8.0,
+        "trail_giveback_pct": 5.0
+      },
+      "entry_timing": null,
+      "covered_call": "Sell 2026-10-02 $270 call ~$5.65 (191% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $268 put ~$5.08 (173% ann.)",
+      "confidence": "Medium",
+      "criteria_passed": [
+        "high_volatility",
+        "not_calm",
+        "beaten_down"
+      ],
+      "criteria_failed": [],
+      "metrics": {
+        "profile": "moonshot",
+        "price": 269.4,
+        "moonshot_score": 74.0,
+        "volatility_%": 59.9,
+        "ret_12m_%": -60.7,
+        "dist_52w_high_%": -61.0,
+        "reasons": [
+          "60% volatility (lift 2.6)",
+          "down 61% over 12 months (lift 3.0)",
+          "61% below its 52-week high (lift 2.9)"
+        ],
+        "measured_double_rate_%": 19.0,
+        "base_rate_%": 4.8,
+        "median_outcome_%": 6.7,
+        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
+      },
+      "reasoning": "INTU scored 65.6/100. Setup: 60% annualised, volatile enough, 12m -61%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 100/100 (x0.25 = 25.0); sentiment 52/100 (x0.25 = 12.9); options 70/100 (x0.10 = 7.0); momentum 36/100 (x0.05 = 1.8). Key drivers: oversold (RSI 28); below EMA200; positive free cash flow; strong net margin (21%); ratings cut: 2.09 \u2192 2.35 over the last quarter; buy consensus (2.06) from 31 analysts; rich CSP yield (173% ann.); negative 1y trend (-61%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Sector thesis: lagging Technology by 7pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "TREE",
       "company": "LendingTree, Inc.",
-      "score": 65.7,
+      "score": 65.6,
       "action": "Accumulate",
       "quality_grade": "A",
-      "analyst_upside_%": 127.5,
-      "expected_gain_%": 76.5,
+      "analyst_upside_%": 131.3,
+      "expected_gain_%": 78.8,
       "hist_win_rate": 0.5,
       "hist_avg_return_%": -2.71,
       "hist_trades": 2,
@@ -843,21 +1059,21 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -51.1,
-        "vs_sector": -47.8,
+        "vs_spy": -49.8,
+        "vs_sector": -47.4,
         "sector": "Financial Services",
         "sector_etf": "XLF"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -40.5,
+        "weekly_return_%": -42.4,
         "confirms": false
       },
       "position": {
-        "shares": 126,
-        "value": 3102.12,
-        "risk_$": 249.48,
-        "basis": "1.0% of $25,000 at $1.98/share stop distance"
+        "shares": 127,
+        "value": 3074.67,
+        "risk_$": 248.92,
+        "basis": "1.0% of $25,000 at $1.96/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
@@ -872,7 +1088,7 @@
         "fundamental": 82.0,
         "options": 62.0,
         "momentum": 30.0,
-        "sentiment": 67.2
+        "sentiment": 67.1
       },
       "weights": {
         "technical": 0.35,
@@ -881,24 +1097,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 24.62,
-      "stop_loss": 22.64,
-      "target1": 27.26,
+      "entry": 24.21,
+      "stop_loss": 22.25,
+      "target1": 26.82,
       "target2": 56.0,
-      "risk_reward": 15.85,
+      "risk_reward": 16.22,
       "exit_plan": {
-        "entry": 24.62,
-        "target": 28.8,
-        "stop": 22.11,
+        "entry": 24.21,
+        "target": 28.34,
+        "stop": 21.73,
         "horizon_days": 10,
-        "target_pct": 16.98,
-        "stop_pct": -10.19,
+        "target_pct": 17.08,
+        "stop_pct": -10.25,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $25 call ~$1.23 (96% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $22 put ~$0.50 (43% ann.)",
+      "covered_call": "Sell 2026-10-16 $25 call ~$1.02 (86% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $22 put ~$0.72 (65% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "high_volatility",
@@ -908,126 +1124,31 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 24.62,
+        "price": 24.21,
         "moonshot_score": 74.0,
         "volatility_%": 67.4,
-        "ret_12m_%": -64.4,
-        "dist_52w_high_%": -65.1,
+        "ret_12m_%": -64.7,
+        "dist_52w_high_%": -65.7,
         "reasons": [
           "67% volatility (lift 2.6)",
-          "down 64% over 12 months (lift 3.0)",
-          "65% below its 52-week high (lift 2.9)"
+          "down 65% over 12 months (lift 3.0)",
+          "66% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "TREE scored 65.7/100. Setup: 67% annualised, volatile enough, 12m -64%. Contributions \u2014 technical 59/100 (x0.35 = 20.6); fundamental 82/100 (x0.25 = 20.5); sentiment 67/100 (x0.25 = 16.8); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 33); below EMA200; positive free cash flow; high gross margin (96%); +127% to the $56.00 mean target; insiders net buyers (63,852 bought vs 10,585 sold) across 12 open-market transactions; rich CSP yield (43% ann.); wide bid/ask (illiquid); negative 1y trend (-64%); sharp recent pullback (bounce setup). Sector thesis: lagging Financial Services by 48pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
-    },
-    {
-      "ticker": "INTU",
-      "company": "Intuit Inc.",
-      "score": 65.6,
-      "action": "Accumulate",
-      "quality_grade": "A",
-      "analyst_upside_%": 47.1,
-      "expected_gain_%": 28.2,
-      "hist_win_rate": 0.5,
-      "hist_avg_return_%": -3.3,
-      "hist_trades": 2,
-      "risk_flags": [],
-      "rel_strength": {
-        "vs_spy": -2.4,
-        "vs_sector": -4.8,
-        "sector": "Technology",
-        "sector_etf": "XLK"
-      },
-      "mtf": {
-        "weekly_trend": "down",
-        "weekly_return_%": 10.6,
-        "confirms": false
-      },
-      "position": {
-        "shares": 12,
-        "value": 3309.48,
-        "risk_$": 242.16,
-        "basis": "1.0% of $25,000 at $20.18/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 54.0,
-        "fundamental": 100.0,
-        "options": 70.0,
-        "momentum": 36.0,
-        "sentiment": 51.5
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 275.79,
-      "stop_loss": 255.61,
-      "target1": 302.69,
-      "target2": 405.6,
-      "risk_reward": 6.43,
-      "exit_plan": {
-        "entry": 275.79,
-        "target": 318.32,
-        "stop": 250.27,
-        "horizon_days": 10,
-        "target_pct": 15.42,
-        "stop_pct": -9.25,
-        "trail_arms_at_pct": 8.0,
-        "trail_giveback_pct": 5.0
-      },
-      "entry_timing": null,
-      "covered_call": "Sell 2026-10-02 $278 call ~$5.70 (151% ann.)",
-      "cash_secured_put": "Sell 2026-10-02 $275 put ~$5.80 (154% ann.)",
-      "confidence": "Medium",
-      "criteria_passed": [
-        "high_volatility",
-        "not_calm",
-        "beaten_down"
-      ],
-      "criteria_failed": [],
-      "metrics": {
-        "profile": "moonshot",
-        "price": 275.79,
-        "moonshot_score": 74.0,
-        "volatility_%": 59.9,
-        "ret_12m_%": -59.9,
-        "dist_52w_high_%": -60.1,
-        "reasons": [
-          "60% volatility (lift 2.6)",
-          "down 60% over 12 months (lift 3.0)",
-          "60% below its 52-week high (lift 2.9)"
-        ],
-        "measured_double_rate_%": 19.0,
-        "base_rate_%": 4.8,
-        "median_outcome_%": 6.7,
-        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
-      },
-      "reasoning": "INTU scored 65.6/100. Setup: 60% annualised, volatile enough, 12m -60%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 100/100 (x0.25 = 25.0); sentiment 52/100 (x0.25 = 12.9); options 70/100 (x0.10 = 7.0); momentum 36/100 (x0.05 = 1.8). Key drivers: oversold (RSI 30); below EMA200; positive free cash flow; strong net margin (21%); ratings cut: 2.09 \u2192 2.35 over the last quarter; buy consensus (2.06) from 31 analysts; rich CSP yield (154% ann.); negative 1y trend (-60%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Sector thesis: moving WITH Technology (-5pp vs XLK) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "TREE scored 65.6/100. Setup: 67% annualised, volatile enough, 12m -65%. Contributions \u2014 technical 59/100 (x0.35 = 20.6); fundamental 82/100 (x0.25 = 20.5); sentiment 67/100 (x0.25 = 16.8); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 32); below EMA200; positive free cash flow; high gross margin (96%); +131% to the $56.00 mean target; insiders net buyers (63,852 bought vs 10,585 sold) across 12 open-market transactions; rich CSP yield (65% ann.); wide bid/ask (illiquid); negative 1y trend (-65%); sharp recent pullback (bounce setup). Sector thesis: lagging Financial Services by 47pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "APP",
       "company": "Applovin Corporation",
-      "score": 64.9,
+      "score": 65.3,
       "action": "Accumulate",
       "quality_grade": "A",
-      "analyst_upside_%": 60.4,
-      "expected_gain_%": 51.3,
+      "analyst_upside_%": 61.7,
+      "expected_gain_%": 52.4,
       "hist_win_rate": 0.6,
       "hist_avg_return_%": 5.4,
       "hist_trades": 5,
@@ -1042,21 +1163,21 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -51.0,
-        "vs_sector": -51.7,
+        "vs_spy": -45.1,
+        "vs_sector": -44.9,
         "sector": "Communication Services",
         "sector_etf": "XLC"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -34.9,
+        "weekly_return_%": -25.8,
         "confirms": false
       },
       "position": {
         "shares": 10,
-        "value": 3107.5,
-        "risk_$": 244.6,
-        "basis": "1.0% of $25,000 at $24.46/share stop distance"
+        "value": 3082.4,
+        "risk_$": 244.1,
+        "basis": "1.0% of $25,000 at $24.41/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
@@ -1069,9 +1190,9 @@
       "subscores": {
         "technical": 47.0,
         "fundamental": 100.0,
-        "options": 70.0,
+        "options": 76.0,
         "momentum": 30.0,
-        "sentiment": 59.7
+        "sentiment": 58.9
       },
       "weights": {
         "technical": 0.35,
@@ -1080,24 +1201,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 310.75,
-      "stop_loss": 286.29,
-      "target1": 343.36,
+      "entry": 308.24,
+      "stop_loss": 283.83,
+      "target1": 340.79,
       "target2": 498.36807,
-      "risk_reward": 7.67,
+      "risk_reward": 7.79,
       "exit_plan": {
-        "entry": 310.75,
-        "target": 362.31,
-        "stop": 279.81,
+        "entry": 308.24,
+        "target": 359.7,
+        "stop": 277.36,
         "horizon_days": 10,
-        "target_pct": 16.59,
-        "stop_pct": -9.96,
+        "target_pct": 16.7,
+        "stop_pct": -10.02,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-02 $312 call ~$7.65 (180% ann.)",
-      "cash_secured_put": "Sell 2026-10-02 $310 put ~$8.30 (195% ann.)",
+      "covered_call": "Sell 2026-10-02 $310 call ~$7.00 (207% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $308 put ~$7.30 (217% ann.)",
       "confidence": "High",
       "criteria_passed": [
         "high_volatility",
@@ -1107,11 +1228,11 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 310.75,
+        "price": 308.24,
         "moonshot_score": 74.0,
         "volatility_%": 68.2,
-        "ret_12m_%": -51.6,
-        "dist_52w_high_%": -57.6,
+        "ret_12m_%": -51.8,
+        "dist_52w_high_%": -58.0,
         "reasons": [
           "68% volatility (lift 2.6)",
           "down 52% over 12 months (lift 3.0)",
@@ -1122,16 +1243,120 @@
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "APP scored 64.9/100. Setup: 68% annualised, volatile enough, 12m -52%. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 100/100 (x0.25 = 25.0); sentiment 60/100 (x0.25 = 14.9); options 70/100 (x0.10 = 7.0); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; MACD histogram turning up; positive free cash flow; strong net margin (65%); strong buy consensus (1.58) from 31 analysts; insiders net sellers (4,039,561 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 79 open-market transactions; rich CSP yield (195% ann.); negative 1y trend (-52%); sharp recent pullback (bounce setup). Backtest: this setup fired 5x historically, bounced 60% of the time (avg +5.4% over the hold). Sector thesis: lagging Communication Services by 52pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "APP scored 65.3/100. Setup: 68% annualised, volatile enough, 12m -52%. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 100/100 (x0.25 = 25.0); sentiment 59/100 (x0.25 = 14.7); options 76/100 (x0.10 = 7.6); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; MACD histogram turning up; positive free cash flow; strong net margin (65%); strong buy consensus (1.58) from 31 analysts; insiders net sellers (4,039,561 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 79 open-market transactions; rich CSP yield (217% ann.); tight bid/ask; negative 1y trend (-52%); sharp recent pullback (bounce setup). Backtest: this setup fired 5x historically, bounced 60% of the time (avg +5.4% over the hold). Sector thesis: lagging Communication Services by 45pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+    },
+    {
+      "ticker": "FOUR",
+      "company": "Shift4 Payments, Inc.",
+      "score": 62.3,
+      "action": "Accumulate",
+      "quality_grade": "B",
+      "analyst_upside_%": 48.7,
+      "expected_gain_%": 29.2,
+      "hist_win_rate": 0.0,
+      "hist_avg_return_%": -1.79,
+      "hist_trades": 2,
+      "risk_flags": [
+        {
+          "level": "warn",
+          "text": "high short interest (19%)"
+        },
+        {
+          "level": "info",
+          "text": "near 52-week low (support test)"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": -31.5,
+        "vs_sector": -32.9,
+        "sector": "Technology",
+        "sector_etf": "XLK"
+      },
+      "mtf": {
+        "weekly_trend": "down",
+        "weekly_return_%": -20.6,
+        "confirms": false
+      },
+      "position": {
+        "shares": 68,
+        "value": 2518.04,
+        "risk_$": 249.56,
+        "basis": "1.0% of $25,000 at $3.67/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": true,
+        "strength": "moderate",
+        "suggested_strike": 33.36,
+        "idea": "Sell 2026-10-16 $35 put ~$1.02 (59% ann.)",
+        "reason": "down -3.7% today; 49% upside to target; limited dip history"
+      },
+      "subscores": {
+        "technical": 54.0,
+        "fundamental": 73.0,
+        "options": 70.0,
+        "momentum": 30.0,
+        "sentiment": 66.5
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 37.03,
+      "stop_loss": 33.36,
+      "target1": 41.92,
+      "target2": 55.04762,
+      "risk_reward": 4.91,
+      "exit_plan": {
+        "entry": 37.03,
+        "target": 44.77,
+        "stop": 32.39,
+        "horizon_days": 10,
+        "target_pct": 20.9,
+        "stop_pct": -12.54,
+        "trail_arms_at_pct": 8.0,
+        "trail_giveback_pct": 5.0
+      },
+      "entry_timing": null,
+      "covered_call": "Sell 2026-10-16 $40 call ~$0.95 (52% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $35 put ~$1.02 (59% ann.)",
+      "confidence": "Medium",
+      "criteria_passed": [
+        "high_volatility",
+        "not_calm",
+        "beaten_down"
+      ],
+      "criteria_failed": [],
+      "metrics": {
+        "profile": "moonshot",
+        "price": 37.03,
+        "moonshot_score": 74.0,
+        "volatility_%": 72.3,
+        "ret_12m_%": -53.6,
+        "dist_52w_high_%": -53.4,
+        "reasons": [
+          "72% volatility (lift 2.6)",
+          "down 54% over 12 months (lift 3.0)",
+          "53% below its 52-week high (lift 2.9)"
+        ],
+        "measured_double_rate_%": 19.0,
+        "base_rate_%": 4.8,
+        "median_outcome_%": 6.7,
+        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
+      },
+      "reasoning": "FOUR scored 62.3/100. Setup: 72% annualised, volatile enough, 12m -54%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 73/100 (x0.25 = 18.2); sentiment 66/100 (x0.25 = 16.6); options 70/100 (x0.10 = 7.0); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 34); below EMA200; positive free cash flow; revenue growth (34%); insiders net buyers (970,683 bought vs 108,353 sold) across 26 open-market transactions; buy consensus (2.08) from 21 analysts; rich CSP yield (59% ann.); negative 1y trend (-54%); sharp recent pullback (bounce setup). Sector thesis: lagging Technology by 33pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "DUOL",
       "company": "Duolingo, Inc.",
-      "score": 62.1,
+      "score": 61.8,
       "action": "Accumulate",
       "quality_grade": "A",
-      "analyst_upside_%": -6.4,
-      "expected_gain_%": -2.6,
+      "analyst_upside_%": -0.0,
+      "expected_gain_%": -0.0,
       "hist_win_rate": 0.167,
       "hist_avg_return_%": -3.12,
       "hist_trades": 6,
@@ -1154,21 +1379,21 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": 12.3,
-        "vs_sector": 9.9,
+        "vs_spy": 3.2,
+        "vs_sector": 1.7,
         "sector": "Technology",
         "sector_etf": "XLK"
       },
       "mtf": {
         "weekly_trend": "up",
-        "weekly_return_%": 19.8,
+        "weekly_return_%": 11.6,
         "confirms": true
       },
       "position": {
-        "shares": 22,
-        "value": 3157.22,
-        "risk_$": 247.94,
-        "basis": "1.0% of $25,000 at $11.27/share stop distance"
+        "shares": 21,
+        "value": 2820.3,
+        "risk_$": 241.5,
+        "basis": "1.0% of $25,000 at $11.50/share stop distance"
       },
       "rr_pass": false,
       "csp_signal": {
@@ -1176,14 +1401,14 @@
         "strength": null,
         "suggested_strike": null,
         "idea": null,
-        "reason": "down -2.9% but no upside signal (below EMA200, <10% target upside)"
+        "reason": "down -6.4% but no upside signal (below EMA200, <10% target upside)"
       },
       "subscores": {
         "technical": 48.0,
         "fundamental": 95.0,
         "options": 62.0,
-        "momentum": 68.0,
-        "sentiment": 48.0
+        "momentum": 56.0,
+        "sentiment": 49.0
       },
       "weights": {
         "technical": 0.35,
@@ -1192,24 +1417,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 143.51,
-      "stop_loss": 132.24,
-      "target1": 158.53,
+      "entry": 134.3,
+      "stop_loss": 122.8,
+      "target1": 149.64,
       "target2": 134.2911,
       "risk_reward": 1.33,
       "exit_plan": {
-        "entry": 143.51,
-        "target": 167.26,
-        "stop": 129.26,
+        "entry": 134.3,
+        "target": 158.55,
+        "stop": 119.75,
         "horizon_days": 10,
-        "target_pct": 16.55,
-        "stop_pct": -9.93,
+        "target_pct": 18.06,
+        "stop_pct": -10.83,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-02 $144 call ~$4.40 (224% ann.)",
-      "cash_secured_put": "Sell 2026-10-02 $143 put ~$3.85 (197% ann.)",
+      "covered_call": "Sell 2026-10-02 $135 call ~$3.28 (223% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $134 put ~$3.65 (249% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
@@ -1219,218 +1444,14 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 143.51,
+        "price": 134.3,
         "moonshot_score": 74.0,
-        "volatility_%": 60.3,
-        "ret_12m_%": -52.3,
-        "dist_52w_high_%": -58.7,
+        "volatility_%": 60.9,
+        "ret_12m_%": -57.2,
+        "dist_52w_high_%": -61.3,
         "reasons": [
-          "60% volatility (lift 2.6)",
-          "down 52% over 12 months (lift 3.0)",
-          "59% below its 52-week high (lift 2.9)"
-        ],
-        "measured_double_rate_%": 19.0,
-        "base_rate_%": 4.8,
-        "median_outcome_%": 6.7,
-        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
-      },
-      "reasoning": "DUOL scored 62.1/100. Setup: 60% annualised, volatile enough, 12m -52%. Contributions \u2014 technical 48/100 (x0.35 = 16.8); fundamental 95/100 (x0.25 = 23.8); sentiment 48/100 (x0.25 = 12.0); options 62/100 (x0.10 = 6.2); momentum 68/100 (x0.05 = 3.4). Key drivers: below EMA200; 50/200 golden cross; positive free cash flow; strong net margin (36%); insiders net sellers (435,291 sold vs 5,000 bought) \u2014 weak evidence, selling has many innocent reasons across 68 open-market transactions; 18.7% of float short; rich CSP yield (197% ann.); wide bid/ask (illiquid); negative 1y trend (-52%); positive 6m trend. Backtest: this setup fired 6x historically, bounced 17% of the time (avg -3.1% over the hold). Sector thesis: outperforming Technology by 10pp \u2014 a relative leader in its group. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
-    },
-    {
-      "ticker": "MMYT",
-      "company": "MakeMyTrip Limited",
-      "score": 61.8,
-      "action": "Accumulate",
-      "quality_grade": "B",
-      "analyst_upside_%": 61.3,
-      "expected_gain_%": 36.8,
-      "hist_win_rate": 0.4,
-      "hist_avg_return_%": 1.69,
-      "hist_trades": 5,
-      "risk_flags": [
-        {
-          "level": "warn",
-          "text": "high short interest (14%)"
-        },
-        {
-          "level": "good",
-          "text": "strong-buy consensus"
-        }
-      ],
-      "rel_strength": {
-        "vs_spy": -25.7,
-        "vs_sector": -16.5,
-        "sector": "Consumer Cyclical",
-        "sector_etf": "XLY"
-      },
-      "mtf": {
-        "weekly_trend": "down",
-        "weekly_return_%": -18.2,
-        "confirms": false
-      },
-      "position": {
-        "shares": 81,
-        "value": 3786.75,
-        "risk_$": 249.48,
-        "basis": "1.0% of $25,000 at $3.08/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 54.0,
-        "fundamental": 71.0,
-        "options": 62.0,
-        "momentum": 30.0,
-        "sentiment": 69.8
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 46.75,
-      "stop_loss": 43.67,
-      "target1": 50.86,
-      "target2": 75.4,
-      "risk_reward": 9.3,
-      "exit_plan": {
-        "entry": 46.75,
-        "target": 53.25,
-        "stop": 42.85,
-        "horizon_days": 10,
-        "target_pct": 13.91,
-        "stop_pct": -8.34,
-        "trail_arms_at_pct": 8.0,
-        "trail_giveback_pct": 5.0
-      },
-      "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $50 call ~$0.97 (40% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $45 put ~$1.65 (70% ann.)",
-      "confidence": "Medium",
-      "criteria_passed": [
-        "high_volatility",
-        "not_calm",
-        "beaten_down"
-      ],
-      "criteria_failed": [],
-      "metrics": {
-        "profile": "moonshot",
-        "price": 46.75,
-        "moonshot_score": 74.0,
-        "volatility_%": 56.8,
-        "ret_12m_%": -51.9,
-        "dist_52w_high_%": -51.2,
-        "reasons": [
-          "57% volatility (lift 2.6)",
-          "down 52% over 12 months (lift 3.0)",
-          "51% below its 52-week high (lift 2.9)"
-        ],
-        "measured_double_rate_%": 19.0,
-        "base_rate_%": 4.8,
-        "median_outcome_%": 6.7,
-        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
-      },
-      "reasoning": "MMYT scored 61.8/100. Setup: 57% annualised, volatile enough, 12m -52%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 71/100 (x0.25 = 17.8); sentiment 70/100 (x0.25 = 17.4); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 28); below EMA200; positive free cash flow; high gross margin (59%); strong buy consensus (1.00) from 10 analysts; +61% to the $75.40 mean target; rich CSP yield (70% ann.); wide bid/ask (illiquid); negative 1y trend (-52%); positive 6m trend. Backtest: this setup fired 5x historically, bounced 40% of the time (avg +1.7% over the hold). Sector thesis: lagging Consumer Cyclical by 16pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
-    },
-    {
-      "ticker": "PODD",
-      "company": "Insulet Corporation",
-      "score": 60.0,
-      "action": "Accumulate",
-      "quality_grade": "A",
-      "analyst_upside_%": 26.3,
-      "expected_gain_%": 15.8,
-      "hist_win_rate": 0.5,
-      "hist_avg_return_%": -1.88,
-      "hist_trades": 2,
-      "risk_flags": [
-        {
-          "level": "info",
-          "text": "near 52-week low (support test)"
-        }
-      ],
-      "rel_strength": {
-        "vs_spy": -20.9,
-        "vs_sector": -21.7,
-        "sector": "Healthcare",
-        "sector_etf": "XLV"
-      },
-      "mtf": {
-        "weekly_trend": "down",
-        "weekly_return_%": -12.9,
-        "confirms": false
-      },
-      "position": {
-        "shares": 33,
-        "value": 4492.29,
-        "risk_$": 246.18,
-        "basis": "1.0% of $25,000 at $7.46/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 42.0,
-        "fundamental": 100.0,
-        "options": 62.0,
-        "momentum": 24.0,
-        "sentiment": 51.5
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 136.13,
-      "stop_loss": 128.67,
-      "target1": 146.08,
-      "target2": 171.90909,
-      "risk_reward": 4.8,
-      "exit_plan": {
-        "entry": 136.13,
-        "target": 151.86,
-        "stop": 126.69,
-        "horizon_days": 10,
-        "target_pct": 11.56,
-        "stop_pct": -6.93,
-        "trail_arms_at_pct": 8.0,
-        "trail_giveback_pct": 5.0
-      },
-      "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $140 call ~$3.75 (53% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $135 put ~$4.55 (65% ann.)",
-      "confidence": "Medium",
-      "criteria_passed": [
-        "high_volatility",
-        "not_calm",
-        "beaten_down"
-      ],
-      "criteria_failed": [],
-      "metrics": {
-        "profile": "moonshot",
-        "price": 136.13,
-        "moonshot_score": 74.0,
-        "volatility_%": 56.6,
-        "ret_12m_%": -58.4,
-        "dist_52w_high_%": -60.7,
-        "reasons": [
-          "57% volatility (lift 2.6)",
-          "down 58% over 12 months (lift 3.0)",
+          "61% volatility (lift 2.6)",
+          "down 57% over 12 months (lift 3.0)",
           "61% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
@@ -1438,16 +1459,16 @@
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "PODD scored 60.0/100. Setup: 57% annualised, volatile enough, 12m -58%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 52/100 (x0.25 = 12.9); options 62/100 (x0.10 = 6.2); momentum 24/100 (x0.05 = 1.2). Key drivers: below EMA200; positive free cash flow; high gross margin (71%); ratings cut: 1.96 \u2192 2.24 over the last quarter; buy consensus (1.96) from 22 analysts; rich CSP yield (65% ann.); wide bid/ask (illiquid); negative 1y trend (-58%); lagging SPY by -21pp (3mo). Sector thesis: lagging Healthcare by 22pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "DUOL scored 61.8/100. Setup: 61% annualised, volatile enough, 12m -57%. Contributions \u2014 technical 48/100 (x0.35 = 16.8); fundamental 95/100 (x0.25 = 23.8); sentiment 49/100 (x0.25 = 12.2); options 62/100 (x0.10 = 6.2); momentum 56/100 (x0.05 = 2.8). Key drivers: below EMA200; 50/200 golden cross; positive free cash flow; strong net margin (36%); insiders net sellers (428,511 sold vs 5,000 bought) \u2014 weak evidence, selling has many innocent reasons across 67 open-market transactions; 18.7% of float short; rich CSP yield (249% ann.); wide bid/ask (illiquid); negative 1y trend (-57%); positive 6m trend. Backtest: this setup fired 6x historically, bounced 17% of the time (avg -3.1% over the hold). Sector thesis: moving WITH Technology (+2pp vs XLK) \u2014 the decline is group-driven, so a sector turn should lift it too. Multi-timeframe: the weekly trend agrees with the daily setup (higher conviction)."
     },
     {
       "ticker": "MNDY",
       "company": "monday.com Ltd.",
-      "score": 59.7,
-      "action": "Hold",
+      "score": 60.8,
+      "action": "Accumulate",
       "quality_grade": "A",
-      "analyst_upside_%": 30.3,
-      "expected_gain_%": 12.1,
+      "analyst_upside_%": 37.9,
+      "expected_gain_%": 15.2,
       "hist_win_rate": 0.75,
       "hist_avg_return_%": -1.18,
       "hist_trades": 4,
@@ -1458,21 +1479,21 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": 3.6,
-        "vs_sector": 1.2,
+        "vs_spy": -4.5,
+        "vs_sector": -5.9,
         "sector": "Technology",
         "sector_etf": "XLK"
       },
       "mtf": {
         "weekly_trend": "flat",
-        "weekly_return_%": 6.7,
+        "weekly_return_%": -2.2,
         "confirms": false
       },
       "position": {
-        "shares": 33,
-        "value": 2760.78,
-        "risk_$": 248.82,
-        "basis": "1.0% of $25,000 at $7.54/share stop distance"
+        "shares": 32,
+        "value": 2529.6,
+        "risk_$": 247.68,
+        "basis": "1.0% of $25,000 at $7.74/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
@@ -1480,14 +1501,14 @@
         "strength": null,
         "suggested_strike": null,
         "idea": null,
-        "reason": "down -2.7% with upside signals, but history is against it (bounced only 75% of 4 dips)"
+        "reason": "down -5.5% with upside signals, but history is against it (bounced only 75% of 4 dips)"
       },
       "subscores": {
         "technical": 42.0,
         "fundamental": 94.0,
-        "options": 70.0,
+        "options": 76.0,
         "momentum": 50.0,
-        "sentiment": 48.0
+        "sentiment": 49.8
       },
       "weights": {
         "technical": 0.35,
@@ -1496,24 +1517,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 83.66,
-      "stop_loss": 76.12,
-      "target1": 93.72,
+      "entry": 79.05,
+      "stop_loss": 71.31,
+      "target1": 89.38,
       "target2": 109.0,
-      "risk_reward": 3.36,
+      "risk_reward": 3.87,
       "exit_plan": {
-        "entry": 83.66,
-        "target": 99.56,
-        "stop": 74.12,
+        "entry": 79.05,
+        "target": 95.38,
+        "stop": 69.25,
         "horizon_days": 10,
-        "target_pct": 19.01,
-        "stop_pct": -11.4,
+        "target_pct": 20.65,
+        "stop_pct": -12.39,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $85 call ~$4.65 (107% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $80 put ~$3.02 (73% ann.)",
+      "covered_call": "Sell 2026-10-16 $80 call ~$4.20 (108% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $75 put ~$2.30 (62% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
@@ -1523,79 +1544,71 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 83.66,
+        "price": 79.05,
         "moonshot_score": 74.0,
-        "volatility_%": 70.0,
-        "ret_12m_%": -60.6,
-        "dist_52w_high_%": -59.6,
+        "volatility_%": 70.4,
+        "ret_12m_%": -61.9,
+        "dist_52w_high_%": -61.7,
         "reasons": [
           "70% volatility (lift 2.6)",
-          "down 61% over 12 months (lift 3.0)",
-          "60% below its 52-week high (lift 2.9)"
+          "down 62% over 12 months (lift 3.0)",
+          "62% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "MNDY scored 59.7/100. Setup: 70% annualised, volatile enough, 12m -61%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 94/100 (x0.25 = 23.5); sentiment 48/100 (x0.25 = 12.0); options 70/100 (x0.10 = 7.0); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; high gross margin (89%); 17.1% of float short; +30% to the $109.00 mean target; rich CSP yield (73% ann.); negative 1y trend (-61%); positive 6m trend. Backtest: this setup fired 4x historically, bounced 75% of the time (avg -1.2% over the hold). Sector thesis: moving WITH Technology (+1pp vs XLK) \u2014 the decline is group-driven, so a sector turn should lift it too."
+      "reasoning": "MNDY scored 60.8/100. Setup: 70% annualised, volatile enough, 12m -62%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 94/100 (x0.25 = 23.5); sentiment 50/100 (x0.25 = 12.4); options 76/100 (x0.10 = 7.6); momentum 50/100 (x0.05 = 2.5). Key drivers: below EMA200; positive free cash flow; high gross margin (89%); +38% to the $109.00 mean target; 17.1% of float short; rich CSP yield (62% ann.); tight bid/ask; negative 1y trend (-62%); positive 6m trend. Backtest: this setup fired 4x historically, bounced 75% of the time (avg -1.2% over the hold). Sector thesis: lagging Technology by 6pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it."
     },
     {
-      "ticker": "TTD",
-      "company": "The Trade Desk, Inc.",
-      "score": 59.4,
-      "action": "Hold",
+      "ticker": "PODD",
+      "company": "Insulet Corporation",
+      "score": 60.1,
+      "action": "Accumulate",
       "quality_grade": "A",
-      "analyst_upside_%": 7.9,
-      "expected_gain_%": 3.2,
-      "hist_win_rate": 0.286,
-      "hist_avg_return_%": -1.98,
-      "hist_trades": 7,
+      "analyst_upside_%": 29.1,
+      "expected_gain_%": 17.5,
+      "hist_win_rate": 0.5,
+      "hist_avg_return_%": -1.88,
+      "hist_trades": 2,
       "risk_flags": [
-        {
-          "level": "warn",
-          "text": "high short interest (24%)"
-        },
         {
           "level": "info",
           "text": "near 52-week low (support test)"
-        },
-        {
-          "level": "warn",
-          "text": "R:R 1.05 below 1.5 floor"
         }
       ],
       "rel_strength": {
-        "vs_spy": -40.3,
-        "vs_sector": -40.9,
-        "sector": "Communication Services",
-        "sector_etf": "XLC"
+        "vs_spy": -22.6,
+        "vs_sector": -26.0,
+        "sector": "Healthcare",
+        "sector_etf": "XLV"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -28.9,
+        "weekly_return_%": -14.0,
         "confirms": false
       },
       "position": {
-        "shares": 263,
-        "value": 3313.8,
-        "risk_$": 249.85,
-        "basis": "1.0% of $25,000 at $0.95/share stop distance"
+        "shares": 33,
+        "value": 4392.63,
+        "risk_$": 248.82,
+        "basis": "1.0% of $25,000 at $7.54/share stop distance"
       },
-      "rr_pass": false,
+      "rr_pass": true,
       "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
+        "active": true,
+        "strength": "moderate",
+        "suggested_strike": 125.57,
+        "idea": "Sell 2026-10-16 $130 put ~$3.55 (55% ann.)",
+        "reason": "down -2.2% today; 29% upside to target; limited dip history"
       },
       "subscores": {
-        "technical": 54.0,
-        "fundamental": 89.0,
-        "options": 70.0,
-        "momentum": 30.0,
-        "sentiment": 39.1
+        "technical": 42.0,
+        "fundamental": 100.0,
+        "options": 62.0,
+        "momentum": 24.0,
+        "sentiment": 51.9
       },
       "weights": {
         "technical": 0.35,
@@ -1604,25 +1617,25 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 12.6,
-      "stop_loss": 11.65,
-      "target1": 13.87,
-      "target2": 13.6,
-      "risk_reward": 1.05,
+      "entry": 133.11,
+      "stop_loss": 125.57,
+      "target1": 143.17,
+      "target2": 171.90909,
+      "risk_reward": 5.15,
       "exit_plan": {
-        "entry": 12.6,
-        "target": 14.6,
-        "stop": 11.4,
+        "entry": 133.11,
+        "target": 149.02,
+        "stop": 123.57,
         "horizon_days": 10,
-        "target_pct": 15.91,
-        "stop_pct": -9.55,
+        "target_pct": 11.95,
+        "stop_pct": -7.17,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-02 $13 call ~$0.19 (110% ann.)",
-      "cash_secured_put": "Sell 2026-10-02 $12 put ~$0.29 (166% ann.)",
-      "confidence": "Low",
+      "covered_call": "Sell 2026-10-16 $135 call ~$4.30 (66% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $130 put ~$3.55 (55% ann.)",
+      "confidence": "Medium",
       "criteria_passed": [
         "high_volatility",
         "not_calm",
@@ -1631,31 +1644,31 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 12.6,
+        "price": 133.11,
         "moonshot_score": 74.0,
-        "volatility_%": 64.5,
-        "ret_12m_%": -73.1,
-        "dist_52w_high_%": -76.7,
+        "volatility_%": 56.7,
+        "ret_12m_%": -58.9,
+        "dist_52w_high_%": -61.6,
         "reasons": [
-          "64% volatility (lift 2.6)",
-          "down 73% over 12 months (lift 3.0)",
-          "77% below its 52-week high (lift 2.9)"
+          "57% volatility (lift 2.6)",
+          "down 59% over 12 months (lift 3.0)",
+          "62% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "TTD scored 59.4/100. Setup: 64% annualised, volatile enough, 12m -73%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 89/100 (x0.25 = 22.2); sentiment 39/100 (x0.25 = 9.8); options 70/100 (x0.10 = 7.0); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 33); below EMA200; positive free cash flow; high gross margin (77%); ratings cut: 2.75 \u2192 3.14 over the last quarter; 24.2% of float short; rich CSP yield (166% ann.); negative 1y trend (-73%); sharp recent pullback (bounce setup). Backtest: this setup fired 7x historically, bounced 29% of the time (avg -2.0% over the hold). Sector thesis: lagging Communication Services by 41pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "PODD scored 60.1/100. Setup: 57% annualised, volatile enough, 12m -59%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 100/100 (x0.25 = 25.0); sentiment 52/100 (x0.25 = 13.0); options 62/100 (x0.10 = 6.2); momentum 24/100 (x0.05 = 1.2). Key drivers: below EMA200; positive free cash flow; high gross margin (71%); ratings cut: 1.96 \u2192 2.24 over the last quarter; buy consensus (1.96) from 22 analysts; rich CSP yield (55% ann.); wide bid/ask (illiquid); negative 1y trend (-59%); lagging SPY by -23pp (3mo). Sector thesis: lagging Healthcare by 26pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "KLAR",
       "company": "Klarna Group plc",
-      "score": 58.8,
+      "score": 59.9,
       "action": "Hold",
       "quality_grade": "B",
-      "analyst_upside_%": 56.0,
-      "expected_gain_%": 22.4,
+      "analyst_upside_%": 60.9,
+      "expected_gain_%": 24.4,
       "hist_win_rate": 0.4,
       "hist_avg_return_%": -1.05,
       "hist_trades": 5,
@@ -1670,21 +1683,21 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -43.5,
-        "vs_sector": -40.1,
+        "vs_spy": -40.6,
+        "vs_sector": -38.3,
         "sector": "Financial Services",
         "sector_etf": "XLF"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -30.3,
+        "weekly_return_%": -29.1,
         "confirms": false
       },
       "position": {
-        "shares": 277,
-        "value": 3545.6,
-        "risk_$": 249.3,
-        "basis": "1.0% of $25,000 at $0.90/share stop distance"
+        "shares": 280,
+        "value": 3474.8,
+        "risk_$": 249.2,
+        "basis": "1.0% of $25,000 at $0.89/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
@@ -1692,14 +1705,14 @@
         "strength": null,
         "suggested_strike": null,
         "idea": null,
-        "reason": "no meaningful dip today"
+        "reason": "down -3.0% with upside signals, but history is against it (bounced only 40% of 5 dips)"
       },
       "subscores": {
-        "technical": 59.0,
+        "technical": 62.0,
         "fundamental": 71.0,
         "options": 62.0,
         "momentum": 30.0,
-        "sentiment": 50.7
+        "sentiment": 50.9
       },
       "weights": {
         "technical": 0.35,
@@ -1708,24 +1721,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 12.8,
-      "stop_loss": 11.9,
-      "target1": 14.0,
+      "entry": 12.41,
+      "stop_loss": 11.52,
+      "target1": 13.59,
       "target2": 19.96667,
-      "risk_reward": 7.96,
+      "risk_reward": 8.49,
       "exit_plan": {
-        "entry": 12.8,
-        "target": 14.7,
-        "stop": 11.66,
+        "entry": 12.41,
+        "target": 14.28,
+        "stop": 11.29,
         "horizon_days": 10,
-        "target_pct": 14.81,
-        "stop_pct": -8.88,
+        "target_pct": 15.08,
+        "stop_pct": -9.05,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-02 $13 call ~$0.22 (128% ann.)",
-      "cash_secured_put": "Sell 2026-10-02 $12 put ~$0.17 (102% ann.)",
+      "covered_call": "Sell 2026-10-02 $12 call ~$0.25 (184% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $12 put ~$0.07 (57% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
@@ -1735,31 +1748,139 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 12.8,
+        "price": 12.41,
         "moonshot_score": 74.0,
-        "volatility_%": 67.6,
+        "volatility_%": 67.7,
         "ret_12m_%": -70.1,
-        "dist_52w_high_%": -69.7,
+        "dist_52w_high_%": -70.6,
         "reasons": [
           "68% volatility (lift 2.6)",
           "down 70% over 12 months (lift 3.0)",
-          "70% below its 52-week high (lift 2.9)"
+          "71% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "KLAR scored 58.8/100. Setup: 68% annualised, volatile enough, 12m -70%. Contributions \u2014 technical 59/100 (x0.35 = 20.6); fundamental 71/100 (x0.25 = 17.8); sentiment 51/100 (x0.25 = 12.7); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 27); below EMA200; positive free cash flow; unprofitable; insiders net buyers (692,506 bought vs 0 sold) across 1 open-market transactions; ratings cut: 2.29 \u2192 2.54 over the last quarter; rich CSP yield (102% ann.); wide bid/ask (illiquid); negative 1y trend (-70%); sharp recent pullback (bounce setup). Backtest: this setup fired 5x historically, bounced 40% of the time (avg -1.1% over the hold). Sector thesis: lagging Financial Services by 40pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "KLAR scored 59.9/100. Setup: 68% annualised, volatile enough, 12m -70%. Contributions \u2014 technical 62/100 (x0.35 = 21.7); fundamental 71/100 (x0.25 = 17.8); sentiment 51/100 (x0.25 = 12.7); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: deeply oversold (RSI 24); below EMA200; positive free cash flow; unprofitable; insiders net buyers (692,506 bought vs 0 sold) across 1 open-market transactions; ratings cut: 2.29 \u2192 2.54 over the last quarter; rich CSP yield (57% ann.); wide bid/ask (illiquid); negative 1y trend (-70%); sharp recent pullback (bounce setup). Backtest: this setup fired 5x historically, bounced 40% of the time (avg -1.1% over the hold). Sector thesis: lagging Financial Services by 38pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+    },
+    {
+      "ticker": "TTD",
+      "company": "The Trade Desk, Inc.",
+      "score": 59.5,
+      "action": "Hold",
+      "quality_grade": "A",
+      "analyst_upside_%": 10.2,
+      "expected_gain_%": 4.1,
+      "hist_win_rate": 0.375,
+      "hist_avg_return_%": -0.72,
+      "hist_trades": 8,
+      "risk_flags": [
+        {
+          "level": "warn",
+          "text": "high short interest (24%)"
+        },
+        {
+          "level": "info",
+          "text": "near 52-week low (support test)"
+        },
+        {
+          "level": "warn",
+          "text": "R:R 1.35 below 1.5 floor"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": -39.0,
+        "vs_sector": -38.8,
+        "sector": "Communication Services",
+        "sector_etf": "XLC"
+      },
+      "mtf": {
+        "weekly_trend": "down",
+        "weekly_return_%": -33.4,
+        "confirms": false
+      },
+      "position": {
+        "shares": 268,
+        "value": 3307.12,
+        "risk_$": 249.24,
+        "basis": "1.0% of $25,000 at $0.93/share stop distance"
+      },
+      "rr_pass": false,
+      "csp_signal": {
+        "active": false,
+        "strength": null,
+        "suggested_strike": null,
+        "idea": null,
+        "reason": "down -2.1% with upside signals, but history is against it (bounced only 38% of 8 dips)"
+      },
+      "subscores": {
+        "technical": 54.0,
+        "fundamental": 89.0,
+        "options": 70.0,
+        "momentum": 30.0,
+        "sentiment": 39.5
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 12.34,
+      "stop_loss": 11.41,
+      "target1": 13.58,
+      "target2": 13.6,
+      "risk_reward": 1.35,
+      "exit_plan": {
+        "entry": 12.34,
+        "target": 14.3,
+        "stop": 11.17,
+        "horizon_days": 10,
+        "target_pct": 15.86,
+        "stop_pct": -9.51,
+        "trail_arms_at_pct": 8.0,
+        "trail_giveback_pct": 5.0
+      },
+      "entry_timing": null,
+      "covered_call": "Sell 2026-10-02 $12 call ~$0.23 (170% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $12 put ~$0.15 (110% ann.)",
+      "confidence": "Low",
+      "criteria_passed": [
+        "high_volatility",
+        "not_calm",
+        "beaten_down"
+      ],
+      "criteria_failed": [],
+      "metrics": {
+        "profile": "moonshot",
+        "price": 12.34,
+        "moonshot_score": 74.0,
+        "volatility_%": 63.8,
+        "ret_12m_%": -73.6,
+        "dist_52w_high_%": -77.2,
+        "reasons": [
+          "64% volatility (lift 2.6)",
+          "down 74% over 12 months (lift 3.0)",
+          "77% below its 52-week high (lift 2.9)"
+        ],
+        "measured_double_rate_%": 19.0,
+        "base_rate_%": 4.8,
+        "median_outcome_%": 6.7,
+        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
+      },
+      "reasoning": "TTD scored 59.5/100. Setup: 64% annualised, volatile enough, 12m -74%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 89/100 (x0.25 = 22.2); sentiment 40/100 (x0.25 = 9.9); options 70/100 (x0.10 = 7.0); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 31); below EMA200; positive free cash flow; high gross margin (77%); ratings cut: 2.75 \u2192 3.14 over the last quarter; 24.2% of float short; rich CSP yield (110% ann.); negative 1y trend (-74%); sharp recent pullback (bounce setup). Backtest: this setup fired 8x historically, bounced 38% of the time (avg -0.7% over the hold). Sector thesis: lagging Communication Services by 39pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "ORCL",
       "company": "Oracle Corporation",
-      "score": 58.0,
+      "score": 58.4,
       "action": "Hold",
       "quality_grade": "B",
-      "analyst_upside_%": 73.6,
-      "expected_gain_%": 62.5,
+      "analyst_upside_%": 79.5,
+      "expected_gain_%": 67.5,
       "hist_win_rate": 0.667,
       "hist_avg_return_%": 0.38,
       "hist_trades": 3,
@@ -1770,36 +1891,36 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -9.5,
-        "vs_sector": -12.0,
+        "vs_spy": -8.7,
+        "vs_sector": -10.2,
         "sector": "Technology",
         "sector_etf": "XLK"
       },
       "mtf": {
-        "weekly_trend": "down",
-        "weekly_return_%": 5.6,
+        "weekly_trend": "flat",
+        "weekly_return_%": 13.4,
         "confirms": false
       },
       "position": {
         "shares": 23,
-        "value": 3153.3,
-        "risk_$": 244.72,
-        "basis": "1.0% of $25,000 at $10.64/share stop distance"
+        "value": 3050.03,
+        "risk_$": 240.81,
+        "basis": "1.0% of $25,000 at $10.47/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
+        "active": true,
+        "strength": "strong",
+        "suggested_strike": 122.14,
+        "idea": "Sell 2026-10-02 $132 put ~$2.71 (187% ann.)",
+        "reason": "down -3.3% today; 79% upside to target; historically bounced 67% of 3 similar dips (avg +0.4%)"
       },
       "subscores": {
         "technical": 42.0,
         "fundamental": 76.0,
         "options": 76.0,
-        "momentum": 36.0,
-        "sentiment": 59.7
+        "momentum": 44.0,
+        "sentiment": 59.6
       },
       "weights": {
         "technical": 0.35,
@@ -1808,24 +1929,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 137.1,
-      "stop_loss": 126.46,
-      "target1": 151.29,
+      "entry": 132.61,
+      "stop_loss": 122.14,
+      "target1": 146.57,
       "target2": 237.97415,
-      "risk_reward": 9.48,
+      "risk_reward": 10.06,
       "exit_plan": {
-        "entry": 137.1,
-        "target": 159.54,
-        "stop": 123.64,
+        "entry": 132.61,
+        "target": 154.69,
+        "stop": 119.36,
         "horizon_days": 10,
-        "target_pct": 16.36,
-        "stop_pct": -9.82,
+        "target_pct": 16.65,
+        "stop_pct": -9.99,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-02 $138 call ~$3.17 (169% ann.)",
-      "cash_secured_put": "Sell 2026-10-02 $137 put ~$3.47 (185% ann.)",
+      "covered_call": "Sell 2026-10-02 $133 call ~$3.00 (207% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $132 put ~$2.71 (187% ann.)",
       "confidence": "High",
       "criteria_passed": [
         "high_volatility",
@@ -1835,135 +1956,31 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 137.1,
+        "price": 132.61,
         "moonshot_score": 74.0,
-        "volatility_%": 61.5,
-        "ret_12m_%": -55.0,
-        "dist_52w_high_%": -55.8,
+        "volatility_%": 61.7,
+        "ret_12m_%": -54.0,
+        "dist_52w_high_%": -57.2,
         "reasons": [
           "62% volatility (lift 2.6)",
-          "down 55% over 12 months (lift 3.0)",
-          "56% below its 52-week high (lift 2.9)"
+          "down 54% over 12 months (lift 3.0)",
+          "57% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "ORCL scored 58.0/100. Setup: 62% annualised, volatile enough, 12m -55%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 76/100 (x0.25 = 19.0); sentiment 60/100 (x0.25 = 14.9); options 76/100 (x0.10 = 7.6); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; negative free cash flow; strong net margin (26%); strong buy consensus (1.60) from 41 analysts; insiders net sellers (13,702,270 sold vs 5,980 bought) \u2014 weak evidence, selling has many innocent reasons across 34 open-market transactions; rich CSP yield (185% ann.); tight bid/ask; negative 1y trend (-55%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +0.4% over the hold). Sector thesis: lagging Technology by 12pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
-    },
-    {
-      "ticker": "FOUR",
-      "company": "Shift4 Payments, Inc.",
-      "score": 57.9,
-      "action": "Hold",
-      "quality_grade": "B",
-      "analyst_upside_%": 43.2,
-      "expected_gain_%": 25.9,
-      "hist_win_rate": 0.0,
-      "hist_avg_return_%": -1.79,
-      "hist_trades": 2,
-      "risk_flags": [
-        {
-          "level": "warn",
-          "text": "high short interest (19%)"
-        },
-        {
-          "level": "info",
-          "text": "near 52-week low (support test)"
-        }
-      ],
-      "rel_strength": {
-        "vs_spy": -27.9,
-        "vs_sector": -30.3,
-        "sector": "Technology",
-        "sector_etf": "XLK"
-      },
-      "mtf": {
-        "weekly_trend": "down",
-        "weekly_return_%": -22.5,
-        "confirms": false
-      },
-      "position": {
-        "shares": 67,
-        "value": 2576.15,
-        "risk_$": 249.91,
-        "basis": "1.0% of $25,000 at $3.73/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 42.0,
-        "fundamental": 73.0,
-        "options": 70.0,
-        "momentum": 24.0,
-        "sentiment": 67.0
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 38.45,
-      "stop_loss": 34.72,
-      "target1": 43.43,
-      "target2": 55.04762,
-      "risk_reward": 4.45,
-      "exit_plan": {
-        "entry": 38.45,
-        "target": 46.32,
-        "stop": 33.73,
-        "horizon_days": 10,
-        "target_pct": 20.48,
-        "stop_pct": -12.29,
-        "trail_arms_at_pct": 8.0,
-        "trail_giveback_pct": 5.0
-      },
-      "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $40 call ~$1.62 (81% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $35 put ~$0.70 (38% ann.)",
-      "confidence": "Medium",
-      "criteria_passed": [
-        "high_volatility",
-        "not_calm",
-        "beaten_down"
-      ],
-      "criteria_failed": [],
-      "metrics": {
-        "profile": "moonshot",
-        "price": 38.45,
-        "moonshot_score": 74.0,
-        "volatility_%": 72.4,
-        "ret_12m_%": -52.5,
-        "dist_52w_high_%": -51.8,
-        "reasons": [
-          "72% volatility (lift 2.6)",
-          "down 52% over 12 months (lift 3.0)",
-          "52% below its 52-week high (lift 2.9)"
-        ],
-        "measured_double_rate_%": 19.0,
-        "base_rate_%": 4.8,
-        "median_outcome_%": 6.7,
-        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
-      },
-      "reasoning": "FOUR scored 57.9/100. Setup: 72% annualised, volatile enough, 12m -52%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 73/100 (x0.25 = 18.2); sentiment 67/100 (x0.25 = 16.8); options 70/100 (x0.10 = 7.0); momentum 24/100 (x0.05 = 1.2). Key drivers: below EMA200; positive free cash flow; revenue growth (34%); insiders net buyers (970,683 bought vs 108,353 sold) across 26 open-market transactions; buy consensus (2.08) from 21 analysts; rich CSP yield (38% ann.); negative 1y trend (-52%); lagging SPY by -28pp (3mo). Sector thesis: lagging Technology by 30pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "ORCL scored 58.4/100. Setup: 62% annualised, volatile enough, 12m -54%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 76/100 (x0.25 = 19.0); sentiment 60/100 (x0.25 = 14.9); options 76/100 (x0.10 = 7.6); momentum 44/100 (x0.05 = 2.2). Key drivers: below EMA200; negative free cash flow; strong net margin (26%); strong buy consensus (1.60) from 41 analysts; insiders net sellers (13,702,270 sold vs 5,980 bought) \u2014 weak evidence, selling has many innocent reasons across 34 open-market transactions; rich CSP yield (187% ann.); tight bid/ask; negative 1y trend (-54%). Backtest: this setup fired 3x historically, bounced 67% of the time (avg +0.4% over the hold). Sector thesis: lagging Technology by 10pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it."
     },
     {
       "ticker": "BLDR",
       "company": "Builders FirstSource, Inc.",
-      "score": 55.3,
+      "score": 55.5,
       "action": "Hold",
       "quality_grade": "C",
-      "analyst_upside_%": 36.2,
-      "expected_gain_%": 21.7,
+      "analyst_upside_%": 39.0,
+      "expected_gain_%": 23.4,
       "hist_win_rate": 0.5,
       "hist_avg_return_%": 5.21,
       "hist_trades": 2,
@@ -1974,21 +1991,21 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -36.3,
-        "vs_sector": -24.5,
+        "vs_spy": -35.1,
+        "vs_sector": -24.1,
         "sector": "Industrials",
         "sector_etf": "XLI"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -22.7,
+        "weekly_return_%": -17.2,
         "confirms": false
       },
       "position": {
         "shares": 62,
-        "value": 3668.54,
-        "risk_$": 249.86,
-        "basis": "1.0% of $25,000 at $4.03/share stop distance"
+        "value": 3596.62,
+        "risk_$": 248.0,
+        "basis": "1.0% of $25,000 at $4.00/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
@@ -2003,7 +2020,7 @@
         "fundamental": 58.0,
         "options": 62.0,
         "momentum": 30.0,
-        "sentiment": 66.7
+        "sentiment": 67.2
       },
       "weights": {
         "technical": 0.35,
@@ -2012,24 +2029,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 59.17,
-      "stop_loss": 55.14,
-      "target1": 64.55,
+      "entry": 58.01,
+      "stop_loss": 54.01,
+      "target1": 63.34,
       "target2": 80.61905,
-      "risk_reward": 5.32,
+      "risk_reward": 5.65,
       "exit_plan": {
-        "entry": 59.17,
-        "target": 67.67,
-        "stop": 54.07,
+        "entry": 58.01,
+        "target": 66.44,
+        "stop": 52.95,
         "horizon_days": 10,
-        "target_pct": 14.37,
-        "stop_pct": -8.62,
+        "target_pct": 14.53,
+        "stop_pct": -8.72,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $60 call ~$2.42 (79% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $55 put ~$1.18 (41% ann.)",
+      "covered_call": "Sell 2026-10-16 $60 call ~$1.77 (62% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $55 put ~$1.50 (55% ann.)",
       "confidence": "Medium",
       "criteria_passed": [
         "high_volatility",
@@ -2039,22 +2056,22 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 59.17,
+        "price": 58.01,
         "moonshot_score": 74.0,
-        "volatility_%": 53.2,
+        "volatility_%": 53.0,
         "ret_12m_%": -50.4,
-        "dist_52w_high_%": -54.3,
+        "dist_52w_high_%": -55.2,
         "reasons": [
           "53% volatility (lift 2.6)",
           "down 50% over 12 months (lift 3.0)",
-          "54% below its 52-week high (lift 2.9)"
+          "55% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "BLDR scored 55.3/100. Setup: 53% annualised, volatile enough, 12m -50%. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 58/100 (x0.25 = 14.5); sentiment 67/100 (x0.25 = 16.7); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; MACD histogram turning up; positive free cash flow; shrinking revenue; insiders net buyers (556,948 bought vs 24,250 sold) across 7 open-market transactions; +36% to the $80.62 mean target; rich CSP yield (41% ann.); wide bid/ask (illiquid); negative 1y trend (-50%); sharp recent pullback (bounce setup). Sector thesis: lagging Industrials by 24pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "BLDR scored 55.5/100. Setup: 53% annualised, volatile enough, 12m -50%. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 58/100 (x0.25 = 14.5); sentiment 67/100 (x0.25 = 16.8); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; MACD histogram turning up; positive free cash flow; shrinking revenue; insiders net buyers (556,948 bought vs 24,250 sold) across 7 open-market transactions; +39% to the $80.62 mean target; rich CSP yield (55% ann.); wide bid/ask (illiquid); negative 1y trend (-50%); sharp recent pullback (bounce setup). Sector thesis: lagging Industrials by 24pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "CHTR",
@@ -2062,8 +2079,8 @@
       "score": 55.1,
       "action": "Hold",
       "quality_grade": "C",
-      "analyst_upside_%": 57.7,
-      "expected_gain_%": 23.1,
+      "analyst_upside_%": 59.8,
+      "expected_gain_%": 23.9,
       "hist_win_rate": 0.333,
       "hist_avg_return_%": -8.46,
       "hist_trades": 3,
@@ -2082,21 +2099,21 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -25.3,
-        "vs_sector": -26.0,
+        "vs_spy": -22.4,
+        "vs_sector": -22.2,
         "sector": "Communication Services",
         "sector_etf": "XLC"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -5.6,
+        "weekly_return_%": -10.7,
         "confirms": false
       },
       "position": {
-        "shares": 24,
-        "value": 2709.84,
-        "risk_$": 244.56,
-        "basis": "1.0% of $25,000 at $10.19/share stop distance"
+        "shares": 25,
+        "value": 2785.0,
+        "risk_$": 248.0,
+        "basis": "1.0% of $25,000 at $9.92/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
@@ -2104,14 +2121,14 @@
         "strength": null,
         "suggested_strike": null,
         "idea": null,
-        "reason": "down -3.9% with upside signals, but history is against it (bounced only 33% of 3 dips)"
+        "reason": "no meaningful dip today"
       },
       "subscores": {
         "technical": 54.0,
         "fundamental": 66.0,
         "options": 62.0,
         "momentum": 24.0,
-        "sentiment": 49.4
+        "sentiment": 49.3
       },
       "weights": {
         "technical": 0.35,
@@ -2120,24 +2137,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 112.91,
-      "stop_loss": 102.72,
-      "target1": 126.49,
+      "entry": 111.4,
+      "stop_loss": 101.48,
+      "target1": 124.62,
       "target2": 178.05263,
-      "risk_reward": 6.39,
+      "risk_reward": 6.72,
       "exit_plan": {
-        "entry": 112.91,
-        "target": 134.39,
-        "stop": 100.02,
+        "entry": 111.4,
+        "target": 132.31,
+        "stop": 98.85,
         "horizon_days": 10,
-        "target_pct": 19.02,
-        "stop_pct": -11.41,
+        "target_pct": 18.77,
+        "stop_pct": -11.26,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-02 $113 call ~$3.52 (228% ann.)",
-      "cash_secured_put": "Sell 2026-10-02 $112 put ~$3.20 (209% ann.)",
+      "covered_call": "Sell 2026-10-02 $112 call ~$4.85 (397% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $111 put ~$2.58 (212% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
@@ -2147,22 +2164,22 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 112.91,
+        "price": 111.4,
         "moonshot_score": 74.0,
-        "volatility_%": 68.9,
-        "ret_12m_%": -57.1,
-        "dist_52w_high_%": -60.1,
+        "volatility_%": 68.8,
+        "ret_12m_%": -58.8,
+        "dist_52w_high_%": -60.6,
         "reasons": [
           "69% volatility (lift 2.6)",
-          "down 57% over 12 months (lift 3.0)",
-          "60% below its 52-week high (lift 2.9)"
+          "down 59% over 12 months (lift 3.0)",
+          "61% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "CHTR scored 55.1/100. Setup: 69% annualised, volatile enough, 12m -57%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 66/100 (x0.25 = 16.5); sentiment 49/100 (x0.25 = 12.3); options 62/100 (x0.10 = 6.2); momentum 24/100 (x0.05 = 1.2). Key drivers: oversold (RSI 30); below EMA200; positive free cash flow; high gross margin (55%); +58% to the $178.05 mean target; 38.8% of float short; rich CSP yield (209% ann.); wide bid/ask (illiquid); negative 1y trend (-57%); lagging SPY by -25pp (3mo). Backtest: this setup fired 3x historically, bounced 33% of the time (avg -8.5% over the hold). Sector thesis: lagging Communication Services by 26pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "CHTR scored 55.1/100. Setup: 69% annualised, volatile enough, 12m -59%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 66/100 (x0.25 = 16.5); sentiment 49/100 (x0.25 = 12.3); options 62/100 (x0.10 = 6.2); momentum 24/100 (x0.05 = 1.2). Key drivers: oversold (RSI 29); below EMA200; positive free cash flow; high gross margin (55%); +60% to the $178.05 mean target; 38.8% of float short; rich CSP yield (212% ann.); wide bid/ask (illiquid); negative 1y trend (-59%); lagging SPY by -22pp (3mo). Backtest: this setup fired 3x historically, bounced 33% of the time (avg -8.5% over the hold). Sector thesis: lagging Communication Services by 22pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "UPST",
@@ -2170,11 +2187,11 @@
       "score": 53.8,
       "action": "Hold",
       "quality_grade": "C",
-      "analyst_upside_%": 68.0,
-      "expected_gain_%": 27.2,
-      "hist_win_rate": 0.375,
-      "hist_avg_return_%": -1.26,
-      "hist_trades": 8,
+      "analyst_upside_%": 73.7,
+      "expected_gain_%": 29.5,
+      "hist_win_rate": 0.444,
+      "hist_avg_return_%": -0.03,
+      "hist_trades": 9,
       "risk_flags": [
         {
           "level": "warn",
@@ -2194,21 +2211,21 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -39.5,
-        "vs_sector": -36.1,
+        "vs_spy": -37.4,
+        "vs_sector": -35.0,
         "sector": "Financial Services",
         "sector_etf": "XLF"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -21.9,
+        "weekly_return_%": -17.5,
         "confirms": false
       },
       "position": {
-        "shares": 132,
-        "value": 3142.92,
-        "risk_$": 249.48,
-        "basis": "1.0% of $25,000 at $1.89/share stop distance"
+        "shares": 134,
+        "value": 3086.02,
+        "risk_$": 249.24,
+        "basis": "1.0% of $25,000 at $1.86/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
@@ -2216,7 +2233,7 @@
         "strength": null,
         "suggested_strike": null,
         "idea": null,
-        "reason": "down -3.4% with upside signals, but history is against it (bounced only 38% of 8 dips)"
+        "reason": "down -3.3% with upside signals, but history is against it (bounced only 44% of 9 dips)"
       },
       "subscores": {
         "technical": 54.0,
@@ -2232,24 +2249,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 23.81,
-      "stop_loss": 21.92,
-      "target1": 26.33,
+      "entry": 23.03,
+      "stop_loss": 21.17,
+      "target1": 25.52,
       "target2": 40.0,
-      "risk_reward": 8.57,
+      "risk_reward": 9.12,
       "exit_plan": {
-        "entry": 23.81,
-        "target": 27.79,
-        "stop": 21.42,
+        "entry": 23.03,
+        "target": 26.96,
+        "stop": 20.67,
         "horizon_days": 10,
-        "target_pct": 16.73,
-        "stop_pct": -10.04,
+        "target_pct": 17.07,
+        "stop_pct": -10.24,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-02 $24 call ~$0.64 (196% ann.)",
-      "cash_secured_put": "Sell 2026-10-02 $24 put ~$0.53 (166% ann.)",
+      "covered_call": "Sell 2026-10-02 $24 call ~$0.51 (200% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $23 put ~$0.47 (188% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
@@ -2259,31 +2276,31 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 23.81,
+        "price": 23.03,
         "moonshot_score": 74.0,
-        "volatility_%": 59.6,
-        "ret_12m_%": -60.7,
-        "dist_52w_high_%": -58.5,
+        "volatility_%": 59.7,
+        "ret_12m_%": -59.5,
+        "dist_52w_high_%": -59.8,
         "reasons": [
           "60% volatility (lift 2.6)",
-          "down 61% over 12 months (lift 3.0)",
-          "58% below its 52-week high (lift 2.9)"
+          "down 60% over 12 months (lift 3.0)",
+          "60% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "UPST scored 53.8/100. Setup: 60% annualised, volatile enough, 12m -61%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 58/100 (x0.25 = 14.5); sentiment 51/100 (x0.25 = 12.7); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 34); below EMA200; negative free cash flow; high gross margin (83%); 32.5% of float short; buy consensus (2.20) from 16 analysts; rich CSP yield (166% ann.); wide bid/ask (illiquid); negative 1y trend (-61%); sharp recent pullback (bounce setup). Backtest: this setup fired 8x historically, bounced 38% of the time (avg -1.3% over the hold). Sector thesis: lagging Financial Services by 36pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "UPST scored 53.8/100. Setup: 60% annualised, volatile enough, 12m -60%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 58/100 (x0.25 = 14.5); sentiment 51/100 (x0.25 = 12.7); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 31); below EMA200; negative free cash flow; high gross margin (83%); 32.5% of float short; buy consensus (2.20) from 16 analysts; rich CSP yield (188% ann.); wide bid/ask (illiquid); negative 1y trend (-60%); sharp recent pullback (bounce setup). Backtest: this setup fired 9x historically, bounced 44% of the time (avg -0.0% over the hold). Sector thesis: lagging Financial Services by 35pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "PZZA",
       "company": "Papa John's International, Inc.",
-      "score": 50.8,
+      "score": 52.5,
       "action": "Hold",
       "quality_grade": "D",
-      "analyst_upside_%": 48.3,
-      "expected_gain_%": 19.1,
+      "analyst_upside_%": 44.4,
+      "expected_gain_%": 17.5,
       "hist_win_rate": 0.0,
       "hist_avg_return_%": -10.18,
       "hist_trades": 2,
@@ -2302,36 +2319,36 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -51.7,
-        "vs_sector": -42.5,
+        "vs_spy": -47.5,
+        "vs_sector": -37.2,
         "sector": "Consumer Cyclical",
         "sector_etf": "XLY"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -39.4,
+        "weekly_return_%": -38.6,
         "confirms": false
       },
       "position": {
-        "shares": 190,
-        "value": 3714.5,
-        "risk_$": 248.9,
-        "basis": "1.0% of $25,000 at $1.31/share stop distance"
+        "shares": 195,
+        "value": 3917.55,
+        "risk_$": 249.6,
+        "basis": "1.0% of $25,000 at $1.28/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
-        "active": true,
-        "strength": "moderate",
-        "suggested_strike": 18.24,
-        "idea": "Sell 2026-10-16 $18 put ~$0.25 (27% ann.)",
-        "reason": "down -3.3% today; 48% upside to target; limited dip history"
+        "active": false,
+        "strength": null,
+        "suggested_strike": null,
+        "idea": null,
+        "reason": "no meaningful dip today"
       },
       "subscores": {
         "technical": 59.0,
         "fundamental": 48.0,
-        "options": 60.0,
+        "options": 76.0,
         "momentum": 30.0,
-        "sentiment": 42.8
+        "sentiment": 43.1
       },
       "weights": {
         "technical": 0.35,
@@ -2340,24 +2357,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 19.55,
-      "stop_loss": 18.24,
-      "target1": 21.29,
+      "entry": 20.09,
+      "stop_loss": 18.81,
+      "target1": 21.8,
       "target2": 29.0,
-      "risk_reward": 7.21,
+      "risk_reward": 6.96,
       "exit_plan": {
-        "entry": 19.55,
-        "target": 22.3,
-        "stop": 17.9,
+        "entry": 20.09,
+        "target": 22.8,
+        "stop": 18.47,
         "horizon_days": 10,
-        "target_pct": 14.09,
-        "stop_pct": -8.45,
+        "target_pct": 13.47,
+        "stop_pct": -8.08,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $20 call ~$0.85 (84% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $18 put ~$0.25 (27% ann.)",
+      "covered_call": "Sell 2026-10-16 $22 call ~$0.32 (33% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $20 put ~$0.90 (91% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
@@ -2367,14 +2384,122 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 19.55,
+        "price": 20.09,
         "moonshot_score": 74.0,
-        "volatility_%": 50.8,
-        "ret_12m_%": -56.1,
+        "volatility_%": 51.0,
+        "ret_12m_%": -55.4,
+        "dist_52w_high_%": -62.3,
+        "reasons": [
+          "51% volatility (lift 2.6)",
+          "down 55% over 12 months (lift 3.0)",
+          "62% below its 52-week high (lift 2.9)"
+        ],
+        "measured_double_rate_%": 19.0,
+        "base_rate_%": 4.8,
+        "median_outcome_%": 6.7,
+        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
+      },
+      "reasoning": "PZZA scored 52.5/100. Setup: 51% annualised, volatile enough, 12m -55%. Contributions \u2014 technical 59/100 (x0.35 = 20.6); fundamental 48/100 (x0.25 = 12.0); sentiment 43/100 (x0.25 = 10.8); options 76/100 (x0.10 = 7.6); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 35); below EMA200; positive free cash flow; shrinking revenue; 28.6% of float short; ratings cut: 2.71 \u2192 3.00 over the last quarter; rich CSP yield (91% ann.); liquid open interest; negative 1y trend (-55%); sharp recent pullback (bounce setup). Sector thesis: lagging Consumer Cyclical by 37pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+    },
+    {
+      "ticker": "KD",
+      "company": "Kyndryl Holdings, Inc.",
+      "score": 51.0,
+      "action": "Hold",
+      "quality_grade": "F",
+      "analyst_upside_%": 26.4,
+      "expected_gain_%": 9.9,
+      "hist_win_rate": 1.0,
+      "hist_avg_return_%": 6.91,
+      "hist_trades": 2,
+      "risk_flags": [
+        {
+          "level": "warn",
+          "text": "high short interest (14%)"
+        },
+        {
+          "level": "info",
+          "text": "near 52-week low (support test)"
+        },
+        {
+          "level": "warn",
+          "text": "high leverage (D/E 422%)"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": -11.9,
+        "vs_sector": -13.4,
+        "sector": "Technology",
+        "sector_etf": "XLK"
+      },
+      "mtf": {
+        "weekly_trend": "down",
+        "weekly_return_%": -2.1,
+        "confirms": false
+      },
+      "position": {
+        "shares": 287,
+        "value": 3223.01,
+        "risk_$": 249.69,
+        "basis": "1.0% of $25,000 at $0.87/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": true,
+        "strength": "moderate",
+        "suggested_strike": 10.36,
+        "idea": "Sell 2026-10-16 $11 put ~$0.43 (78% ann.)",
+        "reason": "down -3.2% today; 26% upside to target; limited dip history"
+      },
+      "subscores": {
+        "technical": 54.0,
+        "fundamental": 40.0,
+        "options": 62.0,
+        "momentum": 36.0,
+        "sentiment": 56.3
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 11.23,
+      "stop_loss": 10.36,
+      "target1": 12.39,
+      "target2": 14.2,
+      "risk_reward": 3.41,
+      "exit_plan": {
+        "entry": 11.23,
+        "target": 13.07,
+        "stop": 10.13,
+        "horizon_days": 10,
+        "target_pct": 16.4,
+        "stop_pct": -9.84,
+        "trail_arms_at_pct": 8.0,
+        "trail_giveback_pct": 5.0
+      },
+      "entry_timing": null,
+      "covered_call": "Sell 2026-10-16 $12 call ~$0.20 (36% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $11 put ~$0.43 (78% ann.)",
+      "confidence": "Low",
+      "criteria_passed": [
+        "high_volatility",
+        "not_calm",
+        "beaten_down"
+      ],
+      "criteria_failed": [],
+      "metrics": {
+        "profile": "moonshot",
+        "price": 11.23,
+        "moonshot_score": 74.0,
+        "volatility_%": 50.7,
+        "ret_12m_%": -63.3,
         "dist_52w_high_%": -63.3,
         "reasons": [
           "51% volatility (lift 2.6)",
-          "down 56% over 12 months (lift 3.0)",
+          "down 63% over 12 months (lift 3.0)",
           "63% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
@@ -2382,16 +2507,332 @@
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "PZZA scored 50.8/100. Setup: 51% annualised, volatile enough, 12m -56%. Contributions \u2014 technical 59/100 (x0.35 = 20.6); fundamental 48/100 (x0.25 = 12.0); sentiment 43/100 (x0.25 = 10.7); options 60/100 (x0.10 = 6.0); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 29); below EMA200; positive free cash flow; shrinking revenue; 28.6% of float short; ratings cut: 2.71 \u2192 3.00 over the last quarter; solid CSP yield (27% ann.); negative 1y trend (-56%); sharp recent pullback (bounce setup). Sector thesis: lagging Consumer Cyclical by 42pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "KD scored 51.0/100. Setup: 51% annualised, volatile enough, 12m -63%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 40/100 (x0.25 = 10.0); sentiment 56/100 (x0.25 = 14.1); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: oversold (RSI 33); below EMA200; positive free cash flow; shrinking revenue; +26% to the $14.20 mean target; 14.4% of float short; rich CSP yield (78% ann.); wide bid/ask (illiquid); negative 1y trend (-63%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Sector thesis: lagging Technology by 13pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+    },
+    {
+      "ticker": "DKNG",
+      "company": "DraftKings Inc.",
+      "score": 50.9,
+      "action": "Hold",
+      "quality_grade": "D",
+      "analyst_upside_%": 66.0,
+      "expected_gain_%": 25.8,
+      "hist_win_rate": 0.333,
+      "hist_avg_return_%": -8.65,
+      "hist_trades": 3,
+      "risk_flags": [
+        {
+          "level": "info",
+          "text": "near 52-week low (support test)"
+        },
+        {
+          "level": "warn",
+          "text": "high leverage (D/E 336%)"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": -21.8,
+        "vs_sector": -11.5,
+        "sector": "Consumer Cyclical",
+        "sector_etf": "XLY"
+      },
+      "mtf": {
+        "weekly_trend": "down",
+        "weekly_return_%": -17.6,
+        "confirms": false
+      },
+      "position": {
+        "shares": 142,
+        "value": 3004.72,
+        "risk_$": 248.5,
+        "basis": "1.0% of $25,000 at $1.75/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": false,
+        "strength": null,
+        "suggested_strike": null,
+        "idea": null,
+        "reason": "down -3.9% with upside signals, but history is against it (bounced only 33% of 3 dips)"
+      },
+      "subscores": {
+        "technical": 42.0,
+        "fundamental": 46.0,
+        "options": 76.0,
+        "momentum": 30.0,
+        "sentiment": 62.3
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 21.16,
+      "stop_loss": 19.41,
+      "target1": 23.49,
+      "target2": 35.11806,
+      "risk_reward": 7.98,
+      "exit_plan": {
+        "entry": 21.16,
+        "target": 24.85,
+        "stop": 18.95,
+        "horizon_days": 10,
+        "target_pct": 17.42,
+        "stop_pct": -10.45,
+        "trail_arms_at_pct": 8.0,
+        "trail_giveback_pct": 5.0
+      },
+      "entry_timing": null,
+      "covered_call": "Sell 2026-10-02 $22 call ~$0.43 (188% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $21 put ~$0.48 (209% ann.)",
+      "confidence": "Low",
+      "criteria_passed": [
+        "high_volatility",
+        "not_calm",
+        "beaten_down"
+      ],
+      "criteria_failed": [],
+      "metrics": {
+        "profile": "moonshot",
+        "price": 21.16,
+        "moonshot_score": 74.0,
+        "volatility_%": 53.0,
+        "ret_12m_%": -50.7,
+        "dist_52w_high_%": -50.0,
+        "reasons": [
+          "53% volatility (lift 2.6)",
+          "down 51% over 12 months (lift 3.0)",
+          "50% below its 52-week high (lift 2.9)"
+        ],
+        "measured_double_rate_%": 19.0,
+        "base_rate_%": 4.8,
+        "median_outcome_%": 6.7,
+        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
+      },
+      "reasoning": "DKNG scored 50.9/100. Setup: 53% annualised, volatile enough, 12m -51%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 46/100 (x0.25 = 11.5); sentiment 62/100 (x0.25 = 15.6); options 76/100 (x0.10 = 7.6); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; positive free cash flow; unprofitable; strong buy consensus (1.54) from 36 analysts; insiders net sellers (1,907,177 sold vs 135,000 bought) \u2014 weak evidence, selling has many innocent reasons across 27 open-market transactions; rich CSP yield (209% ann.); liquid open interest; negative 1y trend (-51%); lagging SPY by -22pp (3mo). Backtest: this setup fired 3x historically, bounced 33% of the time (avg -8.7% over the hold). Sector thesis: lagging Consumer Cyclical by 12pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+    },
+    {
+      "ticker": "WHR",
+      "company": "Whirlpool Corporation",
+      "score": 49.7,
+      "action": "Hold",
+      "quality_grade": "F",
+      "analyst_upside_%": 61.4,
+      "expected_gain_%": 22.8,
+      "hist_win_rate": 0.0,
+      "hist_avg_return_%": -5.44,
+      "hist_trades": 2,
+      "risk_flags": [
+        {
+          "level": "info",
+          "text": "near 52-week low (support test)"
+        },
+        {
+          "level": "warn",
+          "text": "negative free cash flow"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": -21.2,
+        "vs_sector": -10.9,
+        "sector": "Consumer Cyclical",
+        "sector_etf": "XLY"
+      },
+      "mtf": {
+        "weekly_trend": "down",
+        "weekly_return_%": -13.6,
+        "confirms": false
+      },
+      "position": {
+        "shares": 102,
+        "value": 3202.8,
+        "risk_$": 249.9,
+        "basis": "1.0% of $25,000 at $2.45/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": false,
+        "strength": null,
+        "suggested_strike": null,
+        "idea": null,
+        "reason": "no meaningful dip today"
+      },
+      "subscores": {
+        "technical": 54.0,
+        "fundamental": 38.0,
+        "options": 70.0,
+        "momentum": 30.0,
+        "sentiment": 51.2
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 31.4,
+      "stop_loss": 28.95,
+      "target1": 34.66,
+      "target2": 50.66667,
+      "risk_reward": 7.86,
+      "exit_plan": {
+        "entry": 31.4,
+        "target": 36.56,
+        "stop": 28.3,
+        "horizon_days": 10,
+        "target_pct": 16.44,
+        "stop_pct": -9.86,
+        "trail_arms_at_pct": 8.0,
+        "trail_giveback_pct": 5.0
+      },
+      "entry_timing": null,
+      "covered_call": "Sell 2026-10-16 $32 call ~$1.20 (77% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $30 put ~$0.95 (64% ann.)",
+      "confidence": "Low",
+      "criteria_passed": [
+        "high_volatility",
+        "not_calm",
+        "beaten_down"
+      ],
+      "criteria_failed": [],
+      "metrics": {
+        "profile": "moonshot",
+        "price": 31.4,
+        "moonshot_score": 74.0,
+        "volatility_%": 53.2,
+        "ret_12m_%": -58.4,
+        "dist_52w_high_%": -65.7,
+        "reasons": [
+          "53% volatility (lift 2.6)",
+          "down 58% over 12 months (lift 3.0)",
+          "66% below its 52-week high (lift 2.9)"
+        ],
+        "measured_double_rate_%": 19.0,
+        "base_rate_%": 4.8,
+        "median_outcome_%": 6.7,
+        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
+      },
+      "reasoning": "WHR scored 49.7/100. Setup: 53% annualised, volatile enough, 12m -58%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 38/100 (x0.25 = 9.5); sentiment 51/100 (x0.25 = 12.8); options 70/100 (x0.10 = 7.0); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 31); below EMA200; negative free cash flow; shrinking revenue; 0.1% of float short; +61% to the $50.67 mean target; rich CSP yield (64% ann.); negative 1y trend (-58%); lagging SPY by -21pp (3mo). Sector thesis: lagging Consumer Cyclical by 11pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+    },
+    {
+      "ticker": "AVAV",
+      "company": "AeroVironment, Inc.",
+      "score": 49.1,
+      "action": "Hold",
+      "quality_grade": "F",
+      "analyst_upside_%": 49.0,
+      "expected_gain_%": 17.9,
+      "hist_win_rate": 0.571,
+      "hist_avg_return_%": 0.96,
+      "hist_trades": 7,
+      "risk_flags": [
+        {
+          "level": "warn",
+          "text": "high short interest (12%)"
+        },
+        {
+          "level": "info",
+          "text": "near 52-week low (support test)"
+        },
+        {
+          "level": "warn",
+          "text": "negative free cash flow"
+        }
+      ],
+      "rel_strength": {
+        "vs_spy": -26.4,
+        "vs_sector": -15.5,
+        "sector": "Industrials",
+        "sector_etf": "XLI"
+      },
+      "mtf": {
+        "weekly_trend": "down",
+        "weekly_return_%": 10.1,
+        "confirms": false
+      },
+      "position": {
+        "shares": 18,
+        "value": 2650.14,
+        "risk_$": 241.38,
+        "basis": "1.0% of $25,000 at $13.41/share stop distance"
+      },
+      "rr_pass": true,
+      "csp_signal": {
+        "active": true,
+        "strength": "strong",
+        "suggested_strike": 133.82,
+        "idea": "Sell 2026-10-02 $147 put ~$3.65 (227% ann.)",
+        "reason": "down -3.2% today; 49% upside to target; historically bounced 57% of 7 similar dips (avg +1.0%)"
+      },
+      "subscores": {
+        "technical": 47.0,
+        "fundamental": 36.0,
+        "options": 62.0,
+        "momentum": 24.0,
+        "sentiment": 64.9
+      },
+      "weights": {
+        "technical": 0.35,
+        "fundamental": 0.25,
+        "options": 0.1,
+        "momentum": 0.05,
+        "sentiment": 0.25
+      },
+      "entry": 147.23,
+      "stop_loss": 133.82,
+      "target1": 165.11,
+      "target2": 219.3458,
+      "risk_reward": 5.38,
+      "exit_plan": {
+        "entry": 147.23,
+        "target": 175.5,
+        "stop": 130.27,
+        "horizon_days": 10,
+        "target_pct": 19.2,
+        "stop_pct": -11.52,
+        "trail_arms_at_pct": 8.0,
+        "trail_giveback_pct": 5.0
+      },
+      "entry_timing": null,
+      "covered_call": "Sell 2026-10-02 $148 call ~$3.95 (245% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $147 put ~$3.65 (227% ann.)",
+      "confidence": "Low",
+      "criteria_passed": [
+        "high_volatility",
+        "not_calm",
+        "beaten_down"
+      ],
+      "criteria_failed": [],
+      "metrics": {
+        "profile": "moonshot",
+        "price": 147.23,
+        "moonshot_score": 74.0,
+        "volatility_%": 75.4,
+        "ret_12m_%": -51.2,
+        "dist_52w_high_%": -64.1,
+        "reasons": [
+          "75% volatility (lift 2.6)",
+          "down 51% over 12 months (lift 3.0)",
+          "64% below its 52-week high (lift 2.9)"
+        ],
+        "measured_double_rate_%": 19.0,
+        "base_rate_%": 4.8,
+        "median_outcome_%": 6.7,
+        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
+      },
+      "reasoning": "AVAV scored 49.1/100. Setup: 75% annualised, volatile enough, 12m -51%. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 36/100 (x0.25 = 9.0); sentiment 65/100 (x0.25 = 16.2); options 62/100 (x0.10 = 6.2); momentum 24/100 (x0.05 = 1.2). Key drivers: below EMA200; MACD histogram turning up; negative free cash flow; unprofitable; strong buy consensus (1.60) from 19 analysts; 11.8% of float short; rich CSP yield (227% ann.); wide bid/ask (illiquid); negative 1y trend (-51%); lagging SPY by -26pp (3mo). Backtest: this setup fired 7x historically, bounced 57% of the time (avg +1.0% over the hold). Sector thesis: lagging Industrials by 16pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "CPNG",
       "company": "Coupang, Inc.",
-      "score": 48.7,
+      "score": 49.0,
       "action": "Hold",
       "quality_grade": "F",
-      "analyst_upside_%": 69.3,
-      "expected_gain_%": 24.1,
+      "analyst_upside_%": 70.8,
+      "expected_gain_%": 24.6,
       "hist_win_rate": 1.0,
       "hist_avg_return_%": 11.67,
       "hist_trades": 1,
@@ -2406,19 +2847,19 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -29.5,
-        "vs_sector": -20.3,
+        "vs_spy": -29.4,
+        "vs_sector": -19.1,
         "sector": "Consumer Cyclical",
         "sector_etf": "XLY"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -22.2,
+        "weekly_return_%": -18.5,
         "confirms": false
       },
       "position": {
         "shares": 342,
-        "value": 4746.96,
+        "value": 4705.92,
         "risk_$": 249.66,
         "basis": "1.0% of $25,000 at $0.73/share stop distance"
       },
@@ -2434,8 +2875,8 @@
         "technical": 54.0,
         "fundamental": 28.0,
         "options": 62.0,
-        "momentum": 24.0,
-        "sentiment": 61.7
+        "momentum": 30.0,
+        "sentiment": 61.6
       },
       "weights": {
         "technical": 0.35,
@@ -2444,24 +2885,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 13.88,
-      "stop_loss": 13.15,
-      "target1": 14.85,
+      "entry": 13.76,
+      "stop_loss": 13.03,
+      "target1": 14.73,
       "target2": 23.50556,
-      "risk_reward": 13.19,
+      "risk_reward": 13.35,
       "exit_plan": {
-        "entry": 13.88,
-        "target": 15.42,
-        "stop": 12.96,
+        "entry": 13.76,
+        "target": 15.29,
+        "stop": 12.84,
         "horizon_days": 10,
-        "target_pct": 11.07,
-        "stop_pct": -6.64,
+        "target_pct": 11.15,
+        "stop_pct": -6.69,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-02 $14 call ~$0.30 (155% ann.)",
-      "cash_secured_put": "Sell 2026-10-02 $14 put ~$0.13 (70% ann.)",
+      "covered_call": "Sell 2026-10-02 $14 call ~$0.19 (126% ann.)",
+      "cash_secured_put": "Sell 2026-10-02 $14 put ~$0.11 (71% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
@@ -2471,11 +2912,11 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 13.88,
+        "price": 13.76,
         "moonshot_score": 74.0,
         "volatility_%": 51.0,
-        "ret_12m_%": -56.7,
-        "dist_52w_high_%": -57.7,
+        "ret_12m_%": -56.8,
+        "dist_52w_high_%": -58.1,
         "reasons": [
           "51% volatility (lift 2.6)",
           "down 57% over 12 months (lift 3.0)",
@@ -2486,19 +2927,19 @@
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "CPNG scored 48.7/100. Setup: 51% annualised, volatile enough, 12m -57%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 28/100 (x0.25 = 7.0); sentiment 62/100 (x0.25 = 15.4); options 62/100 (x0.10 = 6.2); momentum 24/100 (x0.05 = 1.2). Key drivers: oversold (RSI 32); below EMA200; negative free cash flow; unprofitable; strong buy consensus (1.72) from 18 analysts; +69% to the $23.51 mean target; rich CSP yield (70% ann.); wide bid/ask (illiquid); negative 1y trend (-57%); lagging SPY by -30pp (3mo). Sector thesis: lagging Consumer Cyclical by 20pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "CPNG scored 49.0/100. Setup: 51% annualised, volatile enough, 12m -57%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 28/100 (x0.25 = 7.0); sentiment 62/100 (x0.25 = 15.4); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 30); below EMA200; negative free cash flow; unprofitable; strong buy consensus (1.72) from 18 analysts; +71% to the $23.51 mean target; rich CSP yield (71% ann.); wide bid/ask (illiquid); negative 1y trend (-57%); sharp recent pullback (bounce setup). Sector thesis: lagging Consumer Cyclical by 19pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
-      "ticker": "WHR",
-      "company": "Whirlpool Corporation",
+      "ticker": "FLUT",
+      "company": "Flutter Entertainment plc",
       "score": 48.6,
       "action": "Hold",
       "quality_grade": "F",
-      "analyst_upside_%": 59.8,
-      "expected_gain_%": 22.2,
-      "hist_win_rate": 0.333,
-      "hist_avg_return_%": -2.93,
-      "hist_trades": 3,
+      "analyst_upside_%": 77.6,
+      "expected_gain_%": 27.7,
+      "hist_win_rate": 0.5,
+      "hist_avg_return_%": -7.8,
+      "hist_trades": 2,
       "risk_flags": [
         {
           "level": "info",
@@ -2510,36 +2951,36 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -27.1,
-        "vs_sector": -17.9,
+        "vs_spy": -31.3,
+        "vs_sector": -21.0,
         "sector": "Consumer Cyclical",
         "sector_etf": "XLY"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -19.8,
+        "weekly_return_%": -21.2,
         "confirms": false
       },
       "position": {
-        "shares": 105,
-        "value": 3329.55,
-        "risk_$": 249.9,
-        "basis": "1.0% of $25,000 at $2.38/share stop distance"
+        "shares": 36,
+        "value": 2758.68,
+        "risk_$": 247.32,
+        "basis": "1.0% of $25,000 at $6.87/share stop distance"
       },
       "rr_pass": true,
       "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "down -3.9% with upside signals, but history is against it (bounced only 33% of 3 dips)"
+        "active": true,
+        "strength": "moderate",
+        "suggested_strike": 69.76,
+        "idea": "Sell 2026-10-16 $75 put ~$3.17 (86% ann.)",
+        "reason": "down -7.9% today; 78% upside to target; limited dip history"
       },
       "subscores": {
         "technical": 54.0,
-        "fundamental": 38.0,
+        "fundamental": 32.0,
         "options": 62.0,
-        "momentum": 24.0,
-        "sentiment": 51.2
+        "momentum": 30.0,
+        "sentiment": 56.0
       },
       "weights": {
         "technical": 0.35,
@@ -2548,24 +2989,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 31.71,
-      "stop_loss": 29.33,
-      "target1": 34.89,
-      "target2": 50.66667,
-      "risk_reward": 7.96,
+      "entry": 76.63,
+      "stop_loss": 69.76,
+      "target1": 85.79,
+      "target2": 136.11874,
+      "risk_reward": 8.66,
       "exit_plan": {
-        "entry": 31.71,
-        "target": 36.73,
-        "stop": 28.7,
+        "entry": 76.63,
+        "target": 91.12,
+        "stop": 67.94,
         "horizon_days": 10,
-        "target_pct": 15.84,
-        "stop_pct": -9.51,
+        "target_pct": 18.91,
+        "stop_pct": -11.35,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $32 call ~$1.32 (80% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $30 put ~$0.75 (48% ann.)",
+      "covered_call": "Sell 2026-10-16 $80 call ~$3.10 (82% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $75 put ~$3.17 (86% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
@@ -2575,131 +3016,27 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 31.71,
+        "price": 76.63,
         "moonshot_score": 74.0,
-        "volatility_%": 53.4,
-        "ret_12m_%": -59.1,
-        "dist_52w_high_%": -65.4,
-        "reasons": [
-          "53% volatility (lift 2.6)",
-          "down 59% over 12 months (lift 3.0)",
-          "65% below its 52-week high (lift 2.9)"
-        ],
-        "measured_double_rate_%": 19.0,
-        "base_rate_%": 4.8,
-        "median_outcome_%": 6.7,
-        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
-      },
-      "reasoning": "WHR scored 48.6/100. Setup: 53% annualised, volatile enough, 12m -59%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 38/100 (x0.25 = 9.5); sentiment 51/100 (x0.25 = 12.8); options 62/100 (x0.10 = 6.2); momentum 24/100 (x0.05 = 1.2). Key drivers: oversold (RSI 32); below EMA200; negative free cash flow; shrinking revenue; 0.1% of float short; +60% to the $50.67 mean target; rich CSP yield (48% ann.); wide bid/ask (illiquid); negative 1y trend (-59%); lagging SPY by -27pp (3mo). Backtest: this setup fired 3x historically, bounced 33% of the time (avg -2.9% over the hold). Sector thesis: lagging Consumer Cyclical by 18pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
-    },
-    {
-      "ticker": "KD",
-      "company": "Kyndryl Holdings, Inc.",
-      "score": 46.3,
-      "action": "Hold",
-      "quality_grade": "F",
-      "analyst_upside_%": 22.4,
-      "expected_gain_%": 8.4,
-      "hist_win_rate": 1.0,
-      "hist_avg_return_%": 6.91,
-      "hist_trades": 2,
-      "risk_flags": [
-        {
-          "level": "warn",
-          "text": "high short interest (14%)"
-        },
-        {
-          "level": "warn",
-          "text": "high leverage (D/E 422%)"
-        }
-      ],
-      "rel_strength": {
-        "vs_spy": -9.4,
-        "vs_sector": -11.8,
-        "sector": "Technology",
-        "sector_etf": "XLK"
-      },
-      "mtf": {
-        "weekly_trend": "down",
-        "weekly_return_%": 1.9,
-        "confirms": false
-      },
-      "position": {
-        "shares": 280,
-        "value": 3248.0,
-        "risk_$": 249.2,
-        "basis": "1.0% of $25,000 at $0.89/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 42.0,
-        "fundamental": 40.0,
-        "options": 62.0,
-        "momentum": 36.0,
-        "sentiment": 54.5
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 11.6,
-      "stop_loss": 10.71,
-      "target1": 12.79,
-      "target2": 14.2,
-      "risk_reward": 2.92,
-      "exit_plan": {
-        "entry": 11.6,
-        "target": 13.48,
-        "stop": 10.47,
-        "horizon_days": 10,
-        "target_pct": 16.17,
-        "stop_pct": -9.7,
-        "trail_arms_at_pct": 8.0,
-        "trail_giveback_pct": 5.0
-      },
-      "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $12 call ~$0.40 (66% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $11 put ~$0.33 (57% ann.)",
-      "confidence": "Low",
-      "criteria_passed": [
-        "high_volatility",
-        "not_calm",
-        "beaten_down"
-      ],
-      "criteria_failed": [],
-      "metrics": {
-        "profile": "moonshot",
-        "price": 11.6,
-        "moonshot_score": 74.0,
-        "volatility_%": 50.5,
-        "ret_12m_%": -63.2,
-        "dist_52w_high_%": -62.1,
+        "volatility_%": 51.0,
+        "ret_12m_%": -72.5,
+        "dist_52w_high_%": -72.9,
         "reasons": [
           "51% volatility (lift 2.6)",
-          "down 63% over 12 months (lift 3.0)",
-          "62% below its 52-week high (lift 2.9)"
+          "down 73% over 12 months (lift 3.0)",
+          "73% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "KD scored 46.3/100. Setup: 51% annualised, volatile enough, 12m -63%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 40/100 (x0.25 = 10.0); sentiment 54/100 (x0.25 = 13.6); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; positive free cash flow; shrinking revenue; +22% to the $14.20 mean target; 14.4% of float short; rich CSP yield (57% ann.); wide bid/ask (illiquid); negative 1y trend (-63%); weekly trend contradicts (higher-timeframe downtrend \u2014 false-bounce risk). Sector thesis: lagging Technology by 12pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "FLUT scored 48.6/100. Setup: 51% annualised, volatile enough, 12m -73%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 32/100 (x0.25 = 8.0); sentiment 56/100 (x0.25 = 14.0); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 26); below EMA200; negative free cash flow; unprofitable; buy consensus (1.82) from 32 analysts; 9.8% of float short; rich CSP yield (86% ann.); wide bid/ask (illiquid); negative 1y trend (-73%); sharp recent pullback (bounce setup). Sector thesis: lagging Consumer Cyclical by 21pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     },
     {
       "ticker": "DFH",
       "company": "Dream Finders Homes, Inc.",
-      "score": 39.4,
+      "score": 43.6,
       "action": "Reduce",
       "quality_grade": "F",
       "analyst_upside_%": null,
@@ -2734,21 +3071,21 @@
         }
       ],
       "rel_strength": {
-        "vs_spy": -37.1,
-        "vs_sector": -27.9,
+        "vs_spy": -38.8,
+        "vs_sector": -28.5,
         "sector": "Consumer Cyclical",
         "sector_etf": "XLY"
       },
       "mtf": {
         "weekly_trend": "down",
-        "weekly_return_%": -28.0,
+        "weekly_return_%": -21.1,
         "confirms": false
       },
       "position": {
-        "shares": 223,
-        "value": 2519.9,
-        "risk_$": 249.76,
-        "basis": "1.0% of $25,000 at $1.12/share stop distance"
+        "shares": 227,
+        "value": 2469.76,
+        "risk_$": 249.7,
+        "basis": "1.0% of $25,000 at $1.10/share stop distance"
       },
       "rr_pass": false,
       "csp_signal": {
@@ -2756,10 +3093,10 @@
         "strength": null,
         "suggested_strike": null,
         "idea": null,
-        "reason": "no meaningful dip today"
+        "reason": "down -3.7% but no upside signal (below EMA200, <10% target upside)"
       },
       "subscores": {
-        "technical": 42.0,
+        "technical": 54.0,
         "fundamental": 36.0,
         "options": 52.0,
         "momentum": 30.0,
@@ -2772,24 +3109,24 @@
         "momentum": 0.05,
         "sentiment": 0.25
       },
-      "entry": 11.3,
-      "stop_loss": 10.18,
-      "target1": 12.79,
+      "entry": 10.88,
+      "stop_loss": 9.78,
+      "target1": 12.34,
       "target2": null,
       "risk_reward": 1.33,
       "exit_plan": {
-        "entry": 11.3,
-        "target": 13.66,
-        "stop": 9.89,
+        "entry": 10.88,
+        "target": 13.19,
+        "stop": 9.49,
         "horizon_days": 10,
-        "target_pct": 20.85,
-        "stop_pct": -12.51,
+        "target_pct": 21.27,
+        "stop_pct": -12.76,
         "trail_arms_at_pct": 8.0,
         "trail_giveback_pct": 5.0
       },
       "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $12 call ~$0.15 (26% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $10 put ~$0.15 (29% ann.)",
+      "covered_call": "Sell 2026-10-16 $12 call ~$0.10 (19% ann.)",
+      "cash_secured_put": "Sell 2026-10-16 $10 put ~$0.12 (25% ann.)",
       "confidence": "Low",
       "criteria_passed": [
         "high_volatility",
@@ -2799,351 +3136,22 @@
       "criteria_failed": [],
       "metrics": {
         "profile": "moonshot",
-        "price": 11.3,
+        "price": 10.88,
         "moonshot_score": 74.0,
-        "volatility_%": 70.8,
-        "ret_12m_%": -57.8,
-        "dist_52w_high_%": -57.2,
+        "volatility_%": 70.1,
+        "ret_12m_%": -57.9,
+        "dist_52w_high_%": -58.8,
         "reasons": [
-          "71% volatility (lift 2.6)",
+          "70% volatility (lift 2.6)",
           "down 58% over 12 months (lift 3.0)",
-          "57% below its 52-week high (lift 2.9)"
+          "59% below its 52-week high (lift 2.9)"
         ],
         "measured_double_rate_%": 19.0,
         "base_rate_%": 4.8,
         "median_outcome_%": 6.7,
         "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
       },
-      "reasoning": "DFH scored 39.4/100. Setup: 71% annualised, volatile enough, 12m -58%. Contributions \u2014 technical 42/100 (x0.35 = 14.7); fundamental 36/100 (x0.25 = 9.0); sentiment 36/100 (x0.25 = 9.0); options 52/100 (x0.10 = 5.2); momentum 30/100 (x0.05 = 1.5). Key drivers: below EMA200; negative free cash flow; shrinking revenue; 48.8% of float short; insiders net sellers (2,140,182 sold vs 102,500 bought) \u2014 weak evidence, selling has many innocent reasons across 42 open-market transactions; solid CSP yield (29% ann.); wide bid/ask (illiquid); negative 1y trend (-58%); sharp recent pullback (bounce setup). Backtest: this setup fired 4x historically, bounced 25% of the time (avg -2.3% over the hold). Sector thesis: lagging Consumer Cyclical by 28pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
-    },
-    {
-      "ticker": "INIO",
-      "company": "INNIO N.V.",
-      "score": 55.1,
-      "action": "Hold",
-      "quality_grade": "D",
-      "analyst_upside_%": 99.8,
-      "expected_gain_%": 59.5,
-      "hist_win_rate": 0.0,
-      "hist_avg_return_%": -3.93,
-      "hist_trades": 2,
-      "risk_flags": [
-        {
-          "level": "warn",
-          "text": "high short interest (16%)"
-        },
-        {
-          "level": "warn",
-          "text": "high leverage (D/E 1347%)"
-        }
-      ],
-      "rel_strength": {
-        "vs_spy": -55.9,
-        "vs_sector": -44.2,
-        "sector": "Industrials",
-        "sector_etf": "XLI"
-      },
-      "mtf": {
-        "weekly_trend": "down",
-        "weekly_return_%": -39.2,
-        "confirms": false
-      },
-      "position": {
-        "shares": 106,
-        "value": 2026.72,
-        "risk_$": 248.04,
-        "basis": "1.0% of $25,000 at $2.34/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 47.0,
-        "fundamental": 49.0,
-        "options": 62.0,
-        "momentum": 36.0,
-        "sentiment": 73.8
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 19.12,
-      "stop_loss": 16.78,
-      "target1": 22.24,
-      "target2": 38.2,
-      "risk_reward": 8.15,
-      "exit_plan": {
-        "entry": 19.12,
-        "target": 24.05,
-        "stop": 16.25,
-        "horizon_days": 10,
-        "target_pct": 25.81,
-        "stop_pct": -15.0,
-        "trail_arms_at_pct": 8.0,
-        "trail_giveback_pct": 5.0
-      },
-      "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $20 call ~$1.12 (113% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $18 put ~$0.62 (69% ann.)",
-      "confidence": "Medium",
-      "criteria_passed": [
-        "high_volatility",
-        "not_calm",
-        "beaten_down"
-      ],
-      "criteria_failed": [],
-      "metrics": {
-        "profile": "moonshot",
-        "price": 19.12,
-        "moonshot_score": 60.0,
-        "volatility_%": 87.9,
-        "ret_12m_%": null,
-        "dist_52w_high_%": -53.5,
-        "reasons": [
-          "88% volatility \u2014 the strongest measured trait (lift 3.8)",
-          "54% below its 52-week high (lift 2.9)"
-        ],
-        "measured_double_rate_%": 19.0,
-        "base_rate_%": 4.8,
-        "median_outcome_%": 6.7,
-        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
-      },
-      "reasoning": "INIO scored 55.1/100. Setup: 88% annualised, volatile enough, n/a. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 49/100 (x0.25 = 12.2); sentiment 74/100 (x0.25 = 18.4); options 62/100 (x0.10 = 6.2); momentum 36/100 (x0.05 = 1.8). Key drivers: below EMA200; MACD histogram turning up; revenue growth (42%); high leverage (D/E 1347%); +100% to the $38.20 mean target; strong buy consensus (1.80) from 10 analysts; rich CSP yield (69% ann.); wide bid/ask (illiquid); sharp recent pullback (bounce setup); lagging SPY by -56pp (3mo). Sector thesis: lagging Industrials by 44pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
-    },
-    {
-      "ticker": "PRIM",
-      "company": "Primoris Services Corporation",
-      "score": 51.8,
-      "action": "Hold",
-      "quality_grade": "C",
-      "analyst_upside_%": 62.1,
-      "expected_gain_%": 37.3,
-      "hist_win_rate": 1.0,
-      "hist_avg_return_%": 6.6,
-      "hist_trades": 3,
-      "risk_flags": [
-        {
-          "level": "warn",
-          "text": "high short interest (14%)"
-        },
-        {
-          "level": "info",
-          "text": "near 52-week low (support test)"
-        }
-      ],
-      "rel_strength": {
-        "vs_spy": -27.9,
-        "vs_sector": -16.1,
-        "sector": "Industrials",
-        "sector_etf": "XLI"
-      },
-      "mtf": {
-        "weekly_trend": "down",
-        "weekly_return_%": -11.2,
-        "confirms": false
-      },
-      "position": {
-        "shares": 52,
-        "value": 3777.8,
-        "risk_$": 248.04,
-        "basis": "1.0% of $25,000 at $4.77/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 47.0,
-        "fundamental": 64.0,
-        "options": 62.0,
-        "momentum": 24.0,
-        "sentiment": 47.8
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 72.65,
-      "stop_loss": 67.88,
-      "target1": 79.0,
-      "target2": 117.8,
-      "risk_reward": 9.47,
-      "exit_plan": {
-        "entry": 72.65,
-        "target": 82.7,
-        "stop": 66.62,
-        "horizon_days": 10,
-        "target_pct": 13.83,
-        "stop_pct": -8.3,
-        "trail_arms_at_pct": 8.0,
-        "trail_giveback_pct": 5.0
-      },
-      "entry_timing": null,
-      "covered_call": "Sell 2026-10-16 $75 call ~$2.50 (66% ann.)",
-      "cash_secured_put": "Sell 2026-10-16 $72 put ~$4.05 (107% ann.)",
-      "confidence": "Medium",
-      "criteria_passed": [
-        "high_volatility",
-        "not_calm",
-        "beaten_down"
-      ],
-      "criteria_failed": [],
-      "metrics": {
-        "profile": "moonshot",
-        "price": 72.65,
-        "moonshot_score": 60.0,
-        "volatility_%": 124.7,
-        "ret_12m_%": -44.0,
-        "dist_52w_high_%": -64.2,
-        "reasons": [
-          "125% volatility \u2014 the strongest measured trait (lift 3.8)",
-          "64% below its 52-week high (lift 2.9)"
-        ],
-        "measured_double_rate_%": 19.0,
-        "base_rate_%": 4.8,
-        "median_outcome_%": 6.7,
-        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
-      },
-      "reasoning": "PRIM scored 51.8/100. Setup: 125% annualised, volatile enough, 12m -44%. Contributions \u2014 technical 47/100 (x0.35 = 16.4); fundamental 64/100 (x0.25 = 16.0); sentiment 48/100 (x0.25 = 11.9); options 62/100 (x0.10 = 6.2); momentum 24/100 (x0.05 = 1.2). Key drivers: below EMA200; MACD histogram turning up; positive free cash flow; shrinking revenue; 13.9% of float short; +62% to the $117.80 mean target; rich CSP yield (107% ann.); wide bid/ask (illiquid); negative 1y trend (-44%); lagging SPY by -28pp (3mo). Backtest: this setup fired 3x historically, bounced 100% of the time (avg +6.6% over the hold). Sector thesis: lagging Industrials by 16pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
-    },
-    {
-      "ticker": "CAR",
-      "company": "Avis Budget Group, Inc.",
-      "score": 50.7,
-      "action": "Hold",
-      "quality_grade": "D",
-      "analyst_upside_%": 18.7,
-      "expected_gain_%": 11.2,
-      "hist_win_rate": 0.6,
-      "hist_avg_return_%": 4.7,
-      "hist_trades": 5,
-      "risk_flags": [
-        {
-          "level": "warn",
-          "text": "high short interest (48%)"
-        },
-        {
-          "level": "warn",
-          "text": "high beta (1.9)"
-        }
-      ],
-      "rel_strength": {
-        "vs_spy": -32.4,
-        "vs_sector": -20.6,
-        "sector": "Industrials",
-        "sector_etf": "XLI"
-      },
-      "mtf": {
-        "weekly_trend": "down",
-        "weekly_return_%": -24.9,
-        "confirms": false
-      },
-      "position": {
-        "shares": 27,
-        "value": 2923.83,
-        "risk_$": 243.54,
-        "basis": "1.0% of $25,000 at $9.02/share stop distance"
-      },
-      "rr_pass": true,
-      "csp_signal": {
-        "active": false,
-        "strength": null,
-        "suggested_strike": null,
-        "idea": null,
-        "reason": "no meaningful dip today"
-      },
-      "subscores": {
-        "technical": 54.0,
-        "fundamental": 49.0,
-        "options": 62.0,
-        "momentum": 30.0,
-        "sentiment": 47.4
-      },
-      "weights": {
-        "technical": 0.35,
-        "fundamental": 0.25,
-        "options": 0.1,
-        "momentum": 0.05,
-        "sentiment": 0.25
-      },
-      "entry": 108.29,
-      "stop_loss": 99.27,
-      "target1": 120.32,
-      "target2": 128.57143,
-      "risk_reward": 2.25,
-      "exit_plan": {
-        "entry": 108.29,
-        "target": 127.31,
-        "stop": 96.88,
-        "horizon_days": 10,
-        "target_pct": 17.57,
-        "stop_pct": -10.54,
-        "trail_arms_at_pct": 8.0,
-        "trail_giveback_pct": 5.0
-      },
-      "entry_timing": {
-        "regime": "lateral",
-        "position_in_range": 0.033,
-        "range_low": 87.69,
-        "range_high": 713.97,
-        "net_move_%": -3.4,
-        "range_width_%": 714.2,
-        "trend_r2": 0.016,
-        "midline_crossings": 4,
-        "action": "buy_zone",
-        "entry_target": 306.89,
-        "upside_to_range_high_%": 559.3,
-        "typical_wait_sessions": 9,
-        "reason": "Sideways for the window and trading in the bottom 3% of its $87.69-$713.97 range. This is where a range-bound name is worth buying \u2014 about 559% back to the top of the range.",
-        "factors": [
-          "-3% over the window against a 714%-wide range",
-          "trend line explains 2% of the move",
-          "crossed the midline 4 times",
-          "sitting 3% of the way up the range"
-        ]
-      },
-      "covered_call": "Sell 2026-10-02 $109 call ~$4.45 (300% ann.)",
-      "cash_secured_put": "Sell 2026-10-02 $108 put ~$3.82 (259% ann.)",
-      "confidence": "Medium",
-      "criteria_passed": [
-        "high_volatility",
-        "not_calm",
-        "beaten_down"
-      ],
-      "criteria_failed": [],
-      "metrics": {
-        "profile": "moonshot",
-        "price": 108.29,
-        "moonshot_score": 60.0,
-        "volatility_%": 145.9,
-        "ret_12m_%": -33.0,
-        "dist_52w_high_%": -84.8,
-        "reasons": [
-          "146% volatility \u2014 the strongest measured trait (lift 3.8)",
-          "85% below its 52-week high (lift 2.9)"
-        ],
-        "measured_double_rate_%": 19.0,
-        "base_rate_%": 4.8,
-        "median_outcome_%": 6.7,
-        "caveat": "Measured on 62,202 samples: names like this doubled 19.0% of the time against a 4.8% base rate \u2014 but the MEDIAN outcome was only +6.7%, and roughly 7% of the universe delists each year, so this is an upper bound."
-      },
-      "reasoning": "CAR scored 50.7/100. Setup: 146% annualised, volatile enough, 12m -33%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 49/100 (x0.25 = 12.2); sentiment 47/100 (x0.25 = 11.8); options 62/100 (x0.10 = 6.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 30); below EMA200; positive free cash flow; unprofitable; +19% to the $128.57 mean target; 48.4% of float short; rich CSP yield (259% ann.); wide bid/ask (illiquid); negative 1y trend (-33%); sharp recent pullback (bounce setup). Backtest: this setup fired 5x historically, bounced 60% of the time (avg +4.7% over the hold). Sector thesis: lagging Industrials by 21pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
+      "reasoning": "DFH scored 43.6/100. Setup: 70% annualised, volatile enough, 12m -58%. Contributions \u2014 technical 54/100 (x0.35 = 18.9); fundamental 36/100 (x0.25 = 9.0); sentiment 36/100 (x0.25 = 9.0); options 52/100 (x0.10 = 5.2); momentum 30/100 (x0.05 = 1.5). Key drivers: oversold (RSI 35); below EMA200; negative free cash flow; shrinking revenue; 48.8% of float short; insiders net sellers (2,140,182 sold vs 102,500 bought) \u2014 weak evidence, selling has many innocent reasons across 42 open-market transactions; solid CSP yield (25% ann.); wide bid/ask (illiquid); negative 1y trend (-58%); sharp recent pullback (bounce setup). Backtest: this setup fired 4x historically, bounced 25% of the time (avg -2.3% over the hold). Sector thesis: lagging Consumer Cyclical by 28pp \u2014 the weakness is stock-specific, not just the group; check for company news before assuming a sector bounce fixes it. Multi-timeframe: the weekly trend is still down, so the daily bounce is counter-trend (be selective)."
     }
   ]
 }

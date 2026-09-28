@@ -5,25 +5,25 @@
     "benchmark": "SPY"
   },
   "start": "2026-06-30",
-  "end": "2026-09-25",
-  "trading_days": 62,
-  "days_invested": 61,
-  "trades": 304,
-  "distinct_names": 70,
+  "end": "2026-09-28",
+  "trading_days": 63,
+  "days_invested": 62,
+  "trades": 309,
+  "distinct_names": 73,
   "skipped_entries": 1,
-  "strategy_return_%": 27.42,
-  "benchmark_return_%": 4.35,
-  "alpha_%": 23.07,
+  "strategy_return_%": 25.2,
+  "benchmark_return_%": 3.58,
+  "alpha_%": 21.62,
   "max_drawdown_%": -22.61,
   "benchmark_max_drawdown_%": -3.38,
-  "trade_win_rate": 0.589,
-  "avg_trade_%": 1.9,
+  "trade_win_rate": 0.57,
+  "avg_trade_%": 1.7,
   "best_trade": {
-    "ticker": "CRDO",
-    "entry_date": "2026-09-14",
-    "exit_date": "2026-09-25",
-    "return_%": 40.56,
-    "score": 71.3
+    "ticker": "SNDK",
+    "entry_date": "2026-08-03",
+    "exit_date": "2026-08-17",
+    "return_%": 38.73,
+    "score": 77.0
   },
   "worst_trade": {
     "ticker": "SNDK",
@@ -404,12 +404,18 @@
       "strategy": 1.27423,
       "benchmark": 1.04354,
       "positions": 20
+    },
+    {
+      "date": "2026-09-28",
+      "strategy": 1.25196,
+      "benchmark": 1.03578,
+      "positions": 25
     }
   ],
   "sweep": {
     "split_date": "2026-08-14",
     "train_days": 32,
-    "test_days": 32,
+    "test_days": 33,
     "grid": [
       {
         "top_n": 5,
@@ -475,18 +481,18 @@
     "out_of_sample": {
       "top_n": 5,
       "hold_days": 20,
-      "alpha_%": 0.48,
-      "strategy_return_%": -0.12,
-      "benchmark_return_%": -0.59,
-      "trades": 145
+      "alpha_%": 0.17,
+      "strategy_return_%": -1.17,
+      "benchmark_return_%": -1.33,
+      "trades": 150
     },
     "shipped_defaults_out_of_sample": {
       "top_n": 5,
       "hold_days": 10,
-      "alpha_%": 5.03,
-      "trades": 145
+      "alpha_%": 3.94,
+      "trades": 150
     },
     "held_up": true
   },
-  "generated": "2026-09-27T18:15:49+00:00"
+  "generated": "2026-09-28T20:33:37+00:00"
 }
