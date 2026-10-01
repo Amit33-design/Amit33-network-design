@@ -11,6 +11,11 @@ export type ScreenRecord = {
   dates_beating_spy?: number | null; win_rate: number; avg_return_pct?: number;
   "avg_return_%": number; "avg_alpha_%"?: number | null;
   beat_spy_rate?: number | null; avg_days_held?: number;
+  held_instead?: {
+    days: number; trades: number; dates: number; "avg_alpha_%": number | null;
+    alpha_t_by_date: number | null; win_rate: number;
+    "plan_avg_alpha_%": number | null; hold_minus_plan_pp: number | null;
+  } | null;
 };
 export type ConditionSide = {
   dates: number; trades: number; "avg_alpha_%": number | null;

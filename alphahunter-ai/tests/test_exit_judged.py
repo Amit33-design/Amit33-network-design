@@ -165,3 +165,20 @@ def test_significance_is_measured_across_dates_not_trades():
     assert s["avg_alpha_%"] > 5 and abs(s["alpha_t_by_date"]) < 2
     assert s["dates_beating_spy"] == 0.1
     assert summarise(day("2026-01-05", [1.0, 2.0]))["alpha_t_by_date"] is None
+
+
+def test_holding_instead_separates_bad_picks_from_bad_exits():
+    """A pick that dips through its stop and then rallies: the plan books the
+    stop, holding 10 sessions books the rally. compare_hold must show that
+    the exits, not the selection, cost the screen."""
+    cal = [f"2026-01-{d:02d}" for d in range(6, 31)]
+    history = [(f"2026-01-0{k}", [{"ticker": f"T{k}", "score": 70, "entry": 100.0,
+                                   "metrics": {"profile": "growth"}}]) for k in (2, 3, 5)]
+    dip_then_rally = [97, 92, 95, 100, 104, 107, 109, 110, 111, 111.5] + [111.5] * 15
+    closes = {f"T{k}": dict(zip(cal, dip_then_rally)) for k in (2, 3, 5)}
+    closes["SPY"] = {"2026-01-02": 500.0, "2026-01-03": 500.0, "2026-01-05": 500.0,
+                     **{d: 500.0 for d in cal}}
+    g = judge_history(history, closes)["by_screen"]["growth"]
+    assert g["avg_return_%"] < 0                     # stopped out on the dip
+    h = g["held_instead"]
+    assert h["avg_alpha_%"] > 10 and h["hold_minus_plan_pp"] > 15

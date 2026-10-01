@@ -235,6 +235,7 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | Pick-list concentration (effective bets) | `backend/concentration.py` |
 | Track record judged at each pick's exit plan | `backend/exit_judged.py` → `exit_judged.json` |
 | Per-screen evidence status (proven / unproven / trailing) | `frontend/src/lib/evidence.ts` |
+| "Is the exit plan helping?" — each screen's plan vs a plain 10-day hold (`held_instead`) | `backend/exit_judged.compare_hold` → `components/PlanVsHold.tsx` on Research |
 | "When do the picks work?" — pick-date conditions vs date-level alpha | `backend/date_conditions.py` (in `exit_judged.json`) → `components/PickDateConditions.tsx` on Research |
 | Scan freshness manifest + stale warning | `run_daily` → `freshness.json`, `components/FreshnessBanner.tsx` |
 | Live portfolio prices/recs | `api/quote.js` |

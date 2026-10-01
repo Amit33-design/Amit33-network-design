@@ -9,6 +9,7 @@ import PairTrader, { usePairStudy } from "../components/PairTrader";
 import DeferUntilVisible from "../components/DeferUntilVisible";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 import PickDateConditions from "../components/PickDateConditions";
+import PlanVsHold from "../components/PlanVsHold";
 import { useJudged } from "../lib/evidence";
 
 type Dash = { domains: Record<string, { score: number }[]> };
@@ -63,6 +64,13 @@ export default function Research() {
         defaultOpen
       >
         <PickDateConditions judged={judged} />
+      </Section>
+
+      <Section
+        title="🚪 Is the exit plan helping?"
+        subtitle="each screen's picks: the exit plan vs simply holding 10 days"
+      >
+        <PlanVsHold judged={judged} />
       </Section>
 
       {pairStudy && (

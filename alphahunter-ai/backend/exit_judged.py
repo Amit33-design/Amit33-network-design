@@ -130,6 +130,33 @@ def summarise(trades: list[dict]) -> dict | None:
     }
 
 
+HOLD_DAYS = 10
+
+
+def compare_hold(trades: list[dict]) -> dict | None:
+    """The same picks held HOLD_DAYS sessions with no stop or target, summarised
+    exactly like the plan (date-level alpha), plus which did better. Pure."""
+    held = [{"exit": "hold", "days_held": HOLD_DAYS, "picked": t["picked"],
+             "return_%": t["hold_%"], "spy_%": t.get("hold_spy_%")}
+            for t in trades if t.get("hold_%") is not None]
+    if len(held) < 3:
+        return None
+    h = summarise(held)
+    plan = summarise([t for t in trades if t.get("hold_%") is not None])
+    diff = None
+    if h and plan and h.get("avg_alpha_%") is not None and plan.get("avg_alpha_%") is not None:
+        diff = round(h["avg_alpha_%"] - plan["avg_alpha_%"], 2)
+    return {
+        "days": HOLD_DAYS, "trades": h["trades"], "dates": h["dates"],
+        "avg_alpha_%": h["avg_alpha_%"], "alpha_t_by_date": h["alpha_t_by_date"],
+        "win_rate": h["win_rate"],
+        "plan_avg_alpha_%": plan["avg_alpha_%"] if plan else None,
+        # Positive: holding beat the exit plan on the same picks — the stops
+        # or targets are costing this screen, not its stock selection.
+        "hold_minus_plan_pp": diff,
+    }
+
+
 def judge_history(history: list[tuple[str, list[dict]]],
                   closes: dict[str, dict[str, float]],
                   *, benchmark: str = "SPY", top_n: int | None = None) -> dict:
@@ -180,16 +207,26 @@ def judge_history(history: list[tuple[str, list[dict]]],
             b0 = next((bench[d] for d in sorted(bench) if d >= date_str), None)
             b1 = bench.get(exit_date)
             spy = ((b1 / b0 - 1) * 100) if (b0 and b1) else None
+            # Counterfactual: the same pick simply held HOLD_DAYS sessions, no
+            # stop, no target. Comparing it with the plan says whether a weak
+            # screen picks bad stocks or picks fine ones and exits them badly.
+            h_px = path[HOLD_DAYS - 1] if len(path) >= HOLD_DAYS else None
+            h_b1 = bench.get(days[HOLD_DAYS - 1]) if len(days) >= HOLD_DAYS else None
             trades.append({
                 **res, "ticker": t, "picked": date_str, "exit_date": exit_date,
                 "score": rec.get("score"),
                 "screen": name_for((rec.get("metrics") or {}).get("profile")),
                 "spy_%": round(spy, 2) if spy is not None else None,
+                "hold_%": round((h_px / entry - 1) * 100, 2) if h_px else None,
+                "hold_spy_%": round((h_b1 / b0 - 1) * 100, 2) if (h_b1 and b0) else None,
             })
 
     by_screen = {}
     for s in sorted({t["screen"] for t in trades}):
-        by_screen[s] = summarise([t for t in trades if t["screen"] == s])
+        mine = [t for t in trades if t["screen"] == s]
+        by_screen[s] = summarise(mine)
+        if by_screen[s]:
+            by_screen[s]["held_instead"] = compare_hold(mine)
 
     return {
         "method": ("each pick judged at its own exit plan — take-profit, stop, "
