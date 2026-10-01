@@ -47,7 +47,12 @@ def simulate(
     so the same $100 on the same day can be tracked into SPY as a control.
     """
     positions: dict[str, dict] = {}
-    for date_str, results in sorted(history):
+    # Sort on the DATE only. Since growth and moonshot got dated files there
+    # are several entries per date, and a bare sorted() then compares the
+    # pick lists themselves — "'<' not supported between dict and dict" —
+    # which silently froze this portfolio (and the income plan built on it)
+    # from 13 Sep.
+    for date_str, results in sorted(history, key=lambda h: h[0]):
         for r in results:
             t, action = r.get("ticker"), r.get("action")
             entry = (r.get("metrics") or {}).get("price")

@@ -402,7 +402,7 @@ function MarketStrip({ mr, asOf, onThemes }: {
   mr: Dash["market_regime"]; asOf: string; onThemes: () => void;
 }) {
   const themes = rankThemes(useThemes());
-  const { date: scanDate, age } = useScanFreshness();
+  const { date: scanDate, age, problems } = useScanFreshness();
   const regime = mr?.regime === "risk-on" ? "Risk-on" : mr?.regime === "risk-off" ? "Risk-off"
     : mr ? "Neutral" : null;
   const tone = regime === "Risk-on" ? "text-gain" : regime === "Risk-off" ? "text-loss" : "text-warn";
@@ -441,6 +441,11 @@ function MarketStrip({ mr, asOf, onThemes }: {
             : `Scan ${scanDate ?? "—"} · watchlist ${asOf}`}
         </div>
       </div>
+      {problems.length > 0 && (
+        <div className="mt-1.5 text-2xs text-warn" role="status">
+          ⚠ Last scan: {problems.join(" · ")} — the affected list may be older than the scan date.
+        </div>
+      )}
       {mr?.factors?.length ? (
         <div className="mt-1.5 text-2xs text-ink-muted">{mr.factors.join(" · ")}</div>
       ) : null}

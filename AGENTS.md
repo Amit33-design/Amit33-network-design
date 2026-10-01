@@ -205,6 +205,14 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 - **Never lend one list another list's evidence.** Top Picks are the watchlist
   ranked by composite score, not a scan screen; showing a scan screen's
   track record on them would claim proof they do not have.
+- **A post-scan step may fail; it may not fail silently.** `run_daily`
+  keeps the day's picks when a later step raises, but every failure goes
+  through `step_failed()`: a GitHub `::warning::` annotation on the run page
+  plus `failed_steps` / `stale_feeds` in `freshness.json`, which the
+  Dashboard's market strip reads (user-visible feeds only). Before this the
+  paper portfolio raised on every run for 17 days behind a green job — a
+  bare `sorted()` over `(date, picks)` compared the pick lists once two
+  screens shared a date. Sort history on the date: `key=lambda h: h[0]`.
 - **Score weights must sum to 1.0** (a test enforces it).
 - **Tests never hit the network.**
 

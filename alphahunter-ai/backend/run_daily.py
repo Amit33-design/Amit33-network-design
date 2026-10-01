@@ -82,6 +82,36 @@ def _flatten(rec: dict) -> dict:
     }
 
 
+def stale_feeds(feeds: dict, today: str, max_lag_days: int = 4) -> list[str]:
+    """Feeds whose own date is more than `max_lag_days` calendar days behind
+    the scan (4 covers a weekend plus a holiday). Pure, so it is tested."""
+    out = []
+    t = dt.date.fromisoformat(today)
+    for name, f in feeds.items():
+        try:
+            if (t - dt.date.fromisoformat((f or {}).get("date") or "")).days > max_lag_days:
+                out.append(name)
+        except ValueError:
+            out.append(name)
+    return sorted(out)
+
+
+# Steps after the scan are best-effort: one failing must not lose the day's
+# picks. But "best-effort" turned into "silent": the paper portfolio raised on
+# every run from 13 Sep and nobody saw it for 17 days, because the job stayed
+# green and the error was one line in a long log. Every failure now becomes a
+# GitHub warning annotation (shown on the run's summary page) and is recorded
+# in freshness.json, which the UI reads.
+STEP_FAILURES: list[dict] = []
+
+
+def step_failed(step: str, e: BaseException) -> None:
+    msg = f"{type(e).__name__}: {e}"[:300]
+    STEP_FAILURES.append({"step": step, "error": msg})
+    print(f"{step} skipped: {msg}")
+    print(f"::warning title=run_daily step failed: {step}::{msg}")
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description="AlphaHunter daily scan")
     p.add_argument("--limit", type=int, default=None)
@@ -154,7 +184,7 @@ def main() -> None:
         else:
             print("Track record: not enough aged history yet.")
     except Exception as e:  # pragma: no cover - CI only
-        print(f"Track record skipped: {e}")
+        step_failed("Track record", e)
         if not os.path.exists(perf_path):  # keep the workflow's git add happy
             with open(perf_path, "w") as f:
                 json.dump({"picks": [], "summary": None, "generated": today}, f)
@@ -172,7 +202,7 @@ def main() -> None:
         else:
             print(f"Paper portfolio: {pp.get('error', 'no result')}")
     except Exception as e:  # pragma: no cover - CI only
-        print(f"Paper portfolio skipped: {e}")
+        step_failed("Paper portfolio", e)
         if not os.path.exists(paper_path):
             with open(paper_path, "w") as f:
                 json.dump({"error": "not generated yet", "holdings": []}, f)
@@ -197,7 +227,7 @@ def main() -> None:
         else:
             print("Growth leaders: none passed the screen today.")
     except Exception as e:  # pragma: no cover - CI only
-        print(f"Growth scan skipped: {e}")
+        step_failed("Growth scan", e)
         if not os.path.exists(growth_path):
             with open(growth_path, "w") as f:
                 json.dump({"date": today, "count": 0, "results": []}, f)
@@ -219,7 +249,7 @@ def main() -> None:
         else:
             print("Moonshots: none passed the screen today.")
     except Exception as e:  # pragma: no cover - CI only
-        print(f"Moonshot scan skipped: {e}")
+        step_failed("Moonshot scan", e)
         if not os.path.exists(moon_path):
             with open(moon_path, "w") as f:
                 json.dump({"date": today, "count": 0, "results": []}, f)
@@ -259,7 +289,7 @@ def main() -> None:
         else:
             print("Income plan: not enough judged history yet.")
     except Exception as e:  # pragma: no cover - CI only
-        print(f"Income plan skipped: {e}")
+        step_failed("Income plan", e)
         if not os.path.exists(plan_path):
             with open(plan_path, "w") as f:
                 json.dump({"error": "not generated yet"}, f)
@@ -277,7 +307,7 @@ def main() -> None:
         else:
             print(f"Backtest: {bt.get('error', 'no result')}")
     except Exception as e:  # pragma: no cover - CI only
-        print(f"Backtest skipped: {e}")
+        step_failed("Backtest", e)
         if not os.path.exists(bt_path):  # keep the workflow's git add happy
             with open(bt_path, "w") as f:
                 json.dump({"error": "not generated yet", "points": []}, f)
@@ -295,7 +325,7 @@ def main() -> None:
                   f"avg {s_['avg_return_%']:+.2f}%, alpha {s_.get('avg_alpha_%')}, "
                   f"held {s_['avg_days_held']}d on average")
     except Exception as e:  # pragma: no cover - CI only
-        print(f"Exit-judged record skipped: {e}")
+        step_failed("Exit-judged record", e)
 
     # Freshness manifest. Written as the LAST data step, so its timestamp is
     # the last run that genuinely finished. When the pipeline dies this file
@@ -322,9 +352,13 @@ def main() -> None:
                 "scan_date": today,
                 "completed_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
                 "feeds": feeds,
+                "failed_steps": list(STEP_FAILURES),
+                # A feed whose own date lags the scan is stale even when no
+                # step reported failing (e.g. a step that returned early).
+                "stale_feeds": stale_feeds(feeds, today),
             }, f, indent=2)
     except Exception as e:  # pragma: no cover - CI only
-        print(f"Freshness manifest skipped: {e}")
+        step_failed("Freshness manifest", e)
 
     # Push the day's best high-conviction setups to configured channels
     # (Slack/Discord webhooks via env/secrets); logs and no-ops when unset.

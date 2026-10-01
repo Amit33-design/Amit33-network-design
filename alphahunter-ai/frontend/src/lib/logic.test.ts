@@ -59,3 +59,16 @@ describe("statusFor — evidence per screen", () => {
     expect(statusFor({ trades: 0, win_rate: 0, "avg_return_%": 0 }).label).toBe("Unproven");
   });
 });
+
+import { visibleProblems } from "../components/FreshnessBanner";
+
+describe("visibleProblems — pipeline failures the site should admit to", () => {
+  it("reports visible steps and stale feeds, hides failures of hidden features", () => {
+    expect(visibleProblems({
+      failed_steps: [{ step: "Paper portfolio" }, { step: "Growth scan" }],
+      stale_feeds: ["paper", "moonshot"],
+    })).toEqual(["Growth scan failed", "moonshot feed stale"]);
+    expect(visibleProblems({ failed_steps: [], stale_feeds: [] })).toEqual([]);
+    expect(visibleProblems(null)).toEqual([]);
+  });
+});

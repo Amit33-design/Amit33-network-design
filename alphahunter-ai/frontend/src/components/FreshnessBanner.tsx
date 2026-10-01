@@ -39,8 +39,23 @@ export const STALE_AFTER = 2;   // trading days
  *  produces the data, so it cannot drift from it. The manifest is still read,
  *  and the NEWER of the two wins — neither can make fresh data look stale.
  */
-export function useScanFreshness(): { date: string | null; age: number | null } {
+// Pipeline steps and feeds whose failure a user would see on the site.
+// Paper portfolio / income plan are not shown, so their failures surface only
+// as CI warning annotations — a banner about a hidden feature is just noise.
+const VISIBLE_STEPS = ["Track record", "Growth scan", "Moonshot scan", "Backtest", "Exit-judged record"];
+const VISIBLE_FEEDS = ["snapshot", "growth", "moonshot", "backtest"];
+
+/** What the last run reported broken, limited to what the site shows. Pure. */
+export function visibleProblems(m: { failed_steps?: { step: string }[]; stale_feeds?: string[] } | null): string[] {
+  if (!m) return [];
+  const steps = (m.failed_steps ?? []).map((f) => f.step).filter((s) => VISIBLE_STEPS.includes(s));
+  const feeds = (m.stale_feeds ?? []).filter((f) => VISIBLE_FEEDS.includes(f)).map((f) => `${f} feed stale`);
+  return [...steps.map((s) => `${s} failed`), ...feeds];
+}
+
+export function useScanFreshness(): { date: string | null; age: number | null; problems: string[] } {
   const [dates, setDates] = useState<(string | null)[]>([]);
+  const [problems, setProblems] = useState<string[]>([]);
   useEffect(() => {
     let cancelled = false;
     const grab = (url: string, pick: (j: any) => string | null | undefined) =>
@@ -50,13 +65,16 @@ export function useScanFreshness(): { date: string | null; age: number | null } 
         .catch(() => null);
     Promise.all([
       grab("/snapshot.json", (j) => j.date),
-      grab("/freshness.json", (j) => (j as Manifest).scan_date),
+      grab("/freshness.json", (j) => {
+        if (!cancelled) setProblems(visibleProblems(j));
+        return (j as Manifest).scan_date;
+      }),
     ]).then((ds) => { if (!cancelled) setDates(ds); });
     return () => { cancelled = true; };
   }, []);
   const valid = dates.filter((d): d is string => !!d && /^\d{4}-\d{2}-\d{2}$/.test(d));
   const date = valid.length ? valid.sort()[valid.length - 1] : null;
-  return { date, age: date ? tradingDaysSince(date) : null };
+  return { date, age: date ? tradingDaysSince(date) : null, problems };
 }
 
 const pretty = (iso: string) =>
