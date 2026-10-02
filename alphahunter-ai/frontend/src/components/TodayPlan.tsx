@@ -9,6 +9,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "./ui";
+import { MIN_DATES, useJudged } from "../lib/evidence";
 
 type Pick = {
   ticker: string; company?: string; score: number; entry?: number | null;
@@ -40,6 +41,7 @@ export default function TodayPlan({ positionScale = 1, regime }:
   { positionScale?: number; regime?: string }) {
   const [picks, setPicks] = useState<Pick[] | null>(null);
   const [bt, setBt] = useState<Backtest | null>(null);
+  const judged = useJudged();
 
   useEffect(() => {
     fetch("/snapshot.json").then((r) => (r.ok ? r.json() : null))
@@ -65,6 +67,13 @@ export default function TodayPlan({ positionScale = 1, regime }:
   const acct = account();
   const perPosition = (acct / TOP_N) * positionScale;
   const oos = bt?.sweep?.out_of_sample;
+  // The backtest picked its hold length in-sample. The record measures the
+  // same idea on every real pullback pick, so when the two disagree the
+  // panel says so instead of quoting the backtest alone.
+  const rec = judged?.by_screen?.opportunity;
+  const h20 = rec?.held_20, h10 = rec?.held_instead;
+  const longHoldUnconfirmed = !!(oos && oos.hold_days >= 20 && h20 && h20.dates >= MIN_DATES
+    && (h20["avg_alpha_%"] ?? 0) < (h10?.["avg_alpha_%"] ?? 0));
 
   return (
     <div className="space-y-3">
@@ -78,6 +87,14 @@ export default function TodayPlan({ positionScale = 1, regime }:
           {oos ? <>; picked on the first half of the history and run on the second,
             it held up at <b className="text-gain">{pct(oos["alpha_%"])} vs SPY</b> over {oos.trades} trades
             (best on a {oos.hold_days}-day hold)</> : null}.</>
+        )}{" "}
+        {longHoldUnconfirmed && (
+          <span className="text-ink-muted">
+            {" "}The longer hold is not confirmed outside the backtest: across all of the pullback
+            screen's real picks (not just the top {TOP_N}), holding 20 days averaged{" "}
+            {pct(h20!["avg_alpha_%"] ?? 0)} vs SPY over {h20!.dates} dates, against{" "}
+            {pct(h10?.["avg_alpha_%"] ?? 0)} for 10 days.
+          </span>
         )}{" "}
         <span className="text-warn">
           That rests on about 2.5 months of data, with a{" "}
