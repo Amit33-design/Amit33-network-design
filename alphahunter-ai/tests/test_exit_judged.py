@@ -182,3 +182,7 @@ def test_holding_instead_separates_bad_picks_from_bad_exits():
     assert g["avg_return_%"] < 0                     # stopped out on the dip
     h = g["held_instead"]
     assert h["avg_alpha_%"] > 10 and h["hold_minus_plan_pp"] > 15
+    # 20-session hold: the path is flat at 111.5 after day 10, so it books
+    # the same rally; it needs 20 sessions of history to exist at all.
+    h20 = g["held_20"]
+    assert h20["days"] == 20 and h20["avg_alpha_%"] == pytest.approx(11.5, abs=0.01)

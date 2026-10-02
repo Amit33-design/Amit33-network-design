@@ -131,23 +131,33 @@ def summarise(trades: list[dict]) -> dict | None:
 
 
 HOLD_DAYS = 10
+# 20 as well: the walk-forward backtest found a 20-day hold best for the top
+# picks. If that is real, the picks' own record should show it too.
+HOLD_WINDOWS = (10, 20)
 
 
-def compare_hold(trades: list[dict]) -> dict | None:
+def _hold_keys(days: int) -> tuple[str, str]:
+    return ("hold_%", "hold_spy_%") if days == HOLD_DAYS else (f"hold{days}_%", f"hold{days}_spy_%")
+
+
+def compare_hold(trades: list[dict], days: int = HOLD_DAYS) -> dict | None:
     """The same picks held HOLD_DAYS sessions with no stop or target, summarised
     exactly like the plan (date-level alpha), plus which did better. Pure."""
-    held = [{"exit": "hold", "days_held": HOLD_DAYS, "picked": t["picked"],
-             "return_%": t["hold_%"], "spy_%": t.get("hold_spy_%")}
-            for t in trades if t.get("hold_%") is not None]
+    rk, sk = _hold_keys(days)
+    held = [{"exit": "hold", "days_held": days, "picked": t["picked"],
+             "return_%": t[rk], "spy_%": t.get(sk)}
+            for t in trades if t.get(rk) is not None]
     if len(held) < 3:
         return None
     h = summarise(held)
-    plan = summarise([t for t in trades if t.get("hold_%") is not None])
+    # The plan on the SAME picks (those old enough to have been held), so the
+    # comparison is never between two different sets of trades.
+    plan = summarise([t for t in trades if t.get(rk) is not None])
     diff = None
     if h and plan and h.get("avg_alpha_%") is not None and plan.get("avg_alpha_%") is not None:
         diff = round(h["avg_alpha_%"] - plan["avg_alpha_%"], 2)
     return {
-        "days": HOLD_DAYS, "trades": h["trades"], "dates": h["dates"],
+        "days": days, "trades": h["trades"], "dates": h["dates"],
         "avg_alpha_%": h["avg_alpha_%"], "alpha_t_by_date": h["alpha_t_by_date"],
         "win_rate": h["win_rate"],
         "plan_avg_alpha_%": plan["avg_alpha_%"] if plan else None,
@@ -210,15 +220,19 @@ def judge_history(history: list[tuple[str, list[dict]]],
             # Counterfactual: the same pick simply held HOLD_DAYS sessions, no
             # stop, no target. Comparing it with the plan says whether a weak
             # screen picks bad stocks or picks fine ones and exits them badly.
-            h_px = path[HOLD_DAYS - 1] if len(path) >= HOLD_DAYS else None
-            h_b1 = bench.get(days[HOLD_DAYS - 1]) if len(days) >= HOLD_DAYS else None
+            held: dict[str, float | None] = {}
+            for n in HOLD_WINDOWS:
+                rk, sk = _hold_keys(n)
+                h_px = path[n - 1] if len(path) >= n else None
+                h_b1 = bench.get(days[n - 1]) if len(days) >= n else None
+                held[rk] = round((h_px / entry - 1) * 100, 2) if h_px else None
+                held[sk] = round((h_b1 / b0 - 1) * 100, 2) if (h_b1 and b0) else None
             trades.append({
                 **res, "ticker": t, "picked": date_str, "exit_date": exit_date,
                 "score": rec.get("score"),
                 "screen": name_for((rec.get("metrics") or {}).get("profile")),
                 "spy_%": round(spy, 2) if spy is not None else None,
-                "hold_%": round((h_px / entry - 1) * 100, 2) if h_px else None,
-                "hold_spy_%": round((h_b1 / b0 - 1) * 100, 2) if (h_b1 and b0) else None,
+                **held,
             })
 
     by_screen = {}
@@ -227,6 +241,7 @@ def judge_history(history: list[tuple[str, list[dict]]],
         by_screen[s] = summarise(mine)
         if by_screen[s]:
             by_screen[s]["held_instead"] = compare_hold(mine)
+            by_screen[s]["held_20"] = compare_hold(mine, 20)
 
     return {
         "method": ("each pick judged at its own exit plan — take-profit, stop, "

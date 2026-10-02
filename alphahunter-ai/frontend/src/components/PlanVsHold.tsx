@@ -17,7 +17,8 @@ export default function PlanVsHold({ judged }: { judged: Judged | null }) {
   return (
     <div>
       <div className="text-xs text-ink-secondary mb-2">
-        Same picks, two ways to trade them: the exit plan, or just holding 10 sessions. Alpha is per
+        Same picks, three ways to trade them: the exit plan, or just holding 10 or 20 sessions
+        (the backtest's walk-forward check favoured 20). Alpha is per
         trade vs SPY over the same days. A big gap in favour of holding means the stops are cutting
         winners early for that kind of stock.
       </div>
@@ -25,7 +26,8 @@ export default function PlanVsHold({ judged }: { judged: Judged | null }) {
         <table className="table-data">
           <thead><tr>
             <th>Screen</th><th className="text-right">Exit plan</th><th className="text-right">Held 10 days</th>
-            <th className="text-right">Holding − plan</th><th className="text-right">Sample</th>
+            <th className="text-right">Held 20 days</th>
+            <th className="text-right">10-day hold − plan</th><th className="text-right">Sample</th>
           </tr></thead>
           <tbody>
             {rows.map(([k, r]) => {
@@ -39,6 +41,14 @@ export default function PlanVsHold({ judged }: { judged: Judged | null }) {
                   <td className={`text-right num ${(h["avg_alpha_%"] ?? 0) >= 0 ? "text-gain" : "text-loss"}`}>
                     {pp(h["avg_alpha_%"])}
                     {h.alpha_t_by_date != null && <div className="text-2xs text-ink-muted">t = {h.alpha_t_by_date}</div>}
+                  </td>
+                  <td className={`text-right num ${(r.held_20?.["avg_alpha_%"] ?? 0) >= 0 ? "text-gain" : "text-loss"}`}>
+                    {r.held_20 ? <>
+                      {pp(r.held_20["avg_alpha_%"])}
+                      <div className="text-2xs text-ink-muted">
+                        {r.held_20.alpha_t_by_date != null ? `t = ${r.held_20.alpha_t_by_date} · ` : ""}{r.held_20.dates} dates
+                      </div>
+                    </> : <span className="text-ink-muted">—</span>}
                   </td>
                   <td className={`text-right num ${gap == null ? "" : gap > 1 ? "text-warn font-semibold" : "text-ink-secondary"}`}>{pp(gap)}</td>
                   <td className={`text-right num text-2xs ${thin ? "text-warn" : "text-ink-muted"}`}>
