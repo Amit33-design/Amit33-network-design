@@ -1,12 +1,12 @@
 {
   "method": "each pick judged at its own exit plan \u2014 take-profit, stop, trailing stop or 10-trading-day review, whichever came first",
   "summary": {
-    "trades": 2378,
+    "trades": 2377,
     "dates": 66,
-    "alpha_t_by_date": 0.23,
+    "alpha_t_by_date": 0.16,
     "dates_beating_spy": 0.227,
     "win_rate": 0.432,
-    "avg_return_%": 1.02,
+    "avg_return_%": 1.01,
     "median_return_%": -1.43,
     "avg_win_%": 13.97,
     "avg_loss_%": -8.85,
@@ -14,7 +14,7 @@
     "beat_spy_rate": 0.423,
     "avg_days_held": 7.9,
     "exits": {
-      "take_profit": 125,
+      "take_profit": 124,
       "trail": 474,
       "close_stale": 1267,
       "sell": 512
@@ -48,24 +48,34 @@
         "win_rate": 0.909,
         "plan_avg_alpha_%": 6.08,
         "hold_minus_plan_pp": 2.4
+      },
+      "held_20": {
+        "days": 20,
+        "trades": 11,
+        "dates": 3,
+        "avg_alpha_%": 13.76,
+        "alpha_t_by_date": 1.86,
+        "win_rate": 0.818,
+        "plan_avg_alpha_%": 6.08,
+        "hold_minus_plan_pp": 7.68
       }
     },
     "growth": {
-      "trades": 106,
+      "trades": 105,
       "dates": 8,
-      "alpha_t_by_date": 1.14,
-      "dates_beating_spy": 0.75,
-      "win_rate": 0.255,
-      "avg_return_%": -1.55,
-      "median_return_%": -4.37,
-      "avg_win_%": 8.94,
+      "alpha_t_by_date": 0.37,
+      "dates_beating_spy": 0.625,
+      "win_rate": 0.248,
+      "avg_return_%": -1.7,
+      "median_return_%": -4.38,
+      "avg_win_%": 8.78,
       "avg_loss_%": -5.14,
-      "avg_alpha_%": -2.61,
-      "beat_spy_rate": 0.226,
+      "avg_alpha_%": -2.76,
+      "beat_spy_rate": 0.219,
       "avg_days_held": 7.0,
       "exits": {
         "sell": 52,
-        "take_profit": 14,
+        "take_profit": 13,
         "close_stale": 33,
         "trail": 7
       },
@@ -78,25 +88,27 @@
         "win_rate": 0.163,
         "plan_avg_alpha_%": -4.78,
         "hold_minus_plan_pp": -0.25
-      }
+      },
+      "held_20": null
     },
     "moonshot": {
       "trades": 20,
       "dates": 7,
-      "alpha_t_by_date": -29.4,
+      "alpha_t_by_date": -29.65,
       "dates_beating_spy": 0.0,
       "win_rate": 0.0,
-      "avg_return_%": -12.73,
-      "median_return_%": -12.19,
+      "avg_return_%": -12.77,
+      "median_return_%": -12.29,
       "avg_win_%": null,
-      "avg_loss_%": -12.73,
-      "avg_alpha_%": -12.55,
+      "avg_loss_%": -12.77,
+      "avg_alpha_%": -12.59,
       "beat_spy_rate": 0.0,
       "avg_days_held": 3.9,
       "exits": {
         "sell": 20
       },
-      "held_instead": null
+      "held_instead": null,
+      "held_20": null
     },
     "opportunity": {
       "trades": 2241,
@@ -126,10 +138,20 @@
         "win_rate": 0.444,
         "plan_avg_alpha_%": 1.05,
         "hold_minus_plan_pp": 1.2
+      },
+      "held_20": {
+        "days": 20,
+        "trades": 1989,
+        "dates": 52,
+        "avg_alpha_%": -0.69,
+        "alpha_t_by_date": -0.36,
+        "win_rate": 0.381,
+        "plan_avg_alpha_%": 1.54,
+        "hold_minus_plan_pp": -2.23
       }
     }
   },
-  "still_open": 1042,
+  "still_open": 1043,
   "unpriced": 1,
   "excluded_non_common": {
     "picks": 92,
@@ -147,8 +169,8 @@
     {
       "exit": "take_profit",
       "days_held": 7,
-      "exit_price": 114.83,
-      "return_%": 12.98,
+      "exit_price": 114.79,
+      "return_%": 12.93,
       "target_pct": 12.76,
       "stop_pct": -7.65,
       "ticker": "INSW",
@@ -158,13 +180,15 @@
       "screen": "growth",
       "spy_%": 0.19,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "take_profit",
       "days_held": 7,
-      "exit_price": 228.8,
-      "return_%": 17.0,
+      "exit_price": 228.33,
+      "return_%": 16.76,
       "target_pct": 12.78,
       "stop_pct": -7.67,
       "ticker": "NTAP",
@@ -174,7 +198,9 @@
       "screen": "growth",
       "spy_%": 0.19,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "take_profit",
@@ -190,13 +216,15 @@
       "screen": "growth",
       "spy_%": 0.19,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "take_profit",
       "days_held": 6,
-      "exit_price": 228.8,
-      "return_%": 15.73,
+      "exit_price": 228.33,
+      "return_%": 15.49,
       "target_pct": 12.99,
       "stop_pct": -7.79,
       "ticker": "NTAP",
@@ -206,7 +234,9 @@
       "screen": "growth",
       "spy_%": 0.27,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "take_profit",
@@ -222,13 +252,15 @@
       "screen": "growth",
       "spy_%": 0.27,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "take_profit",
       "days_held": 5,
-      "exit_price": 228.8,
-      "return_%": 15.33,
+      "exit_price": 228.33,
+      "return_%": 15.1,
       "target_pct": 12.47,
       "stop_pct": -7.48,
       "ticker": "NTAP",
@@ -238,13 +270,15 @@
       "screen": "growth",
       "spy_%": -0.27,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "take_profit",
       "days_held": 5,
-      "exit_price": 228.8,
-      "return_%": 13.75,
+      "exit_price": 228.33,
+      "return_%": 13.51,
       "target_pct": 12.41,
       "stop_pct": -7.45,
       "ticker": "NTAP",
@@ -254,13 +288,15 @@
       "screen": "growth",
       "spy_%": 0.48,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "take_profit",
       "days_held": 5,
-      "exit_price": 228.8,
-      "return_%": 13.75,
+      "exit_price": 228.33,
+      "return_%": 13.51,
       "target_pct": 12.41,
       "stop_pct": -7.45,
       "ticker": "NTAP",
@@ -270,29 +306,15 @@
       "screen": "growth",
       "spy_%": 0.48,
       "hold_%": null,
-      "hold_spy_%": null
-    },
-    {
-      "exit": "take_profit",
-      "days_held": 4,
-      "exit_price": 228.8,
-      "return_%": 11.93,
-      "target_pct": 11.88,
-      "stop_pct": -7.13,
-      "ticker": "NTAP",
-      "picked": "2026-09-28",
-      "exit_date": "2026-10-02",
-      "score": 75.0,
-      "screen": "growth",
-      "spy_%": 0.48,
-      "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
       "days_held": 7,
-      "exit_price": 271.77,
-      "return_%": -13.76,
+      "exit_price": 271.4,
+      "return_%": -13.88,
       "target_pct": 17.99,
       "stop_pct": -10.8,
       "ticker": "APP",
@@ -302,13 +324,15 @@
       "screen": "moonshot",
       "spy_%": 0.19,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
       "days_held": 5,
-      "exit_price": 271.77,
-      "return_%": -12.74,
+      "exit_price": 271.4,
+      "return_%": -12.86,
       "target_pct": 16.56,
       "stop_pct": -9.93,
       "ticker": "APP",
@@ -318,13 +342,15 @@
       "screen": "moonshot",
       "spy_%": -0.27,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
       "days_held": 5,
-      "exit_price": 271.77,
-      "return_%": -12.55,
+      "exit_price": 271.4,
+      "return_%": -12.66,
       "target_pct": 16.59,
       "stop_pct": -9.96,
       "ticker": "APP",
@@ -334,13 +360,15 @@
       "screen": "moonshot",
       "spy_%": 0.48,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
       "days_held": 5,
-      "exit_price": 271.77,
-      "return_%": -12.55,
+      "exit_price": 271.4,
+      "return_%": -12.66,
       "target_pct": 16.59,
       "stop_pct": -9.96,
       "ticker": "APP",
@@ -350,13 +378,15 @@
       "screen": "moonshot",
       "spy_%": 0.48,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
       "days_held": 4,
-      "exit_price": 271.77,
-      "return_%": -11.83,
+      "exit_price": 271.4,
+      "return_%": -11.95,
       "target_pct": 16.7,
       "stop_pct": -10.02,
       "ticker": "APP",
@@ -366,13 +396,15 @@
       "screen": "moonshot",
       "spy_%": 0.48,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
       "days_held": 4,
       "exit_price": 18.86,
-      "return_%": -10.85,
+      "return_%": -10.88,
       "target_pct": 17.41,
       "stop_pct": -10.45,
       "ticker": "DKNG",
@@ -382,13 +414,15 @@
       "screen": "moonshot",
       "spy_%": 0.48,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
       "days_held": 3,
-      "exit_price": 271.77,
-      "return_%": -11.55,
+      "exit_price": 271.4,
+      "return_%": -11.67,
       "target_pct": 16.18,
       "stop_pct": -9.71,
       "ticker": "APP",
@@ -398,7 +432,9 @@
       "screen": "moonshot",
       "spy_%": 0.66,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
@@ -414,7 +450,9 @@
       "screen": "growth",
       "spy_%": -0.5,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
@@ -430,7 +468,9 @@
       "screen": "growth",
       "spy_%": -0.42,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "take_profit",
@@ -446,7 +486,9 @@
       "screen": "growth",
       "spy_%": -0.95,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
@@ -462,7 +504,9 @@
       "screen": "growth",
       "spy_%": -0.95,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "take_profit",
@@ -478,7 +522,9 @@
       "screen": "growth",
       "spy_%": -0.21,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
@@ -494,7 +540,9 @@
       "screen": "growth",
       "spy_%": -0.21,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "take_profit",
@@ -510,7 +558,9 @@
       "screen": "growth",
       "spy_%": -0.21,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
@@ -526,7 +576,9 @@
       "screen": "growth",
       "spy_%": -0.21,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     },
     {
       "exit": "sell",
@@ -542,7 +594,27 @@
       "screen": "growth",
       "spy_%": -0.21,
       "hold_%": null,
-      "hold_spy_%": null
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
+    },
+    {
+      "exit": "sell",
+      "days_held": 6,
+      "exit_price": 8.56,
+      "return_%": -14.49,
+      "target_pct": 19.43,
+      "stop_pct": -11.66,
+      "ticker": "FMC",
+      "picked": "2026-09-23",
+      "exit_date": "2026-10-01",
+      "score": 51.3,
+      "screen": "moonshot",
+      "spy_%": -0.5,
+      "hold_%": null,
+      "hold_spy_%": null,
+      "hold20_%": null,
+      "hold20_spy_%": null
     }
   ],
   "pick_date_conditions": {
@@ -552,9 +624,9 @@
         "question": "S&P above its 50-day average on the pick date",
         "yes": {
           "dates": 57,
-          "trades": 2033,
-          "avg_alpha_%": 0.2,
-          "alpha_t": 0.15,
+          "trades": 2032,
+          "avg_alpha_%": 0.11,
+          "alpha_t": 0.08,
           "dates_beating_spy": 0.211
         },
         "no": {
@@ -564,7 +636,7 @@
           "alpha_t": 0.27,
           "dates_beating_spy": 0.333
         },
-        "diff_t": -0.18,
+        "diff_t": -0.21,
         "notable": false,
         "verdict": "Too few dates on one side (57 vs 9) to compare.",
         "suggestive": false
@@ -574,9 +646,9 @@
         "question": "S&P down 1%+ over the prior week (market-wide pullback)",
         "yes": {
           "dates": 14,
-          "trades": 551,
-          "avg_alpha_%": -1.98,
-          "alpha_t": -1.12,
+          "trades": 550,
+          "avg_alpha_%": -2.35,
+          "alpha_t": -1.23,
           "dates_beating_spy": 0.143
         },
         "no": {
@@ -586,9 +658,9 @@
           "alpha_t": 0.6,
           "dates_beating_spy": 0.25
         },
-        "diff_t": -1.25,
+        "diff_t": -1.34,
         "notable": false,
-        "verdict": "No measurable difference (t = -1.25) \u2014 this condition does not predict good days.",
+        "verdict": "No measurable difference (t = -1.34) \u2014 this condition does not predict good days.",
         "suggestive": false
       },
       {
@@ -603,9 +675,9 @@
         },
         "no": {
           "dates": 65,
-          "trades": 2341,
-          "avg_alpha_%": 0.02,
-          "alpha_t": 0.01,
+          "trades": 2340,
+          "avg_alpha_%": -0.06,
+          "alpha_t": -0.05,
           "dates_beating_spy": 0.215
         },
         "diff_t": null,
@@ -625,18 +697,18 @@
         },
         "no": {
           "dates": 26,
-          "trades": 732,
-          "avg_alpha_%": 3.21,
-          "alpha_t": 1.27,
+          "trades": 731,
+          "avg_alpha_%": 3.01,
+          "alpha_t": 1.16,
           "dates_beating_spy": 0.423
         },
-        "diff_t": -1.75,
+        "diff_t": -1.65,
         "notable": false,
-        "verdict": "No measurable difference (t = -1.75) \u2014 this condition does not predict good days.",
+        "verdict": "No measurable difference (t = -1.65) \u2014 this condition does not predict good days.",
         "suggestive": false
       }
     ],
     "method": "Each scan date's average alpha (picks judged at their exit plan, vs SPY over the same days), split by a condition known on the pick date. Notable needs |t| >= 2.5 and 10+ dates each side, because 4 splits are tested."
   },
-  "generated": "2026-10-02T19:03:07+00:00"
+  "generated": "2026-10-02T19:04:27+00:00"
 }
