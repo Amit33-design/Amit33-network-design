@@ -179,7 +179,11 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   AND `MIN_DATES` distinct scan dates before it earns a verdict — same-day
   picks share one market. "Beating SPY" additionally needs the alpha to
   hold across dates (`alpha_t_by_date` ≥ `T_PROVEN` = 2), not just on
-  average — one great day can carry a trade-weighted mean. Conditioning
+  average — one great day can carry a trade-weighted mean. That t is
+  OVERLAP-CORRECTED (`exit_judged.overlap_factor`, `_verdict_eval.overlapFactor`):
+  daily dates with ~8-session holds share most of their market days, which
+  inflates a plain t by ~sqrt(hold/spacing). On pure random walks the
+  uncorrected t reached 3. Any new "t across dates" must apply it. Conditioning
   on the pick date (`date_conditions.py`) tests several splits of ~60
   dates, so "notable" needs |t| ≥ 2.5 and 10+ dates per side — never add
   a "sit today out" rule to the product unless it clears that bar. Re-judge without a scan: dispatch

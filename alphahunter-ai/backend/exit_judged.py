@@ -85,6 +85,24 @@ def judge_pick(entry: float, path: list[float], *, atr: float | None = None,
     return None   # still open
 
 
+def overlap_factor(avg_hold_sessions: float, dates: list[str]) -> float:
+    """How much a t-statistic across scan dates overstates the evidence.
+
+    Scans run daily but trades last ~8 sessions, so consecutive dates' results
+    share most of their market days and are not independent observations. A
+    plain t across them is inflated by about sqrt(hold / spacing). The verdict
+    walk-forward test showed the effect directly: on pure random walks the
+    uncorrected t reached 3. Pure; tested.
+    """
+    if len(dates) < 2 or avg_hold_sessions <= 1:
+        return 1.0
+    import datetime as _dt
+    ds = [_dt.date.fromisoformat(d) for d in dates]
+    gaps = sorted((b - a).days * 5 / 7 for a, b in zip(ds, ds[1:]))
+    spacing = max(1.0, gaps[len(gaps) // 2])        # median gap, in sessions
+    return max(1.0, avg_hold_sessions / spacing) ** 0.5
+
+
 def summarise(trades: list[dict]) -> dict | None:
     """Aggregate closed trades. Trades carry `return_%` and optionally `spy_%`."""
     if not trades:
@@ -113,7 +131,9 @@ def summarise(trades: list[dict]) -> dict | None:
         m = sum(date_alphas) / len(date_alphas)
         var = sum((a - m) ** 2 for a in date_alphas) / (len(date_alphas) - 1)
         if var > 0:
-            alpha_t = round(m / (var / len(date_alphas)) ** 0.5, 2)
+            avg_hold = sum(t["days_held"] for t in trades) / len(trades)
+            alpha_t = round(m / (var / len(date_alphas)) ** 0.5
+                            / overlap_factor(avg_hold, sorted(by_date)), 2)
     return {
         "trades": len(trades),
         "dates": dates,

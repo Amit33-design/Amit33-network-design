@@ -64,3 +64,14 @@ describe("readVerdict — saying what a verdict's record means", () => {
     expect(readVerdict(undefined)).toBeNull();
   });
 });
+
+// @ts-expect-error — plain ESM JS outside the frontend project, no types.
+import { overlapFactor } from "../../../../api/_verdict_eval.js";
+
+describe("overlap correction", () => {
+  it("deflates t by sqrt(horizon/step) when outcome windows overlap", () => {
+    expect(overlapFactor(20, 10)).toBeCloseTo(Math.SQRT2);
+    expect(overlapFactor(60, 10)).toBeCloseTo(Math.sqrt(6));
+    expect(overlapFactor(5, 10)).toBe(1);
+  });
+});

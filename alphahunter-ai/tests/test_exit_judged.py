@@ -226,3 +226,15 @@ def test_moonshot_watch_tracks_the_studys_actual_claim():
     ])
     assert w2["picks"] == 2 and w2["listings"] == 3 and w2["oldest_sessions"] == 9
     assert w2["median_return_%"] == pytest.approx(57.5)
+
+
+def test_overlapping_holds_deflate_the_t_across_dates():
+    """Daily scan dates with 9-session holds share most of their market days;
+    they are not 9x the independent evidence. Weekly dates with 5-session
+    holds do not overlap at all."""
+    from backend.exit_judged import overlap_factor
+    daily = [f"2026-03-{d:02d}" for d in (2, 3, 4, 5, 6, 9, 10, 11, 12, 13)]
+    assert overlap_factor(9, daily) == pytest.approx(3.0, abs=0.05)
+    weekly = ["2026-03-02", "2026-03-09", "2026-03-16", "2026-03-23"]
+    assert overlap_factor(5, weekly) == 1.0
+    assert overlap_factor(10, ["2026-03-02"]) == 1.0

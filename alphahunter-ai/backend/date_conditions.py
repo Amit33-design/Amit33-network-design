@@ -52,13 +52,13 @@ CONDITIONS = [
 ]
 
 
-def _side(alphas: list[float], trades: int) -> dict:
+def _side(alphas: list[float], trades: int, overlap: float = 1.0) -> dict:
     n = len(alphas)
     m = mean(alphas) if alphas else None
     t = None
     if n >= 3:
         sd = stdev(alphas)
-        t = round(m / (sd / n ** 0.5), 2) if sd > 0 else None
+        t = round(m / (sd / n ** 0.5) / overlap, 2) if sd > 0 else None
     return {"dates": n, "trades": trades,
             "avg_alpha_%": round(m, 2) if m is not None else None,
             "alpha_t": t,
@@ -83,6 +83,9 @@ def analyse(trades: list[dict], spy: dict[str, float], vix: dict[str, float] | N
     if not by_date:
         return {"conditions": [], "note": "no closed trades"}
     counts = {d: len(v) for d, v in by_date.items()}
+    from .exit_judged import overlap_factor
+    holds = [t["days_held"] for t in trades if t.get("days_held")]
+    overlap = overlap_factor(sum(holds) / len(holds) if holds else 1, sorted(by_date))
     med = median(counts.values())
     flags = {d: _flags(d, spy, vix or {}, counts[d], med) for d in by_date}
 
@@ -93,6 +96,9 @@ def analyse(trades: list[dict], spy: dict[str, float], vix: dict[str, float] | N
         ay = [mean(by_date[d]) for d in yes]
         an = [mean(by_date[d]) for d in no]
         diff_t = _welch(ay, an)
+        if diff_t is not None:
+            # Same overlap correction as the track record's t across dates.
+            diff_t = round(diff_t / overlap, 2)
         enough = len(yes) >= MIN_SIDE_DATES and len(no) >= MIN_SIDE_DATES
         notable = bool(enough and diff_t is not None and abs(diff_t) >= NOTABLE_T)
         if not enough:
@@ -108,8 +114,8 @@ def analyse(trades: list[dict], spy: dict[str, float], vix: dict[str, float] | N
             verdict = f"No measurable difference (t = {diff_t}) — this condition does not predict good days."
         out.append({
             "key": key, "question": question,
-            "yes": _side(ay, sum(counts[d] for d in yes)),
-            "no": _side(an, sum(counts[d] for d in no)),
+            "yes": _side(ay, sum(counts[d] for d in yes), overlap),
+            "no": _side(an, sum(counts[d] for d in no), overlap),
             "diff_t": diff_t, "notable": notable, "verdict": verdict,
             "suggestive": bool(enough and not notable and diff_t is not None
                                and abs(diff_t) >= SUGGESTIVE_T),

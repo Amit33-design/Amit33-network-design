@@ -28,3 +28,7 @@ console.log(`verdict eval: ${out.cases} cases over ${out.dates} dates, ${out.tic
 for (const [v, s] of Object.entries(out.by_verdict))
   console.log(`  ${v.padEnd(10)} n=${s.cases} alpha=${s["avg_alpha_%"]}pp t=${s.alpha_t_by_date} beat=${s.beat_spy_rate}`);
 console.log(`  score IC ${out.score_ic} (t ${out.score_ic_t}); Buy - Sell ${out.buy_minus_sell_pp}pp`);
+for (const [v, s] of Object.entries(out.by_verdict_60))
+  console.log(`  60d ${v.padEnd(10)} n=${s.cases} alpha=${s["avg_alpha_%"]}pp t=${s.alpha_t_by_date}`);
+for (const [k, f] of Object.entries(out.feature_ic))
+  console.log(`  IC ${k.padEnd(14)} 20d ${f.h20?.ic} (t ${f.h20?.t})   60d ${f.h60?.ic} (t ${f.h60?.t})`);
