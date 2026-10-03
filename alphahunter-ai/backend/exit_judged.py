@@ -153,14 +153,26 @@ def _moon_progress(entry: float, path: list, days: list[str], bench: dict,
 def summarise_moonshots(watch: list[dict]) -> dict | None:
     """Progress against the moonshot study's actual claim — ~19% double within
     a year — rather than a 10-day verdict on a one-year bet. Pure."""
-    w = [x for x in watch if x.get("sessions")]
+    # One entry per NAME, from its first pick. The screen re-lists the same
+    # names day after day (240 "picks" were ~30 names on 8 dates); counting
+    # each repeat would multiply one stock's outcome by however long it
+    # stayed on the list.
+    first: dict[str, dict] = {}
+    for x in watch:
+        if not x.get("sessions"):
+            continue
+        k = x.get("ticker") or id(x)
+        if k not in first or (x.get("picked") or "") < (first[k].get("picked") or ""):
+            first[k] = x
+    w = list(first.values())
     if not w:
         return None
     rets = sorted(x["return_%"] for x in w)
     alphas = [x["return_%"] - x["spy_%"] for x in w if x.get("spy_%") is not None]
     doubled = sum(1 for x in w if x["doubled"])
     return {
-        "picks": len(w),
+        "picks": len(w),          # distinct names
+        "listings": sum(1 for x in watch if x.get("sessions")),
         "oldest_sessions": max(x["sessions"] for x in w),
         "doubled_so_far": doubled,
         "doubled_%": round(doubled / len(w) * 100, 1),
@@ -256,7 +268,8 @@ def judge_history(history: list[tuple[str, list[dict]]],
                 continue
             profile = (rec.get("metrics") or {}).get("profile")
             if profile == "moonshot":
-                watch.append(_moon_progress(float(entry), path, days, bench, b0_for(date_str)))
+                watch.append({"ticker": t, "picked": date_str,
+                              **_moon_progress(float(entry), path, days, bench, b0_for(date_str))})
             res = judge_pick(float(entry), path, atr=recover_atr(rec), profile=profile)
             if res is None:
                 still_open += 1

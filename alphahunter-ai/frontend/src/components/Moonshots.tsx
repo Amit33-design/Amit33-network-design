@@ -61,7 +61,7 @@ export default function Moonshots({ feed }: { feed: MoonFeed }) {
       </div>
       {watch && (
         <div className="text-xs text-ink-secondary">
-          <b className="text-ink">So far:</b> {watch.picks} picks, oldest {watch.oldest_sessions} sessions
+          <b className="text-ink">So far:</b> {watch.picks} names, oldest {watch.oldest_sessions} sessions
           in · <b className={watch.doubled_so_far ? "text-gain" : "text-ink"}>
             {watch.doubled_so_far} doubled ({watch["doubled_%"]}%)</b>
           {" "}· median {watch["median_return_%"] >= 0 ? "+" : ""}{watch["median_return_%"]}%

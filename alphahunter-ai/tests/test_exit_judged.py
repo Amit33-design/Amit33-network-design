@@ -218,3 +218,11 @@ def test_moonshot_watch_tracks_the_studys_actual_claim():
     assert w["picks"] == 3 and w["doubled_so_far"] == 1 and w["doubled_%"] == 33.3
     assert w["median_return_%"] == -10.0 and w["oldest_sessions"] == 40
     assert summarise_moonshots([]) is None
+    # The same name re-listed on later dates counts once, from its first pick.
+    w2 = summarise_moonshots([
+        {"ticker": "AAA", "picked": "2026-01-02", "sessions": 9, "doubled": False, "return_%": -5.0, "spy_%": 0.0},
+        {"ticker": "AAA", "picked": "2026-01-05", "sessions": 6, "doubled": False, "return_%": 2.0, "spy_%": 0.0},
+        {"ticker": "BBB", "picked": "2026-01-05", "sessions": 6, "doubled": True, "return_%": 120.0, "spy_%": 0.0},
+    ])
+    assert w2["picks"] == 2 and w2["listings"] == 3 and w2["oldest_sessions"] == 9
+    assert w2["median_return_%"] == pytest.approx(57.5)
