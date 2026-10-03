@@ -247,6 +247,7 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | "When do the picks work?" — pick-date conditions vs date-level alpha | `backend/date_conditions.py` (in `exit_judged.json`) → `components/PickDateConditions.tsx` on Research |
 | Scan freshness manifest + stale warning | `run_daily` → `freshness.json`, `components/FreshnessBanner.tsx` |
 | Live portfolio prices/recs | `api/quote.js` |
+| Portfolio X-ray (money by theme, effective bets, group headwinds) | `frontend/src/lib/xray.ts` (pure, tested) → `components/PortfolioXray.tsx`, themes from `themes.json` |
 | Dashboard watchlist | `backend/watchlist.py` + `backend/run_dashboard.py` |
 | Scan output columns | `backend/run_daily.py` |
 | A frontend page/tab | `frontend/src/pages/*` + `frontend/src/App.tsx` |

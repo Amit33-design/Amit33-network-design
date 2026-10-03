@@ -4,6 +4,7 @@ import type { PortfolioResponse } from "../lib/types";
 import { ErrorBox } from "../components/Loading";
 import { buildPlan, checkExit, tradingDaysBetween, ACTION_LABEL,
          type ExitAction } from "../lib/exitRules";
+import PortfolioXray from "../components/PortfolioXray";
 
 const STORAGE_KEY = "alphahunter.portfolio";
 // The 4th field (buy date) is optional and drives the time-stop. Without it a
@@ -199,6 +200,14 @@ export default function Portfolio() {
                   </tbody>
                 </table>
               </div>
+              {/* Market value when quoted, else what was paid — so the X-ray
+                  still works when live quotes are down. */}
+              <PortfolioXray
+                byCost={data.positions.some((p) => p.market_value == null)}
+                holdings={parse().map((h) => {
+                  const mv = data.positions.find((p) => p.ticker === h.ticker)?.market_value;
+                  return { ticker: h.ticker, value: mv ?? h.quantity * (h.cost_basis || 0) };
+                })} />
               <div className="mt-2 text-xs text-ink-muted">
                 {live
                   ? "Live prices + an on-the-go technical Buy/Hold/Sell (trend, RSI, momentum, 52-week position) for every holding. Full AlphaHunter score shown when the ticker is in the latest scan."
