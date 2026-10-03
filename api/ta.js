@@ -764,3 +764,7 @@ export default async function handler(req, res) {
     });
   }
 }
+
+// Exported for the walk-forward evaluation (api/_verdict_eval.js), which runs
+// this exact function over history to measure what its verdicts were worth.
+export { analyze };

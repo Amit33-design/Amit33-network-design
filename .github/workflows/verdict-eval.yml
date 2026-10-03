@@ -1,0 +1,51 @@
+name: Verdict walk-forward test (weekly)
+
+# Measures what the Analysis page's Buy/Hold/Sell verdict was worth: runs the
+# same analyze() from api/ta.js at past dates on ~250 stocks and records each
+# verdict's next-20-session return vs SPY. Writes
+# alphahunter-ai/frontend/public/verdict_eval.json, shown beside the verdict.
+
+on:
+  schedule:
+    - cron: '0 14 * * 0'      # Sundays — the verdict's maths changes rarely
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install
+        working-directory: alphahunter-ai
+        run: pip install -r requirements.txt
+      - name: Fetch price history
+        working-directory: alphahunter-ai
+        env:
+          PYTHONPATH: ${{ github.workspace }}/alphahunter-ai
+        run: python -m backend.verdict_data "$RUNNER_TEMP/verdict_data.json" --sample 250
+      - name: Walk the verdict forward
+        working-directory: alphahunter-ai/frontend
+        run: node scripts/verdict-eval.mjs "$RUNNER_TEMP/verdict_data.json"
+      - name: Commit
+        run: |
+          git config user.name  "alphahunter-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add alphahunter-ai/frontend/public/verdict_eval.json
+          git commit -m "Verdict walk-forward test $(date -u +%F)" || { echo "No changes"; exit 0; }
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then echo "pushed"; exit 0; fi
+            git fetch origin main
+            git rebase -X theirs origin/main || git rebase --abort
+            sleep $((attempt * 3))
+          done
+          echo "ERROR: could not push after retries"; exit 1

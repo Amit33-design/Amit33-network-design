@@ -6,6 +6,7 @@ import { ErrorBox, Loading } from "../components/Loading";
 import CompanyProfile, { useProfile } from "../components/CompanyProfile";
 import EntryTimingPanel from "../components/EntryTiming";
 import InvestmentThesis from "../components/InvestmentThesis";
+import VerdictEvidence from "../components/VerdictEvidence";
 import ChartExplainer from "../components/ChartExplainer";
 import PeerComparison from "../components/PeerComparison";
 import { isWatched, toggleWatchlist, onWatchlistChange } from "../lib/watchlist";
@@ -272,6 +273,7 @@ export default function Analysis() {
                 <span className="font-semibold text-ink">Why: </span>{data.verdict_reason}
               </div>
             )}
+            <VerdictEvidence verdict={data.recommendation} />
           </div>
 
           {profile && <CompanyProfile profile={profile} />}

@@ -184,6 +184,14 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   dates, so "notable" needs |t| ≥ 2.5 and 10+ dates per side — never add
   a "sit today out" rule to the product unless it clears that bar. Re-judge without a scan: dispatch
   `alphahunter-scan.yml` with `record_only`.
+- **A change to the Analysis verdict is measured, not argued.** `analyze()`
+  in `api/ta.js` is run at past dates on ~250 stocks (exactly the 1-year
+  window the page sees, no look-ahead — a vitest asserts it) and each
+  verdict's next-20-session alpha is published beside the verdict. Change
+  the weights or thresholds → dispatch `verdict-eval.yml` and compare
+  Buy − Sell and the score IC before/after. Claims of "has worked" need
+  t ≥ 2 across dates; the sample is today's listed stocks (survivorship), so
+  trust the comparison BETWEEN verdicts more than absolute levels.
 - **"Why" and the thesis must say different things.** "Why" explains the
   technical verdict. The thesis (`api/_story.js`) is the business case: what
   kind of company, which theme (`api/_themes.js`), and how the market feels
@@ -234,6 +242,7 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | A sub-score | `backend/scoring/engines.py` |
 | Risk flags / CSP / relative strength | `backend/scoring/{risk,csp_signal,relative_strength}.py` |
 | Live single-ticker TA / thesis / bottom / cycle | `api/ta.js` |
+| Walk-forward test of the Analysis verdict (what Buy/Hold/Sell was worth) | `api/_verdict_eval.js` (runs `ta.js`'s exported `analyze`) ← `backend/verdict_data.py` + `frontend/scripts/verdict-eval.mjs`, weekly `verdict-eval.yml` → `verdict_eval.json` → `components/VerdictEvidence.tsx` |
 | Range-vs-trend regime & entry timing | `api/_regime.js` + `backend/indicators/range_regime.py` |
 | Shared indicator maths (RSI) | `api/_indicators.js` |
 | Investment thesis: theme, growth scope, measured group/market sentiment | `api/_themes.js` (theme map) + `api/_story.js` → `components/InvestmentThesis.tsx` |
