@@ -202,6 +202,14 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   used to refetch the same first 400 forever. `api/profile.js` falls back to a
   Wikipedia summary, guarded by `wikiMatches()` so a same-named page about a
   fruit or a person is never shown as the company.
+- **Judge (and advise) each screen by the plan its evidence measured.**
+  Moonshots' evidence is "~19% double within a year" with a +6.7% median —
+  a hold-and-size-small bet. The generic 10-day ATR plan stopped out all of
+  the first 20 picks within days. `exit_rules.plan_for(profile=...)` gives
+  moonshots `build_moonshot_plan` (sell half at the double, no price stop,
+  252-session review); `exit_judged` judges them by it and reports
+  `moonshot_watch` (doubled so far vs the study's claim). A new screen with
+  a different horizon needs its own plan here, not the default.
 - **Never lend one list another list's evidence.** Top Picks are the watchlist
   ranked by composite score, not a scan screen; showing a scan screen's
   track record on them would claim proof they do not have.

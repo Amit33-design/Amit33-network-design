@@ -26,7 +26,7 @@ import json
 import os
 from statistics import median
 
-from .exit_rules import build_plan, check_exit
+from .exit_rules import build_moonshot_plan, build_plan, check_exit
 
 MAX_GAP_SESSIONS = 5
 
@@ -45,7 +45,7 @@ def recover_atr(rec: dict) -> float | None:
 
 
 def judge_pick(entry: float, path: list[float], *, atr: float | None = None,
-               horizon_days: int = 10) -> dict | None:
+               horizon_days: int = 10, profile: str | None = None) -> dict | None:
     """Apply the exit plan to the closes AFTER the pick, day by day.
 
     ``path`` is the sequence of daily closes starting with the first session
@@ -55,7 +55,10 @@ def judge_pick(entry: float, path: list[float], *, atr: float | None = None,
     """
     if not entry or entry <= 0 or not path:
         return None
-    plan = build_plan(float(entry), atr=atr, horizon_days=horizon_days)
+    # Each screen is judged by the plan that matches its evidence: moonshots
+    # by "hold a year, sell at the double", everything else by the 10-day plan.
+    plan = (build_moonshot_plan(float(entry)) if profile == "moonshot"
+            else build_plan(float(entry), atr=atr, horizon_days=horizon_days))
     peak = float(entry)
     for day, px in enumerate(path, 1):
         if px is None or px <= 0:
@@ -130,6 +133,44 @@ def summarise(trades: list[dict]) -> dict | None:
     }
 
 
+def _moon_progress(entry: float, path: list, days: list[str], bench: dict,
+                   b0: float | None) -> dict:
+    """Where a moonshot pick stands so far: did it double at any close, and
+    what is it worth now (vs SPY over the same sessions)."""
+    priced = [(d, px) for d, px in zip(days, path) if px]
+    if not priced:
+        return {"sessions": 0}
+    last_d, last_px = priced[-1]
+    b1 = bench.get(last_d)
+    return {
+        "sessions": len(path),
+        "doubled": max(px for _, px in priced) >= entry * 2,
+        "return_%": (last_px / entry - 1) * 100,
+        "spy_%": ((b1 / b0 - 1) * 100) if (b0 and b1) else None,
+    }
+
+
+def summarise_moonshots(watch: list[dict]) -> dict | None:
+    """Progress against the moonshot study's actual claim — ~19% double within
+    a year — rather than a 10-day verdict on a one-year bet. Pure."""
+    w = [x for x in watch if x.get("sessions")]
+    if not w:
+        return None
+    rets = sorted(x["return_%"] for x in w)
+    alphas = [x["return_%"] - x["spy_%"] for x in w if x.get("spy_%") is not None]
+    doubled = sum(1 for x in w if x["doubled"])
+    return {
+        "picks": len(w),
+        "oldest_sessions": max(x["sessions"] for x in w),
+        "doubled_so_far": doubled,
+        "doubled_%": round(doubled / len(w) * 100, 1),
+        "median_return_%": round(median(rets), 1),
+        "avg_vs_spy_pp": round(sum(alphas) / len(alphas), 1) if alphas else None,
+        "note": ("Measured against the study's claim of ~19% doubling within a year "
+                 "(4.8% base rate). Early on, few picks have had time to double."),
+    }
+
+
 HOLD_DAYS = 10
 # 20 as well: the walk-forward backtest found a 20-day hold best for the top
 # picks. If that is real, the picks' own record should show it too.
@@ -187,6 +228,10 @@ def judge_history(history: list[tuple[str, list[dict]]],
     # after 1 day" on 23 Sep.
     calendar = sorted(bench)
     trades, still_open, unpriced, excluded = [], 0, 0, []
+    watch: list[dict] = []
+
+    def b0_for(date_str: str) -> float | None:
+        return next((bench[d] for d in sorted(bench) if d >= date_str), None)
     for date_str, results in history:
         picks = sorted(results, key=lambda r: -(r.get("score") or 0))
         if top_n:
@@ -209,7 +254,10 @@ def judge_history(history: list[tuple[str, list[dict]]],
             if days and not any(px for px in path[:MAX_GAP_SESSIONS]):
                 unpriced += 1
                 continue
-            res = judge_pick(float(entry), path, atr=recover_atr(rec))
+            profile = (rec.get("metrics") or {}).get("profile")
+            if profile == "moonshot":
+                watch.append(_moon_progress(float(entry), path, days, bench, b0_for(date_str)))
+            res = judge_pick(float(entry), path, atr=recover_atr(rec), profile=profile)
             if res is None:
                 still_open += 1
                 continue
@@ -255,6 +303,7 @@ def judge_history(history: list[tuple[str, list[dict]]],
         # rather than silently dropped: the count stays visible.
         "excluded_non_common": {"picks": len(excluded),
                                 "tickers": sorted(set(excluded))},
+        "moonshot_watch": summarise_moonshots(watch),
         "recent": sorted(trades, key=lambda x: x["exit_date"], reverse=True)[:25],
         "_trades": trades,       # for build(); popped before writing
     }

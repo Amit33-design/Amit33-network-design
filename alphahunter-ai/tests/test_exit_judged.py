@@ -186,3 +186,35 @@ def test_holding_instead_separates_bad_picks_from_bad_exits():
     # the same rally; it needs 20 sessions of history to exist at all.
     h20 = g["held_20"]
     assert h20["days"] == 20 and h20["avg_alpha_%"] == pytest.approx(11.5, abs=0.01)
+
+
+def test_a_moonshot_is_not_stopped_out_by_noise():
+    """The first 20 moonshot picks were all stopped out within days by a
+    -15% stop on stocks that move 5% a day. Judged by its own plan, a -25%
+    wobble on the way to a double is the strategy, not a failed trade."""
+    from backend.exit_rules import build_moonshot_plan, plan_for
+    plan = build_moonshot_plan(4.0)
+    assert plan.target == 8.0 and plan.horizon_days == 252 and plan.stop == 0.0
+    assert plan_for(4.0, profile="moonshot").target == 8.0
+    assert plan_for(100.0, atr=2.0, profile="opportunity").horizon_days == 10
+
+    wobble_then_double = [3.5, 3.0, 3.2, 4.4, 5.5, 6.9, 8.1]
+    r = judge_pick(4.0, wobble_then_double, profile="moonshot")
+    assert r["exit"] == "take_profit" and r["return_%"] > 100
+    # The same path under the generic plan would have been stopped out.
+    assert judge_pick(4.0, wobble_then_double, atr=0.25)["exit"] == "sell"
+    # Not yet at the double and inside the year: still open, not a result.
+    assert judge_pick(4.0, [3.5, 3.0, 4.2], profile="moonshot") is None
+
+
+def test_moonshot_watch_tracks_the_studys_actual_claim():
+    from backend.exit_judged import summarise_moonshots
+    w = summarise_moonshots([
+        {"sessions": 40, "doubled": True, "return_%": 85.0, "spy_%": 3.0},
+        {"sessions": 30, "doubled": False, "return_%": -40.0, "spy_%": 2.0},
+        {"sessions": 20, "doubled": False, "return_%": -10.0, "spy_%": 1.0},
+        {"sessions": 0},
+    ])
+    assert w["picks"] == 3 and w["doubled_so_far"] == 1 and w["doubled_%"] == 33.3
+    assert w["median_return_%"] == -10.0 and w["oldest_sessions"] == 40
+    assert summarise_moonshots([]) is None

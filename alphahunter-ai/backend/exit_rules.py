@@ -63,6 +63,39 @@ class ExitPlan:
         return asdict(self)
 
 
+# Moonshots are a different strategy, not a riskier version of the same one.
+# Their evidence is "doubled within a year" (19% vs a 4.8% base rate, with a
+# MEDIAN outcome of only +6.7%) — a fat right tail you only collect by holding.
+# The generic 10-day plan put a -15% stop on stocks that move 5% a day: every
+# one of the first 20 moonshot picks was stopped out within days, so the
+# product was telling people to trade the profile in the one way the study
+# says loses. Position size is the risk control here, not a stop.
+MOONSHOT_TARGET_PCT = 100.0      # sell (at least half) at the double
+MOONSHOT_HORIZON_DAYS = 252      # the study's window: one year of sessions
+
+
+def build_moonshot_plan(entry: float) -> ExitPlan:
+    if entry <= 0:
+        raise ValueError("entry must be positive")
+    return ExitPlan(
+        entry=money(entry),
+        target=money(entry * (1 + MOONSHOT_TARGET_PCT / 100)),
+        stop=0.0,                       # no price stop: size it as a possible total loss
+        horizon_days=MOONSHOT_HORIZON_DAYS,
+        target_pct=MOONSHOT_TARGET_PCT,
+        stop_pct=-100.0,
+        trail_arms_at_pct=MOONSHOT_TARGET_PCT,   # never trails before the double
+        trail_giveback_pct=TRAIL_GIVEBACK_PCT,
+    )
+
+
+def plan_for(entry: float, *, atr: float | None = None, profile: str | None = None) -> ExitPlan:
+    """The exit plan that matches how a screen's evidence was measured."""
+    if profile == "moonshot":
+        return build_moonshot_plan(entry)
+    return build_plan(entry, atr=atr)
+
+
 def build_plan(
     entry: float,
     *,

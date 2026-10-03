@@ -29,6 +29,10 @@ export type PickDateCondition = {
 export type Judged = {
   summary?: ScreenRecord | null;
   by_screen?: Record<string, ScreenRecord>;
+  moonshot_watch?: {
+    picks: number; oldest_sessions: number; doubled_so_far: number; "doubled_%": number;
+    "median_return_%": number; avg_vs_spy_pp: number | null; note?: string;
+  } | null;
   pick_date_conditions?: { conditions: PickDateCondition[]; method?: string } | null;
   generated?: string;
 };

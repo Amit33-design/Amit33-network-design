@@ -6,6 +6,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Badge, EmptyState } from "./ui";
+import { useJudged } from "../lib/evidence";
 
 type Moon = {
   ticker: string; company?: string; score: number; entry?: number | null;
@@ -31,6 +32,7 @@ export function useMoonshots(): MoonFeed | null {
 }
 
 export default function Moonshots({ feed }: { feed: MoonFeed }) {
+  const watch = useJudged()?.moonshot_watch ?? null;
   const rows = feed.results;
   if (!rows.length) {
     return <EmptyState icon="🎲" title="No moonshot candidates today"
@@ -53,12 +55,24 @@ export default function Moonshots({ feed }: { feed: MoonFeed }) {
         middle. Size these small and hold many, the opposite of how you'd size a
         Growth Leader. Roughly 7% of the universe delists each year, mostly from
         this same beaten-down bucket, so {rate}% is an upper bound.
+        {" "}<b>How to hold them:</b> no stop-loss — a 10-day stop on a stock that moves 5% a
+        day just sells the noise (the first 20 picks traded that way were all stopped out).
+        Sell half at the double; review after a year.
       </div>
+      {watch && (
+        <div className="text-xs text-ink-secondary">
+          <b className="text-ink">So far:</b> {watch.picks} picks, oldest {watch.oldest_sessions} sessions
+          in · <b className={watch.doubled_so_far ? "text-gain" : "text-ink"}>
+            {watch.doubled_so_far} doubled ({watch["doubled_%"]}%)</b>
+          {" "}· median {watch["median_return_%"] >= 0 ? "+" : ""}{watch["median_return_%"]}%
+          {watch["avg_vs_spy_pp"] != null && <> · {watch["avg_vs_spy_pp"] >= 0 ? "+" : ""}{watch["avg_vs_spy_pp"]}pp vs SPY</>}.
+          {" "}The claim is ~{rate}% within a year; most picks are weeks old.
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {rows.slice(0, 12).map((r) => {
           const m = r.metrics || {};
-          const x = r.exit_plan;
           return (
             <div key={r.ticker} className="panel p-3">
               <div className="flex items-start justify-between gap-2">
@@ -84,13 +98,16 @@ export default function Moonshots({ feed }: { feed: MoonFeed }) {
                   <Badge>{Math.abs(m["dist_52w_high_%"]).toFixed(0)}% off high</Badge>)}
               </div>
 
-              {x && r.entry && (
+              {r.entry ? (
+                // Always this screen's own rule, computed from the entry, so
+                // picks saved under the old 10-day plan never show its stop.
                 <div className="mt-2 text-xs text-ink-secondary num">
-                  Buy ~${r.entry} · take profit <b className="text-gain">${x.target}</b>
-                  {" "}· stop <b className="text-loss">${x.stop}</b>
-                  {" "}· review after {x.horizon_days}d
+                  Buy ~${r.entry} · sell half at the double{" "}
+                  <b className="text-gain">${(r.entry * 2).toFixed(2)}</b>
+                  {" "}· <b className="text-warn">no stop</b> — size it as money you could lose
+                  {" "}· review in 12 months
                 </div>
-              )}
+              ) : null}
               {m.reasons?.length ? (
                 <div className="mt-1 text-xs text-ink-secondary">
                   {m.reasons.slice(0, 3).join(" · ")}

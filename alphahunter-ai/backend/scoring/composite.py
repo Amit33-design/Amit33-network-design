@@ -15,7 +15,7 @@ from backend.scoring import engines
 from backend.scoring.csp_signal import compute_csp_signal
 from backend.scoring.relative_strength import apply_rel_strength, compute_rel_strength
 from backend.scoring.risk import compute_risk_flags
-from backend.exit_rules import build_plan as build_exit_plan
+from backend.exit_rules import plan_for
 from backend.utils.market_data import MarketData, StockSnapshot
 
 _LEVELS = ["Low", "Medium", "High"]
@@ -246,7 +246,8 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
         # the paper portfolio found 36 of 66 losses ran past -7%, costing 737
         # percentage points between them. A recommendation with no exit is
         # half a recommendation.
-        "exit_plan": (build_exit_plan(entry, atr=atr).to_dict() if entry else None),
+        "exit_plan": (plan_for(entry, atr=atr, profile=hit.metrics.get("profile")).to_dict()
+                      if entry else None),
         # Entry timing. Built with JS parity for the Analysis page and then
         # wired only there — so every scan pick shipped without it until now.
         "entry_timing": _entry_timing_for(snap),
