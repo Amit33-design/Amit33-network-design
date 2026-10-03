@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-03T02:32:06Z",
+ "generated": "2026-10-03T02:36:53Z",
  "params": {
   "window_bars": 252,
   "horizon_sessions": 20,
@@ -10,6 +10,208 @@
   "from": "2024-10-02",
   "to": "2026-09-02"
  },
+ "feature_ic": {
+  "trend_score": {
+   "h20": {
+    "ic": 0.001,
+    "t": 0.04,
+    "dates": 49
+   },
+   "h60": {
+    "ic": -0.012,
+    "t": -0.25,
+    "dates": 45
+   }
+  },
+  "timing_score": {
+   "h20": {
+    "ic": -0.017,
+    "t": -1.01,
+    "dates": 49
+   },
+   "h60": {
+    "ic": -0.013,
+    "t": -0.4,
+    "dates": 45
+   }
+  },
+  "rsi": {
+   "h20": {
+    "ic": 0.004,
+    "t": 0.16,
+    "dates": 49
+   },
+   "h60": {
+    "ic": -0.006,
+    "t": -0.12,
+    "dates": 45
+   }
+  },
+  "macd_hist_pct": {
+   "h20": {
+    "ic": 0.01,
+    "t": 0.38,
+    "dates": 49
+   },
+   "h60": {
+    "ic": -0.003,
+    "t": -0.06,
+    "dates": 45
+   }
+  },
+  "ret_1m": {
+   "h20": {
+    "ic": -0.006,
+    "t": -0.2,
+    "dates": 49
+   },
+   "h60": {
+    "ic": -0.026,
+    "t": -0.45,
+    "dates": 45
+   }
+  },
+  "ret_3m": {
+   "h20": {
+    "ic": -0.028,
+    "t": -0.87,
+    "dates": 49
+   },
+   "h60": {
+    "ic": -0.018,
+    "t": -0.28,
+    "dates": 45
+   }
+  },
+  "ret_6m": {
+   "h20": {
+    "ic": 0.003,
+    "t": 0.07,
+    "dates": 49
+   },
+   "h60": {
+    "ic": 0.001,
+    "t": 0.02,
+    "dates": 45
+   }
+  },
+  "ret_1y": {
+   "h20": {
+    "ic": 0.017,
+    "t": 0.58,
+    "dates": 49
+   },
+   "h60": {
+    "ic": 0.002,
+    "t": 0.05,
+    "dates": 45
+   }
+  },
+  "dist_52w_high": {
+   "h20": {
+    "ic": -0.008,
+    "t": -0.25,
+    "dates": 49
+   },
+   "h60": {
+    "ic": -0.019,
+    "t": -0.34,
+    "dates": 45
+   }
+  },
+  "dist_52w_low": {
+   "h20": {
+    "ic": 0.022,
+    "t": 0.64,
+    "dates": 49
+   },
+   "h60": {
+    "ic": 0.019,
+    "t": 0.35,
+    "dates": 45
+   }
+  },
+  "vs_200d": {
+   "h20": {
+    "ic": 0.003,
+    "t": 0.09,
+    "dates": 49
+   },
+   "h60": {
+    "ic": -0.006,
+    "t": -0.1,
+    "dates": 45
+   }
+  },
+  "sma50_vs_200": {
+   "h20": {
+    "ic": 0,
+    "t": 0,
+    "dates": 49
+   },
+   "h60": {
+    "ic": 0,
+    "t": 0.01,
+    "dates": 45
+   }
+  },
+  "atr_pct": {
+   "h20": {
+    "ic": 0.039,
+    "t": 0.96,
+    "dates": 49
+   },
+   "h60": {
+    "ic": 0.05,
+    "t": 0.68,
+    "dates": 45
+   }
+  },
+  "volume_ratio": {
+   "h20": {
+    "ic": 0.015,
+    "t": 0.82,
+    "dates": 49
+   },
+   "h60": {
+    "ic": 0.008,
+    "t": 0.26,
+    "dates": 45
+   }
+  }
+ },
+ "by_verdict_60": {
+  "Buy": {
+   "cases": 2129,
+   "dates": 84,
+   "avg_alpha_%": 1.26,
+   "alpha_t_by_date": 0.94
+  },
+  "Accumulate": {
+   "cases": 2919,
+   "dates": 104,
+   "avg_alpha_%": 0.76,
+   "alpha_t_by_date": 0.97
+  },
+  "Hold": {
+   "cases": 1141,
+   "dates": 54,
+   "avg_alpha_%": 1.15,
+   "alpha_t_by_date": 0.34
+  },
+  "Wait": {
+   "cases": 1873,
+   "dates": 57,
+   "avg_alpha_%": 0.68,
+   "alpha_t_by_date": 0.29
+  },
+  "Reduce": {
+   "cases": 4358,
+   "dates": 76,
+   "avg_alpha_%": 1.41,
+   "alpha_t_by_date": 0.76
+  }
+ },
  "cases": 13569,
  "dates": 206,
  "by_verdict": {
@@ -19,7 +221,7 @@
    "avg_alpha_%": 0.3,
    "avg_return_%": 1.39,
    "beat_spy_rate": 0.461,
-   "alpha_t_by_date": 1.52
+   "alpha_t_by_date": 1.07
   },
   "Accumulate": {
    "cases": 3220,
@@ -27,7 +229,7 @@
    "avg_alpha_%": 0.18,
    "avg_return_%": 1.27,
    "beat_spy_rate": 0.473,
-   "alpha_t_by_date": 1.6
+   "alpha_t_by_date": 1.13
   },
   "Hold": {
    "cases": 1268,
@@ -35,7 +237,7 @@
    "avg_alpha_%": -0.18,
    "avg_return_%": 0.9,
    "beat_spy_rate": 0.468,
-   "alpha_t_by_date": 1.13
+   "alpha_t_by_date": 0.8
   },
   "Wait": {
    "cases": 2058,
@@ -43,7 +245,7 @@
    "avg_alpha_%": 0.38,
    "avg_return_%": 1.54,
    "beat_spy_rate": 0.459,
-   "alpha_t_by_date": 0.33
+   "alpha_t_by_date": 0.24
   },
   "Reduce": {
    "cases": 4677,
@@ -51,7 +253,7 @@
    "avg_alpha_%": 0.51,
    "avg_return_%": 2.21,
    "beat_spy_rate": 0.475,
-   "alpha_t_by_date": 1.74
+   "alpha_t_by_date": 1.23
   },
   "Sell": {
    "cases": 23,
@@ -59,11 +261,11 @@
    "avg_alpha_%": 1.68,
    "avg_return_%": 3.37,
    "beat_spy_rate": 0.478,
-   "alpha_t_by_date": 0.93
+   "alpha_t_by_date": 0.66
   }
  },
  "score_ic": 0.004,
- "score_ic_t": 0.2,
+ "score_ic_t": 0.14,
  "buy_minus_sell_pp": -1.38,
  "caveat": "Today's listed stocks only (delisted names are missing), so absolute returns are flattered; the comparison between verdicts is the reliable part."
 }
