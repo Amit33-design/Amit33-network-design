@@ -6,7 +6,7 @@ def test_sample_is_reproducible_watchlist_first_and_common_shares_only():
     uni = [f"T{i:03d}" for i in range(100)] + ["GRABW", "HBANZ"]
     a = sample_tickers(uni, ["AAPL", "T005"], 20)
     assert a == sample_tickers(uni, ["AAPL", "T005"], 20)          # same draw every week
-    assert a[:2] == ["AAPL", "T005"] and len(a) == 21               # no duplicate of T005
+    assert a[:2] == ["AAPL", "T005"] and len(a) == 22 and len(set(a)) == 22   # watchlist + 20 drawn, no duplicates
     assert "GRABW" not in a and "HBANZ" not in a
 
 
