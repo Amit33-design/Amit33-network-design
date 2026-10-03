@@ -1,5 +1,69 @@
 {
- "generated": null,
- "note": "Seed. The weekly verdict-eval workflow replaces this with the walk-forward test of the Analysis verdict.",
- "by_verdict": {}
+ "generated": "2026-10-03T02:32:06Z",
+ "params": {
+  "window_bars": 252,
+  "horizon_sessions": 20,
+  "step_sessions": 10
+ },
+ "tickers": 282,
+ "period": {
+  "from": "2024-10-02",
+  "to": "2026-09-02"
+ },
+ "cases": 13569,
+ "dates": 206,
+ "by_verdict": {
+  "Buy": {
+   "cases": 2323,
+   "dates": 92,
+   "avg_alpha_%": 0.3,
+   "avg_return_%": 1.39,
+   "beat_spy_rate": 0.461,
+   "alpha_t_by_date": 1.52
+  },
+  "Accumulate": {
+   "cases": 3220,
+   "dates": 125,
+   "avg_alpha_%": 0.18,
+   "avg_return_%": 1.27,
+   "beat_spy_rate": 0.473,
+   "alpha_t_by_date": 1.6
+  },
+  "Hold": {
+   "cases": 1268,
+   "dates": 59,
+   "avg_alpha_%": -0.18,
+   "avg_return_%": 0.9,
+   "beat_spy_rate": 0.468,
+   "alpha_t_by_date": 1.13
+  },
+  "Wait": {
+   "cases": 2058,
+   "dates": 61,
+   "avg_alpha_%": 0.38,
+   "avg_return_%": 1.54,
+   "beat_spy_rate": 0.459,
+   "alpha_t_by_date": 0.33
+  },
+  "Reduce": {
+   "cases": 4677,
+   "dates": 91,
+   "avg_alpha_%": 0.51,
+   "avg_return_%": 2.21,
+   "beat_spy_rate": 0.475,
+   "alpha_t_by_date": 1.74
+  },
+  "Sell": {
+   "cases": 23,
+   "dates": 17,
+   "avg_alpha_%": 1.68,
+   "avg_return_%": 3.37,
+   "beat_spy_rate": 0.478,
+   "alpha_t_by_date": 0.93
+  }
+ },
+ "score_ic": 0.004,
+ "score_ic_t": 0.2,
+ "buy_minus_sell_pp": -1.38,
+ "caveat": "Today's listed stocks only (delisted names are missing), so absolute returns are flattered; the comparison between verdicts is the reliable part."
 }
