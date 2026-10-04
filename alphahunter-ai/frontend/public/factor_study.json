@@ -1,1 +1,532 @@
-{"generated": null, "note": "Seed. The weekly factor-study workflow replaces this.", "factors": [], "revisions": {"logs": 0, "factors": []}}
+{
+ "factors": [
+  {
+   "key": "group_mom_3m",
+   "hypothesis": "Stocks in groups that led over 3 months keep leading (industry momentum)",
+   "expected_sign": 1,
+   "h20": {
+    "dates": 49,
+    "ic": 0.0002,
+    "t": 0.01,
+    "spread_pp": 1.57,
+    "spread_t": 0.97,
+    "first_half": {
+     "ic": 0.0177,
+     "t": 0.31
+    },
+    "second_half": {
+     "ic": -0.0166,
+     "t": -0.35
+    },
+    "period": [
+     "2024-10-03",
+     "2026-09-03"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 0.01)."
+   },
+   "h60": {
+    "dates": 45,
+    "ic": -0.0216,
+    "t": -0.28,
+    "spread_pp": 3.3,
+    "spread_t": 0.52,
+    "first_half": {
+     "ic": -0.0614,
+     "t": -0.5
+    },
+    "second_half": {
+     "ic": 0.0165,
+     "t": 0.18
+    },
+    "period": [
+     "2024-10-03",
+     "2026-07-09"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = -0.28)."
+   }
+  },
+  {
+   "key": "group_mom_6m",
+   "hypothesis": "Stocks in groups that led over 6 months keep leading",
+   "expected_sign": 1,
+   "h20": {
+    "dates": 49,
+    "ic": 0.0015,
+    "t": 0.05,
+    "spread_pp": 2.03,
+    "spread_t": 1.38,
+    "first_half": {
+     "ic": -0.0057,
+     "t": -0.13
+    },
+    "second_half": {
+     "ic": 0.0084,
+     "t": 0.17
+    },
+    "period": [
+     "2024-10-03",
+     "2026-09-03"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 0.05)."
+   },
+   "h60": {
+    "dates": 45,
+    "ic": -0.0099,
+    "t": -0.18,
+    "spread_pp": 4.0,
+    "spread_t": 0.85,
+    "first_half": {
+     "ic": -0.0117,
+     "t": -0.17
+    },
+    "second_half": {
+     "ic": -0.0083,
+     "t": -0.09
+    },
+    "period": [
+     "2024-10-03",
+     "2026-07-09"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = -0.18)."
+   }
+  },
+  {
+   "key": "rel_to_group_3m",
+   "hypothesis": "The leaders within their own group keep leading",
+   "expected_sign": 1,
+   "h20": {
+    "dates": 49,
+    "ic": 0.0005,
+    "t": 0.03,
+    "spread_pp": -0.12,
+    "spread_t": -0.17,
+    "first_half": {
+     "ic": 0.0067,
+     "t": 0.24
+    },
+    "second_half": {
+     "ic": -0.0054,
+     "t": -0.21
+    },
+    "period": [
+     "2024-10-03",
+     "2026-09-03"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 0.03)."
+   },
+   "h60": {
+    "dates": 45,
+    "ic": 0.0099,
+    "t": 0.26,
+    "spread_pp": -0.49,
+    "spread_t": -0.15,
+    "first_half": {
+     "ic": -0.0163,
+     "t": -0.3
+    },
+    "second_half": {
+     "ic": 0.0349,
+     "t": 0.68
+    },
+    "period": [
+     "2024-10-03",
+     "2026-07-09"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 0.26)."
+   }
+  },
+  {
+   "key": "eps_surprise",
+   "hypothesis": "A bigger last earnings surprise is followed by drift the same way",
+   "expected_sign": 1,
+   "h20": {
+    "dates": 49,
+    "ic": 0.0173,
+    "t": 1.07,
+    "spread_pp": -0.07,
+    "spread_t": -0.15,
+    "first_half": {
+     "ic": 0.0289,
+     "t": 1.03
+    },
+    "second_half": {
+     "ic": 0.0061,
+     "t": 0.36
+    },
+    "period": [
+     "2024-10-03",
+     "2026-09-03"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 1.07)."
+   },
+   "h60": {
+    "dates": 45,
+    "ic": 0.0439,
+    "t": 1.58,
+    "spread_pp": 1.03,
+    "spread_t": 0.44,
+    "first_half": {
+     "ic": 0.0514,
+     "t": 1.1
+    },
+    "second_half": {
+     "ic": 0.0368,
+     "t": 1.15
+    },
+    "period": [
+     "2024-10-03",
+     "2026-07-09"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 1.58)."
+   }
+  },
+  {
+   "key": "earn_reaction",
+   "hypothesis": "The market's reaction to the last report continues (post-earnings drift)",
+   "expected_sign": 1,
+   "h20": {
+    "dates": 49,
+    "ic": -0.0058,
+    "t": -0.52,
+    "spread_pp": -0.23,
+    "spread_t": -0.52,
+    "first_half": {
+     "ic": 0.003,
+     "t": 0.19
+    },
+    "second_half": {
+     "ic": -0.0142,
+     "t": -0.91
+    },
+    "period": [
+     "2024-10-03",
+     "2026-09-03"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = -0.52)."
+   },
+   "h60": {
+    "dates": 45,
+    "ic": -0.0028,
+    "t": -0.15,
+    "spread_pp": 0.34,
+    "spread_t": 0.25,
+    "first_half": {
+     "ic": -0.0066,
+     "t": -0.28
+    },
+    "second_half": {
+     "ic": 0.0009,
+     "t": 0.03
+    },
+    "period": [
+     "2024-10-03",
+     "2026-07-09"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = -0.15)."
+   }
+  },
+  {
+   "key": "mom_12_1",
+   "hypothesis": "12-month winners, skipping the last month, keep winning",
+   "expected_sign": 1,
+   "h20": {
+    "dates": 49,
+    "ic": 0.0349,
+    "t": 1.02,
+    "spread_pp": 1.99,
+    "spread_t": 1.51,
+    "first_half": {
+     "ic": 0.0423,
+     "t": 0.95
+    },
+    "second_half": {
+     "ic": 0.0278,
+     "t": 0.53
+    },
+    "period": [
+     "2024-10-03",
+     "2026-09-03"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 1.02)."
+   },
+   "h60": {
+    "dates": 45,
+    "ic": 0.0461,
+    "t": 0.94,
+    "spread_pp": 3.58,
+    "spread_t": 0.92,
+    "first_half": {
+     "ic": 0.0443,
+     "t": 0.72
+    },
+    "second_half": {
+     "ic": 0.0479,
+     "t": 0.62
+    },
+    "period": [
+     "2024-10-03",
+     "2026-07-09"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 0.94)."
+   }
+  },
+  {
+   "key": "high52_prox",
+   "hypothesis": "Stocks near their 52-week high outperform (anchoring)",
+   "expected_sign": 1,
+   "h20": {
+    "dates": 49,
+    "ic": -0.0062,
+    "t": -0.19,
+    "spread_pp": -1.26,
+    "spread_t": -1.02,
+    "first_half": {
+     "ic": -0.0297,
+     "t": -0.56
+    },
+    "second_half": {
+     "ic": 0.0164,
+     "t": 0.42
+    },
+    "period": [
+     "2024-10-03",
+     "2026-09-03"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = -0.19)."
+   },
+   "h60": {
+    "dates": 45,
+    "ic": -0.0197,
+    "t": -0.3,
+    "spread_pp": -5.75,
+    "spread_t": -1.14,
+    "first_half": {
+     "ic": -0.0667,
+     "t": -0.69
+    },
+    "second_half": {
+     "ic": 0.0253,
+     "t": 0.29
+    },
+    "period": [
+     "2024-10-03",
+     "2026-07-09"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = -0.3)."
+   }
+  },
+  {
+   "key": "rev_1w",
+   "hypothesis": "Last week's losers bounce, winners give back (short-term reversal)",
+   "expected_sign": -1,
+   "h20": {
+    "dates": 49,
+    "ic": 0.0373,
+    "t": 1.3,
+    "spread_pp": 1.09,
+    "spread_t": 0.93,
+    "first_half": {
+     "ic": 0.0535,
+     "t": 1.28
+    },
+    "second_half": {
+     "ic": 0.0217,
+     "t": 0.55
+    },
+    "period": [
+     "2024-10-03",
+     "2026-09-03"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 1.3)."
+   },
+   "h60": {
+    "dates": 45,
+    "ic": 0.0405,
+    "t": 0.71,
+    "spread_pp": 3.0,
+    "spread_t": 0.69,
+    "first_half": {
+     "ic": 0.0533,
+     "t": 0.64
+    },
+    "second_half": {
+     "ic": 0.0282,
+     "t": 0.36
+    },
+    "period": [
+     "2024-10-03",
+     "2026-07-09"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 0.71)."
+   }
+  },
+  {
+   "key": "max_1m",
+   "hypothesis": "Lottery-like stocks \u2014 a huge one-day gain \u2014 underperform",
+   "expected_sign": -1,
+   "h20": {
+    "dates": 49,
+    "ic": 0.0529,
+    "t": 1.29,
+    "spread_pp": 3.97,
+    "spread_t": 2.41,
+    "first_half": {
+     "ic": 0.1063,
+     "t": 1.59
+    },
+    "second_half": {
+     "ic": 0.0018,
+     "t": 0.04
+    },
+    "period": [
+     "2024-10-03",
+     "2026-09-03"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 1.29)."
+   },
+   "h60": {
+    "dates": 45,
+    "ic": 0.0635,
+    "t": 0.77,
+    "spread_pp": 11.64,
+    "spread_t": 1.86,
+    "first_half": {
+     "ic": 0.1434,
+     "t": 0.99
+    },
+    "second_half": {
+     "ic": -0.013,
+     "t": -0.21
+    },
+    "period": [
+     "2024-10-03",
+     "2026-07-09"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 0.77)."
+   }
+  },
+  {
+   "key": "vol_60",
+   "hypothesis": "Calmer stocks beat volatile ones (low-volatility anomaly)",
+   "expected_sign": -1,
+   "h20": {
+    "dates": 49,
+    "ic": 0.0659,
+    "t": 1.38,
+    "spread_pp": 4.7,
+    "spread_t": 2.42,
+    "first_half": {
+     "ic": 0.1261,
+     "t": 1.65
+    },
+    "second_half": {
+     "ic": 0.0082,
+     "t": 0.15
+    },
+    "period": [
+     "2024-10-03",
+     "2026-09-03"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 1.38)."
+   },
+   "h60": {
+    "dates": 45,
+    "ic": 0.0771,
+    "t": 0.82,
+    "spread_pp": 13.94,
+    "spread_t": 1.93,
+    "first_half": {
+     "ic": 0.1589,
+     "t": 0.94
+    },
+    "second_half": {
+     "ic": -0.0011,
+     "t": -0.02
+    },
+    "period": [
+     "2024-10-03",
+     "2026-07-09"
+    ],
+    "verdict": "no_signal",
+    "why": "No measurable effect (t = 0.82)."
+   }
+  }
+ ],
+ "cutoffs": 49,
+ "stocks": 682,
+ "period": [
+  "2024-10-03",
+  "2026-09-03"
+ ],
+ "method": "Rank-IC across stocks on each cutoff (every 10 sessions), averaged over dates; t overlap-corrected; 'candidate' needs |t| >= 2.5 in the expected direction and confirmation in the second half on its own. Alpha = return minus SPY over the same sessions.",
+ "revisions": {
+  "logs": 1,
+  "factors": [
+   {
+    "key": "rev_30d_pct",
+    "hypothesis": "Stocks whose EPS estimates were raised over 30 days outperform",
+    "expected_sign": 1,
+    "h20": {
+     "verdict": "collecting",
+     "matured_logs": 0,
+     "why": "0 of 6 weekly logs have a full 20-session outcome yet. Forward test \u2014 no backfill exists."
+    },
+    "h60": {
+     "verdict": "collecting",
+     "matured_logs": 0,
+     "why": "0 of 6 weekly logs have a full 60-session outcome yet. Forward test \u2014 no backfill exists."
+    }
+   },
+   {
+    "key": "rev_90d_pct",
+    "hypothesis": "Stocks whose EPS estimates were raised over 90 days outperform",
+    "expected_sign": 1,
+    "h20": {
+     "verdict": "collecting",
+     "matured_logs": 0,
+     "why": "0 of 6 weekly logs have a full 20-session outcome yet. Forward test \u2014 no backfill exists."
+    },
+    "h60": {
+     "verdict": "collecting",
+     "matured_logs": 0,
+     "why": "0 of 6 weekly logs have a full 60-session outcome yet. Forward test \u2014 no backfill exists."
+    }
+   },
+   {
+    "key": "net_up_30d",
+    "hypothesis": "More analysts raising than cutting in 30 days predicts outperformance",
+    "expected_sign": 1,
+    "h20": {
+     "verdict": "collecting",
+     "matured_logs": 0,
+     "why": "0 of 6 weekly logs have a full 20-session outcome yet. Forward test \u2014 no backfill exists."
+    },
+    "h60": {
+     "verdict": "collecting",
+     "matured_logs": 0,
+     "why": "0 of 6 weekly logs have a full 60-session outcome yet. Forward test \u2014 no backfill exists."
+    }
+   }
+  ]
+ },
+ "generated": "2026-10-04T01:36:59+00:00"
+}
