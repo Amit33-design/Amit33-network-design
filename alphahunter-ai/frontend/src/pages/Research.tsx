@@ -10,6 +10,7 @@ import DeferUntilVisible from "../components/DeferUntilVisible";
 import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 import PickDateConditions from "../components/PickDateConditions";
 import PlanVsHold from "../components/PlanVsHold";
+import FactorLab, { useFactorStudy } from "../components/FactorLab";
 import { useJudged } from "../lib/evidence";
 
 type Dash = { domains: Record<string, { score: number }[]> };
@@ -18,6 +19,7 @@ export default function Research() {
   const backtest = useBacktest();
   const pairStudy = usePairStudy();
   const judged = useJudged();
+  const factors = useFactorStudy();
   const [dash, setDash] = useState<Dash | null>(null);
   const [theme, setTheme] = useState(getTheme);
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
@@ -55,6 +57,16 @@ export default function Research() {
           <BacktestPanel bt={backtest} />
         </Section>
       )}
+
+      <Section
+        title="🔬 Factor lab"
+        subtitle="which ingredients actually predict the next month or quarter?"
+        badge={factors?.factors?.some((f) => f.h20.verdict === "candidate" || f.h60.verdict === "candidate") ? "candidate found" : undefined}
+        badgeColor="#31a05c"
+        defaultOpen
+      >
+        <FactorLab data={factors} />
+      </Section>
 
       <Section
         title="🗓 When do the picks work?"

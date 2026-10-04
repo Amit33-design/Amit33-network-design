@@ -1,0 +1,54 @@
+name: Factor lab (weekly)
+
+# Tests candidate ingredients for the Analysis verdict — group momentum,
+# earnings surprise and reaction, 12-1 momentum, 52-week high, reversal,
+# lottery, volatility — point-in-time on ~600 stocks, with overlap-corrected,
+# split-half statistics (backend/factor_study.py). Also logs analyst EPS
+# estimates weekly so revisions can be tested FORWARD (no free history).
+# Writes frontend/public/factor_study.json and results/estimates_<date>.json.
+
+on:
+  schedule:
+    - cron: '0 15 * * 6'      # Saturdays
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: alphahunter-ai
+    env:
+      PYTHONPATH: ${{ github.workspace }}/alphahunter-ai
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install
+        run: pip install -r requirements.txt
+      - name: Log analyst estimates (forward test of revisions)
+        continue-on-error: true
+        run: python -m backend.estimate_log --sample 600
+      - name: Fetch prices and earnings history
+        run: python -m backend.factor_data "$RUNNER_TEMP/factor_data.json" --sample 600
+      - name: Run the factor study
+        run: python -m backend.factor_study "$RUNNER_TEMP/factor_data.json"
+      - name: Commit
+        working-directory: .
+        run: |
+          git config user.name  "alphahunter-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add alphahunter-ai/frontend/public/factor_study.json alphahunter-ai/results/estimates_*.json || true
+          git commit -m "Factor lab $(date -u +%F)" || { echo "No changes"; exit 0; }
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then echo "pushed"; exit 0; fi
+            git fetch origin main
+            git rebase -X theirs origin/main || git rebase --abort
+            sleep $((attempt * 3))
+          done
+          echo "ERROR: could not push after retries"; exit 1

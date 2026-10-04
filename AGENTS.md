@@ -196,6 +196,18 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   Buy − Sell and the score IC before/after. Claims of "has worked" need
   t ≥ 2 across dates; the sample is today's listed stocks (survivorship), so
   trust the comparison BETWEEN verdicts more than absolute levels.
+- **New verdict ingredients come through the factor lab, nowhere else.**
+  `backend/factor_study.py` tests candidates (group momentum, earnings
+  surprise/reaction, 12-1 momentum, 52-week high, reversal, MAX, volatility)
+  point-in-time on ~600 stocks (`factor_data.py`, weekly `factor-study.yml`
+  → `factor_study.json`, Research → Factor lab). An ingredient may enter
+  `analyze()` only as a **candidate**: expected sign stated in advance,
+  |t| ≥ 2.5 overlap-corrected (≈10 tests), and the second half confirming on
+  its own. A significant WRONG sign is reported, never flipped into a rule.
+  After adding one, re-run `verdict-eval.yml` to measure the verdict again.
+  Analyst revisions have no free history, so `estimate_log.py` logs them
+  weekly (`results/estimates_<date>.json`) and `revision_study` reports
+  "collecting" until 6 logs have matured.
 - **"Why" and the thesis must say different things.** "Why" explains the
   technical verdict. The thesis (`api/_story.js`) is the business case: what
   kind of company, which theme (`api/_themes.js`), and how the market feels
@@ -247,6 +259,7 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | Risk flags / CSP / relative strength | `backend/scoring/{risk,csp_signal,relative_strength}.py` |
 | Live single-ticker TA / thesis / bottom / cycle | `api/ta.js` |
 | Walk-forward test of the Analysis verdict (what Buy/Hold/Sell was worth) | `api/_verdict_eval.js` (runs `ta.js`'s exported `analyze`) ← `backend/verdict_data.py` + `frontend/scripts/verdict-eval.mjs`, weekly `verdict-eval.yml` → `verdict_eval.json` → `components/VerdictEvidence.tsx` |
+| Factor lab — candidate verdict ingredients, tested point-in-time | `backend/factor_study.py` (pure) ← `factor_data.py`, `estimate_log.py`; weekly `factor-study.yml` → `factor_study.json` → `components/FactorLab.tsx` on Research |
 | Range-vs-trend regime & entry timing | `api/_regime.js` + `backend/indicators/range_regime.py` |
 | Shared indicator maths (RSI) | `api/_indicators.js` |
 | Investment thesis: theme, growth scope, measured group/market sentiment | `api/_themes.js` (theme map) + `api/_story.js` → `components/InvestmentThesis.tsx` |
