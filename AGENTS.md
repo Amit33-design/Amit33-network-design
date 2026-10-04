@@ -245,6 +245,11 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   paper portfolio raised on every run for 17 days behind a green job — a
   bare `sorted()` over `(date, picks)` compared the pick lists once two
   screens shared a date. Sort history on the date: `key=lambda h: h[0]`.
+- **A stop is not protection through earnings.** Any place that proposes a
+  trade with a holding window must check `earnings.json` and warn when the
+  next report falls inside it (`earningsRisk(entry, horizon)`): the stock
+  can gap past the stop overnight. The calendar refreshes weekly with the
+  factor lab over the whole universe.
 - **Score weights must sum to 1.0** (a test enforces it).
 - **Tests never hit the network.**
 
@@ -260,6 +265,7 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | Live single-ticker TA / thesis / bottom / cycle | `api/ta.js` |
 | Walk-forward test of the Analysis verdict (what Buy/Hold/Sell was worth) | `api/_verdict_eval.js` (runs `ta.js`'s exported `analyze`) ← `backend/verdict_data.py` + `frontend/scripts/verdict-eval.mjs`, weekly `verdict-eval.yml` → `verdict_eval.json` → `components/VerdictEvidence.tsx` |
 | Factor lab — candidate verdict ingredients, tested point-in-time | `backend/factor_study.py` (pure) ← `factor_data.py`, `estimate_log.py`; weekly `factor-study.yml` → `factor_study.json` → `components/FactorLab.tsx` on Research |
+| Earnings calendar (next report, last surprise) + "earnings inside the window" warnings | `backend/factor_data.next_earnings` → `public/earnings.json` (weekly factor-study job) → `lib/earnings.ts`, `components/EarningsNote.tsx`, Today's plan badge |
 | Range-vs-trend regime & entry timing | `api/_regime.js` + `backend/indicators/range_regime.py` |
 | Shared indicator maths (RSI) | `api/_indicators.js` |
 | Investment thesis: theme, growth scope, measured group/market sentiment | `api/_themes.js` (theme map) + `api/_story.js` → `components/InvestmentThesis.tsx` |

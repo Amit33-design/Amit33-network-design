@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "./ui";
 import { MIN_DATES, useJudged } from "../lib/evidence";
+import { earningsRisk, prettyDate, useEarnings } from "../lib/earnings";
 
 type Pick = {
   ticker: string; company?: string; score: number; entry?: number | null;
@@ -42,6 +43,7 @@ export default function TodayPlan({ positionScale = 1, regime }:
   const [picks, setPicks] = useState<Pick[] | null>(null);
   const [bt, setBt] = useState<Backtest | null>(null);
   const judged = useJudged();
+  const earnings = useEarnings();
 
   useEffect(() => {
     fetch("/snapshot.json").then((r) => (r.ok ? r.json() : null))
@@ -129,7 +131,16 @@ export default function TodayPlan({ positionScale = 1, regime }:
                   <td className="num">
                     {shares > 0 ? `${shares} sh ≈ ${money(shares * (p.entry ?? 0))}` : "—"}
                   </td>
-                  <td className="text-right">
+                  <td className="text-right whitespace-nowrap">
+                    {(() => {
+                      const er = earningsRisk(earnings?.[p.ticker], p.exit_plan?.horizon_days ?? 10);
+                      return er?.insideWindow ? (
+                        <span className="mr-1"
+                              title={`Reports ${prettyDate(er.next)}, inside this trade's ${p.exit_plan?.horizon_days ?? 10}-session window. A stop cannot protect against an overnight earnings gap — size down or wait until after the report.`}>
+                          <Badge tone="warn">📅 earnings in {er.sessions}d</Badge>
+                        </span>
+                      ) : null;
+                    })()}
                     <Badge tone="neutral">score {p.score}</Badge>
                   </td>
                 </tr>

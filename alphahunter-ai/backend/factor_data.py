@@ -41,12 +41,35 @@ def earnings_rows(df) -> list[dict]:
     return sorted(out, key=lambda e: e["date"])
 
 
+def next_earnings(df, today: str) -> str | None:
+    """The earliest report on or after `today` that has no result yet — the
+    upcoming date get_earnings_dates lists alongside the history. Pure."""
+    if df is None or len(df) == 0:
+        return None
+    upcoming = []
+    for ts, row in df.iterrows():
+        d = ts.strftime("%Y-%m-%d")
+        rep = row.get("Reported EPS")
+        if d >= today and (rep is None or (isinstance(rep, float) and math.isnan(rep))):
+            upcoming.append(d)
+    return min(upcoming) if upcoming else None
+
+
+def calendar_entry(rows: list[dict], nxt: str | None) -> dict:
+    """What the Analysis page and Today's plan need: the next report date and
+    the last reported surprise. Pure."""
+    last = rows[-1] if rows else None
+    return {"next": nxt, "last": last}
+
+
 def main() -> None:  # pragma: no cover - network
     import yfinance as yf
 
     ap = argparse.ArgumentParser()
     ap.add_argument("out")
-    ap.add_argument("--sample", type=int, default=600)
+    # The whole universe: the factor lab gets ~2.7x the stocks per date, and
+    # the earnings calendar covers every name the scans can pick.
+    ap.add_argument("--sample", type=int, default=2500)
     a = ap.parse_args()
 
     defs = load_defs()
@@ -76,15 +99,24 @@ def main() -> None:  # pragma: no cover - network
                 continue
             prices[t] = {"dates": dates, "c": closes}
 
+    import datetime as dt
+    today = dt.date.today().isoformat()
     earnings: dict[str, list] = {}
+    calendar: dict[str, dict] = {}
     for t in prices:
         if t == "SPY":
             continue
         try:
-            earnings[t] = earnings_rows(yf.Ticker(t).get_earnings_dates(limit=24))
+            df = yf.Ticker(t).get_earnings_dates(limit=24)
+            earnings[t] = earnings_rows(df)
+            calendar[t] = calendar_entry(earnings[t], next_earnings(df, today))
         except Exception:
             earnings[t] = []
         time.sleep(0.2)
+    # Earnings calendar for the site: a stop does not protect a position
+    # through an earnings gap, so the next report date is risk information.
+    with open(os.path.join(PUBLIC, "earnings.json"), "w") as f:
+        json.dump({"generated": today, "count": len(calendar), "calendar": calendar}, f)
 
     themes = {}
     for t in prices:

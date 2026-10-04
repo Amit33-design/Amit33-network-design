@@ -7,6 +7,7 @@ import CompanyProfile, { useProfile } from "../components/CompanyProfile";
 import EntryTimingPanel from "../components/EntryTiming";
 import InvestmentThesis from "../components/InvestmentThesis";
 import VerdictEvidence from "../components/VerdictEvidence";
+import EarningsNote from "../components/EarningsNote";
 import ChartExplainer from "../components/ChartExplainer";
 import PeerComparison from "../components/PeerComparison";
 import { isWatched, toggleWatchlist, onWatchlistChange } from "../lib/watchlist";
@@ -355,6 +356,7 @@ export default function Analysis() {
                       </span>
                     )}
                   </div>
+                  <EarningsNote ticker={data.ticker} horizon={data.trade_plan.horizon_days ?? 10} />
                 </>
               ) : (
                 <div className="text-xs text-ink-secondary">{data.trade_plan.note}</div>

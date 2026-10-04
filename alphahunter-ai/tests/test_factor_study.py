@@ -131,3 +131,25 @@ def test_earnings_rows_keep_only_reported():
              (TS("2026-05-01"), {"Reported EPS": 1.0, "Surprise(%)": math.nan})])
     assert earnings_rows(df) == [{"date": "2026-05-01", "surprise_pct": None},
                                  {"date": "2026-08-01", "surprise_pct": 8.5}]
+
+
+def test_next_earnings_is_the_first_unreported_date_from_today():
+    import math
+    from backend.factor_data import calendar_entry, next_earnings
+
+    class TS:
+        def __init__(self, s): self.s = s
+        def strftime(self, _): return self.s
+
+    class DF:
+        def __init__(self, rows): self.rows = rows
+        def __len__(self): return len(self.rows)
+        def iterrows(self): return iter(self.rows)
+    df = DF([(TS("2027-01-28"), {"Reported EPS": math.nan}),
+             (TS("2026-10-30"), {"Reported EPS": math.nan}),
+             (TS("2026-07-30"), {"Reported EPS": 1.1})])
+    assert next_earnings(df, "2026-10-04") == "2026-10-30"
+    assert next_earnings(df, "2026-11-01") == "2027-01-28"
+    assert next_earnings(DF([]), "2026-10-04") is None
+    e = calendar_entry([{"date": "2026-07-30", "surprise_pct": 4.2}], "2026-10-30")
+    assert e == {"next": "2026-10-30", "last": {"date": "2026-07-30", "surprise_pct": 4.2}}

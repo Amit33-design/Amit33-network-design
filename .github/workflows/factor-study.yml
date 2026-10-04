@@ -18,7 +18,7 @@ permissions:
 jobs:
   study:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     defaults:
       run:
         working-directory: alphahunter-ai
@@ -35,7 +35,7 @@ jobs:
         continue-on-error: true
         run: python -m backend.estimate_log --sample 600
       - name: Fetch prices and earnings history
-        run: python -m backend.factor_data "$RUNNER_TEMP/factor_data.json" --sample 600
+        run: python -m backend.factor_data "$RUNNER_TEMP/factor_data.json"
       - name: Run the factor study
         run: python -m backend.factor_study "$RUNNER_TEMP/factor_data.json"
       - name: Commit
@@ -43,7 +43,7 @@ jobs:
         run: |
           git config user.name  "alphahunter-bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add alphahunter-ai/frontend/public/factor_study.json alphahunter-ai/results/estimates_*.json || true
+          git add alphahunter-ai/frontend/public/factor_study.json alphahunter-ai/frontend/public/earnings.json alphahunter-ai/results/estimates_*.json || true
           git commit -m "Factor lab $(date -u +%F)" || { echo "No changes"; exit 0; }
           for attempt in 1 2 3 4 5; do
             if git push origin HEAD:main; then echo "pushed"; exit 0; fi
