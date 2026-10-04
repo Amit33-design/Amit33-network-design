@@ -153,3 +153,5 @@ def test_next_earnings_is_the_first_unreported_date_from_today():
     assert next_earnings(DF([]), "2026-10-04") is None
     e = calendar_entry([{"date": "2026-07-30", "surprise_pct": 4.2}], "2026-10-30")
     assert e == {"next": "2026-10-30", "last": {"date": "2026-07-30", "surprise_pct": 4.2}}
+    old = calendar_entry([{"date": "2022-08-24", "surprise_pct": 22.7}], "2027-02-19", "2026-10-04")
+    assert old == {"next": "2027-02-19", "last": None}     # a 2022 report is not "the last result"

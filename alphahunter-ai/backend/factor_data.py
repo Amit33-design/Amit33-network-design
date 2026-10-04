@@ -55,10 +55,20 @@ def next_earnings(df, today: str) -> str | None:
     return min(upcoming) if upcoming else None
 
 
-def calendar_entry(rows: list[dict], nxt: str | None) -> dict:
+LAST_REPORT_MAX_DAYS = 200     # older than ~2 quarters is not "the last result"
+
+
+def calendar_entry(rows: list[dict], nxt: str | None, today: str | None = None) -> dict:
     """What the Analysis page and Today's plan need: the next report date and
-    the last reported surprise. Pure."""
+    the last reported surprise. A "last" result older than ~2 quarters is
+    dropped: GFI's latest listed report was from 2022 (an irregular foreign
+    filer), and showing it as the latest result would mislead. Pure."""
     last = rows[-1] if rows else None
+    if last and today:
+        import datetime as _dt
+        age = (_dt.date.fromisoformat(today) - _dt.date.fromisoformat(last["date"])).days
+        if age > LAST_REPORT_MAX_DAYS:
+            last = None
     return {"next": nxt, "last": last}
 
 
@@ -109,7 +119,7 @@ def main() -> None:  # pragma: no cover - network
         try:
             df = yf.Ticker(t).get_earnings_dates(limit=24)
             earnings[t] = earnings_rows(df)
-            calendar[t] = calendar_entry(earnings[t], next_earnings(df, today))
+            calendar[t] = calendar_entry(earnings[t], next_earnings(df, today), today)
         except Exception:
             earnings[t] = []
         time.sleep(0.2)

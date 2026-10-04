@@ -7,7 +7,10 @@ export default function EarningsNote({ ticker, horizon = 10 }: { ticker: string;
   const e = cal?.[ticker.toUpperCase()];
   if (!e) return null;
   const r = earningsRisk(e, horizon);
-  const last = e.last;
+  // Same rule as the backend, so the file written before it existed is safe:
+  // a "last" report older than ~2 quarters is not the latest result.
+  const last = e.last && (Date.now() - new Date(e.last.date + "T00:00:00").getTime()) / 86400000 <= 200
+    ? e.last : null;
   return (
     <div className={`mt-2 text-2xs rounded border px-2 py-1.5 ${r?.insideWindow
       ? "border-warn/40 bg-warn-soft text-warn" : "border-line text-ink-secondary"}`}>
