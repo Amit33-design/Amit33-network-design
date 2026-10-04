@@ -1,7 +1,8 @@
 """Data for the factor lab (backend/factor_study.py), fetched in CI.
 
 ~600 stocks: every theme-basket member (so group momentum has peers) plus a
-seeded draw from the scan universe; 3 years of daily closes (validated — a
+seeded draw from the scan universe; 5 years of daily closes (more dates =
+more power: 3 years gave only 49 cutoffs) (validated — a
 split-shaped series is left out), and each stock's past earnings reports with
 EPS surprise. Only reports that HAVE a reported EPS are kept: get_earnings_dates
 also lists upcoming dates, which carry an estimate but no result yet.
@@ -62,7 +63,7 @@ def main() -> None:  # pragma: no cover - network
         chunk = (["SPY"] if i == 0 else []) + tickers[i:i + 100]
         if not chunk:
             continue
-        df = yf.download(chunk, period="3y", auto_adjust=True, progress=False,
+        df = yf.download(chunk, period="5y", auto_adjust=True, progress=False,
                          threads=True, group_by="ticker")
         for t in chunk:
             try:
@@ -80,7 +81,7 @@ def main() -> None:  # pragma: no cover - network
         if t == "SPY":
             continue
         try:
-            earnings[t] = earnings_rows(yf.Ticker(t).get_earnings_dates(limit=16))
+            earnings[t] = earnings_rows(yf.Ticker(t).get_earnings_dates(limit=24))
         except Exception:
             earnings[t] = []
         time.sleep(0.2)
