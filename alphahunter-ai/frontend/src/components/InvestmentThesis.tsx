@@ -38,9 +38,12 @@ export default function InvestmentThesis({ story, profile }: { story: Story; pro
           <div className="label-eyebrow mb-1">Theme & growth scope</div>
           {th.own?.industry && (
             <div className="text-xs text-ink-secondary mb-0.5">
-              <b className="text-ink">{story.business?.name ?? "This company"}</b> is classified as{" "}
-              <b className="text-ink">{th.own.industry}</b>{th.own.sector ? ` (${th.own.sector})` : ""}; the theme below
-              describes that kind of business, not this company specifically.
+              <b className="text-ink">{story.business?.name ?? "This company"}</b> is classified by Yahoo as{" "}
+              <b className="text-ink">{th.own.industry}</b>{th.own.sector ? ` (${th.own.sector})` : ""}
+              {th.matched === "ticker"
+                ? <>; it is grouped under <b className="text-ink">{th.name}</b> by what it actually sells. </>
+                : <>. </>}
+              The theme below describes that kind of business, not this company specifically.
             </div>
           )}
           {th.scope && <div className="text-sm text-ink">{th.scope}</div>}
