@@ -95,8 +95,11 @@ def basket(closes: dict[str, list[float]], spy: list[float] | None) -> dict | No
     for t, c in closes.items():
         if not c or len(c) < 64:
             continue
-        sma50 = sum(c[-50:]) / 50
-        rows.append({"t": t, "r1": _ret(c, 21), "r3": _ret(c, 63), "above50": c[-1] > sma50})
+        # EMA50, the convention the Analysis page uses for every average.
+        k, ema50 = 2 / 51, c[0]
+        for x in c[1:]:
+            ema50 = x * k + ema50 * (1 - k)
+        rows.append({"t": t, "r1": _ret(c, 21), "r3": _ret(c, 63), "above50": c[-1] > ema50})
     rows = [r for r in rows if r["r1"] is not None and r["r3"] is not None]
     if len(rows) < MIN_MEMBERS:
         return None

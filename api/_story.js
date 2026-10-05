@@ -18,7 +18,14 @@ const SEARCH = (t) =>
 
 const pct = (c, n) => (c && c.length > n && c[c.length - 1 - n]
   ? ((c[c.length - 1] - c[c.length - 1 - n]) / c[c.length - 1 - n]) * 100 : null);
-const sma = (c, n) => (c && c.length >= n ? c.slice(-n).reduce((a, b) => a + b, 0) / n : null);
+// EMA, like every moving average on the Analysis page (QA P0-2: one convention).
+const emaLast = (c, n) => {
+  if (!c || c.length < n) return null;
+  const k = 2 / (n + 1);
+  let e = c[0];
+  for (let i = 1; i < c.length; i++) e = c[i] * k + e * (1 - k);
+  return e;
+};
 const r1 = (x) => (x == null ? null : Math.round(x * 10) / 10);
 const sgn = (x) => `${x >= 0 ? "+" : ""}${x.toFixed(0)}%`;
 
@@ -139,7 +146,7 @@ export function buildStory({ ticker, closes: c, indicators = {}, price, recommen
       ? `${theme.name} (${basket.n} stocks, equal-weight)`
       : `${theme.name} (${etf})`;
     const breadth = useBasket && basket.breadth_50d != null
-      ? ` ${Math.round(basket.breadth_50d * 100)}% of them are above their 50-day — ` +
+      ? ` ${Math.round(basket.breadth_50d * 100)}% of them are above their EMA50 — ` +
         (basket.breadth_50d >= 0.65 ? "a broad move." : basket.breadth_50d <= 0.35 ? "most are in short-term downtrends." : "a mixed picture underneath.")
       : "";
     reads.push({
@@ -165,13 +172,13 @@ export function buildStory({ ticker, closes: c, indicators = {}, price, recommen
   }
   let market = null;
   if (spyCloses && spyCloses.length >= 200) {
-    const above = spyCloses[spyCloses.length - 1] > sma(spyCloses, 200);
+    const above = spyCloses[spyCloses.length - 1] > emaLast(spyCloses, 200);
     const v = vix != null ? Math.round(vix * 10) / 10 : null;
     const vixWord = v == null ? null : v < 15 ? "calm (complacency is possible)"
       : v < 20 ? "normal" : v < 30 ? "elevated — fear is up" : "panic-level — violent, but historically near better entry points";
     market = {
       spy_above_200d: above, spy_1m: r1(m1), vix: v,
-      text: `Market backdrop: the S&P 500 is ${above ? "above" : "BELOW"} its 200-day average ` +
+      text: `Market backdrop: the S&P 500 is ${above ? "above" : "BELOW"} its EMA200 ` +
         `(${above ? "uptrend" : "downtrend — most stocks struggle in one"})` +
         (v != null ? `; VIX ${v}, ${vixWord}.` : "."),
     };

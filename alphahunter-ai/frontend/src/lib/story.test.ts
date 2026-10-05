@@ -104,7 +104,7 @@ describe("buildStory", () => {
     expect(s.pulse.group_source).toBe("basket");
     expect(s.pulse.group_tone).toBe(1);
     expect(s.pulse.reads[0].text).toMatch(/10 stocks, equal-weight/);
-    expect(s.pulse.reads[0].text).toMatch(/80% of them are above their 50-day/);
+    expect(s.pulse.reads[0].text).toMatch(/80% of them are above their EMA50/);
   });
 
   it("ignores a basket too thin to be a group", () => {

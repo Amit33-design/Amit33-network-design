@@ -17,7 +17,9 @@ export default function LazyPlot(props: ComponentProps<typeof Plot>) {
         Loading chart…
       </div>
     }>
-      <Plot {...props} />
+      {/* Wheel zoom off by default on every chart: plain wheel must scroll
+          the page (QA P0-1 — it trapped scroll and corrupted the axes). */}
+      <Plot {...props} config={{ scrollZoom: false, ...(props.config || {}) } as any} />
     </Suspense>
   );
 }

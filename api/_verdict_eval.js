@@ -4,7 +4,7 @@
 // on every ticker without anyone measuring whether a Buy from it beats a
 // Sell. This runs the SAME analyze() the page uses, at many past dates, on
 // exactly the window the page would have seen (the last WINDOW bars — the
-// page's default 1-year range), and records what each verdict was worth over
+// ~2 years the page always fetches), and records what each verdict was worth over
 // the next HORIZON sessions against SPY over the same sessions.
 //
 // No look-ahead: each call sees only bars up to its cutoff. Picks made on the
@@ -14,7 +14,9 @@
 // BETWEEN verdicts is the trustworthy part, not the absolute levels.
 import { analyze } from "./ta.js";
 
-export const WINDOW = 252;
+// The live page analyses at least 2 years of bars (it always fetches 2y and
+// trims only the chart), so the test feeds the same ~504-bar window.
+export const WINDOW = 504;
 export const HORIZON = 20;
 // The verdict says the LONG-TERM trend decides, so judge it over a quarter as
 // well as a month — a trend call can be right and slow.
@@ -34,7 +36,7 @@ export function features(res) {
     ret_1m: ind.ret_1m ?? null, ret_3m: ind.ret_3m ?? null,
     ret_6m: ind.ret_6m ?? null, ret_1y: ind.ret_1y ?? null,
     dist_52w_high: ind.dist_52w_high ?? null, dist_52w_low: ind.dist_52w_low ?? null,
-    vs_200d: pct(px, ind.sma200), sma50_vs_200: pct(ind.sma50, ind.sma200),
+    vs_200d: pct(px, ind.ema200), sma50_vs_200: pct(ind.ema50, ind.ema200),
     atr_pct: ind.atr != null && px ? (ind.atr / px) * 100 : null,
     volume_ratio: ind.avg_volume ? (ind.last_volume || 0) / ind.avg_volume : null,
   };

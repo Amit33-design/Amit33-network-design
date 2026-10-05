@@ -56,13 +56,21 @@ function bollinger(closes, n = 20, mult = 2) {
   return { mid, upper, lower };
 }
 
-// Bull/bear market cycle: regime = 50-day SMA above/below 200-day SMA. Segment
-// the series into phases and report the current one + past phases for shading.
-function cycles(dates, closes) {
-  const s50 = smaSeries(closes, 50);
-  const s200 = smaSeries(closes, 200);
+// Bull/bear market cycle: regime = EMA50 above/below EMA200 — the same two
+// averages the indicator cards show (QA 2026-09-29: the page computed this on
+// SMAs while displaying EMAs, so a "death cross" was announced while the
+// displayed EMA50 sat above EMA200). Segment into phases for shading.
+//
+// The phase is HISTORY; `state` is the CURRENT reading. A bull phase whose
+// price has since fallen below EMA200 is not a bullish cycle any more — MGM
+// showed "Bullish cycle 190d" while trading below its 200-day with the trend
+// verdict DOWN. Rule, applied to every ticker:
+//   bull       EMA50 > EMA200 AND price > EMA200
+//   bear       EMA50 < EMA200 AND price < EMA200
+//   transition the averages and the price disagree (a cycle turning, or not)
+function cycles(dates, closes, e50, e200) {
   const regime = closes.map((_, i) =>
-    s50[i] != null && s200[i] != null ? (s50[i] >= s200[i] ? "bull" : "bear") : null
+    e50[i] != null && e200[i] != null ? (e50[i] >= e200[i] ? "bull" : "bear") : null
   );
   const phases = [];
   let cur = null;
@@ -76,12 +84,98 @@ function cycles(dates, closes) {
   });
   const last = phases[phases.length - 1] || null;
   const daysIn = last ? closes.length - last.startIdx : null;
+  const n = closes.length - 1;
+  const px = closes[n], a50 = e50[n], a200 = e200[n];
+  let state = "indeterminate", note = null;
+  if (a50 != null && a200 != null) {
+    if (a50 >= a200 && px > a200) state = "bull";
+    else if (a50 < a200 && px < a200) state = "bear";
+    else {
+      state = "transition";
+      note = a50 >= a200
+        ? `EMA50 is still above EMA200${last ? ` (since ${last.start})` : ""}, but price has fallen below EMA200 — the uptrend is not confirmed.`
+        : `EMA50 is still below EMA200${last ? ` (since ${last.start})` : ""}, but price has climbed above EMA200 — a possible turn, not yet confirmed.`;
+    }
+  }
   return {
-    current: last ? last.type : "indeterminate",
+    current: last ? last.type : "indeterminate",       // the averages' regime (history)
+    state,                                               // what to tell the user NOW
+    note,
     days_in_phase: daysIn,
     since: last ? last.start : null,
     phases: phases.map((p) => ({ type: p.type, start: p.start, end: p.end })),
   };
+}
+
+/** Recent volume vs its averages, and whether it comes on up or down days
+ *  (QA P1-5). From the same cleaned bars the charts use. Pure; exported. */
+export function volumeTrend(c, v) {
+  const avg = (n) => {
+    if (v.length < n) return null;
+    const xs = v.slice(-n).filter((x) => x != null && x >= 0);
+    return xs.length === n ? xs.reduce((a, b) => a + b, 0) / n : null;
+  };
+  const a5 = avg(5), a20 = avg(20), a50 = avg(50);
+  const ratio = (x, y) => (x != null && y ? Math.round((x / y) * 100) / 100 : null);
+  let up = 0, down = 0;
+  for (let i = Math.max(1, c.length - 20); i < c.length; i++) {
+    if (v[i] == null) continue;
+    if (c[i] > c[i - 1]) up += v[i]; else if (c[i] < c[i - 1]) down += v[i];
+  }
+  const r = ratio(a5, a50);
+  const read = r == null ? null
+    : r >= 1.3 ? `Recent volume ${r}× the 50-day average — interest is picking up.`
+    : r <= 0.7 ? `Recent volume ${r}× the 50-day average — interest is fading.`
+    : `Recent volume ${r}× the 50-day average — about normal.`;
+  return {
+    avg_5d: a5 != null ? Math.round(a5) : null,
+    avg_20d: a20 != null ? Math.round(a20) : null,
+    avg_50d: a50 != null ? Math.round(a50) : null,
+    ratio_5_50: r, ratio_20_50: ratio(a20, a50),
+    up_down_ratio_20d: down > 0 ? Math.round((up / down) * 100) / 100 : null,
+    up_share_20d: up + down > 0 ? Math.round((up / (up + down)) * 1000) / 10 : null,
+    read,
+  };
+}
+
+const RANGE_MONTHS = { "6mo": 6, "1y": 12, "2y": 24, "5y": 60 };
+
+/** Keep only the selected range's bars in every chart array. The indicators
+ *  were computed on the full history, so trimming never changes a number —
+ *  only what is drawn. Pure; exported. */
+export function trimChart(chart, range, now = new Date()) {
+  const months = RANGE_MONTHS[range];
+  if (!months || !chart?.dates?.length) return chart;
+  const cut = new Date(now);
+  cut.setMonth(cut.getMonth() - months);
+  const iso = cut.toISOString().slice(0, 10);
+  const start = chart.dates.findIndex((d) => d >= iso);
+  if (start <= 0) return chart;
+  const out = {};
+  for (const [k, arr] of Object.entries(chart)) out[k] = Array.isArray(arr) ? arr.slice(start) : arr;
+  return out;
+}
+
+/** The most recent EMA50/EMA200 cross in the series: {type, date, ago}. */
+function lastCross(dates, e50, e200) {
+  for (let i = e50.length - 1; i > 0; i--) {
+    if (e50[i] == null || e200[i] == null || e50[i - 1] == null || e200[i - 1] == null) continue;
+    if (e50[i - 1] <= e200[i - 1] && e50[i] > e200[i]) return { type: "golden", date: dates[i], ago: e50.length - 1 - i };
+    if (e50[i - 1] >= e200[i - 1] && e50[i] < e200[i]) return { type: "death", date: dates[i], ago: e50.length - 1 - i };
+  }
+  return null;
+}
+
+/** Plain description of the EMA50/EMA200 relationship that can never
+ *  contradict the numbers on the cards. Pure; exported for tests. */
+export function crossText(e50Last, e200Last, cross, recent = 90) {
+  if (e50Last == null || e200Last == null) return null;
+  const above = e50Last > e200Last;
+  const fits = cross && ((above && cross.type === "golden") || (!above && cross.type === "death"));
+  if (fits && cross.ago <= recent) {
+    return `EMA50 ${above ? "above" : "below"} EMA200 (${above ? "golden" : "death"} cross on ${cross.date})`;
+  }
+  return `EMA50 ${above ? "above" : "below"} EMA200 (no recent cross)`;
 }
 
 // Support/resistance from recent swing lows/highs (fractal-style) + pivots.
@@ -129,9 +223,9 @@ function cspSignal(dayChange, last, s200, cyc, sr, a, bounce) {
     out.reason = "no meaningful dip today";
     return out;
   }
-  const chartUp = (s200 != null && last > s200) || cyc.current === "bull";
+  const chartUp = (s200 != null && last > s200) || cyc.state === "bull";
   if (!chartUp) {
-    out.reason = `down ${dayChange.toFixed(1)}% but chart lacks upside (below 200-day, bearish cycle)`;
+    out.reason = `down ${dayChange.toFixed(1)}% but chart lacks upside (below EMA200, no bullish cycle)`;
     return out;
   }
   if (bounce.dips >= 3 && (bounce.win_rate < 0.45 || bounce.avg_return < 0)) {
@@ -238,8 +332,8 @@ function signals(dates, closes, s50, s200, macdS, rsis, bb) {
   const start = Math.max(1, closes.length - 90);
   for (let i = start; i < closes.length; i++) {
     if (s50[i] != null && s200[i] != null && s50[i - 1] != null && s200[i - 1] != null) {
-      if (s50[i - 1] <= s200[i - 1] && s50[i] > s200[i]) out.push({ date: dates[i], type: "bull", label: "Golden cross (50>200)" });
-      if (s50[i - 1] >= s200[i - 1] && s50[i] < s200[i]) out.push({ date: dates[i], type: "bear", label: "Death cross (50<200)" });
+      if (s50[i - 1] <= s200[i - 1] && s50[i] > s200[i]) out.push({ date: dates[i], type: "bull", label: "Golden cross (EMA50 > EMA200)" });
+      if (s50[i - 1] >= s200[i - 1] && s50[i] < s200[i]) out.push({ date: dates[i], type: "bear", label: "Death cross (EMA50 < EMA200)" });
     }
     if (macdS.line[i] != null && macdS.signal[i] != null && macdS.line[i - 1] != null && macdS.signal[i - 1] != null) {
       if (macdS.line[i - 1] <= macdS.signal[i - 1] && macdS.line[i] > macdS.signal[i]) out.push({ date: dates[i], type: "bull", label: "MACD bullish cross" });
@@ -360,18 +454,24 @@ function analyze(dates, o, h, l, c, v, accountSize, riskPct) {
   const rsi = rsis[rsis.length - 1];
   const macdS = macdSeries(c);
   const m = { macd: macdS.line[c.length - 1], signal: macdS.signal[c.length - 1], hist: macdS.hist[c.length - 1] };
-  const s50series = smaSeries(c, 50), s200series = smaSeries(c, 200);
-  const s50 = smaLast(c, 50), s200 = smaLast(c, 200);
+  // ONE moving-average convention for the whole page: EMA50 / EMA200, the
+  // averages the cards display. Every verdict, cycle and cross below reads
+  // these, so no sentence can contradict the numbers on screen.
+  const s50 = e50[e50.length - 1], s200 = e200[e200.length - 1];
   const a = atr(h, l, c);
   const bb = bollinger(c);
-  const cyc = cycles(dates, c);
+  const cyc = cycles(dates, c, e50, e200);
+  const cross = lastCross(dates, e50, e200);
   const sr = levels(h, l, c);
-  const sigs = signals(dates, c, s50series, s200series, macdS, rsis, bb);
+  const sigs = signals(dates, c, e50, e200, macdS, rsis, bb);
   const dayChange = c.length >= 2 ? ((last - c[c.length - 2]) / c[c.length - 2]) * 100 : null;
   const bounce = dipBounceStats(c);
   const csp = cspSignal(dayChange, last, s200, cyc, sr, a, bounce);
   const bottom = bottomSignal(o, h, l, c, v, rsis, e20, sr);
   const hi52 = Math.max(...c.slice(-252)), lo52 = Math.min(...c.slice(-252));
+  const off52 = Math.max(0, c.length - 252);
+  const hi52Date = dates[off52 + c.slice(-252).indexOf(hi52)] ?? null;
+  const lo52Date = dates[off52 + c.slice(-252).indexOf(lo52)] ?? null;
   // Trailing return over n sessions.
   //
   // A 1y fetch returns about 252 bars, so the exact 252-session lookback
@@ -404,17 +504,23 @@ function analyze(dates, o, h, l, c, v, accountSize, riskPct) {
   let lt = 50;
   const trendFactors = [];
   if (s200 != null) {
-    if (last > s200) { lt += 15; trendFactors.push({ t: "bull", s: "Price above 200-day SMA (primary uptrend)" }); }
-    else { lt -= 15; trendFactors.push({ t: "bear", s: "Price below 200-day SMA (primary downtrend)" }); }
+    const gap = ((last / s200 - 1) * 100).toFixed(1);
+    if (last > s200) { lt += 15; trendFactors.push({ t: "bull", s: `Price ${gap}% above EMA200 (primary uptrend)` }); }
+    else { lt -= 15; trendFactors.push({ t: "bear", s: `Price ${Math.abs(gap)}% below EMA200 (primary downtrend)` }); }
   }
   if (s50 != null && s200 != null) {
-    if (s50 > s200) { lt += 9; trendFactors.push({ t: "bull", s: "50-day above 200-day (golden-cross regime)" }); }
-    else { lt -= 9; trendFactors.push({ t: "bear", s: "50-day below 200-day (death-cross regime)" }); }
+    // Derived from the displayed series: a cross is only named when the
+    // current values agree with it and it actually happened recently.
+    const txt = crossText(s50, s200, cross);
+    if (s50 > s200) { lt += 9; trendFactors.push({ t: "bull", s: txt }); }
+    else { lt -= 9; trendFactors.push({ t: "bear", s: txt }); }
   }
   if (mtf.trend === "up") { lt += 9; trendFactors.push({ t: "bull", s: "Weekly (10-week) trend rising" }); }
   else if (mtf.trend === "down") { lt -= 9; trendFactors.push({ t: "bear", s: "Weekly (10-week) trend falling" }); }
-  if (cyc.current === "bull") { lt += 6; trendFactors.push({ t: "bull", s: `Bullish market cycle (${cyc.days_in_phase}d)` }); }
-  else if (cyc.current === "bear") { lt -= 6; trendFactors.push({ t: "bear", s: `Bearish market cycle (${cyc.days_in_phase}d)` }); }
+  // Cycle by its CURRENT state, not the averages' history (see cycles()).
+  if (cyc.state === "bull") { lt += 6; trendFactors.push({ t: "bull", s: `Bullish cycle (${cyc.days_in_phase} sessions)` }); }
+  else if (cyc.state === "bear") { lt -= 6; trendFactors.push({ t: "bear", s: `Bearish cycle (${cyc.days_in_phase} sessions)` }); }
+  else if (cyc.state === "transition" && cyc.note) trendFactors.push({ t: "neutral", s: cyc.note });
   if (r12 != null) {
     if (r12 > 15) { lt += 7; trendFactors.push({ t: "bull", s: `+${r12.toFixed(0)}% over 12 months (long-term winner)` }); }
     else if (r12 < -15) { lt -= 7; trendFactors.push({ t: "bear", s: `${r12.toFixed(0)}% over 12 months (long-term loser)` }); }
@@ -534,11 +640,18 @@ function analyze(dates, o, h, l, c, v, accountSize, riskPct) {
       macd_signal: m.signal != null ? Math.round(m.signal * 100) / 100 : null,
       macd_hist: m.hist != null ? Math.round(m.hist * 100) / 100 : null,
       ema20: e20[e20.length - 1], ema50: e50[e50.length - 1], ema200: e200[e200.length - 1],
-      sma50: s50, sma200: s200, atr: a != null ? Math.round(a * 100) / 100 : null,
-      ret_1m: ret(21), ret_3m: ret(63), ret_6m: r6, ret_1y: ret(252),
+      // Price vs the two displayed averages, in % (QA P2-3).
+      vs_ema50_pct: s50 ? Math.round((last / s50 - 1) * 1000) / 10 : null,
+      vs_ema200_pct: s200 ? Math.round((last / s200 - 1) * 1000) / 10 : null,
+      ema_cross: cross,                      // most recent EMA50/EMA200 cross {type, date, ago}
+      ema_cross_text: crossText(s50, s200, cross),
+      atr: a != null ? Math.round(a * 100) / 100 : null,
+      ret_1m: ret(21), ret_3m: ret(63), ret_6m: r6, ret_1y: r12,
       dist_52w_high: distHigh != null ? Math.round(distHigh * 10) / 10 : null,
       dist_52w_low: distLow != null ? Math.round(distLow * 10) / 10 : null,
       high_52w: hi52, low_52w: lo52,
+      high_52w_date: hi52Date, low_52w_date: lo52Date,
+      volume_trend: volumeTrend(c, v),
       avg_volume: avgVol != null ? Math.round(avgVol) : null,
       last_volume: v[v.length - 1] || null,
     },
@@ -627,14 +740,16 @@ function buildThesis(t, out, spyCloses) {
       `so a ${day != null ? Math.abs(day).toFixed(0) : "big"}% day is less unusual here than it would be for a mega-cap.`);
   }
 
-  // Trend + cycle.
-  const above200 = out.indicators.sma200 != null && out.price > out.indicators.sma200;
-  if (out.cycle?.current === "bull" && above200) {
-    parts.push(`The primary trend is still up (bullish cycle for ${out.cycle.days_in_phase}d, price above the 200-day) — ` +
+  // Trend + cycle — by the cycle's CURRENT state (EMA50/EMA200 and price vs
+  // EMA200 agreeing), never the averages' history alone.
+  if (out.cycle?.state === "bull") {
+    parts.push(`The primary trend is up (bullish cycle for ${out.cycle.days_in_phase} sessions, price above EMA200) — ` +
       `dips inside an uptrend are typically buyable weakness rather than tops.`);
-  } else if (out.cycle?.current === "bear") {
-    parts.push(`The primary trend is down (bearish cycle for ${out.cycle.days_in_phase}d) — ` +
-      `bounces are counter-trend until the 50-day recrosses the 200-day.`);
+  } else if (out.cycle?.state === "bear") {
+    parts.push(`The primary trend is down (bearish cycle for ${out.cycle.days_in_phase} sessions, price below EMA200) — ` +
+      `bounces are counter-trend until EMA50 recrosses EMA200.`);
+  } else if (out.cycle?.state === "transition" && out.cycle.note) {
+    parts.push(out.cycle.note);
   }
 
   // Historical dip behavior.
@@ -677,7 +792,14 @@ export default async function handler(req, res) {
     });
   }
   try {
-    const r = await fetch(CHART(ticker, range), {
+    // Fetch at least 2 years whatever chart range is selected. Returns,
+    // EMA200, the cycle and the 52-week levels were computed on whatever the
+    // chart showed, so on a 6-month chart the "1-year" return fell back to
+    // the oldest bar available and MGM showed 6M = 1Y = -11.0% (QA P1-6), and
+    // switching the range changed figures that should not move. Analysis now
+    // runs on the full fetch; only the chart arrays are trimmed to the range.
+    const fetchRange = range === "5y" ? "5y" : "2y";
+    const r = await fetch(CHART(ticker, fetchRange), {
       headers: { "User-Agent": "Mozilla/5.0 (compatible; alphahunter-ai/1.0)" },
     });
     // Yahoo answers 404 for symbols it does not know. That is "not found",
@@ -729,6 +851,8 @@ export default async function handler(req, res) {
     const accountSize = Number(req.query?.account) > 0 ? Number(req.query.account) : 25000;
     const riskPct = Number(req.query?.risk) > 0 ? Number(req.query.risk) : 1;
     const out = analyze(dates, o, h, l, c, v, accountSize, riskPct);
+    out.chart = trimChart(out.chart, range);
+    out.cycle.phases = (out.cycle.phases || []).filter((p) => p.end >= out.chart.dates[0]);
 
     // Market + group context (best-effort; each piece may be missing).
     // SPY is fetched once and shared by the price-action text and the story.

@@ -18,19 +18,19 @@ function series(n: number, drift: number, seed = 1) {
 
 describe("walk-forward verdict evaluation", () => {
   it("never lets a later bar change an earlier verdict (no look-ahead)", () => {
-    const s = series(400, 0.001), spy = series(400, 0.0004, 7);
+    const s = series(700, 0.001), spy = series(700, 0.0004, 7);
     const a = walk(s, spy);
-    const crashed = { ...s, c: s.c.map((v, i) => (i > 330 ? v * 0.3 : v)) };
+    const crashed = { ...s, c: s.c.map((v, i) => (i > 600 ? v * 0.3 : v)) };
     const b = walk(crashed, spy);
-    const early = (rows: any[]) => rows.filter((r) => r.date < s.dates[300]).map((r) => [r.date, r.verdict, r.score]);
+    const early = (rows: any[]) => rows.filter((r) => r.date < s.dates[580]).map((r) => [r.date, r.verdict, r.score]);
     expect(early(b)).toEqual(early(a));
     expect(a.length).toBeGreaterThan(5);
   });
 
   it("a steady uptrend reads Buy/Accumulate, a steady downtrend Reduce/Sell", () => {
-    const spy = series(400, 0.0003, 7);
-    const up = walk(series(400, 0.004, 3), spy).map((r: any) => r.verdict);
-    const down = walk(series(400, -0.004, 5), spy).map((r: any) => r.verdict);
+    const spy = series(700, 0.0003, 7);
+    const up = walk(series(700, 0.004, 3), spy).map((r: any) => r.verdict);
+    const down = walk(series(700, -0.004, 5), spy).map((r: any) => r.verdict);
     expect(up.filter((v: string) => ["Buy", "Accumulate", "Wait"].includes(v)).length).toBeGreaterThan(up.length / 2);
     expect(down.filter((v: string) => ["Reduce", "Sell"].includes(v)).length).toBeGreaterThan(down.length / 2);
   });

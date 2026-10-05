@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { rangesFromRelayout, sanitizeView, type View } from "../lib/axisGuard";
 import { useSearchParams } from "react-router-dom";
 import Plot from "../components/LazyPlot";
 import { api } from "../lib/api";
@@ -113,6 +114,22 @@ export default function Analysis() {
     };
   }, [ch]);
 
+  // The visible window, held in state so every relayout (drag, zoom box,
+  // range buttons) passes through the sanity guard before it is applied.
+  const [view, setView] = useState<View | null>(null);
+  useEffect(() => { setView(bounds ? { x: bounds.x, price: bounds.price } : null); }, [bounds]);
+  const onRelayout = (ev: any) => {
+    if (!bounds) return;
+    const p = rangesFromRelayout(ev);
+    if (p.reset) { setView({ x: bounds.x, price: bounds.price }); return; }
+    if (!p.x && !p.price) return;
+    const next = sanitizeView({ x: p.x ?? view?.x, price: p.price ?? view?.price }, bounds);
+    if (!view || next.x[0] !== view.x[0] || next.x[1] !== view.x[1]
+        || next.price[0] !== view.price[0] || next.price[1] !== view.price[1]) setView(next);
+  };
+  const resetAxes = () => bounds && setView({ x: bounds.x, price: bounds.price });
+  const vx = view?.x ?? bounds?.x;
+
   // Signal markers, with any date missing from the price series dropped
   // rather than plotted as undefined.
   const cleanSignals = (sigs: any[]) => {
@@ -150,18 +167,22 @@ export default function Analysis() {
   const bullSig = (data?.signals || []).filter((s: any) => s.type === "bull");
   const bearSig = (data?.signals || []).filter((s: any) => s.type === "bear");
 
+  // The badge shows the cycle's CURRENT state (EMA50 vs EMA200 AND price vs
+  // EMA200 agreeing), never the averages' history alone — MGM read
+  // "Bullish cycle 190d" while trading below EMA200 with the trend DOWN.
+  const cycleState = data?.cycle?.state ?? data?.cycle?.current;
   const cycleBadge = data?.cycle && (
     <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-      data.cycle.current === "bull" ? "bg-gain-soft text-gain"
-        : data.cycle.current === "bear" ? "bg-loss-soft text-loss" : "bg-surface-sunken text-ink-secondary"
-    }`}>
-      {data.cycle.current === "bull" ? "▲ Bullish cycle" : data.cycle.current === "bear" ? "▼ Bearish cycle" : "Neutral"}
-      {/* The count is bounded by the fetched window, so the same stock reads
-          52d on a 1y range and 95d on 2y. Rather than silently imply an
-          absolute age, it is labelled as measured within the range. */}
-      {data.cycle.days_in_phase != null && (
-        <span title={`${data.cycle.days_in_phase} sessions of the selected ${range} window have been in this cycle. A longer range may show a longer run.`}>
-          {` · ${data.cycle.days_in_phase}d in range`}
+      cycleState === "bull" ? "bg-gain-soft text-gain"
+        : cycleState === "bear" ? "bg-loss-soft text-loss" : "bg-warn-soft text-warn"
+    }`} title={data.cycle.note ?? "EMA50 vs EMA200, with price on the same side of EMA200"}>
+      {cycleState === "bull" ? "▲ Bullish cycle" : cycleState === "bear" ? "▼ Bearish cycle"
+        : cycleState === "transition" ? "◆ Cycle in transition" : "Neutral"}
+      {/* Computed on a fixed 2-year history whatever range is charted, so the
+          count no longer changes with the range selector. */}
+      {data.cycle.days_in_phase != null && cycleState !== "transition" && (
+        <span title={`EMA50 has been on this side of EMA200 for ${data.cycle.days_in_phase} sessions (since ${data.cycle.since}), measured on 2 years of history.`}>
+          {` · ${data.cycle.days_in_phase} sessions`}
         </span>
       )}
     </span>
@@ -231,7 +252,7 @@ export default function Analysis() {
               {cycleBadge}
               {mtfBadge}
               {data.trend && (
-                <div className="text-center" title="Long-term structure: 200-day, 50/200 regime, weekly trend, 6-12mo returns. This decides the verdict.">
+                <div className="text-center" title="Long-term structure: price vs EMA200, EMA50 vs EMA200, weekly trend, 6-12mo returns. This decides the verdict.">
                   <div className="text-xs uppercase tracking-wide text-ink-muted">Long-term trend</div>
                   <div className={`text-2xl font-bold ${
                     data.trend.direction === "up" ? "text-brand"
@@ -461,6 +482,10 @@ export default function Analysis() {
           {/* Candlestick + Bollinger + EMAs + S/R + cycle shading + signals */}
           <div className="panel p-4">
             <div className="font-semibold text-ink mb-2">
+              <button onClick={resetAxes}
+                      className="float-right text-2xs font-normal text-brand border border-line rounded px-2 py-0.5 hover:bg-surface-sunken">
+                Reset axes
+              </button>
               Price · candlesticks, Bollinger Bands, moving averages, support/resistance
               <ChartExplainer
                 title="the price chart"
@@ -469,12 +494,12 @@ export default function Analysis() {
                   "The grey band is the Bollinger Band (20-day average ±2 standard deviations): price hugging the lower band = stretched to the downside; breaking the upper band = strong momentum.",
                   "EMA50 (orange) and EMA200 (blue) are trend lines — price above the EMA200 means the long-term trend is up.",
                   "Dashed green lines = support (buyers stepped in there before); dashed red = resistance (sellers capped it there).",
-                  "Green/red background shading = bullish/bearish market cycle (50-day vs 200-day trend).",
+                  "Green/red background shading = periods with EMA50 above/below EMA200 (bullish/bearish cycle).",
                   "▲/▼ triangles mark crossover or breakout signals on the day they fired.",
                 ]}
                 current={
-                  ind?.sma200 != null
-                    ? `price is ${data.price > ind.sma200 ? "ABOVE" : "BELOW"} the 200-day average and the cycle is ${data.cycle?.current} (${data.cycle?.days_in_phase}d).`
+                  ind?.ema200 != null
+                    ? `price is ${ind.vs_ema200_pct != null ? `${Math.abs(ind.vs_ema200_pct)}% ` : ""}${data.price > ind.ema200 ? "ABOVE" : "BELOW"} EMA200; ${ind.ema_cross_text ?? ""}; cycle: ${data.cycle?.state ?? data.cycle?.current}.`
                     : null
                 }
               />
@@ -508,7 +533,7 @@ export default function Analysis() {
                 xaxis: {
                   // Set from the data, not inferred. Panning and the range
                   // buttons still work; this only fixes the initial window.
-                  range: bounds?.x,
+                  range: vx,
                   autorange: false,
                   rangeslider: { visible: true, thickness: 0.07 },
                   rangeselector: {
@@ -525,20 +550,23 @@ export default function Analysis() {
                   },
                 },
                 // Re-fit the y axis to whatever window is in view.
-                yaxis: { title: { text: "Price" }, range: bounds?.price,
+                yaxis: { title: { text: "Price" }, range: view?.price ?? bounds?.price,
                          autorange: false, fixedrange: false },
                 shapes: [...cycleShapes, ...levelShapes],
               } as any}
               useResizeHandler style={{ width: "100%" }}
+              onRelayout={onRelayout}
               config={{
-                scrollZoom: true, displaylogo: false, displayModeBar: true,
+                // Never zoom on the wheel: it trapped page scroll and drove the
+                // axes to garbage (QA P0-1). Zoom/pan stay on drag + mode bar.
+                scrollZoom: false, responsive: true, displaylogo: false, displayModeBar: true,
                 modeBarButtonsToRemove: ["lasso2d", "select2d", "autoScale2d", "toImage"],
                 doubleClick: "reset",
               } as any}
             />
             <div className="text-xs text-ink-muted mt-1">
-              Green/red shading marks bullish/bearish cycles (50-day vs 200-day trend). Dashed lines = support (green) / resistance (red). ▲▼ = crossover/breakout signals.
-              <span className="hidden sm:inline"> Zoom: use the 1M/3M/6M/1Y buttons or the mini-slider below the chart; scroll/pinch to zoom, drag to pan, double-click to reset.</span>
+              Green/red shading marks EMA50 above/below EMA200 (bullish/bearish cycle). Dashed lines = support (green) / resistance (red). ▲▼ = crossover/breakout signals.
+              <span className="hidden sm:inline"> Zoom: use the 1M/3M/6M/1Y buttons, the mini-slider, or drag; double-click or "Reset axes" to restore. The mouse wheel scrolls the page.</span>
             </div>
           </div>
 
@@ -564,9 +592,9 @@ export default function Analysis() {
               <Plot
                 data={[{ type: "bar", x: ch.dates, y: ch.volume, name: "Volume",
                          marker: { color: ch.close.map((c: number, i: number) => (i > 0 && c >= ch.close[i - 1] ? C.gain : C.loss)) } }]}
-                layout={{ ...plotTheme(theme), autosize: true, height: 220, margin: { l: 50, r: 10, t: 10, b: 30 }, yaxis: { title: { text: "Vol" }, range: bounds?.volume, autorange: false },
-                              xaxis: { range: bounds?.x, autorange: false } }}
-                useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: true, doubleClick: "reset" } as any}
+                layout={{ ...plotTheme(theme), autosize: true, height: 220, margin: { l: 50, r: 10, t: 10, b: 30 }, yaxis: { title: { text: "Vol" }, range: bounds?.volume, autorange: false, fixedrange: true },
+                              xaxis: { range: vx, autorange: false } }}
+                useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: false, doubleClick: "reset" } as any}
               />
             </div>
             {/* MACD */}
@@ -594,8 +622,9 @@ export default function Analysis() {
                   { x: ch.dates, y: ch.macd, type: "scatter", mode: "lines", name: "MACD", line: { color: C.series[3] } },
                   { x: ch.dates, y: ch.macd_signal, type: "scatter", mode: "lines", name: "Signal", line: { color: C.series[2] } },
                 ]}
-                layout={{ ...plotTheme(theme), autosize: true, height: 220, margin: { l: 50, r: 10, t: 10, b: 30 }, legend: { orientation: "h", y: 1.2 } }}
-                useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: true, doubleClick: "reset" } as any}
+                layout={{ ...plotTheme(theme), autosize: true, height: 220, margin: { l: 50, r: 10, t: 10, b: 30 }, legend: { orientation: "h", y: 1.2 },
+                          xaxis: { range: vx, autorange: false } }}
+                useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: false, doubleClick: "reset" } as any}
               />
             </div>
           </div>
@@ -624,12 +653,12 @@ export default function Analysis() {
               layout={{
                 ...plotTheme(theme),
                 autosize: true, height: 200, margin: { l: 50, r: 10, t: 10, b: 30 },
-                yaxis: { range: [0, 100], autorange: false },
-                xaxis: { range: bounds?.x, autorange: false },
+                yaxis: { range: [0, 100], autorange: false, fixedrange: true },
+                xaxis: { range: vx, autorange: false },
                 shapes: [30, 70].map((y) => ({ type: "line", x0: ch.dates[0], x1: ch.dates[ch.dates.length - 1], y0: y, y1: y,
                   line: { color: y === 70 ? C.loss : C.gain, width: 1, dash: "dot" } })),
               }}
-              useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: true, doubleClick: "reset" } as any}
+              useResizeHandler style={{ width: "100%" }} config={{ displayModeBar: false, scrollZoom: false, doubleClick: "reset" } as any}
             />
           </div>
 

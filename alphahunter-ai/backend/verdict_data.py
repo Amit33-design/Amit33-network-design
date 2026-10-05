@@ -1,6 +1,6 @@
 """Price history for the walk-forward test of the Analysis verdict.
 
-Fetches ~3 years of daily OHLCV for a fixed, reproducible sample — the
+Fetches ~5 years of daily OHLCV (the page analyses 2 years per call) for a fixed, reproducible sample — the
 dashboard watchlist plus a seeded random draw from the scan universe — and
 SPY, and writes it as JSON for api/_verdict_eval.js (run by
 frontend/scripts/verdict-eval.mjs). Every series goes through
@@ -31,7 +31,7 @@ def sample_tickers(universe: list[str], watch: list[str], n: int, seed: int = SE
 
 def usable(dates: list[str], closes: list[float], ticker: str) -> bool:
     rep = validate_bars(dates, closes, ticker=ticker)
-    if rep.quality == "unusable" or len(rep.clean_closes) < 300:
+    if rep.quality == "unusable" or len(rep.clean_closes) < 560:
         return False
     return not any(f.get("kind") == "possible_split" for f in rep.flags)
 
@@ -50,7 +50,7 @@ def main() -> None:  # pragma: no cover - network
         chunk = (["SPY"] if i == 0 else []) + tickers[i:i + 100]
         if not chunk:
             continue
-        df = yf.download(chunk, period="3y", auto_adjust=True, progress=False,
+        df = yf.download(chunk, period="5y", auto_adjust=True, progress=False,
                          threads=True, group_by="ticker")
         for t in chunk:
             try:

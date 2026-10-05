@@ -58,7 +58,7 @@ export default function ThemeBoard({ data }: { data: ThemesFile | null }) {
       <div className="text-xs text-ink-muted mb-2">
         Each theme as an equal-weight basket of its own stocks, 3-month return vs the S&P 500
         {data.spy_3m != null ? ` (${pct(data.spy_3m)})` : ""}. Breadth = share of members above
-        their 50-day. Tap a theme for its leaders and laggards.
+        their EMA50. Tap a theme for its leaders and laggards.
       </div>
       <div className="divide-y divide-line">
         {rows.map((t) => {
@@ -82,7 +82,7 @@ export default function ThemeBoard({ data }: { data: ThemesFile | null }) {
                     {vs >= 0 ? "+" : ""}{vs.toFixed(1)}pp
                   </span>
                   <span className="w-12 text-right num text-ink-muted hidden sm:inline"
-                        title="Share of members above their 50-day average">
+                        title="Share of members above their EMA50">
                     {Math.round(b.breadth_50d * 100)}%
                   </span>
                 </div>
@@ -91,7 +91,7 @@ export default function ThemeBoard({ data }: { data: ThemesFile | null }) {
                 <div className="mt-1.5 pl-1 text-2xs text-ink-secondary space-y-1">
                   <div className="flex flex-wrap gap-1 items-center">
                     <Badge>{t.growth}</Badge>
-                    <span>{b.n} stocks · 1m {pct(b.ret_1m)} · 3m {pct(b.ret_3m)} · {Math.round(b.breadth_50d * 100)}% above 50-day · ETF {t.etf}</span>
+                    <span>{b.n} stocks · 1m {pct(b.ret_1m)} · 3m {pct(b.ret_3m)} · {Math.round(b.breadth_50d * 100)}% above EMA50 · ETF {t.etf}</span>
                   </div>
                   <div>
                     <span className="text-gain font-semibold">Leading this month: </span>
