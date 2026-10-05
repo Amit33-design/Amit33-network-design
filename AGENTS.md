@@ -196,6 +196,20 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   Buy − Sell and the score IC before/after. Claims of "has worked" need
   t ≥ 2 across dates; the sample is today's listed stocks (survivorship), so
   trust the comparison BETWEEN verdicts more than absolute levels.
+- **Every return is net of costs.** `exit_judged` (ROUND_TRIP_COST_PCT =
+  0.4%), `portfolio_backtest` (cost_bps = 20 per side) and the strategy lab
+  (COST_BPS = 20 per side on every dollar traded) all deduct trading costs; a
+  gross figure is kept only for reference. Never publish a pre-cost return as
+  the headline.
+- **Whole strategies are judged in the strategy lab** (`backend/strategy_lab.py`,
+  run by `factor-study.yml` → `strategy_lab.json`, Research → Strategy lab):
+  pre-stated rules, equal weight, non-overlapping 20-session rebalances,
+  untradeable names (< $3 or < $5M daily dollar volume) excluded, costs on
+  turnover, benchmarks SPY AND the equal-weight universe. The research
+  brief's quality checklist is enforced per strategy: beats SPY after costs
+  (t ≥ 2), Sharpe > 1, max DD better than −30%, positive in both halves,
+  both regimes, and with the selection halved/doubled. A strategy chosen
+  after seeing results must be flagged `in_sample`.
 - **New verdict ingredients come through the factor lab, nowhere else.**
   `backend/factor_study.py` tests candidates (group momentum, earnings
   surprise/reaction, 12-1 momentum, 52-week high, reversal, MAX, volatility)
@@ -271,6 +285,7 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | Risk flags / CSP / relative strength | `backend/scoring/{risk,csp_signal,relative_strength}.py` |
 | Live single-ticker TA / thesis / bottom / cycle | `api/ta.js` |
 | Walk-forward test of the Analysis verdict (what Buy/Hold/Sell was worth) | `api/_verdict_eval.js` (runs `ta.js`'s exported `analyze`) ← `backend/verdict_data.py` + `frontend/scripts/verdict-eval.mjs`, weekly `verdict-eval.yml` → `verdict_eval.json` → `components/VerdictEvidence.tsx` |
+| Strategy lab — whole strategies after costs, metrics + quality checklist | `backend/strategy_lab.py` (pure) ← factor-lab data; `factor-study.yml` → `strategy_lab.json` → `components/StrategyLab.tsx` on Research |
 | Factor lab — candidate verdict ingredients, tested point-in-time | `backend/factor_study.py` (pure) ← `factor_data.py`, `estimate_log.py`; weekly `factor-study.yml` → `factor_study.json` → `components/FactorLab.tsx` on Research |
 | Earnings calendar (next report, last surprise) + "earnings inside the window" warnings | `backend/factor_data.next_earnings` → `public/earnings.json` (weekly factor-study job) → `lib/earnings.ts`, `components/EarningsNote.tsx`, Today's plan badge |
 | Analyst price targets (informational, weekly) | `backend/analyst_targets.py`, `analyst-targets.yml` → `public/analysts.json` → `components/AnalystTargets.tsx` |

@@ -45,7 +45,7 @@ def test_alpha_is_measured_over_the_same_holding_window():
         "AAA": dict(zip(dates, [101, 103, 106, 109, 113, 118, 120, 120, 120, 120, 120, 120, 120, 120])),
         "SPY": {"2026-01-05": 500.0, **dict(zip(dates, [500 + i for i in range(1, 15)]))},
     }
-    out = judge_history(history, closes)
+    out = judge_history(history, closes, cost_pct=0)
     t = out["recent"][0]
     assert t["exit"] == "take_profit" and t["exit_date"] == "2026-01-10"
     # SPY from the pick date to THAT exit date — not to today.
@@ -178,7 +178,7 @@ def test_holding_instead_separates_bad_picks_from_bad_exits():
     closes = {f"T{k}": dict(zip(cal, dip_then_rally)) for k in (2, 3, 5)}
     closes["SPY"] = {"2026-01-02": 500.0, "2026-01-03": 500.0, "2026-01-05": 500.0,
                      **{d: 500.0 for d in cal}}
-    g = judge_history(history, closes)["by_screen"]["growth"]
+    g = judge_history(history, closes, cost_pct=0)["by_screen"]["growth"]
     assert g["avg_return_%"] < 0                     # stopped out on the dip
     h = g["held_instead"]
     assert h["avg_alpha_%"] > 10 and h["hold_minus_plan_pp"] > 15
@@ -238,3 +238,14 @@ def test_overlapping_holds_deflate_the_t_across_dates():
     weekly = ["2026-03-02", "2026-03-09", "2026-03-16", "2026-03-23"]
     assert overlap_factor(5, weekly) == 1.0
     assert overlap_factor(10, ["2026-03-02"]) == 1.0
+
+
+def test_every_judged_return_is_net_of_round_trip_costs():
+    from backend.exit_judged import ROUND_TRIP_COST_PCT
+    history = [("2026-01-05", [{"ticker": "AAA", "score": 80, "entry": 100.0}])]
+    dates = [f"2026-01-{d:02d}" for d in range(6, 20)]
+    closes = {"AAA": dict(zip(dates, [101, 103, 106, 109, 113, 118] + [118] * 8)),
+              "SPY": {"2026-01-05": 500.0, **{d: 500.0 for d in dates}}}
+    t = judge_history(history, closes)["recent"][0]
+    assert t["gross_return_%"] == 13.0
+    assert t["return_%"] == round(13.0 - ROUND_TRIP_COST_PCT, 2)

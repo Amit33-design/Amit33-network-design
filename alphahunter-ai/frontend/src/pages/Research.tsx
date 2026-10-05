@@ -11,6 +11,7 @@ import { chartColors, plotTheme, onThemeChange, getTheme } from "../lib/theme";
 import PickDateConditions from "../components/PickDateConditions";
 import PlanVsHold from "../components/PlanVsHold";
 import FactorLab, { useFactorStudy } from "../components/FactorLab";
+import StrategyLab, { useStrategyLab } from "../components/StrategyLab";
 import { useJudged } from "../lib/evidence";
 
 type Dash = { domains: Record<string, { score: number }[]> };
@@ -20,6 +21,7 @@ export default function Research() {
   const pairStudy = usePairStudy();
   const judged = useJudged();
   const factors = useFactorStudy();
+  const strategies = useStrategyLab();
   const [dash, setDash] = useState<Dash | null>(null);
   const [theme, setTheme] = useState(getTheme);
   useEffect(() => onThemeChange(() => setTheme(getTheme())), []);
@@ -57,6 +59,16 @@ export default function Research() {
           <BacktestPanel bt={backtest} />
         </Section>
       )}
+
+      <Section
+        title="🏁 Strategy lab"
+        subtitle="whole strategies after costs — CAGR, Sharpe, drawdown, and a quality checklist"
+        badge={strategies?.strategies?.some((s) => s.passed === s.of && !s.in_sample) ? "passes all checks" : undefined}
+        badgeColor="#31a05c"
+        defaultOpen
+      >
+        <StrategyLab data={strategies} />
+      </Section>
 
       <Section
         title="🔬 Factor lab"

@@ -152,3 +152,14 @@ def test_trade_count_is_reported_alongside_distinct_names_and_skips():
     assert r["trades"] == 10           # ten AAA entries
     assert r["distinct_names"] == 1    # ...all in one name
     assert r["skipped_entries"] == 10  # every GHOST entry accounted for
+
+
+def test_backtest_charges_trading_costs_on_entry_and_exit():
+    dates = _calendar(30)
+    closes = {"SPY": _series(dates, 500.0, 0.0), "AAA": _series(dates, 100.0, 0.0)}   # flat
+    history = [(dates[0], [{"ticker": "AAA", "score": 90}])]
+    free = simulate(history, closes, top_n=1, hold_days=10, cost_bps=0)
+    paid = simulate(history, closes, top_n=1, hold_days=10, cost_bps=20)
+    assert free["strategy_return_%"] == 0
+    # One buy and one sell at 20 bps each on a flat stock: about -0.4%.
+    assert -0.45 < paid["strategy_return_%"] < -0.35

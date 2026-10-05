@@ -100,14 +100,17 @@ def main() -> None:  # pragma: no cover - network
                          threads=True, group_by="ticker")
         for t in chunk:
             try:
-                col = (df[t]["Close"] if len(chunk) > 1 else df["Close"]).dropna()
+                sub = (df[t] if len(chunk) > 1 else df)[["Close", "Volume"]].dropna(subset=["Close"])
             except Exception:
                 continue
-            dates = [d.strftime("%Y-%m-%d") for d in col.index]
-            closes = [float(x) for x in col.values]
+            dates = [d.strftime("%Y-%m-%d") for d in sub.index]
+            closes = [float(x) for x in sub["Close"].values]
             if t != "SPY" and not usable(dates, closes, t):
                 continue
-            prices[t] = {"dates": dates, "c": closes}
+            # Volume too: the strategy lab excludes names too thin to trade
+            # (dollar volume), a real-world constraint a backtest must respect.
+            vols = [float(x) if x == x else 0.0 for x in sub["Volume"].values]
+            prices[t] = {"dates": dates, "c": closes, "v": vols}
 
     import datetime as dt
     today = dt.date.today().isoformat()

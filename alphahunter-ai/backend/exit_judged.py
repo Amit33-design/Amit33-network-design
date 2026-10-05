@@ -29,6 +29,10 @@ from statistics import median
 from .exit_rules import build_moonshot_plan, build_plan, check_exit
 
 MAX_GAP_SESSIONS = 5
+# Realistic trading costs: ~20 bps per side (fees, spread, slippage), the
+# same assumption as the strategy lab. Every judged return is NET of it — a
+# record that ignores costs flatters any strategy that trades often.
+ROUND_TRIP_COST_PCT = 0.4
 
 
 def recover_atr(rec: dict) -> float | None:
@@ -242,7 +246,8 @@ def compare_hold(trades: list[dict], days: int = HOLD_DAYS) -> dict | None:
 
 def judge_history(history: list[tuple[str, list[dict]]],
                   closes: dict[str, dict[str, float]],
-                  *, benchmark: str = "SPY", top_n: int | None = None) -> dict:
+                  *, benchmark: str = "SPY", top_n: int | None = None,
+                  cost_pct: float = ROUND_TRIP_COST_PCT) -> dict:
     """Judge every pick in the history against its real subsequent path.
 
     ``closes`` maps ticker -> {ISO date: close}. Each ticker is judged from the
@@ -308,6 +313,13 @@ def judge_history(history: list[tuple[str, list[dict]]],
                 h_b1 = bench.get(days[n - 1]) if len(days) >= n else None
                 held[rk] = round((h_px / entry - 1) * 100, 2) if h_px else None
                 held[sk] = round((h_b1 / b0 - 1) * 100, 2) if (h_b1 and b0) else None
+            # Net of the round-trip cost; the gross figure stays for reference.
+            res = {**res, "gross_return_%": res["return_%"],
+                   "return_%": round(res["return_%"] - cost_pct, 2)}
+            for n in HOLD_WINDOWS:
+                rk, _ = _hold_keys(n)
+                if held.get(rk) is not None:
+                    held[rk] = round(held[rk] - cost_pct, 2)
             trades.append({
                 **res, "ticker": t, "picked": date_str, "exit_date": exit_date,
                 "score": rec.get("score"),
@@ -326,7 +338,9 @@ def judge_history(history: list[tuple[str, list[dict]]],
 
     return {
         "method": ("each pick judged at its own exit plan — take-profit, stop, "
-                   "trailing stop or 10-trading-day review, whichever came first"),
+                   "trailing stop or 10-trading-day review, whichever came first — "
+                   f"net of a {cost_pct}% round-trip trading cost"),
+        "cost_round_trip_%": cost_pct,
         "summary": summarise(trades),
         "by_screen": by_screen,
         "still_open": still_open,

@@ -60,8 +60,10 @@ def simulate(
     top_n: int = TOP_N,
     hold_days: int = HOLD_DAYS,
     benchmark: str = BENCHMARK,
+    cost_bps: float = 20.0,
 ) -> dict:
-    """Run the top-N / hold-H simulation.
+    """Run the top-N / hold-H simulation, net of trading costs (cost_bps per
+    side, charged on the day a position is bought and the day it is sold).
 
     ``closes`` maps ticker -> {ISO date: close}. The trading calendar is taken
     from the benchmark's own series, so weekends and holidays are handled by
@@ -106,7 +108,7 @@ def simulate(
             if e:
                 trades.append({
                     "ticker": t, "entry_date": calendar[entry], "exit_date": calendar[exit_i],
-                    "return_%": round((x / e - 1) * 100, 2),
+                    "return_%": round((x / e - 1) * 100 - 2 * cost_bps / 100, 2),
                     "score": r.get("score"),
                 })
 
@@ -128,6 +130,11 @@ def simulate(
             if prev and cur:
                 rets.append(cur / prev - 1)
         day_ret = sum(rets) / len(rets) if rets else 0.0
+        # Costs: each position bought at the close of day i or sold at it is
+        # one side traded, as a share of the equal-weight book that day.
+        traded = sum(1 for p in positions if p[0] == i) + sum(1 for p in open_now if p[1] == i)
+        book = max(1, len(open_now) + sum(1 for p in positions if p[0] == i))
+        day_ret -= traded / book * cost_bps / 10_000
         if rets:
             days_invested += 1
         equity *= 1 + day_ret
