@@ -87,6 +87,13 @@ export async function fetchStoryInputs(ticker, spyPromise, origin) {
   const pulseP = themePulse(origin);
   const cls = await fetchClassification(ticker).catch(() => null);
   const theme = resolveTheme(ticker, cls?.sector, cls?.industry);
+  // Misclassifications must be findable: log every ticker that falls back to
+  // its sector, or matches nothing (QA P1-4 — OPEN read as a REIT, KEEL as
+  // enterprise software, and nothing recorded either).
+  if (!theme || theme.matched === "sector") {
+    console.warn(`[story] theme fallback ${ticker}: sector=${cls?.sector ?? "?"} `
+      + `industry=${cls?.industry ?? "?"} -> ${theme ? theme.key : "none"}`);
+  }
   const etf = theme?.etf && theme.etf !== ticker ? theme.etf : null;
   const [etfCloses, vix, spy] = await Promise.all([
     etf ? closes(etf, "6mo") : null,
@@ -208,6 +215,9 @@ export function buildStory({ ticker, closes: c, indicators = {}, price, recommen
     type: { style, growth, traits },
     theme: theme ? {
       key: theme.key, name: theme.name, etf: theme.etf, matched: theme.matched,
+      // This company's own classification, shown above the shared theme copy
+      // so two companies in one theme never read as identical.
+      own: classification ? { industry: classification.industry || null, sector: classification.sector || null } : null,
       scope: theme.scope || null, drivers: theme.drivers || [], risks: theme.risks || [],
     } : null,
     pulse: {

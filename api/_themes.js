@@ -10,6 +10,9 @@
 // type — never a claim about this quarter. Current sentiment is not written
 // here; it is MEASURED live from the theme's ETF (see _story.js). Resolution
 // order: an explicit ticker list, then Yahoo's industry, then its sector.
+// Industry matching is FIRST HIT, so narrow themes must come before broad ones:
+// REITs before consumer (/retail/ would take "REIT - Retail") and healthcare
+// (/health/ would take "REIT - Healthcare Facilities").
 //
 // `growth` is the kind of growth the business has:
 //   secular    — demand grows with a long-running shift, cycles are dips in it
@@ -118,8 +121,52 @@ export const THEMES = [
             "Heavy capital spending for manufacturers"],
   },
   {
+    key: "hydrogen", name: "Hydrogen & fuel cells", etf: "ICLN", growth: "speculative",
+    tickers: ["PLUG", "FCEL", "BLDP"],
+    scope: "Makes hydrogen fuel cells, electrolyzers or hydrogen supply for power and transport.",
+    drivers: ["Decarbonisation policy and clean-hydrogen subsidies",
+              "Demand for backup and off-grid power, including at data centers"],
+    risks: ["Mostly unprofitable: cash burn and repeated equity raises",
+            "Depends on subsidies and policy that can change",
+            "Hydrogen cost still well above fossil alternatives"],
+  },
+  {
+    key: "re_tech", name: "Real-estate tech & brokerage", etf: "ITB", growth: "cyclical",
+    tickers: ["OPEN", "COMP", "Z", "ZG", "RDFN", "EXPI", "RMAX", "OPAD", "DOMA"],
+    industries: [/real estate services/, /real estate - development/, /real estate - diversified/],
+    scope: "Earns fees or trading margins from home sales — brokerage, listings, or buying and reselling homes (iBuying).",
+    drivers: ["Home-sale transaction volumes recovering", "Lower mortgage rates unlocking existing-home sales",
+              "Taking share with technology platforms"],
+    risks: ["Transaction volumes collapse when mortgage rates rise",
+            "iBuyers carry home inventory — falling prices hit margins directly",
+            "Thin or negative margins; agent-commission rule changes"],
+  },
+  {
+    key: "reits", name: "Real estate (REITs)", etf: "XLRE", growth: "defensive",
+    industries: [/reit/],
+    scope: "Owns property and pays out most of its rent as dividends.",
+    drivers: ["Rent growth", "Falling interest rates lift property values"],
+    risks: ["Rate-sensitive", "Refinancing costs", "Office and retail vacancy"],
+  },
+  {
+    key: "it_services", name: "IT services & digital infrastructure", etf: "XLK", growth: "cyclical",
+    industries: [/information technology services/],
+    scope: "Sells technology services — consulting, outsourcing, hosting or infrastructure — rather than its own software products.",
+    drivers: ["Corporate IT and AI-adoption budgets", "Multi-year contracts give revenue visibility"],
+    risks: ["Spending is cut quickly in downturns", "Low switching costs and price competition",
+            "AI automation can shrink billable work"],
+  },
+  {
+    key: "casinos", name: "Casinos & gaming", etf: "BJK", growth: "cyclical",
+    industries: [/casino/, /gambling/],
+    scope: "Runs casinos, resorts or betting — revenue follows visitor numbers and how much they wager.",
+    drivers: ["Consumer leisure spending", "Las Vegas and Macau visitation", "Online sports betting growth"],
+    risks: ["Discretionary spending falls first in a slowdown", "Heavy debt at many operators",
+            "Regulation and licensing, especially in Macau"],
+  },
+  {
     key: "software", name: "Enterprise software", etf: "IGV", growth: "secular",
-    industries: [/software/, /information technology services/],
+    industries: [/software/],
     scope: "Sells software or IT services to businesses, mostly by subscription.",
     drivers: ["Recurring subscription revenue", "AI features as a new price tier",
               "High gross margins once scaled"],
@@ -267,13 +314,6 @@ export const THEMES = [
     scope: "Makes equipment or provides services that the rest of the economy runs on.",
     drivers: ["Capital spending and infrastructure", "Reshoring", "Pricing on backlogs"],
     risks: ["Economic cycles", "Freight and input costs", "Tariffs"],
-  },
-  {
-    key: "reits", name: "Real estate (REITs)", etf: "XLRE", growth: "defensive",
-    industries: [/reit/, /real estate/],
-    scope: "Owns property and pays out most of its rent as dividends.",
-    drivers: ["Rent growth", "Falling interest rates lift property values"],
-    risks: ["Rate-sensitive", "Refinancing costs", "Office and retail vacancy"],
   },
   {
     key: "telecom", name: "Telecom", etf: "XLC", growth: "defensive",

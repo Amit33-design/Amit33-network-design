@@ -154,3 +154,25 @@ describe("cap bucket", () => {
     expect(typeLabel("Cyclical", null)).toBe("Cyclical");
   });
 });
+
+describe("QA P1-4 — theme mapping for the reported tickers", () => {
+  it("each lands in a theme that describes its business", () => {
+    expect(resolveTheme("OPEN", "Real Estate", "Real Estate Services").key).toBe("re_tech");
+    expect(resolveTheme("KEEL", "Technology", "Information Technology Services").key).toBe("it_services");
+    expect(resolveTheme("FICO", "Technology", "Software - Application").key).toBe("software");
+    expect(resolveTheme("MGM", "Consumer Cyclical", "Resorts & Casinos").key).toBe("casinos");
+    expect(resolveTheme("PLUG", "Industrials", "Electrical Equipment & Parts").key).toBe("hydrogen");
+    expect(resolveTheme("O", "Real Estate", "REIT - Retail").key).toBe("reits");
+    expect(resolveTheme("WELL", "Real Estate", "REIT - Healthcare Facilities").key).toBe("reits");
+  });
+  it("OPEN's copy says nothing about REITs, dividends or rent payouts", () => {
+    const t = resolveTheme("OPEN", "Real Estate", "Real Estate Services");
+    const copy = [t.scope, ...t.drivers, ...t.risks].join(" ");
+    expect(copy).not.toMatch(/REIT|dividend|\brent\b|pays out/i);
+  });
+  it("KEEL and FICO do not share theme text", () => {
+    const k = resolveTheme("KEEL", "Technology", "Information Technology Services");
+    const f = resolveTheme("FICO", "Technology", "Software - Application");
+    expect(k.scope).not.toBe(f.scope);
+  });
+});

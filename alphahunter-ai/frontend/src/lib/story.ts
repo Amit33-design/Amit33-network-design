@@ -7,6 +7,7 @@ export type Story = {
   type: { style: string; growth: string | null; traits: string[] };
   theme: {
     key: string; name: string; etf: string; matched: "ticker" | "industry" | "sector";
+    own?: { industry: string | null; sector: string | null } | null;
     scope: string | null; drivers: string[]; risks: string[];
   } | null;
   pulse: {

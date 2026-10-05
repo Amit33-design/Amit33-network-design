@@ -26,9 +26,23 @@ export default function InvestmentThesis({ story, profile }: { story: Story; pro
         <div className="text-2xs text-ink-muted -mt-1.5">{story.type.traits.join(" · ")}</div>
       )}
 
+      {!th && (
+        <div className="text-xs text-ink-muted">
+          Theme data unavailable — this company's industry is not classified yet, so no theme narrative is shown
+          rather than borrowing another company's.
+        </div>
+      )}
+
       {th && (th.scope || th.drivers.length > 0) && (
         <div>
           <div className="label-eyebrow mb-1">Theme & growth scope</div>
+          {th.own?.industry && (
+            <div className="text-xs text-ink-secondary mb-0.5">
+              <b className="text-ink">{story.business?.name ?? "This company"}</b> is classified as{" "}
+              <b className="text-ink">{th.own.industry}</b>{th.own.sector ? ` (${th.own.sector})` : ""}; the theme below
+              describes that kind of business, not this company specifically.
+            </div>
+          )}
           {th.scope && <div className="text-sm text-ink">{th.scope}</div>}
           {story.type.growth && (
             <div className="text-xs text-ink-secondary mt-0.5">{GROWTH_LABEL[story.type.growth]}</div>
