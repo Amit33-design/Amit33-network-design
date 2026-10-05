@@ -11,7 +11,14 @@ import { buildStory, fetchStoryInputs, originOf } from "./_story.js";
 
 const UA = { "User-Agent": "Mozilla/5.0 (compatible; alphahunter-ai/1.0)" };
 
-const smaLast = (a, n) => (a.length < n ? null : a.slice(-n).reduce((x, y) => x + y, 0) / n);
+// EMA, the convention used for every moving average across the product.
+const emaLast = (a, n) => {
+  if (a.length < n) return null;
+  const k = 2 / (n + 1);
+  let e = a[0];
+  for (let i = 1; i < a.length; i++) e = a[i] * k + e * (1 - k);
+  return e;
+};
 const ret = (c, n) => (c.length > n ? ((c[c.length - 1] - c[c.length - 1 - n]) / c[c.length - 1 - n]) * 100 : null);
 
 async function closesFor(ticker, range) {
@@ -38,7 +45,7 @@ function buildThesis(t, d, spy) {
   const hi52 = Math.max(...c.slice(-252)), lo52 = Math.min(...c.slice(-252));
   const dHigh = hi52 ? ((last - hi52) / hi52) * 100 : null;
   const dLow = lo52 ? ((last - lo52) / lo52) * 100 : null;
-  const s50 = smaLast(c, 50), s200 = smaLast(c, 200);
+  const s50 = emaLast(c, 50), s200 = emaLast(c, 200);
   const rsi = rsiLast(c);
   // ATR% approximation from close-to-close moves when H/L are sparse.
   let atrPct = null;
@@ -79,8 +86,8 @@ function buildThesis(t, d, spy) {
   }
   if (s200 != null) {
     parts.push(last > s200
-      ? `The primary trend is up (above the 200-day${s50 != null && s200 != null && s50 > s200 ? ", golden-cross regime" : ""}) — dips are typically buyable weakness.`
-      : `The primary trend is down (below the 200-day) — bounces are counter-trend.`);
+      ? `The primary trend is up (above EMA200${s50 != null && s200 != null && s50 > s200 ? ", EMA50 above EMA200" : ""}) — dips are typically buyable weakness.`
+      : `The primary trend is down (below EMA200) — bounces are counter-trend.`);
   }
   if (r6 != null && r6 > 50 && dHigh != null && dHigh <= -10)
     parts.push(`A high-momentum name (+${r6.toFixed(0)}% in 6 months) digesting a big run — this size pullback is routine for it.`);
