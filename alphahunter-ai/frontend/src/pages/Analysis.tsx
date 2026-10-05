@@ -9,6 +9,7 @@ import EntryTimingPanel from "../components/EntryTiming";
 import InvestmentThesis from "../components/InvestmentThesis";
 import VerdictEvidence from "../components/VerdictEvidence";
 import EarningsNote from "../components/EarningsNote";
+import AnalystTargets from "../components/AnalystTargets";
 import ChartExplainer from "../components/ChartExplainer";
 import PeerComparison from "../components/PeerComparison";
 import { isWatched, toggleWatchlist, onWatchlistChange } from "../lib/watchlist";
@@ -299,6 +300,8 @@ export default function Analysis() {
           </div>
 
           {profile && <CompanyProfile profile={profile} />}
+
+          {data.ticker && <AnalystTargets ticker={data.ticker} price={data.price} />}
 
           {data.story && <InvestmentThesis story={data.story} profile={profile} />}
 
@@ -667,32 +670,45 @@ export default function Analysis() {
             <div className="panel p-4">
               <div className="font-semibold text-ink mb-3">Indicators</div>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                <Row k="RSI (14)" v={ind.rsi} />
+                <Row k="RSI (14)" v={<RsiValue rsi={ind.rsi} />} />
                 <Row k="MACD hist" v={ind.macd_hist} />
-                <Row k="EMA 50" v={fmt(ind.ema50)} />
-                <Row k="EMA 200" v={fmt(ind.ema200)} />
+                <Row k="EMA 50" v={<>{fmt(ind.ema50)} <Rel p={ind.vs_ema50_pct} /></>} />
+                <Row k="EMA 200" v={<>{fmt(ind.ema200)} <Rel p={ind.vs_ema200_pct} /></>} />
                 <Row k="ATR (14)" v={ind.atr} />
-                <Row k="1M" v={pct(ind.ret_1m)} />
-                <Row k="3M" v={pct(ind.ret_3m)} />
-                <Row k="6M" v={pct(ind.ret_6m)} />
-                <Row k="1Y" v={pct(ind.ret_1y)} />
-                <Row k="vs 52w hi" v={pct(ind.dist_52w_high)} />
-                <Row k="vs 52w lo" v={pct(ind.dist_52w_low)} />
-                <Row k="Avg vol" v={ind.avg_volume?.toLocaleString()} />
+                <Row k="1M" v={<Ret v={ind.ret_1m} />} />
+                <Row k="3M" v={<Ret v={ind.ret_3m} />} />
+                <Row k="6M" v={<Ret v={ind.ret_6m} />} />
+                <Row k="1Y" v={<Ret v={ind.ret_1y} />} />
+                <Row k="52w high" v={ind.high_52w != null
+                  ? <span title={ind.high_52w_date ? `on ${ind.high_52w_date}` : undefined}>{fmt(ind.high_52w)} <span className="text-2xs text-ink-muted">{pct(ind.dist_52w_high)}{ind.high_52w_date ? ` · ${ind.high_52w_date}` : ""}</span></span>
+                  : "—"} />
+                <Row k="52w low" v={ind.low_52w != null
+                  ? <span>{fmt(ind.low_52w)} <span className="text-2xs text-ink-muted">{pct(ind.dist_52w_low)}{ind.low_52w_date ? ` · ${ind.low_52w_date}` : ""}</span></span>
+                  : "—"} />
               </div>
+              {ind.volume_trend && <VolumeTrend t={ind.volume_trend} />}
             </div>
             {/* Levels */}
             <div className="panel p-4">
               <div className="font-semibold text-ink mb-3">Support &amp; Resistance</div>
               <div className="text-sm">
+                {data.levels?.lookback != null && (
+                  <div className="text-2xs text-ink-muted mb-2">Swing highs/lows in the last {data.levels.lookback} sessions.</div>
+                )}
                 <div className="text-loss font-medium mb-1">Resistance</div>
                 {(data.levels?.resistance || []).length
                   ? data.levels.resistance.map((r: number) => <div key={r} className="pl-2">${r}</div>)
                   : <div className="pl-2 text-ink-muted">— none above price —</div>}
+                {(data.levels?.resistance || []).length > 0 && data.levels.resistance.length < 3 && (
+                  <div className="pl-2 text-2xs text-ink-muted">Only {data.levels.resistance.length} resistance level{data.levels.resistance.length === 1 ? "" : "s"} found in range.</div>
+                )}
                 <div className="text-brand font-medium mt-3 mb-1">Support</div>
                 {(data.levels?.support || []).length
                   ? data.levels.support.map((s: number) => <div key={s} className="pl-2">${s}</div>)
                   : <div className="pl-2 text-ink-muted">— none below price —</div>}
+                {(data.levels?.support || []).length > 0 && data.levels.support.length < 3 && (
+                  <div className="pl-2 text-2xs text-ink-muted">Only {data.levels.support.length} support level{data.levels.support.length === 1 ? "" : "s"} found in range.</div>
+                )}
               </div>
             </div>
             {/* Signals + factors */}
@@ -762,6 +778,47 @@ export default function Analysis() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// RSI with one rounding rule (1 decimal) and a plain-language badge (QA P2-1, P2-4).
+function RsiValue({ rsi }: { rsi: number | null | undefined }) {
+  if (rsi == null) return <>—</>;
+  return (
+    <span>
+      {Number(rsi).toFixed(1)}
+      {rsi < 30 && <span className="ml-1 text-2xs px-1.5 py-0.5 rounded bg-gain-soft text-gain">Oversold &lt;30</span>}
+      {rsi > 70 && <span className="ml-1 text-2xs px-1.5 py-0.5 rounded bg-loss-soft text-loss">Overbought &gt;70</span>}
+    </span>
+  );
+}
+// Price vs an average, in % (QA P2-3).
+function Rel({ p }: { p: number | null | undefined }) {
+  if (p == null) return null;
+  return <span className="text-2xs text-ink-muted">({Math.abs(p).toFixed(1)}% {p >= 0 ? "above" : "below"})</span>;
+}
+// A return that could not be computed shows "—" with a reason, never another window's value (QA P1-6).
+function Ret({ v }: { v: number | null | undefined }) {
+  return v == null ? <span title="Not enough history for this window">—</span> : <>{pct(v)}</>;
+}
+// Recent volume vs its averages (QA P1-5).
+function VolumeTrend({ t }: { t: any }) {
+  const n = (x: number | null) => (x == null ? "—" : x >= 1e6 ? `${(x / 1e6).toFixed(1)}M` : x >= 1e3 ? `${(x / 1e3).toFixed(0)}K` : String(x));
+  return (
+    <div className="mt-3 pt-3 border-t border-line text-sm">
+      <div className="text-xs uppercase tracking-wide text-ink-muted mb-1.5">Volume trend</div>
+      <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+        <Row k="Avg 5d" v={n(t.avg_5d)} />
+        <Row k="Avg 20d" v={n(t.avg_20d)} />
+        <Row k="Avg 50d" v={n(t.avg_50d)} />
+        <Row k="5d ÷ 50d" v={t.ratio_5_50 != null ? `${t.ratio_5_50}×` : "—"} />
+        <Row k="Up-day share (20d)" v={t.up_share_20d != null ? `${t.up_share_20d}%` : "—"} />
+        <Row k="20d ÷ 50d" v={t.ratio_20_50 != null ? `${t.ratio_20_50}×` : "—"} />
+      </div>
+      {t.read && <div className="mt-1.5 text-xs text-ink-secondary">{t.read}
+        {t.up_share_20d != null && <> {t.up_share_20d >= 60 ? "Most of it on up days (accumulation)." : t.up_share_20d <= 40 ? "Most of it on down days (distribution)." : ""}</>}
+      </div>}
     </div>
   );
 }

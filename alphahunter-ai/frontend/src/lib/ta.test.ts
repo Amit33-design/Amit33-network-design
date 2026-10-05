@@ -74,3 +74,21 @@ describe("P1-5 — volume trend", () => {
     expect(Object.values(thin).some((x) => typeof x === "number" && Number.isNaN(x))).toBe(false);
   });
 });
+
+describe("P2-2 — thin support/resistance widens before giving up", () => {
+  it("looks further back when the last 120 sessions hold fewer than 3 levels", () => {
+    // Choppy first year, then a clean straight rally: no swing lows near the end.
+    const b = bars(520, (i) => (i < 300 ? 50 + 4 * Math.sin(i / 6) : 50 + (i - 300) * 0.2));
+    const out = run(b);
+    expect(out.levels.lookback).toBeGreaterThan(120);
+    expect(out.levels.support.length).toBeGreaterThan(1);
+  });
+});
+
+describe("P2-1 — RSI has one rounding rule", () => {
+  it("every RSI number in the copy carries one decimal, like the card", () => {
+    const out = run(bars(520, (i) => 60 - i * 0.08 + 3 * Math.sin(i / 5)));
+    const copy = JSON.stringify([out.timing, out.bottom, out.verdict_reason]);
+    for (const m of copy.matchAll(/RSI (\d+(?:\.\d+)?)/g)) expect(m[1]).toMatch(/\.\d$/);
+  });
+});

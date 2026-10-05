@@ -12,7 +12,8 @@ interface PeersResp {
   peers: PeerRow[];
   standing?: { rank: number; of: number; vs_peer_median_pp: number; verdict: string } | null;
   note?: string;
-  basis?: "competitors" | "sector" | "none";
+  basis?: "competitors" | "theme" | "sector" | "none";
+  theme?: string | null;
   sector?: string | null;
   basis_note?: string;
 }
@@ -50,7 +51,15 @@ export default function PeerComparison(
       </div>
     );
   }
-  if (!data || (!data.peers?.length && !data.note)) return null;
+  // Never a silent absence (QA P2-5): say why there is no table.
+  if (!data || (!data.peers?.length && !data.note)) {
+    return (
+      <div className="panel p-4 text-xs text-ink-muted">
+        Peer comparison unavailable right now — peers come from a curated competitor list, the stock's
+        theme basket (3+ companies), or a sector proxy.
+      </div>
+    );
+  }
 
   // The subject appears in this table AND in the indicator grid above it. Even
   // with one shared RSI implementation the windows differ (peers always fetch
@@ -64,7 +73,7 @@ export default function PeerComparison(
     <div className="panel p-4">
       <div className="flex items-center gap-3 flex-wrap mb-2">
         <div className="font-semibold text-ink">
-          {data.basis === "sector" ? "🏳️ Sector comparison" : "🏳️ Direct competitors"}
+          {data.basis === "sector" ? "🏳️ Sector comparison" : data.basis === "theme" ? "🏳️ Theme peers" : "🏳️ Direct competitors"}
         </div>
         {/* Say which kind of comparison this is. "#2 of 5 vs its competitors"
             is a real read; "#2 of 5 vs the sector's mega-caps" is much weaker,
@@ -77,7 +86,9 @@ export default function PeerComparison(
             title={data.basis_note}>
             {data.basis === "competitors"
               ? "curated peer set"
-              : `broad ${data.sector ?? "sector"} proxy`}
+              : data.basis === "theme"
+                ? `same theme: ${data.theme ?? "—"}`
+                : `broad ${data.sector ?? "sector"} proxy`}
           </span>
         )}
         {data.standing && (
@@ -117,7 +128,7 @@ export default function PeerComparison(
                       <td className={`px-2 py-1.5 ${tone(r.day_change_pct)}`}>{pct(r.day_change_pct)}</td>
                       <td className={`px-2 py-1.5 ${tone(r.ret_1m)}`}>{pct(r.ret_1m)}</td>
                       <td className={`px-2 py-1.5 font-semibold ${tone(r.ret_6m)}`}>{pct(r.ret_6m)}</td>
-                      <td className="px-2 py-1.5">{r.rsi ?? "—"}</td>
+                      <td className="px-2 py-1.5">{r.rsi != null ? Number(r.rsi).toFixed(1) : "—"}</td>
                       <td className="px-2 py-1.5 text-ink-secondary">{pct(r.from_52w_high)}</td>
                       <td className={`px-2 py-1.5 ${r.trend === "up" ? "text-brand" : "text-loss"}`}>
                         {r.trend === "up" ? "▲ up" : r.trend === "down" ? "▼ down" : "—"}

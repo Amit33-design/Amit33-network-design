@@ -178,20 +178,39 @@ export function crossText(e50Last, e200Last, cross, recent = 90) {
   return `EMA50 ${above ? "above" : "below"} EMA200 (no recent cross)`;
 }
 
-// Support/resistance from recent swing lows/highs (fractal-style) + pivots.
+// Support/resistance from swing lows/highs (fractal-style). Starts with the
+// last 120 sessions and widens to 250, then the full history, until 3 levels
+// exist on each side — PLUG showed 1 support level where others showed 3
+// (QA P2-2). Reports how far it looked so the page can say "only N found".
 function levels(highs, lows, closes) {
-  const N = Math.min(closes.length, 120);
-  const h = highs.slice(-N), l = lows.slice(-N), c = closes[closes.length - 1];
-  const swingHi = [], swingLo = [];
-  for (let i = 2; i < N - 2; i++) {
-    if (h[i] > h[i - 1] && h[i] > h[i - 2] && h[i] > h[i + 1] && h[i] > h[i + 2]) swingHi.push(h[i]);
-    if (l[i] < l[i - 1] && l[i] < l[i - 2] && l[i] < l[i + 1] && l[i] < l[i + 2]) swingLo.push(l[i]);
+  const c = closes[closes.length - 1];
+  const find = (N) => {
+    N = Math.min(closes.length, N);
+    const h = highs.slice(-N), l = lows.slice(-N);
+    const swingHi = [], swingLo = [];
+    for (let i = 2; i < N - 2; i++) {
+      if (h[i] > h[i - 1] && h[i] > h[i - 2] && h[i] > h[i + 1] && h[i] > h[i + 2]) swingHi.push(h[i]);
+      if (l[i] < l[i - 1] && l[i] < l[i - 2] && l[i] < l[i + 1] && l[i] < l[i + 2]) swingLo.push(l[i]);
+    }
+    return {
+      resistance: [...new Set(swingHi.filter((x) => x > c).map((x) => Math.round(x * 100) / 100))]
+        .sort((a, b) => a - b).slice(0, 3),
+      support: [...new Set(swingLo.filter((x) => x < c).map((x) => Math.round(x * 100) / 100))]
+        .sort((a, b) => b - a).slice(0, 3),
+      lookback: N,
+    };
+  };
+  let best = find(120);
+  for (const N of [250, closes.length]) {
+    if (best.support.length >= 3 && best.resistance.length >= 3) break;
+    const wider = find(N);
+    best = {
+      support: best.support.length >= 3 ? best.support : wider.support,
+      resistance: best.resistance.length >= 3 ? best.resistance : wider.resistance,
+      lookback: wider.lookback,
+    };
   }
-  const resistance = [...new Set(swingHi.filter((x) => x > c).map((x) => Math.round(x * 100) / 100))]
-    .sort((a, b) => a - b).slice(0, 3);
-  const support = [...new Set(swingLo.filter((x) => x < c).map((x) => Math.round(x * 100) / 100))]
-    .sort((a, b) => b - a).slice(0, 3);
-  return { support, resistance };
+  return best;
 }
 
 // Historical down-day bounce stats: for every session that dropped <= dipPct,
@@ -264,8 +283,8 @@ function bottomSignal(o, h, l, c, v, rsis, e20, sr) {
   add(
     rsi != null && rsi < 40,
     rsi != null && rsi < 30 ? 25 : 12,
-    rsi != null && rsi < 30 ? `deeply oversold (RSI ${rsi?.toFixed(0)})` : `oversold (RSI ${rsi?.toFixed(0)})`,
-    rsi != null ? `RSI not oversold (${rsi.toFixed(0)}, needs <40)` : "RSI unavailable"
+    rsi != null && rsi < 30 ? `deeply oversold (RSI ${rsi?.toFixed(1)})` : `oversold (RSI ${rsi?.toFixed(1)})`,
+    rsi != null ? `RSI not oversold (${rsi.toFixed(1)}, needs <40)` : "RSI unavailable"
   );
 
   // Bullish RSI divergence over the last ~20 sessions.
@@ -541,10 +560,10 @@ function analyze(dates, o, h, l, c, v, accountSize, riskPct) {
   let st = 50;
   const timingFactors = [];
   if (rsi != null) {
-    if (rsi < 35 && ltDir === "up") { st += 15; timingFactors.push({ t: "bull", s: `Oversold dip (RSI ${rsi.toFixed(0)}) inside an uptrend — favorable entry` }); }
-    else if (rsi < 35 && ltDir === "down") { st -= 4; timingFactors.push({ t: "bear", s: `Oversold (RSI ${rsi.toFixed(0)}) but the long-term trend is down — falling knife, not a dip` }); }
-    else if (rsi > 70) { st -= 10; timingFactors.push({ t: "neutral", s: `Extended (RSI ${rsi.toFixed(0)}) — better to wait for a pullback` }); }
-    else timingFactors.push({ t: "neutral", s: `RSI ${rsi.toFixed(0)} (neutral timing)` });
+    if (rsi < 35 && ltDir === "up") { st += 15; timingFactors.push({ t: "bull", s: `Oversold dip (RSI ${rsi.toFixed(1)}) inside an uptrend — favorable entry` }); }
+    else if (rsi < 35 && ltDir === "down") { st -= 4; timingFactors.push({ t: "bear", s: `Oversold (RSI ${rsi.toFixed(1)}) but the long-term trend is down — falling knife, not a dip` }); }
+    else if (rsi > 70) { st -= 10; timingFactors.push({ t: "neutral", s: `Extended (RSI ${rsi.toFixed(1)}) — better to wait for a pullback` }); }
+    else timingFactors.push({ t: "neutral", s: `RSI ${rsi.toFixed(1)} (neutral timing)` });
   }
   if (m.hist != null) {
     if (m.hist > 0) { st += 6; timingFactors.push({ t: "bull", s: "MACD momentum turning up" }); }

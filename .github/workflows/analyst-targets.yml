@@ -1,0 +1,44 @@
+name: Analyst targets (weekly)
+
+# Consensus analyst price targets for the Analysis page — informational only.
+# Writes alphahunter-ai/frontend/public/analysts.json.
+
+on:
+  schedule:
+    - cron: '0 16 * * 0'      # Sundays
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  targets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: alphahunter-ai
+    env:
+      PYTHONPATH: ${{ github.workspace }}/alphahunter-ai
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Fetch analyst targets
+        run: python -m backend.analyst_targets
+      - name: Commit
+        working-directory: .
+        run: |
+          git config user.name  "alphahunter-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add alphahunter-ai/frontend/public/analysts.json
+          git commit -m "Analyst targets $(date -u +%F)" || { echo "No changes"; exit 0; }
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then echo "pushed"; exit 0; fi
+            git fetch origin main
+            git rebase -X theirs origin/main || git rebase --abort
+            sleep $((attempt * 3))
+          done
+          echo "ERROR: could not push after retries"; exit 1

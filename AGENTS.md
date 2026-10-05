@@ -250,6 +250,13 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   next report falls inside it (`earningsRisk(entry, horizon)`): the stock
   can gap past the stop overnight. The calendar refreshes weekly with the
   factor lab over the whole universe.
+- **The Analysis page uses EMA50/EMA200 everywhere** — cards, verdict, cycle,
+  crosses, peers' trend, thesis text. A cross is named only via
+  `crossText()` (today's values must agree with it). The cycle badge shows
+  `cycle.state` (bull only if EMA50>EMA200 AND price>EMA200), never the
+  phase history alone. `ta.js` always fetches ≥2 years and trims only the
+  chart (`trimChart`), so no figure moves with the range selector. Charts
+  never zoom on the wheel; every relayout goes through `lib/axisGuard`.
 - **Score weights must sum to 1.0** (a test enforces it).
 - **Tests never hit the network.**
 
@@ -266,6 +273,7 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
 | Walk-forward test of the Analysis verdict (what Buy/Hold/Sell was worth) | `api/_verdict_eval.js` (runs `ta.js`'s exported `analyze`) ← `backend/verdict_data.py` + `frontend/scripts/verdict-eval.mjs`, weekly `verdict-eval.yml` → `verdict_eval.json` → `components/VerdictEvidence.tsx` |
 | Factor lab — candidate verdict ingredients, tested point-in-time | `backend/factor_study.py` (pure) ← `factor_data.py`, `estimate_log.py`; weekly `factor-study.yml` → `factor_study.json` → `components/FactorLab.tsx` on Research |
 | Earnings calendar (next report, last surprise) + "earnings inside the window" warnings | `backend/factor_data.next_earnings` → `public/earnings.json` (weekly factor-study job) → `lib/earnings.ts`, `components/EarningsNote.tsx`, Today's plan badge |
+| Analyst price targets (informational, weekly) | `backend/analyst_targets.py`, `analyst-targets.yml` → `public/analysts.json` → `components/AnalystTargets.tsx` |
 | Range-vs-trend regime & entry timing | `api/_regime.js` + `backend/indicators/range_regime.py` |
 | Shared indicator maths (RSI) | `api/_indicators.js` |
 | Investment thesis: theme, growth scope, measured group/market sentiment | `api/_themes.js` (theme map) + `api/_story.js` → `components/InvestmentThesis.tsx` |

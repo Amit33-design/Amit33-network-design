@@ -5,6 +5,8 @@
 // so you can see if a name is leading or lagging its own sector.
 
 import { rsiLast } from "./_indicators.js";
+import { fetchClassification, originOf, themePulse } from "./_story.js";
+import { resolveTheme } from "./_themes.js";
 
 const CHART = (t, range) =>
   `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=${range}&interval=1d`;
@@ -111,33 +113,44 @@ function curatedPeers(ticker, limit = 4) {
   return group.filter((p) => p !== t).slice(0, limit);
 }
 
-/** Yahoo's sector for a ticker, or null. Best-effort: never throws. */
-async function sectorOf(ticker) {
-  try {
-    const url = `https://query1.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(ticker)}?modules=assetProfile`;
-    const r = await fetch(url, { headers: UA });
-    if (!r.ok) return null;
-    const j = await r.json();
-    return j?.quoteSummary?.result?.[0]?.assetProfile?.sector || null;
-  } catch {
-    return null;
-  }
-}
-
-/** Peers plus how they were chosen, so the UI can be honest about it. */
-async function peersFor(ticker, limit = 4) {
+/** Peers plus how they were chosen, so the UI can be honest about it.
+ *
+ *  Order: a curated competitor list; else members of the stock's own theme
+ *  basket (themes.json — the same groups the thesis measures); else a broad
+ *  sector proxy; else none, with the reason. The sector used to come from
+ *  quoteSummary, which needs a crumb a serverless function cannot get, so it
+ *  always failed and only curated tickers ever showed peers (QA P2-5). It now
+ *  comes from the crumb-free search the thesis already uses. */
+export const MIN_THEME_PEERS = 3;
+async function peersFor(ticker, limit = 4, origin = null) {
   const curated = curatedPeers(ticker, limit);
   if (curated.length) return { peers: curated, basis: "competitors", sector: null };
 
-  const sector = await sectorOf(ticker);
-  const proxy = (SECTOR_PROXIES[sector] || [])
-    .filter((p) => p !== ticker.toUpperCase())
-    .slice(0, limit);
+  const t = ticker.toUpperCase();
+  const cls = await fetchClassification(t).catch(() => null);
+  const theme = resolveTheme(t, cls?.sector, cls?.industry);
+  if (theme && theme.matched !== "sector") {
+    const pulse = await themePulse(origin).catch(() => null);
+    const members = (pulse?.themes?.find((x) => x.key === theme.key)?.members || [])
+      .filter((p) => p !== t);
+    if (members.length >= MIN_THEME_PEERS) {
+      return { peers: members.slice(0, limit), basis: "theme", sector: cls?.sector ?? null, theme: theme.name };
+    }
+  }
+  const sector = cls?.sector || null;
+  const proxy = (SECTOR_PROXIES[sector] || []).filter((p) => p !== t).slice(0, limit);
   if (proxy.length) return { peers: proxy, basis: "sector", sector };
   return { peers: [], basis: "none", sector };
 }
 
-const smaLast = (a, n) => (a.length < n ? null : a.slice(-n).reduce((x, y) => x + y, 0) / n);
+// EMA, like every moving average on the Analysis page (QA P0-2).
+const emaLast = (a, n) => {
+  if (a.length < n) return null;
+  const k = 2 / (n + 1);
+  let e = a[0];
+  for (let i = 1; i < a.length; i++) e = a[i] * k + e * (1 - k);
+  return e;
+};
 const r1 = (x) => (x == null ? null : Math.round(x * 10) / 10);
 
 async function metricsFor(ticker) {
@@ -151,7 +164,7 @@ async function metricsFor(ticker) {
     const last = c[c.length - 1];
     const ret = (n) => (c.length > n ? ((last - c[c.length - 1 - n]) / c[c.length - 1 - n]) * 100 : null);
     const hi52 = Math.max(...c.slice(-252));
-    const s200 = smaLast(c, 200);
+    const s200 = emaLast(c, 200);
     return {
       ticker,
       name: res.meta?.shortName || ticker,
@@ -170,13 +183,15 @@ async function metricsFor(ticker) {
 
 export default async function handler(req, res) {
   const ticker = String(req.query?.ticker || "").toUpperCase().trim();
-  if (!ticker) return res.status(400).json({ error: "ticker required" });
+  if (!ticker) return res.status(400).json({ code: "ticker_required", message: "Enter a ticker symbol." });
 
-  const { peers, basis, sector } = await peersFor(ticker);
+  const { peers, basis, sector, theme } = await peersFor(ticker, 4, originOf(req));
   if (!peers.length) {
     return res.status(200).json({
       ticker, peers: [], subject: null, basis,
-      note: "No peer group mapped for this ticker yet.",
+      // State the selection rule rather than silently showing nothing (QA P2-5).
+      note: `No peer group for ${ticker}: peers come from a curated competitor list, or from its theme `
+        + `basket when ${MIN_THEME_PEERS}+ listed companies share it, or from a sector proxy — none applied here.`,
     });
   }
 
@@ -206,8 +221,11 @@ export default async function handler(req, res) {
     ticker, subject, peers: others, standing, basis, sector,
     // Say where the comparison set came from — a curated competitive group is
     // a much stronger read than "same sector as the mega-caps".
+    theme: theme ?? null,
     basis_note: basis === "competitors"
       ? "Direct competitors"
-      : `Same sector (${sector}) — a broad comparison, not direct competitors`,
+      : basis === "theme"
+        ? `Companies in the same theme (${theme}) — similar businesses, not necessarily direct competitors`
+        : `Same sector (${sector}) — a broad comparison, not direct competitors`,
   });
 }

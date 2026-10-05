@@ -71,7 +71,7 @@ export function originOf(req) {
 // themes.json is a static file on this same deployment, rebuilt daily in CI
 // (backend/theme_pulse.py). Warm function instances keep it for 10 minutes.
 let themesCache = { at: 0, data: null };
-async function themePulse(origin) {
+export async function themePulse(origin) {
   if (!origin) return null;
   if (themesCache.data && Date.now() - themesCache.at < 600_000) return themesCache.data;
   try {
