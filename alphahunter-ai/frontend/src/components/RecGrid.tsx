@@ -121,12 +121,14 @@ const buildColumns = (sortBy: "score" | "growth_score" | "moonshot_score"): ColD
     valueGetter: (p) => {
       const t = p.data?.entry_timing;
       if (!t) return null;
-      return t.action === "wait" ? `WAIT → $${t.entry_target ?? "?"}` : "BUY ZONE";
+      return t.action === "wait" ? `WAIT → $${t.entry_target ?? "?"}`
+        : t.action === "range_low" ? "RANGE LOW (not a buy)" : "BUY ZONE";
     },
     valueFormatter: (p: any) => p.value ?? "—",
     cellStyle: (p) => ({
       color: p.value == null ? C().ink
-        : String(p.value).startsWith("WAIT") ? "#b7791f" : C().gain,
+        : String(p.value).startsWith("WAIT") ? "#b7791f"
+        : String(p.value).startsWith("RANGE LOW") ? C().ink : C().gain,
       fontWeight: p.value == null ? 400 : 700,
     }),
     tooltipValueGetter: (p) => p.data?.entry_timing?.reason
@@ -211,11 +213,13 @@ function RecCard({ r }: { r: Recommendation }) {
       )}
       {r.entry_timing && (
         <div className={`mt-2 text-xs font-semibold rounded px-2 py-1 ${
-          r.entry_timing.action === "wait"
-            ? "text-warn bg-warn-soft" : "text-gain bg-gain-soft"}`}>
+          r.entry_timing.action === "wait" ? "text-warn bg-warn-soft"
+            : r.entry_timing.action === "range_low" ? "text-ink-secondary bg-surface-sunken" : "text-gain bg-gain-soft"}`}>
           {r.entry_timing.action === "wait"
             ? `⏳ WAIT — range-bound, better entry near $${r.entry_timing.entry_target}`
-            : "✓ In the buy zone of its yearly range"}
+            : r.entry_timing.action === "range_low"
+              ? "Near its range low — but the verdict doesn't support a buy"
+              : "✓ In the buy zone of its yearly range"}
         </div>
       )}
       {r.csp_signal?.active && (

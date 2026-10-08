@@ -92,3 +92,23 @@ describe("P2-1 — RSI has one rounding rule", () => {
     for (const m of copy.matchAll(/RSI (\d+(?:\.\d+)?)/g)) expect(m[1]).toMatch(/\.\d$/);
   });
 });
+
+// @ts-expect-error — plain ESM JS outside the frontend project, no types.
+import { gateEntryTiming } from "../../../../api/ta.js";
+
+describe("entry timing never contradicts the verdict (AXP, Oct 2026)", () => {
+  const et = { action: "buy_zone", entry_target: 324.69, range_low: 292.27, range_high: 384.89, reason: "x" };
+  it("a buy zone on a Reduce verdict in a downtrend becomes 'range_low', not a buy", () => {
+    const g = gateEntryTiming(et, "Reduce", "down");
+    expect(g.action).toBe("range_low");
+    expect(g.reason).toMatch(/trend is DOWN/);
+  });
+  it("a Hold verdict is not upgraded by a cheap price either", () => {
+    expect(gateEntryTiming(et, "Hold", "mixed").action).toBe("range_low");
+  });
+  it("Buy / Accumulate keep the buy zone; 'wait' is untouched", () => {
+    expect(gateEntryTiming(et, "Buy", "up").action).toBe("buy_zone");
+    expect(gateEntryTiming(et, "Accumulate", "up").action).toBe("buy_zone");
+    expect(gateEntryTiming({ ...et, action: "wait" }, "Reduce", "down").action).toBe("wait");
+  });
+});

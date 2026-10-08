@@ -138,6 +138,26 @@ export function volumeTrend(c, v) {
   };
 }
 
+/** "In the buy zone" only for a stock the verdict already likes. Range
+ *  position never upgrades a verdict: AXP sat at the bottom of its range with
+ *  the trend DOWN and a Reduce verdict, yet the panel said "IN THE BUY ZONE —
+ *  buy ≈ $324.69" with the price at $304.80. Near the range low on a stock the
+ *  verdict does not like is "range_low", with the reason. Pure; exported. */
+export function gateEntryTiming(et, recommendation, ltDir) {
+  if (!et || et.action !== "buy_zone") return et;
+  if (recommendation === "Buy" || recommendation === "Accumulate") return et;
+  const low = `$${Number(et.range_low).toFixed(2)}`;
+  return {
+    ...et,
+    action: "range_low",
+    reason: ltDir === "down"
+      ? `Near the bottom of its sideways range (${low}), but the long-term trend is DOWN — a range low only `
+        + `holds until it breaks. No long entry until the trend turns.`
+      : `Cheap within its sideways range (${low} low), but the verdict is ${recommendation} — a low price alone `
+        + `is not a reason to buy. Revisit if the trend firms up.`,
+  };
+}
+
 const RANGE_MONTHS = { "6mo": 6, "1y": 12, "2y": 24, "5y": 60 };
 
 /** Keep only the selected range's bars in every chart array. The indicators
@@ -614,6 +634,7 @@ function analyze(dates, o, h, l, c, v, accountSize, riskPct) {
     if (regime.action === "wait" && (recommendation === "Buy" || recommendation === "Accumulate")) {
       recommendation = "Wait";
     }
+    entry_timing = gateEntryTiming(entry_timing, recommendation, ltDir);
   }
   const score = Math.round(0.7 * lt + 0.3 * st);
 

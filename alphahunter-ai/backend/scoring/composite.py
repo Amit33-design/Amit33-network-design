@@ -250,7 +250,7 @@ def score_snapshot(snap: StockSnapshot, hit: ScanHit, md: MarketData | None = No
                       if entry else None),
         # Entry timing. Built with JS parity for the Analysis page and then
         # wired only there — so every scan pick shipped without it until now.
-        "entry_timing": _entry_timing_for(snap),
+        "entry_timing": _entry_timing_for(snap, _action_from_score(composite)),
         "covered_call": (opt_metrics or {}).get("covered_call_idea"),
         "cash_secured_put": (opt_metrics or {}).get("csp_idea"),
         "confidence": conf,
@@ -274,7 +274,7 @@ def _quality_for(snap: StockSnapshot) -> dict:
     return validate_bars(dates, closes, vols, ticker=snap.ticker).to_dict()
 
 
-def _entry_timing_for(snap: StockSnapshot) -> dict | None:
+def _entry_timing_for(snap: StockSnapshot, action: str | None = None) -> dict | None:
     """Where in the year's range would you be buying?
 
     A verdict without a price is close to useless: a stock that oscillated
@@ -291,7 +291,14 @@ def _entry_timing_for(snap: StockSnapshot) -> dict | None:
     read = analyse(closes)
     if read.regime != "lateral" or read.action == "none":
         return None
-    return read.to_dict()
+    out = read.to_dict()
+    # Same rule as api/ta.js gateEntryTiming: "buy zone" only for a name the
+    # verdict already likes — range position never upgrades a verdict.
+    if out["action"] == "buy_zone" and action is not None and action not in ("Buy", "Accumulate"):
+        out["action"] = "range_low"
+        out["reason"] = (f"Near the bottom of its sideways range, but the verdict is {action} — "
+                         "a low price alone is not a reason to buy.")
+    return out
 
 
 def score_ticker_general(snap: StockSnapshot, md: MarketData | None = None) -> dict:
@@ -346,7 +353,7 @@ def score_ticker_general(snap: StockSnapshot, md: MarketData | None = None) -> d
         # last good price with a badge rather than a wrong number — one
         # obviously-wrong figure discredits every other number on the page.
         "quality": _quality_for(snap) or None,
-        "entry_timing": _entry_timing_for(snap),
+        "entry_timing": _entry_timing_for(snap, _action_from_score(composite)),
     }
 
 

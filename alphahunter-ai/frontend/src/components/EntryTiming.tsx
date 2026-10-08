@@ -7,7 +7,7 @@
 import { Badge } from "./ui";
 
 export type EntryTiming = {
-  action: "buy_zone" | "wait";
+  action: "buy_zone" | "wait" | "range_low";
   entry_target?: number | null;
   position_in_range?: number;
   range_low?: number; range_high?: number;
@@ -20,14 +20,17 @@ export default function EntryTimingPanel(
   { t, price }: { t: EntryTiming; price?: number | null },
 ) {
   const waiting = t.action === "wait";
+  // "range_low": cheap within its range, but the verdict does not like the
+  // stock (e.g. trend DOWN) — never presented as a buy (AXP, Oct 2026).
+  const lowNotBuy = t.action === "range_low";
   const pos = (t.position_in_range ?? 0) * 100;
 
   return (
-    <div className={`panel p-3 border-l-4 ${waiting ? "border-warn" : "border-gain"}`}>
+    <div className={`panel p-3 border-l-4 ${waiting ? "border-warn" : lowNotBuy ? "border-line-strong" : "border-gain"}`}>
       <div className="flex flex-wrap items-center gap-2 mb-1.5">
         <span className="font-semibold text-ink text-sm">⏳ Entry timing</span>
-        <Badge tone={waiting ? "warn" : "gain"}>
-          {waiting ? "WAIT FOR A BETTER PRICE" : "IN THE BUY ZONE"}
+        <Badge tone={waiting ? "warn" : lowNotBuy ? "neutral" : "gain"}>
+          {waiting ? "WAIT FOR A BETTER PRICE" : lowNotBuy ? "NEAR RANGE LOW — NOT A BUY" : "IN THE BUY ZONE"}
         </Badge>
         <span className="text-2xs text-ink-muted">range-bound for the past year</span>
       </div>
@@ -45,13 +48,20 @@ export default function EntryTimingPanel(
             {t.entry_target != null && t.range_high > t.range_low && (
               <div className="absolute inset-y-0 w-0.5 bg-gain"
                    style={{ left: `${((t.entry_target - t.range_low) / (t.range_high - t.range_low)) * 100}%` }}
-                   title={`Target entry: $${t.entry_target.toFixed(2)}`} />
+                   title={waiting ? `Wait for about $${t.entry_target.toFixed(2)}` : `Top of the low zone: $${t.entry_target.toFixed(2)}`} />
             )}
           </div>
           <div className="flex justify-between text-2xs text-ink-muted mt-0.5 num">
             <span>${t.range_low.toFixed(2)} low</span>
+            {/* The target is the TOP of the buy zone (the most to pay), not a
+                price to buy at: "buy ≈ $324.69" with the stock at $304.80
+                read as "buy higher". Waiting, it is the level to wait for. */}
             {t.entry_target != null && (
-              <span className="text-gain">buy ≈ ${t.entry_target.toFixed(2)}</span>
+              waiting
+                ? <span className="text-warn">wait for ≈ ${t.entry_target.toFixed(2)}</span>
+                : <span className={lowNotBuy ? "text-ink-muted" : "text-gain"}>
+                    {lowNotBuy ? "range-low zone" : "buy zone"} up to ${t.entry_target.toFixed(2)}
+                  </span>
             )}
             <span>${t.range_high.toFixed(2)} high</span>
           </div>

@@ -141,7 +141,12 @@ it off, commit, push, reschedule. The user can say "stop the loop" to halt it.
   trend and timing: if the year was lateral and price sits in the upper part
   of the range, a Buy/Accumulate becomes **Wait** with a target entry. It only
   ever downgrades — range position is a reason to be patient with a name you
-  like, never a reason to buy one you don't.
+  like, never a reason to buy one you don't. So "IN THE BUY ZONE" is shown
+  ONLY for a Buy/Accumulate verdict (`gateEntryTiming` in ta.js, the same
+  rule in `composite._entry_timing_for`); otherwise it is `range_low` ("near
+  range low — not a buy"). `entry_target` in the buy zone is the zone's
+  CEILING ("buy zone up to $X"), never "buy ≈ $X" — AXP at $304.80 read
+  "buy ≈ $324.69".
 - **"Lateral" needs all three conditions** (small net move, low trend R², and
   ≥3 midline crossings). Dropping the crossings check makes a stock that rose
   40% and gave it all back look range-bound, and "buy its range low" then

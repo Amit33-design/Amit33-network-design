@@ -30,7 +30,7 @@ interface Stock {
   spark?: number[];
   quality?: Quality | null;
   entry_timing?: {
-    action: "buy_zone" | "wait";
+    action: "buy_zone" | "wait" | "range_low";
     entry_target?: number | null;
     reason?: string;
   } | null;
