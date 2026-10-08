@@ -176,3 +176,13 @@ describe("QA P1-4 — theme mapping for the reported tickers", () => {
     expect(k.scope).not.toBe(f.scope);
   });
 });
+
+describe("crypto miners filed as Capital Markets", () => {
+  it("TeraWulf is a miner-turned-AI-host, not a financial-services firm", () => {
+    const t = resolveTheme("WULF", "Financial Services", "Capital Markets");
+    expect(t.key).toBe("miners_ai");
+    expect([t.scope, ...t.drivers].join(" ")).not.toMatch(/insur|payment volumes/i);
+    expect(resolveTheme("MARA", "Financial Services", "Capital Markets").key).toBe("crypto");
+    expect(resolveTheme("GS", "Financial Services", "Capital Markets").key).toBe("financials");
+  });
+});

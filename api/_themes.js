@@ -25,7 +25,7 @@ export const THEMES = [
     key: "ai_compute", name: "AI data-center compute & networking", etf: "SMH", growth: "secular",
     tickers: ["NVDA", "AMD", "AVGO", "MRVL", "ARM", "TSM", "MU", "SMCI", "DELL", "ANET", "VRT",
               "CRDO", "ALAB", "COHR", "CIEN", "LITE", "HPE", "WDC", "STX", "SNDK", "NBIS",
-              "CRWV", "CLS", "FN", "AMKR", "EQIX", "DLR", "APLD", "IREN"],
+              "CRWV", "CLS", "FN", "AMKR", "EQIX", "DLR"],
     scope: "Sells the chips, servers, memory, networking or capacity that AI models are trained and run on.",
     drivers: ["Hyperscaler and sovereign capex on AI clusters",
               "Inference demand growing as AI moves into everyday products",
@@ -97,8 +97,23 @@ export const THEMES = [
             "Contract-driven lumpy revenue"],
   },
   {
+    // Yahoo files most of these under "Capital Markets" (Financial Services),
+    // so without an explicit list TeraWulf read as an insurer/asset manager.
+    // They are neither pure miners nor pure AI clouds: power and sites built
+    // for bitcoin, being converted to AI/HPC hosting.
+    key: "miners_ai", name: "Bitcoin miners → AI hosting", etf: "WGMI", growth: "speculative",
+    tickers: ["IREN", "WULF", "CIFR", "CORZ", "APLD", "HUT", "BTDR"],
+    scope: "Runs large power-connected data centers built for bitcoin mining, increasingly leasing them to AI and high-performance-computing customers.",
+    drivers: ["Long-term AI/HPC hosting contracts with hyperscalers and AI labs",
+              "Scarce grid power already secured", "Bitcoin price lifts mining revenue meanwhile"],
+    risks: ["Mining revenue swings with bitcoin and the network hashrate",
+            "Heavy capex and equity/convertible dilution to build out AI capacity",
+            "Hosting deals concentrated in a few customers; execution delays"],
+  },
+  {
     key: "crypto", name: "Crypto & digital assets", etf: "IBIT", growth: "speculative",
-    tickers: ["COIN", "MSTR", "MARA", "RIOT", "CLSK", "HUT", "BITF", "GLXY", "CRCL", "BMNR"],
+    tickers: ["COIN", "MSTR", "MARA", "RIOT", "CLSK", "BITF", "GLXY", "CRCL", "BMNR",
+              "HIVE", "BTBT", "SDIG", "GREE", "ARBK", "CAN"],
     scope: "Earns from crypto prices, trading or mining.",
     drivers: ["Bitcoin price and ETF inflows", "Regulatory clarity widening institutional use"],
     risks: ["Moves with crypto prices, often with leverage", "Regulatory reversal",
