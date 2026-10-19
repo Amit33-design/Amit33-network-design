@@ -5,19 +5,19 @@
     "benchmark": "SPY"
   },
   "start": "2026-06-30",
-  "end": "2026-10-16",
-  "trading_days": 77,
-  "days_invested": 76,
-  "trades": 409,
+  "end": "2026-10-19",
+  "trading_days": 78,
+  "days_invested": 77,
+  "trades": 414,
   "distinct_names": 92,
   "skipped_entries": 1,
-  "strategy_return_%": 21.11,
-  "benchmark_return_%": 3.26,
-  "alpha_%": 17.85,
+  "strategy_return_%": 21.58,
+  "benchmark_return_%": 3.86,
+  "alpha_%": 17.72,
   "max_drawdown_%": -22.73,
   "benchmark_max_drawdown_%": -3.38,
-  "trade_win_rate": 0.494,
-  "avg_trade_%": 0.71,
+  "trade_win_rate": 0.51,
+  "avg_trade_%": 0.77,
   "best_trade": {
     "ticker": "SNDK",
     "entry_date": "2026-08-03",
@@ -491,92 +491,98 @@
     },
     {
       "date": "2026-10-16",
-      "strategy": 1.21111,
+      "strategy": 1.21325,
       "benchmark": 1.03258,
+      "positions": 70
+    },
+    {
+      "date": "2026-10-19",
+      "strategy": 1.21585,
+      "benchmark": 1.03865,
       "positions": 70
     }
   ],
   "sweep": {
-    "split_date": "2026-08-24",
-    "train_days": 42,
+    "split_date": "2026-08-25",
+    "train_days": 43,
     "test_days": 43,
     "grid": [
       {
-        "top_n": 5,
-        "hold_days": 10,
-        "alpha_%": 15.49,
-        "trades": 209
-      },
-      {
         "top_n": 3,
         "hold_days": 10,
-        "alpha_%": 15.2,
-        "trades": 125
+        "alpha_%": 15.4,
+        "trades": 128
+      },
+      {
+        "top_n": 5,
+        "hold_days": 10,
+        "alpha_%": 15.18,
+        "trades": 214
       },
       {
         "top_n": 3,
         "hold_days": 20,
-        "alpha_%": 14.16,
-        "trades": 125
+        "alpha_%": 14.11,
+        "trades": 128
       },
       {
         "top_n": 5,
         "hold_days": 20,
-        "alpha_%": 13.65,
-        "trades": 209
+        "alpha_%": 13.79,
+        "trades": 214
       },
       {
         "top_n": 3,
         "hold_days": 5,
-        "alpha_%": 10.22,
-        "trades": 125
+        "alpha_%": 10.28,
+        "trades": 128
       },
       {
         "top_n": 10,
         "hold_days": 10,
-        "alpha_%": 8.18,
-        "trades": 339
+        "alpha_%": 7.9,
+        "trades": 346
       },
       {
         "top_n": 5,
         "hold_days": 5,
-        "alpha_%": 7.59,
-        "trades": 209
+        "alpha_%": 7.52,
+        "trades": 214
       },
       {
         "top_n": 10,
         "hold_days": 20,
-        "alpha_%": 4.06,
-        "trades": 339
+        "alpha_%": 4.28,
+        "trades": 346
       },
       {
         "top_n": 10,
         "hold_days": 5,
-        "alpha_%": 0.3,
-        "trades": 339
+        "alpha_%": 0.15,
+        "trades": 346
       }
     ],
     "best_in_sample": {
-      "top_n": 5,
+      "top_n": 3,
       "hold_days": 10,
-      "alpha_%": 15.49,
-      "trades": 209
+      "alpha_%": 15.4,
+      "trades": 128
     },
     "out_of_sample": {
-      "top_n": 5,
+      "top_n": 3,
       "hold_days": 10,
-      "alpha_%": 2.62,
-      "strategy_return_%": 2.54,
-      "benchmark_return_%": -0.08,
-      "trades": 200
+      "alpha_%": -0.23,
+      "strategy_return_%": 0.58,
+      "benchmark_return_%": 0.81,
+      "trades": 120
     },
     "shipped_defaults_out_of_sample": {
       "top_n": 5,
       "hold_days": 10,
-      "alpha_%": 2.62,
+      "alpha_%": 2.68,
       "trades": 200
     },
-    "held_up": true
+    "held_up": false
   },
-  "generated": "2026-10-18T17:02:55+00:00"
+  "generated": "2026-10-19T19:49:27+00:00"
 }
