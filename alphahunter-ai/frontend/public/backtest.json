@@ -5,19 +5,19 @@
     "benchmark": "SPY"
   },
   "start": "2026-06-30",
-  "end": "2026-11-02",
-  "trading_days": 88,
-  "days_invested": 87,
-  "trades": 484,
-  "distinct_names": 98,
+  "end": "2026-11-03",
+  "trading_days": 89,
+  "days_invested": 88,
+  "trades": 499,
+  "distinct_names": 99,
   "skipped_entries": 1,
-  "strategy_return_%": 8.32,
-  "benchmark_return_%": 1.75,
-  "alpha_%": 6.57,
+  "strategy_return_%": 11.64,
+  "benchmark_return_%": 2.01,
+  "alpha_%": 9.63,
   "max_drawdown_%": -22.73,
   "benchmark_max_drawdown_%": -3.46,
-  "trade_win_rate": 0.444,
-  "avg_trade_%": -0.96,
+  "trade_win_rate": 0.465,
+  "avg_trade_%": -0.54,
   "best_trade": {
     "ticker": "SNDK",
     "entry_date": "2026-08-03",
@@ -557,15 +557,21 @@
     },
     {
       "date": "2026-11-02",
-      "strategy": 1.08317,
+      "strategy": 1.08465,
       "benchmark": 1.0175,
+      "positions": 70
+    },
+    {
+      "date": "2026-11-03",
+      "strategy": 1.11635,
+      "benchmark": 1.02009,
       "positions": 70
     }
   ],
   "sweep": {
     "split_date": "2026-09-01",
     "train_days": 50,
-    "test_days": 50,
+    "test_days": 51,
     "grid": [
       {
         "top_n": 5,
@@ -631,18 +637,18 @@
     "out_of_sample": {
       "top_n": 5,
       "hold_days": 20,
-      "alpha_%": 3.37,
-      "strategy_return_%": 1.66,
-      "benchmark_return_%": -1.71,
-      "trades": 235
+      "alpha_%": 5.75,
+      "strategy_return_%": 4.29,
+      "benchmark_return_%": -1.46,
+      "trades": 250
     },
     "shipped_defaults_out_of_sample": {
       "top_n": 5,
       "hold_days": 10,
-      "alpha_%": -4.41,
-      "trades": 235
+      "alpha_%": -1.79,
+      "trades": 250
     },
     "held_up": true
   },
-  "generated": "2026-11-02T22:49:24+00:00"
+  "generated": "2026-11-03T20:38:59+00:00"
 }
