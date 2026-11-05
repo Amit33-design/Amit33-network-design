@@ -5,19 +5,19 @@
     "benchmark": "SPY"
   },
   "start": "2026-06-30",
-  "end": "2026-11-04",
-  "trading_days": 90,
-  "days_invested": 89,
-  "trades": 504,
+  "end": "2026-11-05",
+  "trading_days": 91,
+  "days_invested": 90,
+  "trades": 509,
   "distinct_names": 99,
   "skipped_entries": 1,
-  "strategy_return_%": 2.93,
-  "benchmark_return_%": 3.69,
-  "alpha_%": -0.75,
-  "max_drawdown_%": -22.73,
-  "benchmark_max_drawdown_%": -3.46,
-  "trade_win_rate": 0.433,
-  "avg_trade_%": -1.57,
+  "strategy_return_%": -11.77,
+  "benchmark_return_%": -0.82,
+  "alpha_%": -10.95,
+  "max_drawdown_%": -30.92,
+  "benchmark_max_drawdown_%": -5.9,
+  "trade_win_rate": 0.409,
+  "avg_trade_%": -3.3,
   "best_trade": {
     "ticker": "SNDK",
     "entry_date": "2026-08-03",
@@ -27,10 +27,10 @@
   },
   "worst_trade": {
     "ticker": "SNDK",
-    "entry_date": "2026-07-15",
-    "exit_date": "2026-07-29",
-    "return_%": -37.5,
-    "score": 78.8
+    "entry_date": "2026-10-28",
+    "exit_date": "2026-11-05",
+    "return_%": -42.99,
+    "score": 77.0
   },
   "points": [
     {
@@ -569,15 +569,21 @@
     },
     {
       "date": "2026-11-04",
-      "strategy": 1.02934,
-      "benchmark": 1.03687,
+      "strategy": 1.03922,
+      "benchmark": 1.0374,
+      "positions": 70
+    },
+    {
+      "date": "2026-11-05",
+      "strategy": 0.88234,
+      "benchmark": 0.99181,
       "positions": 70
     }
   ],
   "sweep": {
     "split_date": "2026-09-02",
     "train_days": 51,
-    "test_days": 51,
+    "test_days": 52,
     "grid": [
       {
         "top_n": 5,
@@ -643,18 +649,18 @@
     "out_of_sample": {
       "top_n": 5,
       "hold_days": 20,
-      "alpha_%": 0.26,
-      "strategy_return_%": 1.12,
-      "benchmark_return_%": 0.86,
-      "trades": 250
+      "alpha_%": -7.56,
+      "strategy_return_%": -11.08,
+      "benchmark_return_%": -3.52,
+      "trades": 255
     },
     "shipped_defaults_out_of_sample": {
       "top_n": 5,
       "hold_days": 10,
-      "alpha_%": -11.14,
-      "trades": 250
+      "alpha_%": -19.57,
+      "trades": 255
     },
-    "held_up": true
+    "held_up": false
   },
-  "generated": "2026-11-04T20:53:20+00:00"
+  "generated": "2026-11-05T21:15:20+00:00"
 }
