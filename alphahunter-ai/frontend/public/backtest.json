@@ -5,19 +5,19 @@
     "benchmark": "SPY"
   },
   "start": "2026-06-30",
-  "end": "2026-11-06",
-  "trading_days": 92,
-  "days_invested": 91,
-  "trades": 514,
-  "distinct_names": 101,
+  "end": "2026-11-09",
+  "trading_days": 93,
+  "days_invested": 92,
+  "trades": 519,
+  "distinct_names": 102,
   "skipped_entries": 1,
-  "strategy_return_%": -7.75,
-  "benchmark_return_%": -0.52,
-  "alpha_%": -7.23,
+  "strategy_return_%": 0.25,
+  "benchmark_return_%": 1.83,
+  "alpha_%": -1.58,
   "max_drawdown_%": -30.78,
   "benchmark_max_drawdown_%": -5.92,
-  "trade_win_rate": 0.418,
-  "avg_trade_%": -2.81,
+  "trade_win_rate": 0.43,
+  "avg_trade_%": -1.82,
   "best_trade": {
     "ticker": "SNDK",
     "entry_date": "2026-08-03",
@@ -27,10 +27,10 @@
   },
   "worst_trade": {
     "ticker": "SNDK",
-    "entry_date": "2026-10-28",
-    "exit_date": "2026-11-06",
-    "return_%": -40.96,
-    "score": 77.0
+    "entry_date": "2026-07-15",
+    "exit_date": "2026-07-29",
+    "return_%": -37.5,
+    "score": 78.8
   },
   "points": [
     {
@@ -581,15 +581,21 @@
     },
     {
       "date": "2026-11-06",
-      "strategy": 0.92245,
+      "strategy": 0.92398,
       "benchmark": 0.99476,
+      "positions": 70
+    },
+    {
+      "date": "2026-11-09",
+      "strategy": 1.00248,
+      "benchmark": 1.0183,
       "positions": 70
     }
   ],
   "sweep": {
     "split_date": "2026-09-04",
     "train_days": 53,
-    "test_days": 53,
+    "test_days": 54,
     "grid": [
       {
         "top_n": 5,
@@ -655,18 +661,18 @@
     "out_of_sample": {
       "top_n": 5,
       "hold_days": 20,
-      "alpha_%": -8.9,
-      "strategy_return_%": -13.57,
-      "benchmark_return_%": -4.66,
-      "trades": 250
+      "alpha_%": -5.58,
+      "strategy_return_%": -7.99,
+      "benchmark_return_%": -2.41,
+      "trades": 255
     },
     "shipped_defaults_out_of_sample": {
       "top_n": 5,
       "hold_days": 10,
-      "alpha_%": -19.31,
-      "trades": 250
+      "alpha_%": -14.97,
+      "trades": 255
     },
     "held_up": false
   },
-  "generated": "2026-11-08T18:54:01+00:00"
+  "generated": "2026-11-09T23:28:15+00:00"
 }
