@@ -1,35 +1,35 @@
 {
-  "generated_at": "2026-11-18T16:11:14.377766-05:00",
-  "date": "2026-11-18",
-  "as_of": "2026-11-18 16:11 EST",
+  "generated_at": "2026-11-19T16:14:55.878299-05:00",
+  "date": "2026-11-19",
+  "as_of": "2026-11-19 16:14 EST",
   "count": 44,
   "missing": [],
   "market_regime": {
-    "regime": "neutral",
-    "score": 43.4,
-    "position_scale": 0.75,
+    "regime": "risk-off",
+    "score": 6.5,
+    "position_scale": 0.5,
     "factors": [
-      "index above its 200-day",
+      "index BELOW its 200-day \u2014 the tape is not on your side",
       "50-day above 200-day",
-      "index down 5.5% in a month",
-      "mixed participation (41% above the 200-day)",
+      "index down 6.3% in a month",
+      "mixed participation (36% above the 200-day)",
       "elevated volatility (23%)",
-      "offensive sectors lagging defensives by 10.6pp"
+      "offensive sectors lagging defensives by 13.5pp"
     ],
     "detail": {
-      "index_last": 730.25,
-      "above_200": true,
+      "index_last": 715.87,
+      "above_200": false,
       "golden_cross": true,
-      "index_1m_%": -5.54,
-      "breadth": 0.41,
-      "realized_vol_%": 22.9,
-      "offense_minus_defense_pp": -10.6
+      "index_1m_%": -6.29,
+      "breadth": 0.36,
+      "realized_vol_%": 23.5,
+      "offense_minus_defense_pp": -13.5
     }
   },
   "concentration": {
     "top_picks": {
       "count": 8,
-      "effective_bets": 3.2,
+      "effective_bets": 2.91,
       "top_sector": "Technology",
       "top_sector_share": 0.5,
       "by_sector": [
@@ -39,12 +39,12 @@
           "share": 0.5
         },
         {
-          "sector": "Healthcare",
-          "count": 1,
-          "share": 0.125
+          "sector": "Energy",
+          "count": 2,
+          "share": 0.25
         },
         {
-          "sector": "Energy",
+          "sector": "Healthcare",
           "count": 1,
           "share": 0.125
         },
@@ -52,15 +52,10 @@
           "sector": "Industrials",
           "count": 1,
           "share": 0.125
-        },
-        {
-          "sector": "Consumer Defensive",
-          "count": 1,
-          "share": 0.125
         }
       ],
       "concentrated": true,
-      "note": "8 picks, but 4 of them are Technology (50%) \u2014 about 3.2 independent bets. If Technology sells off, most of this list goes together."
+      "note": "8 picks, but 4 of them are Technology (50%) \u2014 about 2.91 independent bets. If Technology sells off, most of this list goes together."
     },
     "whole_board": {
       "count": 44,
@@ -118,18 +113,18 @@
       {
         "ticker": "PLTR",
         "company": "Palantir Technologies Inc.",
-        "price": 156.67,
-        "day_%": 0.07026099391090879,
-        "score": 69.9,
+        "price": 153.68,
+        "day_%": -1.908473561057801,
+        "score": 69.6,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 33.0,
+        "rsi": 31.3,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 42.3,
+        "analyst_upside_%": 45.0,
         "rel_strength": {
-          "vs_spy": -5.3,
-          "vs_sector": 1.1,
+          "vs_spy": -7.1,
+          "vs_sector": -1.2,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -137,11 +132,11 @@
           "technical": 60.0,
           "fundamental": 100.0,
           "options": 50.0,
-          "momentum": 50.0,
-          "sentiment": 65.7
+          "momentum": 44.0,
+          "sentiment": 65.6
         },
         "sentiment_detail": {
-          "coverage": 0.8,
+          "coverage": 0.79,
           "sources": {
             "consensus": {
               "score": 61.8,
@@ -152,9 +147,9 @@
             },
             "targets": {
               "score": 100.0,
-              "confidence": 0.38,
+              "confidence": 0.37,
               "why": [
-                "+42% to the $222.90 mean target",
+                "+45% to the $222.90 mean target",
                 "but targets range $80\u2013$273 \u2014 little agreement"
               ]
             },
@@ -180,11 +175,11 @@
               ]
             },
             "news": {
-              "score": 25.0,
-              "confidence": 0.17,
+              "score": 12.5,
+              "confidence": 0.08,
               "why": [
-                "10 recent headlines lean positive (2 positive / 0 negative words)",
-                "e.g. \"How NHS Contract Extension Will Impact Palantir Stock Investors\""
+                "10 recent headlines lean mixed (1 positive / 0 negative words)",
+                "e.g. \"Palantir just posted a record quarter\u2014so why did the stock sink?\""
               ]
             }
           }
@@ -194,33 +189,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 156.6699981689453,
-          "display_date": "2026-11-18"
+          "display_close": 153.67999267578125,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.485,
+          "position_in_range": 0.456,
           "range_low": 107.27,
           "range_high": 209.05,
           "net_move_%": 5.5,
           "range_width_%": 94.9,
-          "trend_r2": 0.023,
+          "trend_r2": 0.024,
           "midline_crossings": 13,
           "action": "wait",
           "entry_target": 142.89,
-          "upside_to_range_high_%": 33.4,
+          "upside_to_range_high_%": 36.0,
           "typical_wait_sessions": 21,
-          "reason": "Sideways for the window, mid-range at 49%. Neither cheap nor extended \u2014 a patient entry near $142.89 is worth more than the 33% left to the top of the range.",
+          "reason": "Sideways for the window, mid-range at 46%. Neither cheap nor extended \u2014 a patient entry near $142.89 is worth more than the 36% left to the top of the range.",
           "factors": [
             "+6% over the window against a 95%-wide range",
             "trend line explains 2% of the move",
             "crossed the midline 13 times",
-            "sitting 49% of the way up the range"
+            "sitting 46% of the way up the range"
           ]
         },
         "domain": "AI",
         "spark": [
-          198.78,
           209.05,
           209.0,
           208.67,
@@ -249,24 +243,25 @@
           167.99,
           160.39,
           156.56,
-          156.67
+          156.67,
+          153.68
         ]
       },
       {
         "ticker": "NVDA",
         "company": "NVIDIA Corporation",
-        "price": 150.96,
-        "day_%": -2.8946351509443207,
-        "score": 69.4,
+        "price": 145.98,
+        "day_%": -3.2988942533417767,
+        "score": 69.3,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 21.1,
+        "rsi": 19.6,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 68.0,
+        "analyst_upside_%": 69.0,
         "rel_strength": {
-          "vs_spy": -25.1,
-          "vs_sector": -18.6,
+          "vs_spy": -24.0,
+          "vs_sector": -18.1,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -275,28 +270,28 @@
           "fundamental": 100.0,
           "options": 50.0,
           "momentum": 38.0,
-          "sentiment": 54.8
+          "sentiment": 54.4
         },
         "sentiment_detail": {
-          "coverage": 0.77,
+          "coverage": 0.76,
           "sources": {
             "consensus": {
-              "score": 62.7,
+              "score": 60.5,
               "confidence": 1.0,
               "why": [
-                "strong buy consensus (1.75) from 55 analysts"
+                "strong buy consensus (1.79) from 55 analysts"
               ]
             },
             "targets": {
               "score": 100.0,
               "confidence": 0.2,
               "why": [
-                "+68% to the $253.67 mean target",
-                "but targets range $130\u2013$450 \u2014 little agreement"
+                "+69% to the $246.67 mean target",
+                "but targets range $130\u2013$425 \u2014 little agreement"
               ]
             },
             "revisions": {
-              "score": -42.1,
+              "score": -42.5,
               "confidence": 1.0,
               "why": [
                 "ratings cut: 1.92 \u2192 2.13 over the last quarter"
@@ -319,10 +314,10 @@
             },
             "news": {
               "score": 12.5,
-              "confidence": 0.25,
+              "confidence": 0.08,
               "why": [
-                "10 recent headlines lean mixed (2 positive / 1 negative words)",
-                "e.g. \"Life after Huang at Nvidia, Anthropic plans to raise IPO price after s\""
+                "10 recent headlines lean mixed (1 positive / 0 negative words)",
+                "e.g. \"3 Dividend Kings to Buy in November and Never Sell\""
               ]
             }
           }
@@ -332,33 +327,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 150.9600067138672,
-          "display_date": "2026-11-18"
+          "display_close": 145.97999572753906,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
           "position_in_range": 0.0,
-          "range_low": 150.96,
+          "range_low": 145.98,
           "range_high": 239.24,
-          "net_move_%": 17.8,
-          "range_width_%": 58.5,
-          "trend_r2": 0.341,
-          "midline_crossings": 10,
+          "net_move_%": 17.7,
+          "range_width_%": 63.9,
+          "trend_r2": 0.297,
+          "midline_crossings": 8,
           "action": "buy_zone",
-          "entry_target": 181.86,
-          "upside_to_range_high_%": 58.5,
+          "entry_target": 178.62,
+          "upside_to_range_high_%": 63.9,
           "typical_wait_sessions": 15,
-          "reason": "Sideways for the window and trading in the bottom 0% of its $150.96-$239.24 range. This is where a range-bound name is worth buying \u2014 about 58% back to the top of the range.",
+          "reason": "Sideways for the window and trading in the bottom 0% of its $145.98-$239.24 range. This is where a range-bound name is worth buying \u2014 about 64% back to the top of the range.",
           "factors": [
-            "+18% over the window against a 58%-wide range",
-            "trend line explains 34% of the move",
-            "crossed the midline 10 times",
+            "+18% over the window against a 64%-wide range",
+            "trend line explains 30% of the move",
+            "crossed the midline 8 times",
             "sitting 0% of the way up the range"
           ]
         },
         "domain": "AI",
         "spark": [
-          230.48,
           229.28,
           226.32,
           228.52,
@@ -387,24 +381,25 @@
           162.85,
           156.14,
           155.46,
-          150.96
+          150.96,
+          145.98
         ]
       },
       {
         "ticker": "ARM",
         "company": "Arm Holdings plc",
-        "price": 182.76,
-        "day_%": -0.3435328452528808,
+        "price": 177.17,
+        "day_%": -3.0586542492380833,
         "score": 65.0,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 39.8,
+        "rsi": 38.2,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 49.1,
+        "analyst_upside_%": 53.8,
         "rel_strength": {
-          "vs_spy": -20.3,
-          "vs_sector": -13.9,
+          "vs_spy": -23.1,
+          "vs_sector": -17.2,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -429,7 +424,7 @@
               "score": 100.0,
               "confidence": 0.2,
               "why": [
-                "+49% to the $272.43 mean target",
+                "+54% to the $272.43 mean target",
                 "but targets range $125\u2013$500 \u2014 little agreement"
               ]
             },
@@ -444,7 +439,7 @@
               "score": -33.0,
               "confidence": 1.0,
               "why": [
-                "insiders net sellers (323,715 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 19 open-market transactions"
+                "insiders net sellers (329,477 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 20 open-market transactions"
               ]
             },
             "short_interest": {
@@ -469,13 +464,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 182.75999450683594,
-          "display_date": "2026-11-18"
+          "display_close": 177.1699981689453,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "AI",
         "spark": [
-          275.29,
           266.28,
           255.24,
           255.39,
@@ -504,24 +498,25 @@
           190.53,
           175.05,
           183.39,
-          182.76
+          182.76,
+          177.17
         ]
       },
       {
         "ticker": "SMCI",
         "company": "Super Micro Computer, Inc.",
-        "price": 24.37,
-        "day_%": 0.9527815053864033,
-        "score": 60.4,
+        "price": 23.84,
+        "day_%": -2.1748078309142147,
+        "score": 60.2,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 32.5,
+        "rsi": 31.6,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 78.9,
+        "analyst_upside_%": 82.9,
         "rel_strength": {
-          "vs_spy": -32.6,
-          "vs_sector": -26.2,
+          "vs_spy": -30.0,
+          "vs_sector": -24.0,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -530,10 +525,10 @@
           "fundamental": 80.0,
           "options": 50.0,
           "momentum": 38.0,
-          "sentiment": 49.8
+          "sentiment": 49.1
         },
         "sentiment_detail": {
-          "coverage": 0.79,
+          "coverage": 0.78,
           "sources": {
             "consensus": {
               "score": 2.8,
@@ -546,7 +541,7 @@
               "score": 100.0,
               "confidence": 0.2,
               "why": [
-                "+79% to the $43.60 mean target",
+                "+83% to the $43.60 mean target",
                 "but targets range $18\u2013$65 \u2014 little agreement"
               ]
             },
@@ -573,11 +568,11 @@
               ]
             },
             "news": {
-              "score": 37.5,
-              "confidence": 0.58,
+              "score": 12.5,
+              "confidence": 0.42,
               "why": [
-                "10 recent headlines lean positive (5 positive / 2 negative words)",
-                "e.g. \"Supermicro Unveils Major AI Technology Breakthrough With AMD Chips\""
+                "10 recent headlines lean mixed (3 positive / 2 negative words)",
+                "e.g. \"Short Seller Raises Questions About Nvidia's Former Top Sales Executiv\""
               ]
             }
           }
@@ -587,33 +582,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 24.3700008392334,
-          "display_date": "2026-11-18"
+          "display_close": 23.84000015258789,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.13,
+          "position_in_range": 0.112,
           "range_low": 20.53,
           "range_high": 50.17,
-          "net_move_%": 14.1,
+          "net_move_%": 14.2,
           "range_width_%": 144.4,
-          "trend_r2": 0.063,
+          "trend_r2": 0.058,
           "midline_crossings": 16,
           "action": "buy_zone",
           "entry_target": 30.9,
-          "upside_to_range_high_%": 105.9,
+          "upside_to_range_high_%": 110.4,
           "typical_wait_sessions": 9,
-          "reason": "Sideways for the window and trading in the bottom 13% of its $20.53-$50.17 range. This is where a range-bound name is worth buying \u2014 about 106% back to the top of the range.",
+          "reason": "Sideways for the window and trading in the bottom 11% of its $20.53-$50.17 range. This is where a range-bound name is worth buying \u2014 about 110% back to the top of the range.",
           "factors": [
             "+14% over the window against a 144%-wide range",
             "trend line explains 6% of the move",
             "crossed the midline 16 times",
-            "sitting 13% of the way up the range"
+            "sitting 11% of the way up the range"
           ]
         },
         "domain": "AI",
         "spark": [
-          42.77,
           41.86,
           39.98,
           39.07,
@@ -642,24 +636,25 @@
           26.87,
           25.03,
           24.14,
-          24.37
+          24.37,
+          23.84
         ]
       },
       {
         "ticker": "AI",
         "company": "C3.ai, Inc.",
-        "price": 10.02,
-        "day_%": 0.7035241189990042,
+        "price": 10.04,
+        "day_%": 0.19959584007662895,
         "score": 51.2,
         "action": "Hold",
         "quality_grade": "D",
-        "rsi": 34.0,
+        "rsi": 34.3,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": -11.2,
+        "analyst_upside_%": -11.4,
         "rel_strength": {
-          "vs_spy": 6.4,
-          "vs_sector": 12.8,
+          "vs_spy": 9.8,
+          "vs_sector": 15.7,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -681,7 +676,7 @@
               ]
             },
             "targets": {
-              "score": -27.9,
+              "score": -28.4,
               "confidence": 0.5,
               "why": [
                 "-11% to the $8.90 mean target",
@@ -710,10 +705,10 @@
               ]
             },
             "news": {
-              "score": 12.5,
-              "confidence": 0.42,
+              "score": 25.0,
+              "confidence": 0.33,
               "why": [
-                "10 recent headlines lean mixed (3 positive / 2 negative words)",
+                "10 recent headlines lean positive (3 positive / 1 negative words)",
                 "e.g. \"Can BigBear.ai's $330M Backlog Strengthen Its Revenue Growth Outlook?\""
               ]
             }
@@ -724,13 +719,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 10.020000457763672,
-          "display_date": "2026-11-18"
+          "display_close": 10.039999961853027,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "AI",
         "spark": [
-          11.34,
           11.53,
           11.61,
           12.01,
@@ -759,7 +753,8 @@
           11.82,
           10.68,
           9.95,
-          10.02
+          10.02,
+          10.04
         ]
       }
     ],
@@ -767,30 +762,30 @@
       {
         "ticker": "AMD",
         "company": "Advanced Micro Devices, Inc.",
-        "price": 530.14,
-        "day_%": 5.309789394703687,
-        "score": 75.8,
+        "price": 489.19,
+        "day_%": -7.724376782648121,
+        "score": 77.8,
         "action": "Buy",
         "quality_grade": "A",
-        "rsi": 50.3,
+        "rsi": 45.2,
         "above_ema200": true,
         "cycle": "bull",
-        "analyst_upside_%": 24.1,
+        "analyst_upside_%": 34.5,
         "rel_strength": {
-          "vs_spy": 14.6,
-          "vs_sector": 21.1,
+          "vs_spy": 8.0,
+          "vs_sector": 14.0,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
         "subscores": {
-          "technical": 73.0,
+          "technical": 79.0,
           "fundamental": 99.0,
           "options": 50.0,
-          "momentum": 78.0,
-          "sentiment": 66.6
+          "momentum": 72.0,
+          "sentiment": 67.1
         },
         "sentiment_detail": {
-          "coverage": 0.79,
+          "coverage": 0.77,
           "sources": {
             "consensus": {
               "score": 82.4,
@@ -800,10 +795,10 @@
               ]
             },
             "targets": {
-              "score": 60.2,
-              "confidence": 0.32,
+              "score": 86.1,
+              "confidence": 0.26,
               "why": [
-                "+24% to the $657.74 mean target",
+                "+34% to the $657.74 mean target",
                 "but targets range $525\u2013$1250 \u2014 little agreement"
               ]
             },
@@ -818,7 +813,7 @@
               "score": -32.5,
               "confidence": 1.0,
               "why": [
-                "insiders net sellers (1,640,215 sold vs 13,445 bought) \u2014 weak evidence, selling has many innocent reasons across 54 open-market transactions"
+                "insiders net sellers (1,710,215 sold vs 13,445 bought) \u2014 weak evidence, selling has many innocent reasons across 55 open-market transactions"
               ]
             },
             "short_interest": {
@@ -829,11 +824,11 @@
               ]
             },
             "news": {
-              "score": 37.5,
-              "confidence": 0.25,
+              "score": 12.5,
+              "confidence": 0.08,
               "why": [
-                "10 recent headlines lean positive (3 positive / 0 negative words)",
-                "e.g. \"AMD, Broadcom, CoreWeave stocks mixed on Nvidia Q3 earnings beat\""
+                "10 recent headlines lean mixed (1 positive / 0 negative words)",
+                "e.g. \"AMD stock drops after Hunterbrook Media raises export control concerns\""
               ]
             }
           }
@@ -843,13 +838,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 530.1400146484375,
-          "display_date": "2026-11-18"
+          "display_close": 489.19000244140625,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Semiconductors",
         "spark": [
-          620.68,
           608.1,
           594.24,
           605.53,
@@ -878,36 +872,37 @@
           534.06,
           504.28,
           503.41,
-          530.14
+          530.14,
+          489.19
         ]
       },
       {
         "ticker": "TSM",
         "company": "Taiwan Semiconductor Manufactur",
-        "price": 362.62,
-        "day_%": 0.8145882998954211,
-        "score": 67.0,
+        "price": 352.01,
+        "day_%": -2.9267571382452533,
+        "score": 71.1,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 36.8,
+        "rsi": 34.4,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 61.8,
+        "analyst_upside_%": 66.7,
         "rel_strength": {
-          "vs_spy": -8.9,
-          "vs_sector": -2.5,
+          "vs_spy": -9.2,
+          "vs_sector": -3.3,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
         "subscores": {
-          "technical": 48.0,
+          "technical": 60.0,
           "fundamental": 100.0,
           "options": 50.0,
           "momentum": 60.0,
-          "sentiment": 69.0
+          "sentiment": 68.4
         },
         "sentiment_detail": {
-          "coverage": 0.64,
+          "coverage": 0.63,
           "sources": {
             "consensus": {
               "score": 81.0,
@@ -918,9 +913,9 @@
             },
             "targets": {
               "score": 100.0,
-              "confidence": 0.23,
+              "confidence": 0.2,
               "why": [
-                "+62% to the $586.69 mean target",
+                "+67% to the $586.69 mean target",
                 "but targets range $440\u2013$1000 \u2014 little agreement"
               ]
             },
@@ -947,11 +942,11 @@
               ]
             },
             "news": {
-              "score": 37.5,
-              "confidence": 0.25,
+              "score": 0.0,
+              "confidence": 0.17,
               "why": [
-                "10 recent headlines lean positive (3 positive / 0 negative words)",
-                "e.g. \"AMD, Broadcom, CoreWeave stocks mixed on Nvidia Q3 earnings beat\""
+                "10 recent headlines lean mixed (1 positive / 1 negative words)",
+                "e.g. \"Billionaire Stanley Druckenmiller Cut TSMC 94% in One Quarter, Leaving\""
               ]
             }
           }
@@ -961,13 +956,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 362.6199951171875,
-          "display_date": "2026-11-18"
+          "display_close": 352.0069885253906,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Semiconductors",
         "spark": [
-          457.99,
           453.31,
           444.35,
           445.12,
@@ -996,23 +990,24 @@
           398.73,
           373.45,
           359.69,
-          362.62
+          362.62,
+          352.01
         ]
       },
       {
         "ticker": "AVGO",
         "company": "Broadcom Inc.",
-        "price": 354.05,
-        "day_%": 3.644608157788026,
-        "score": 66.8,
+        "price": 346.65,
+        "day_%": -2.0900986164732007,
+        "score": 66.9,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 55.1,
+        "rsi": 52.6,
         "above_ema200": false,
         "cycle": "bear",
-        "analyst_upside_%": 49.2,
+        "analyst_upside_%": 51.9,
         "rel_strength": {
-          "vs_spy": 3.4,
+          "vs_spy": 3.9,
           "vs_sector": 9.9,
           "sector": "Technology",
           "sector_etf": "XLK"
@@ -1022,10 +1017,10 @@
           "fundamental": 100.0,
           "options": 50.0,
           "momentum": 66.0,
-          "sentiment": 68.3
+          "sentiment": 68.6
         },
         "sentiment_detail": {
-          "coverage": 0.87,
+          "coverage": 0.85,
           "sources": {
             "consensus": {
               "score": 86.3,
@@ -1036,9 +1031,9 @@
             },
             "targets": {
               "score": 100.0,
-              "confidence": 0.63,
+              "confidence": 0.62,
               "why": [
-                "+49% to the $528.17 mean target"
+                "+52% to the $526.47 mean target"
               ]
             },
             "revisions": {
@@ -1063,11 +1058,11 @@
               ]
             },
             "news": {
-              "score": 12.5,
-              "confidence": 0.42,
+              "score": 25.0,
+              "confidence": 0.17,
               "why": [
-                "10 recent headlines lean mixed (3 positive / 2 negative words)",
-                "e.g. \"AMD, Broadcom, CoreWeave stocks mixed on Nvidia Q3 earnings beat\""
+                "10 recent headlines lean positive (2 positive / 0 negative words)",
+                "e.g. \"Anthropic Soars 16% in Record $107 Billion IPO Debut: \u201cA Really Big Co\""
               ]
             }
           }
@@ -1077,33 +1072,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 354.04998779296875,
-          "display_date": "2026-11-18"
+          "display_close": 346.6499938964844,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.332,
+          "position_in_range": 0.293,
           "range_low": 291.53,
           "range_high": 479.94,
           "net_move_%": 0.6,
           "range_width_%": 64.6,
-          "trend_r2": 0.015,
+          "trend_r2": 0.013,
           "midline_crossings": 20,
           "action": "buy_zone",
           "entry_target": 357.47,
-          "upside_to_range_high_%": 35.6,
+          "upside_to_range_high_%": 38.4,
           "typical_wait_sessions": 14,
-          "reason": "Sideways for the window and trading in the bottom 33% of its $291.53-$479.94 range. This is where a range-bound name is worth buying \u2014 about 36% back to the top of the range.",
+          "reason": "Sideways for the window and trading in the bottom 29% of its $291.53-$479.94 range. This is where a range-bound name is worth buying \u2014 about 38% back to the top of the range.",
           "factors": [
             "+1% over the window against a 65%-wide range",
             "trend line explains 1% of the move",
             "crossed the midline 20 times",
-            "sitting 33% of the way up the range"
+            "sitting 29% of the way up the range"
           ]
         },
         "domain": "Semiconductors",
         "spark": [
-          360.14,
           361.54,
           354.73,
           357.31,
@@ -1132,24 +1126,25 @@
           347.01,
           333.4,
           341.6,
-          354.05
+          354.05,
+          346.65
         ]
       },
       {
         "ticker": "LRCX",
         "company": "Lam Research Corporation",
-        "price": 211.67,
-        "day_%": 0.4651363216968984,
-        "score": 66.0,
+        "price": 203.68,
+        "day_%": -3.7747463326318003,
+        "score": 66.2,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 38.1,
+        "rsi": 35.7,
         "above_ema200": false,
         "cycle": "bear",
-        "analyst_upside_%": 71.1,
+        "analyst_upside_%": 77.8,
         "rel_strength": {
-          "vs_spy": -28.7,
-          "vs_sector": -22.2,
+          "vs_spy": -28.5,
+          "vs_sector": -22.6,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -1158,10 +1153,10 @@
           "fundamental": 100.0,
           "options": 50.0,
           "momentum": 54.0,
-          "sentiment": 67.5
+          "sentiment": 68.2
         },
         "sentiment_detail": {
-          "coverage": 0.81,
+          "coverage": 0.82,
           "sources": {
             "consensus": {
               "score": 80.9,
@@ -1172,9 +1167,10 @@
             },
             "targets": {
               "score": 100.0,
-              "confidence": 0.42,
+              "confidence": 0.4,
               "why": [
-                "+71% to the $362.10 mean target"
+                "+78% to the $362.10 mean target",
+                "but targets range $255\u2013$500 \u2014 little agreement"
               ]
             },
             "revisions": {
@@ -1200,10 +1196,11 @@
               ]
             },
             "news": {
-              "score": 0.0,
-              "confidence": 0.25,
+              "score": 62.5,
+              "confidence": 0.42,
               "why": [
-                "10 headlines, none with clear tone"
+                "10 recent headlines lean positive (5 positive / 0 negative words)",
+                "e.g. \"Premarket movers: Palo Alto soars, chip stocks rally ahead of Anthropi\""
               ]
             }
           }
@@ -1213,13 +1210,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 211.6699981689453,
-          "display_date": "2026-11-18"
+          "display_close": 203.67999267578125,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Semiconductors",
         "spark": [
-          320.59,
           318.84,
           309.56,
           301.11,
@@ -1248,24 +1244,25 @@
           225.92,
           210.83,
           210.69,
-          211.67
+          211.67,
+          203.68
         ]
       },
       {
         "ticker": "MU",
         "company": "Micron Technology, Inc.",
-        "price": 705.27,
-        "day_%": -1.0036163429469576,
-        "score": 65.8,
+        "price": 690.44,
+        "day_%": -2.1027431592371326,
+        "score": 66.0,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 37.0,
+        "rsi": 35.9,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 121.5,
+        "analyst_upside_%": 126.2,
         "rel_strength": {
-          "vs_spy": -20.4,
-          "vs_sector": -14.0,
+          "vs_spy": -20.1,
+          "vs_sector": -14.2,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -1273,11 +1270,11 @@
           "technical": 48.0,
           "fundamental": 100.0,
           "options": 50.0,
-          "momentum": 54.0,
+          "momentum": 60.0,
           "sentiment": 65.0
         },
         "sentiment_detail": {
-          "coverage": 0.77,
+          "coverage": 0.76,
           "sources": {
             "consensus": {
               "score": 82.7,
@@ -1290,7 +1287,7 @@
               "score": 100.0,
               "confidence": 0.2,
               "why": [
-                "+121% to the $1561.91 mean target",
+                "+126% to the $1561.91 mean target",
                 "but targets range $361\u2013$3000 \u2014 little agreement"
               ]
             },
@@ -1317,11 +1314,11 @@
               ]
             },
             "news": {
-              "score": 25.0,
-              "confidence": 0.33,
+              "score": 12.5,
+              "confidence": 0.08,
               "why": [
-                "10 recent headlines lean positive (3 positive / 1 negative words)",
-                "e.g. \"Nvidia\u2019s Annual GPU Upgrades Are Changing the HBM Investment Outlook\""
+                "10 recent headlines lean mixed (1 positive / 0 negative words)",
+                "e.g. \"Nvidia, Intel, Micron and Dell Stocks Jump as Anthropic Massive IPO Sp\""
               ]
             }
           }
@@ -1331,13 +1328,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 705.27001953125,
-          "display_date": "2026-11-18"
+          "display_close": 690.4400024414062,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Semiconductors",
         "spark": [
-          1035.68,
           1028.84,
           988.88,
           953.04,
@@ -1366,24 +1362,25 @@
           778.31,
           719.02,
           712.42,
-          705.27
+          705.27,
+          690.44
         ]
       },
       {
         "ticker": "QCOM",
         "company": "QUALCOMM Incorporated",
-        "price": 159.81,
-        "day_%": -4.115918093067903,
-        "score": 60.6,
+        "price": 162.01,
+        "day_%": 1.3766328651845243,
+        "score": 61.9,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 40.1,
+        "rsi": 42.2,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 15.9,
+        "analyst_upside_%": 14.3,
         "rel_strength": {
-          "vs_spy": 4.1,
-          "vs_sector": 10.5,
+          "vs_spy": 5.8,
+          "vs_sector": 11.7,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -1391,11 +1388,11 @@
           "technical": 48.0,
           "fundamental": 93.0,
           "options": 50.0,
-          "momentum": 50.0,
-          "sentiment": 52.4
+          "momentum": 72.0,
+          "sentiment": 52.9
         },
         "sentiment_detail": {
-          "coverage": 0.81,
+          "coverage": 0.8,
           "sources": {
             "consensus": {
               "score": 18.9,
@@ -1405,10 +1402,10 @@
               ]
             },
             "targets": {
-              "score": 39.8,
-              "confidence": 0.36,
+              "score": 35.9,
+              "confidence": 0.37,
               "why": [
-                "+16% to the $185.25 mean target",
+                "+14% to the $185.25 mean target",
                 "but targets range $100\u2013$305 \u2014 little agreement"
               ]
             },
@@ -1435,11 +1432,11 @@
               ]
             },
             "news": {
-              "score": -25.0,
-              "confidence": 0.33,
+              "score": 25.0,
+              "confidence": 0.17,
               "why": [
-                "10 recent headlines lean negative (1 positive / 3 negative words)",
-                "e.g. \"Tech layoffs flare up in San Diego with hundreds of layoffs at chipmak\""
+                "10 recent headlines lean positive (2 positive / 0 negative words)",
+                "e.g. \"Qualcomm lays off 100s amid global restructuring, raises $4 billion\""
               ]
             }
           }
@@ -1449,33 +1446,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 159.80999755859375,
-          "display_date": "2026-11-18"
+          "display_close": 162.00999450683594,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.293,
+          "position_in_range": 0.311,
           "range_low": 122.94,
           "range_high": 248.74,
           "net_move_%": 4.4,
           "range_width_%": 102.3,
-          "trend_r2": 0.108,
+          "trend_r2": 0.106,
           "midline_crossings": 10,
           "action": "buy_zone",
           "entry_target": 166.97,
-          "upside_to_range_high_%": 55.6,
+          "upside_to_range_high_%": 53.5,
           "typical_wait_sessions": 42,
-          "reason": "Sideways for the window and trading in the bottom 29% of its $122.94-$248.74 range. This is where a range-bound name is worth buying \u2014 about 56% back to the top of the range.",
+          "reason": "Sideways for the window and trading in the bottom 31% of its $122.94-$248.74 range. This is where a range-bound name is worth buying \u2014 about 54% back to the top of the range.",
           "factors": [
             "+4% over the window against a 102%-wide range",
             "trend line explains 11% of the move",
             "crossed the midline 10 times",
-            "sitting 29% of the way up the range"
+            "sitting 31% of the way up the range"
           ]
         },
         "domain": "Semiconductors",
         "spark": [
-          176.01,
           175.5,
           174.43,
           176.86,
@@ -1504,7 +1500,8 @@
           172.47,
           168.52,
           166.67,
-          159.81
+          159.81,
+          162.01
         ]
       }
     ],
@@ -1512,18 +1509,18 @@
       {
         "ticker": "MSFT",
         "company": "Microsoft Corporation",
-        "price": 508.29,
-        "day_%": 0.40494989532489795,
+        "price": 498.3,
+        "day_%": -1.9654174947391718,
         "score": 73.3,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 42.9,
+        "rsi": 39.2,
         "above_ema200": true,
         "cycle": "bull",
-        "analyst_upside_%": 25.1,
+        "analyst_upside_%": 27.7,
         "rel_strength": {
-          "vs_spy": 7.4,
-          "vs_sector": 13.8,
+          "vs_spy": 6.7,
+          "vs_sector": 12.6,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -1532,10 +1529,10 @@
           "fundamental": 100.0,
           "options": 50.0,
           "momentum": 78.0,
-          "sentiment": 62.6
+          "sentiment": 62.5
         },
         "sentiment_detail": {
-          "coverage": 0.85,
+          "coverage": 0.84,
           "sources": {
             "consensus": {
               "score": 81.4,
@@ -1545,14 +1542,14 @@
               ]
             },
             "targets": {
-              "score": 62.9,
-              "confidence": 0.58,
+              "score": 69.1,
+              "confidence": 0.57,
               "why": [
-                "+25% to the $636.12 mean target"
+                "+28% to the $636.12 mean target"
               ]
             },
             "revisions": {
-              "score": -16.3,
+              "score": -15.9,
               "confidence": 1.0,
               "why": [
                 "ratings cut: 1.80 \u2192 1.88 over the last quarter"
@@ -1573,11 +1570,10 @@
               ]
             },
             "news": {
-              "score": 37.5,
-              "confidence": 0.42,
+              "score": 0.0,
+              "confidence": 0.25,
               "why": [
-                "10 recent headlines lean positive (4 positive / 1 negative words)",
-                "e.g. \"Major tech outages raise new cybersecurity concerns\""
+                "10 headlines, none with clear tone"
               ]
             }
           }
@@ -1587,33 +1583,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 508.2900085449219,
-          "display_date": "2026-11-18"
+          "display_close": 498.29998779296875,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.767,
+          "position_in_range": 0.718,
           "range_low": 352.17,
           "range_high": 555.8,
           "net_move_%": 9.9,
           "range_width_%": 57.8,
-          "trend_r2": 0.145,
+          "trend_r2": 0.155,
           "midline_crossings": 8,
           "action": "wait",
           "entry_target": 423.44,
-          "upside_to_range_high_%": 9.3,
+          "upside_to_range_high_%": 11.5,
           "typical_wait_sessions": 7,
-          "reason": "Sideways for the window and already 77% of the way up its $352.17-$555.80 range. Buying here pays near the top of a range that has gone nowhere \u2014 wait for roughly $423.44. It has revisited that area roughly every 7 sessions.",
+          "reason": "Sideways for the window and already 72% of the way up its $352.17-$555.80 range. Buying here pays near the top of a range that has gone nowhere \u2014 wait for roughly $423.44. It has revisited that area roughly every 7 sessions.",
           "factors": [
             "+10% over the window against a 58%-wide range",
             "trend line explains 15% of the move",
             "crossed the midline 8 times",
-            "sitting 77% of the way up the range"
+            "sitting 72% of the way up the range"
           ]
         },
         "domain": "FAANG / Mega-cap",
         "spark": [
-          522.61,
           535.07,
           541.15,
           543.45,
@@ -1642,33 +1637,34 @@
           523.88,
           517.99,
           506.24,
-          508.29
+          508.29,
+          498.3
         ]
       },
       {
         "ticker": "AAPL",
         "company": "Apple Inc.",
-        "price": 352.45,
-        "day_%": 0.15345075141437886,
-        "score": 71.4,
+        "price": 349.21,
+        "day_%": -0.9192851864762932,
+        "score": 69.8,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 56.8,
+        "rsi": 53.2,
         "above_ema200": true,
         "cycle": "bull",
-        "analyst_upside_%": -1.9,
+        "analyst_upside_%": -1.0,
         "rel_strength": {
           "vs_spy": 17.8,
-          "vs_sector": 24.3,
+          "vs_sector": 23.7,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
         "subscores": {
-          "technical": 73.0,
+          "technical": 68.0,
           "fundamental": 97.0,
           "options": 50.0,
           "momentum": 78.0,
-          "sentiment": 50.9
+          "sentiment": 51.2
         },
         "sentiment_detail": {
           "coverage": 0.87,
@@ -1681,10 +1677,10 @@
               ]
             },
             "targets": {
-              "score": -4.8,
+              "score": -2.6,
               "confidence": 0.75,
               "why": [
-                "-2% to the $345.63 mean target",
+                "-1% to the $345.63 mean target",
                 "already above the mean target \u2014 historically the worst cohort"
               ]
             },
@@ -1699,7 +1695,7 @@
               "score": -33.0,
               "confidence": 1.0,
               "why": [
-                "insiders net sellers (1,533,023 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 39 open-market transactions"
+                "insiders net sellers (1,423,023 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 39 open-market transactions"
               ]
             },
             "short_interest": {
@@ -1711,11 +1707,11 @@
               ]
             },
             "news": {
-              "score": 12.5,
-              "confidence": 0.08,
+              "score": 25.0,
+              "confidence": 0.17,
               "why": [
-                "10 recent headlines lean mixed (1 positive / 0 negative words)",
-                "e.g. \"Major tech outages raise new cybersecurity concerns\""
+                "10 recent headlines lean positive (2 positive / 0 negative words)",
+                "e.g. \"Nvidia Up 8.9% After a Strong Anthropic IPO? That\u2019s What Tilt\u2019s New In\""
               ]
             }
           }
@@ -1725,13 +1721,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 352.45001220703125,
-          "display_date": "2026-11-18"
+          "display_close": 349.2099914550781,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "FAANG / Mega-cap",
         "spark": [
-          340.16,
           336.38,
           340.71,
           341.01,
@@ -1760,24 +1755,25 @@
           356.27,
           352.78,
           351.91,
-          352.45
+          352.45,
+          349.21
         ]
       },
       {
         "ticker": "META",
         "company": "Meta Platforms, Inc.",
-        "price": 616.38,
-        "day_%": -0.40234463684145855,
-        "score": 68.4,
+        "price": 596.22,
+        "day_%": -3.270715146498039,
+        "score": 68.5,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 41.4,
+        "rsi": 36.7,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 37.6,
+        "analyst_upside_%": 42.3,
         "rel_strength": {
-          "vs_spy": 12.2,
-          "vs_sector": 12.5,
+          "vs_spy": 9.9,
+          "vs_sector": 11.0,
           "sector": "Communication Services",
           "sector_etf": "XLC"
         },
@@ -1786,7 +1782,7 @@
           "fundamental": 100.0,
           "options": 50.0,
           "momentum": 72.0,
-          "sentiment": 65.1
+          "sentiment": 65.6
         },
         "sentiment_detail": {
           "coverage": 0.85,
@@ -1799,10 +1795,10 @@
               ]
             },
             "targets": {
-              "score": 94.0,
-              "confidence": 0.68,
+              "score": 100.0,
+              "confidence": 0.66,
               "why": [
-                "+38% to the $848.23 mean target"
+                "+42% to the $848.23 mean target"
               ]
             },
             "revisions": {
@@ -1816,7 +1812,7 @@
               "score": -33.0,
               "confidence": 1.0,
               "why": [
-                "insiders net sellers (425,011 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 87 open-market transactions"
+                "insiders net sellers (426,579 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 88 open-market transactions"
               ]
             },
             "short_interest": {
@@ -1828,11 +1824,11 @@
               ]
             },
             "news": {
-              "score": -12.5,
+              "score": 12.5,
               "confidence": 0.08,
               "why": [
-                "10 recent headlines lean mixed (0 positive / 1 negative words)",
-                "e.g. \"Warning for Meta Investors: Muse \u201cHas to Be 20x\u201d What It Is Now to Mak\""
+                "10 recent headlines lean mixed (1 positive / 0 negative words)",
+                "e.g. \"Meta's New AI Agent Raises Serious Privacy Questions for Investors\""
               ]
             }
           }
@@ -1842,33 +1838,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 616.3800048828125,
-          "display_date": "2026-11-18"
+          "display_close": 596.219970703125,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.362,
+          "position_in_range": 0.282,
           "range_low": 524.82,
           "range_high": 777.59,
-          "net_move_%": 3.7,
+          "net_move_%": 3.4,
           "range_width_%": 48.2,
           "trend_r2": 0.0,
           "midline_crossings": 28,
-          "action": "wait",
+          "action": "buy_zone",
           "entry_target": 613.29,
-          "upside_to_range_high_%": 26.2,
+          "upside_to_range_high_%": 30.4,
           "typical_wait_sessions": 36,
-          "reason": "Sideways for the window, mid-range at 36%. Neither cheap nor extended \u2014 a patient entry near $613.29 is worth more than the 26% left to the top of the range.",
+          "reason": "Sideways for the window and trading in the bottom 28% of its $524.82-$777.59 range. This is where a range-bound name is worth buying \u2014 about 30% back to the top of the range.",
           "factors": [
-            "+4% over the window against a 48%-wide range",
+            "+3% over the window against a 48%-wide range",
             "trend line explains 0% of the move",
             "crossed the midline 28 times",
-            "sitting 36% of the way up the range"
+            "sitting 28% of the way up the range"
           ]
         },
         "domain": "FAANG / Mega-cap",
         "spark": [
-          720.89,
           718.67,
           742.96,
           762.5,
@@ -1897,24 +1892,25 @@
           641.69,
           626.41,
           618.87,
-          616.38
+          616.38,
+          596.22
         ]
       },
       {
         "ticker": "AMZN",
         "company": "Amazon.com, Inc.",
-        "price": 267.74,
-        "day_%": 3.8194482246104986,
-        "score": 66.8,
+        "price": 257.37,
+        "day_%": -3.8731588464277538,
+        "score": 67.1,
         "action": "Accumulate",
         "quality_grade": "B",
-        "rsi": 57.2,
+        "rsi": 49.0,
         "above_ema200": true,
         "cycle": "bull",
-        "analyst_upside_%": 21.8,
+        "analyst_upside_%": 26.7,
         "rel_strength": {
-          "vs_spy": 6.6,
-          "vs_sector": 0.2,
+          "vs_spy": 5.2,
+          "vs_sector": 0.5,
           "sector": "Consumer Cyclical",
           "sector_etf": "XLY"
         },
@@ -1923,10 +1919,10 @@
           "fundamental": 69.0,
           "options": 50.0,
           "momentum": 66.0,
-          "sentiment": 62.6
+          "sentiment": 64.2
         },
         "sentiment_detail": {
-          "coverage": 0.86,
+          "coverage": 0.88,
           "sources": {
             "consensus": {
               "score": 83.9,
@@ -1936,10 +1932,10 @@
               ]
             },
             "targets": {
-              "score": 54.5,
-              "confidence": 0.67,
+              "score": 66.8,
+              "confidence": 0.66,
               "why": [
-                "+22% to the $326.09 mean target"
+                "+27% to the $326.09 mean target"
               ]
             },
             "revisions": {
@@ -1953,7 +1949,7 @@
               "score": -33.0,
               "confidence": 1.0,
               "why": [
-                "insiders net sellers (26,895,281 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 80 open-market transactions"
+                "insiders net sellers (26,862,721 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 76 open-market transactions"
               ]
             },
             "short_interest": {
@@ -1965,10 +1961,11 @@
               ]
             },
             "news": {
-              "score": 0.0,
-              "confidence": 0.25,
+              "score": 50.0,
+              "confidence": 0.5,
               "why": [
-                "10 headlines, none with clear tone"
+                "10 recent headlines lean positive (5 positive / 1 negative words)",
+                "e.g. \"UPS Has Frozen Its Dividend at $1.64. Its 6% Yield Raises Questions\""
               ]
             }
           }
@@ -1978,13 +1975,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 267.739990234375,
-          "display_date": "2026-11-18"
+          "display_close": 257.3699951171875,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "FAANG / Mega-cap",
         "spark": [
-          254.06,
           262.43,
           259.53,
           258.58,
@@ -2013,24 +2009,25 @@
           266.66,
           257.75,
           257.89,
-          267.74
+          267.74,
+          257.37
         ]
       },
       {
         "ticker": "GOOGL",
         "company": "Alphabet Inc.",
-        "price": 282.44,
-        "day_%": 0.7994254592394304,
-        "score": 65.4,
+        "price": 272.66,
+        "day_%": -3.462681877481498,
+        "score": 65.3,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 34.9,
+        "rsi": 30.6,
         "above_ema200": false,
         "cycle": "bear",
-        "analyst_upside_%": 41.8,
+        "analyst_upside_%": 46.8,
         "rel_strength": {
-          "vs_spy": -14.5,
-          "vs_sector": -14.3,
+          "vs_spy": -13.9,
+          "vs_sector": -12.8,
           "sector": "Communication Services",
           "sector_etf": "XLC"
         },
@@ -2039,10 +2036,10 @@
           "fundamental": 84.0,
           "options": 50.0,
           "momentum": 44.0,
-          "sentiment": 66.2
+          "sentiment": 65.8
         },
         "sentiment_detail": {
-          "coverage": 0.86,
+          "coverage": 0.85,
           "sources": {
             "consensus": {
               "score": 82.8,
@@ -2053,9 +2050,9 @@
             },
             "targets": {
               "score": 100.0,
-              "confidence": 0.65,
+              "confidence": 0.63,
               "why": [
-                "+42% to the $400.37 mean target"
+                "+47% to the $400.15 mean target"
               ]
             },
             "revisions": {
@@ -2081,11 +2078,11 @@
               ]
             },
             "news": {
-              "score": 37.5,
+              "score": 12.5,
               "confidence": 0.25,
               "why": [
-                "10 recent headlines lean positive (3 positive / 0 negative words)",
-                "e.g. \"Why Isn\u2019t Alphabet Stock Taking Off After Reporting Record Cloud Growt\""
+                "10 recent headlines lean mixed (2 positive / 1 negative words)",
+                "e.g. \"Anthropic Soars 16% in Record $107 Billion IPO Debut: \u201cA Really Big Co\""
               ]
             }
           }
@@ -2095,33 +2092,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 282.44000244140625,
-          "display_date": "2026-11-18"
+          "display_close": 272.6600036621094,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.072,
-          "range_low": 273.16,
+          "position_in_range": 0.0,
+          "range_low": 272.66,
           "range_high": 402.12,
-          "net_move_%": 7.4,
-          "range_width_%": 47.2,
-          "trend_r2": 0.054,
-          "midline_crossings": 14,
+          "net_move_%": 7.1,
+          "range_width_%": 47.5,
+          "trend_r2": 0.041,
+          "midline_crossings": 16,
           "action": "buy_zone",
-          "entry_target": 318.3,
-          "upside_to_range_high_%": 42.4,
+          "entry_target": 317.97,
+          "upside_to_range_high_%": 47.5,
           "typical_wait_sessions": 66,
-          "reason": "Sideways for the window and trading in the bottom 7% of its $273.16-$402.12 range. This is where a range-bound name is worth buying \u2014 about 42% back to the top of the range.",
+          "reason": "Sideways for the window and trading in the bottom 0% of its $272.66-$402.12 range. This is where a range-bound name is worth buying \u2014 about 48% back to the top of the range.",
           "factors": [
             "+7% over the window against a 47%-wide range",
-            "trend line explains 5% of the move",
-            "crossed the midline 14 times",
-            "sitting 7% of the way up the range"
+            "trend line explains 4% of the move",
+            "crossed the midline 16 times",
+            "sitting 0% of the way up the range"
           ]
         },
         "domain": "FAANG / Mega-cap",
         "spark": [
-          348.29,
           351.66,
           352.72,
           353.78,
@@ -2150,24 +2146,25 @@
           295.77,
           283.72,
           280.2,
-          282.44
+          282.44,
+          272.66
         ]
       },
       {
         "ticker": "NFLX",
         "company": "Netflix, Inc.",
-        "price": 59.82,
-        "day_%": 0.23458342649555242,
+        "price": 58.46,
+        "day_%": -2.2734881599627177,
         "score": 65.3,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 33.6,
+        "rsi": 30.7,
         "above_ema200": false,
         "cycle": "bear",
-        "analyst_upside_%": 41.7,
+        "analyst_upside_%": 45.0,
         "rel_strength": {
-          "vs_spy": -23.2,
-          "vs_sector": -23.0,
+          "vs_spy": -22.0,
+          "vs_sector": -20.8,
           "sector": "Communication Services",
           "sector_etf": "XLC"
         },
@@ -2179,7 +2176,7 @@
           "sentiment": 58.1
         },
         "sentiment_detail": {
-          "coverage": 0.81,
+          "coverage": 0.8,
           "sources": {
             "consensus": {
               "score": 53.9,
@@ -2190,9 +2187,9 @@
             },
             "targets": {
               "score": 100.0,
-              "confidence": 0.42,
+              "confidence": 0.41,
               "why": [
-                "+42% to the $84.76 mean target"
+                "+45% to the $84.76 mean target"
               ]
             },
             "revisions": {
@@ -2218,11 +2215,11 @@
               ]
             },
             "news": {
-              "score": 12.5,
-              "confidence": 0.25,
+              "score": 25.0,
+              "confidence": 0.17,
               "why": [
-                "10 recent headlines lean mixed (2 positive / 1 negative words)",
-                "e.g. \"Disney\u2019s Latest Accounting Magic: $3 Billion in Cost Savings to Fund G\""
+                "10 recent headlines lean positive (2 positive / 0 negative words)",
+                "e.g. \"Josh Brown: Netflix Can Clear Wall Street\u2019s 10.6% Growth Bar \u201cStanding\""
               ]
             }
           }
@@ -2232,13 +2229,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 59.81999969482422,
-          "display_date": "2026-11-18"
+          "display_close": 58.459999084472656,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "FAANG / Mega-cap",
         "spark": [
-          71.57,
           70.3,
           70.61,
           70.46,
@@ -2267,26 +2263,144 @@
           62.15,
           60.75,
           59.68,
-          59.82
+          59.82,
+          58.46
         ]
       }
     ],
     "Energy": [
       {
+        "ticker": "XOM",
+        "company": "ExxonMobil Holdings Corporation",
+        "price": 158.93,
+        "day_%": -1.0275309107353248,
+        "score": 74.1,
+        "action": "Accumulate",
+        "quality_grade": "A",
+        "rsi": 35.0,
+        "above_ema200": true,
+        "cycle": "bull",
+        "analyst_upside_%": 15.9,
+        "rel_strength": {
+          "vs_spy": 7.4,
+          "vs_sector": 4.9,
+          "sector": "Energy",
+          "sector_etf": "XLE"
+        },
+        "subscores": {
+          "technical": 80.0,
+          "fundamental": 93.0,
+          "options": 50.0,
+          "momentum": 72.0,
+          "sentiment": 57.1
+        },
+        "sentiment_detail": {
+          "coverage": 0.8,
+          "sources": {
+            "consensus": {
+              "score": 28.8,
+              "confidence": 1.0,
+              "why": [
+                "buy consensus (2.42) from 22 analysts"
+              ]
+            },
+            "targets": {
+              "score": 39.7,
+              "confidence": 0.83,
+              "why": [
+                "+16% to the $184.18 mean target"
+              ]
+            },
+            "revisions": {
+              "score": -11.7,
+              "confidence": 1.0,
+              "why": [
+                "ratings cut: 2.48 \u2192 2.54 over the last quarter"
+              ]
+            },
+            "insiders": {
+              "score": -33.0,
+              "confidence": 0.12,
+              "why": [
+                "insiders net sellers (23,818 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 9 open-market transactions"
+              ]
+            },
+            "short_interest": {
+              "score": -25.6,
+              "confidence": 0.8,
+              "why": [
+                "1.2% of float short",
+                "short base grew 16% month over month"
+              ]
+            },
+            "news": {
+              "score": 75.0,
+              "confidence": 0.5,
+              "why": [
+                "10 recent headlines lean positive (6 positive / 0 negative words)",
+                "e.g. \"How Retirees Can Turn $1 Million Into Passive Income With These 5 Divi\""
+              ]
+            }
+          }
+        },
+        "quality": {
+          "data_quality": "ok",
+          "bars": 260,
+          "dropped": 0,
+          "flags": [],
+          "display_close": 158.92999267578125,
+          "display_date": "2026-11-19"
+        },
+        "entry_timing": null,
+        "domain": "Energy",
+        "spark": [
+          167.88,
+          171.07,
+          172.99,
+          175.9,
+          173.58,
+          177.86,
+          177.16,
+          176.74,
+          176.97,
+          177.11,
+          182.06,
+          183.38,
+          178.78,
+          180.88,
+          182.14,
+          186.08,
+          178.54,
+          176.35,
+          168.21,
+          164.26,
+          164.83,
+          163.7,
+          163.44,
+          165.66,
+          168.72,
+          169.52,
+          166.87,
+          167.21,
+          160.58,
+          158.93
+        ]
+      },
+      {
         "ticker": "CVX",
         "company": "Chevron Corporation",
-        "price": 205.88,
-        "day_%": -4.742515971143217,
+        "price": 206.5,
+        "day_%": 0.3011439199937862,
         "score": 70.8,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 36.4,
+        "rsi": 38.8,
         "above_ema200": true,
         "cycle": "bull",
-        "analyst_upside_%": 17.8,
+        "analyst_upside_%": 17.5,
         "rel_strength": {
-          "vs_spy": 7.0,
-          "vs_sector": 6.3,
+          "vs_spy": 10.3,
+          "vs_sector": 7.8,
           "sector": "Energy",
           "sector_etf": "XLE"
         },
@@ -2295,7 +2409,7 @@
           "fundamental": 90.0,
           "options": 50.0,
           "momentum": 78.0,
-          "sentiment": 62.3
+          "sentiment": 62.2
         },
         "sentiment_detail": {
           "coverage": 0.89,
@@ -2308,10 +2422,10 @@
               ]
             },
             "targets": {
-              "score": 44.5,
+              "score": 43.6,
               "confidence": 0.83,
               "why": [
-                "+18% to the $242.54 mean target"
+                "+17% to the $242.54 mean target"
               ]
             },
             "revisions": {
@@ -2341,7 +2455,7 @@
               "confidence": 0.17,
               "why": [
                 "10 recent headlines lean positive (2 positive / 0 negative words)",
-                "e.g. \"Nvidia Earnings Beat Fails to Rescue Wall Street as Dow Tumbles\""
+                "e.g. \"How XOM's Strong Balance Sheet Helps Manage Oil Market Volatility\""
               ]
             }
           }
@@ -2351,176 +2465,59 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 205.8800048828125,
-          "display_date": "2026-11-18"
+          "display_close": 206.5,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Energy",
         "spark": [
-          211.55,
-          211.98,
-          215.0,
-          217.73,
-          222.04,
-          219.32,
-          224.99,
-          224.37,
-          225.71,
-          226.78,
-          226.68,
-          233.21,
-          232.01,
-          228.23,
-          229.2,
-          231.46,
-          235.52,
-          227.77,
-          225.27,
-          216.96,
-          212.93,
-          212.61,
-          210.78,
-          211.22,
-          213.28,
-          216.35,
-          219.89,
-          217.14,
-          216.13,
-          205.88
-        ]
-      },
-      {
-        "ticker": "XOM",
-        "company": "ExxonMobil Holdings Corporation",
-        "price": 160.55,
-        "day_%": -3.983017400092624,
-        "score": 69.2,
-        "action": "Accumulate",
-        "quality_grade": "A",
-        "rsi": 36.7,
-        "above_ema200": true,
-        "cycle": "bull",
-        "analyst_upside_%": 14.7,
-        "rel_strength": {
-          "vs_spy": 4.6,
-          "vs_sector": 3.8,
-          "sector": "Energy",
-          "sector_etf": "XLE"
-        },
-        "subscores": {
-          "technical": 68.0,
-          "fundamental": 93.0,
-          "options": 50.0,
-          "momentum": 66.0,
-          "sentiment": 55.5
-        },
-        "sentiment_detail": {
-          "coverage": 0.77,
-          "sources": {
-            "consensus": {
-              "score": 28.8,
-              "confidence": 1.0,
-              "why": [
-                "buy consensus (2.42) from 22 analysts"
-              ]
-            },
-            "targets": {
-              "score": 36.8,
-              "confidence": 0.83,
-              "why": [
-                "+15% to the $184.18 mean target"
-              ]
-            },
-            "revisions": {
-              "score": -11.7,
-              "confidence": 1.0,
-              "why": [
-                "ratings cut: 2.48 \u2192 2.54 over the last quarter"
-              ]
-            },
-            "insiders": {
-              "score": -33.0,
-              "confidence": 0.12,
-              "why": [
-                "insiders net sellers (23,818 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 9 open-market transactions"
-              ]
-            },
-            "short_interest": {
-              "score": -25.6,
-              "confidence": 0.8,
-              "why": [
-                "1.2% of float short",
-                "short base grew 16% month over month"
-              ]
-            },
-            "news": {
-              "score": 25.0,
-              "confidence": 0.17,
-              "why": [
-                "10 recent headlines lean positive (2 positive / 0 negative words)",
-                "e.g. \"Invest $25,000 in These 4 Dividend Stocks to Start Building Retirement\""
-              ]
-            }
-          }
-        },
-        "quality": {
-          "data_quality": "ok",
-          "bars": 260,
-          "dropped": 0,
-          "flags": [],
-          "display_close": 160.5500030517578,
-          "display_date": "2026-11-18"
-        },
-        "entry_timing": null,
-        "domain": "Energy",
-        "spark": [
-          167.44,
-          167.88,
-          171.07,
-          172.99,
-          175.9,
-          173.58,
-          177.86,
-          177.16,
-          176.74,
-          176.97,
-          177.11,
-          182.06,
-          183.38,
-          178.78,
-          180.88,
-          182.14,
-          186.08,
-          178.54,
-          176.35,
-          168.21,
-          164.26,
-          164.83,
-          163.7,
-          163.44,
-          165.66,
-          168.72,
-          169.52,
-          166.87,
-          167.21,
-          160.55
+          210.23,
+          213.23,
+          215.94,
+          220.21,
+          217.51,
+          223.14,
+          222.52,
+          223.85,
+          224.91,
+          224.81,
+          231.29,
+          230.1,
+          226.35,
+          227.31,
+          229.55,
+          233.58,
+          225.89,
+          223.41,
+          215.17,
+          211.18,
+          210.86,
+          209.04,
+          209.48,
+          211.52,
+          214.57,
+          218.08,
+          215.35,
+          214.35,
+          205.88,
+          206.5
         ]
       },
       {
         "ticker": "FSLR",
         "company": "First Solar, Inc.",
-        "price": 150.98,
-        "day_%": -1.3009122555297026,
-        "score": 66.6,
+        "price": 151.95,
+        "day_%": 0.6424700279191986,
+        "score": 67.0,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 29.8,
+        "rsi": 30.8,
         "above_ema200": false,
         "cycle": "bear",
-        "analyst_upside_%": 66.0,
+        "analyst_upside_%": 65.0,
         "rel_strength": {
-          "vs_spy": -23.0,
-          "vs_sector": -16.6,
+          "vs_spy": -19.9,
+          "vs_sector": -14.0,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -2528,11 +2525,11 @@
           "technical": 54.0,
           "fundamental": 98.0,
           "options": 50.0,
-          "momentum": 38.0,
-          "sentiment": 65.3
+          "momentum": 44.0,
+          "sentiment": 65.6
         },
         "sentiment_detail": {
-          "coverage": 0.81,
+          "coverage": 0.8,
           "sources": {
             "consensus": {
               "score": 62.5,
@@ -2543,9 +2540,9 @@
             },
             "targets": {
               "score": 100.0,
-              "confidence": 0.47,
+              "confidence": 0.48,
               "why": [
-                "+66% to the $250.67 mean target"
+                "+65% to the $250.67 mean target"
               ]
             },
             "revisions": {
@@ -2570,10 +2567,11 @@
               ]
             },
             "news": {
-              "score": 0.0,
-              "confidence": 0.25,
+              "score": 12.5,
+              "confidence": 0.08,
               "why": [
-                "10 headlines, none with clear tone"
+                "10 recent headlines lean mixed (1 positive / 0 negative words)",
+                "e.g. \"Can T1 Energy's Growing Order Book Drive US Solar Expansion?\""
               ]
             }
           }
@@ -2583,13 +2581,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 150.97999572753906,
-          "display_date": "2026-11-18"
+          "display_close": 151.9499969482422,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Energy",
         "spark": [
-          178.85,
           177.82,
           179.72,
           186.6,
@@ -2618,24 +2615,25 @@
           171.39,
           162.45,
           152.97,
-          150.98
+          150.98,
+          151.95
         ]
       },
       {
         "ticker": "ENPH",
         "company": "Enphase Energy, Inc.",
-        "price": 22.66,
-        "day_%": -1.734603763200594,
+        "price": 21.98,
+        "day_%": -3.0008839795002946,
         "score": 56.8,
         "action": "Hold",
         "quality_grade": "B",
-        "rsi": 30.7,
+        "rsi": 29.4,
         "above_ema200": false,
         "cycle": "bear",
-        "analyst_upside_%": 73.9,
+        "analyst_upside_%": 79.3,
         "rel_strength": {
-          "vs_spy": -35.3,
-          "vs_sector": -28.9,
+          "vs_spy": -36.5,
+          "vs_sector": -30.5,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -2660,7 +2658,7 @@
               "score": 100.0,
               "confidence": 0.2,
               "why": [
-                "+74% to the $39.42 mean target",
+                "+79% to the $39.42 mean target",
                 "but targets range $16\u2013$212 \u2014 little agreement"
               ]
             },
@@ -2700,33 +2698,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 22.65999984741211,
-          "display_date": "2026-11-18"
+          "display_close": 21.979999542236328,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
           "position_in_range": 0.0,
-          "range_low": 22.66,
+          "range_low": 21.98,
           "range_high": 72.33,
-          "net_move_%": -4.2,
-          "range_width_%": 219.2,
-          "trend_r2": 0.01,
-          "midline_crossings": 14,
+          "net_move_%": -4.4,
+          "range_width_%": 229.1,
+          "trend_r2": 0.016,
+          "midline_crossings": 8,
           "action": "range_low",
-          "entry_target": 40.04,
-          "upside_to_range_high_%": 219.2,
+          "entry_target": 39.6,
+          "upside_to_range_high_%": 229.1,
           "typical_wait_sessions": 37,
           "reason": "Near the bottom of its sideways range, but the verdict is Hold \u2014 a low price alone is not a reason to buy.",
           "factors": [
-            "-4% over the window against a 219%-wide range",
-            "trend line explains 1% of the move",
-            "crossed the midline 14 times",
+            "-4% over the window against a 229%-wide range",
+            "trend line explains 2% of the move",
+            "crossed the midline 8 times",
             "sitting 0% of the way up the range"
           ]
         },
         "domain": "Energy",
         "spark": [
-          32.91,
           32.81,
           31.49,
           32.03,
@@ -2755,7 +2752,8 @@
           26.07,
           24.95,
           23.06,
-          22.66
+          22.66,
+          21.98
         ]
       }
     ],
@@ -2763,18 +2761,18 @@
       {
         "ticker": "TSLA",
         "company": "Tesla, Inc.",
-        "price": 383.72,
-        "day_%": 0.9497292910634096,
-        "score": 52.1,
+        "price": 374.41,
+        "day_%": -2.4262476620912303,
+        "score": 52.2,
         "action": "Hold",
         "quality_grade": "C",
-        "rsi": 51.1,
+        "rsi": 47.2,
         "above_ema200": false,
         "cycle": "bear",
-        "analyst_upside_%": 7.5,
+        "analyst_upside_%": 10.2,
         "rel_strength": {
-          "vs_spy": 13.6,
-          "vs_sector": 7.2,
+          "vs_spy": 14.6,
+          "vs_sector": 9.9,
           "sector": "Consumer Cyclical",
           "sector_etf": "XLY"
         },
@@ -2783,10 +2781,10 @@
           "fundamental": 58.0,
           "options": 50.0,
           "momentum": 56.0,
-          "sentiment": 60.5
+          "sentiment": 61.0
         },
         "sentiment_detail": {
-          "coverage": 0.8,
+          "coverage": 0.79,
           "sources": {
             "consensus": {
               "score": 35.2,
@@ -2796,10 +2794,10 @@
               ]
             },
             "targets": {
-              "score": 18.7,
-              "confidence": 0.39,
+              "score": 25.4,
+              "confidence": 0.37,
               "why": [
-                "+7% to the $412.48 mean target",
+                "+10% to the $412.48 mean target",
                 "but targets range $128\u2013$600 \u2014 little agreement"
               ]
             },
@@ -2826,10 +2824,11 @@
               ]
             },
             "news": {
-              "score": 0.0,
-              "confidence": 0.25,
+              "score": 12.5,
+              "confidence": 0.08,
               "why": [
-                "10 headlines, none with clear tone"
+                "10 recent headlines lean mixed (1 positive / 0 negative words)",
+                "e.g. \"Tesla Expands Cybercab To Dallas In First Move Outside Austin\""
               ]
             }
           }
@@ -2839,13 +2838,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 383.7200012207031,
-          "display_date": "2026-11-18"
+          "display_close": 374.4100036621094,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "EV / Auto",
         "spark": [
-          375.0,
           382.7,
           378.03,
           375.23,
@@ -2874,29 +2872,30 @@
           390.22,
           379.74,
           380.11,
-          383.72
+          383.72,
+          374.41
         ]
       },
       {
         "ticker": "RIVN",
         "company": "Rivian Automotive, Inc.",
-        "price": 11.8,
-        "day_%": -0.6734000247088343,
-        "score": 47.8,
+        "price": 11.29,
+        "day_%": -4.322035768120398,
+        "score": 52.0,
         "action": "Hold",
         "quality_grade": "F",
-        "rsi": 37.3,
+        "rsi": 33.6,
         "above_ema200": false,
         "cycle": "bear",
-        "analyst_upside_%": 50.3,
+        "analyst_upside_%": 57.1,
         "rel_strength": {
-          "vs_spy": -25.5,
-          "vs_sector": -31.9,
+          "vs_spy": -24.6,
+          "vs_sector": -29.3,
           "sector": "Consumer Cyclical",
           "sector_etf": "XLY"
         },
         "subscores": {
-          "technical": 42.0,
+          "technical": 54.0,
           "fundamental": 39.0,
           "options": 50.0,
           "momentum": 38.0,
@@ -2914,9 +2913,9 @@
             },
             "targets": {
               "score": 100.0,
-              "confidence": 0.36,
+              "confidence": 0.34,
               "why": [
-                "+50% to the $17.74 mean target",
+                "+57% to the $17.74 mean target",
                 "but targets range $10\u2013$25 \u2014 little agreement"
               ]
             },
@@ -2942,11 +2941,11 @@
               ]
             },
             "news": {
-              "score": 0.0,
+              "score": 25.0,
               "confidence": 0.17,
               "why": [
-                "10 recent headlines lean mixed (1 positive / 1 negative words)",
-                "e.g. \"Ford Or GM Stock? The S&P 500 Beat Both\""
+                "10 recent headlines lean positive (2 positive / 0 negative words)",
+                "e.g. \"Why GM Stock's Gains Under Barra Outran Its Profit\""
               ]
             }
           }
@@ -2956,13 +2955,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 11.800000190734863,
-          "display_date": "2026-11-18"
+          "display_close": 11.289999961853027,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "EV / Auto",
         "spark": [
-          14.33,
           13.96,
           13.54,
           13.37,
@@ -2991,142 +2989,27 @@
           12.18,
           12.1,
           11.88,
-          11.8
+          11.8,
+          11.29
         ]
       }
     ],
     "Fintech / Crypto": [
       {
-        "ticker": "XYZ",
-        "company": "Block, Inc.",
-        "price": 79.01,
-        "day_%": -0.3719558416672118,
-        "score": 68.9,
-        "action": "Accumulate",
-        "quality_grade": "A",
-        "rsi": 47.1,
-        "above_ema200": true,
-        "cycle": "bull",
-        "analyst_upside_%": 28.5,
-        "rel_strength": {
-          "vs_spy": -0.5,
-          "vs_sector": 6.0,
-          "sector": "Technology",
-          "sector_etf": "XLK"
-        },
-        "subscores": {
-          "technical": 68.0,
-          "fundamental": 83.0,
-          "options": 50.0,
-          "momentum": 72.0,
-          "sentiment": 63.1
-        },
-        "sentiment_detail": {
-          "coverage": 0.87,
-          "sources": {
-            "consensus": {
-              "score": 70.8,
-              "confidence": 1.0,
-              "why": [
-                "strong buy consensus (1.58) from 43 analysts"
-              ]
-            },
-            "targets": {
-              "score": 71.2,
-              "confidence": 0.72,
-              "why": [
-                "+28% to the $101.52 mean target"
-              ]
-            },
-            "revisions": {
-              "score": -9.2,
-              "confidence": 1.0,
-              "why": [
-                "ratings cut: 1.93 \u2192 1.98 over the last quarter"
-              ]
-            },
-            "insiders": {
-              "score": -33.0,
-              "confidence": 1.0,
-              "why": [
-                "insiders net sellers (1,417,269 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 92 open-market transactions"
-              ]
-            },
-            "short_interest": {
-              "score": 0.8,
-              "confidence": 0.8,
-              "why": [
-                "3.0% of float short"
-              ]
-            },
-            "news": {
-              "score": 37.5,
-              "confidence": 0.25,
-              "why": [
-                "10 recent headlines lean positive (3 positive / 0 negative words)",
-                "e.g. \"Jay-Z-Backed Music Financing Startup Duetti Raises $665M\""
-              ]
-            }
-          }
-        },
-        "quality": {
-          "data_quality": "ok",
-          "bars": 260,
-          "dropped": 0,
-          "flags": [],
-          "display_close": 79.01499938964844,
-          "display_date": "2026-11-18"
-        },
-        "entry_timing": null,
-        "domain": "Fintech / Crypto",
-        "spark": [
-          75.23,
-          77.24,
-          76.82,
-          76.86,
-          75.85,
-          79.83,
-          77.89,
-          77.5,
-          78.1,
-          78.21,
-          79.02,
-          76.46,
-          74.55,
-          74.87,
-          75.21,
-          76.95,
-          76.22,
-          77.08,
-          76.0,
-          87.63,
-          84.04,
-          85.48,
-          88.56,
-          85.58,
-          85.72,
-          82.26,
-          84.58,
-          82.96,
-          79.31,
-          79.01
-        ]
-      },
-      {
         "ticker": "HOOD",
         "company": "Robinhood Markets, Inc.",
-        "price": 69.17,
-        "day_%": -0.028912085207509822,
+        "price": 68.65,
+        "day_%": -0.7517661657245277,
         "score": 64.7,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 27.2,
+        "rsi": 26.8,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 83.3,
+        "analyst_upside_%": 84.7,
         "rel_strength": {
-          "vs_spy": -34.3,
-          "vs_sector": -37.7,
+          "vs_spy": -30.5,
+          "vs_sector": -33.8,
           "sector": "Financial Services",
           "sector_etf": "XLF"
         },
@@ -3138,7 +3021,7 @@
           "sentiment": 64.0
         },
         "sentiment_detail": {
-          "coverage": 0.76,
+          "coverage": 0.77,
           "sources": {
             "consensus": {
               "score": 64.1,
@@ -3151,7 +3034,7 @@
               "score": 100.0,
               "confidence": 0.2,
               "why": [
-                "+83% to the $126.77 mean target",
+                "+85% to the $126.77 mean target",
                 "but targets range $59\u2013$170 \u2014 little agreement"
               ]
             },
@@ -3178,11 +3061,11 @@
               ]
             },
             "news": {
-              "score": 0.0,
-              "confidence": 0.17,
+              "score": 12.5,
+              "confidence": 0.25,
               "why": [
-                "10 recent headlines lean mixed (1 positive / 1 negative words)",
-                "e.g. \"Coinbase expands crypto-backed loans to New York, now reaching all 50 \""
+                "10 recent headlines lean mixed (2 positive / 1 negative words)",
+                "e.g. \"SNEX Q4 Earnings Miss Estimates Despite Revenue Growth, Stock Dips\""
               ]
             }
           }
@@ -3192,33 +3075,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 69.16999816894531,
-          "display_date": "2026-11-18"
+          "display_close": 68.6500015258789,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.056,
+          "position_in_range": 0.049,
           "range_low": 65.16,
           "range_high": 137.08,
-          "net_move_%": -11.4,
+          "net_move_%": -13.2,
           "range_width_%": 110.4,
           "trend_r2": 0.003,
           "midline_crossings": 15,
           "action": "buy_zone",
           "entry_target": 90.33,
-          "upside_to_range_high_%": 98.2,
+          "upside_to_range_high_%": 99.7,
           "typical_wait_sessions": 64,
-          "reason": "Sideways for the window and trading in the bottom 6% of its $65.16-$137.08 range. This is where a range-bound name is worth buying \u2014 about 98% back to the top of the range.",
+          "reason": "Sideways for the window and trading in the bottom 5% of its $65.16-$137.08 range. This is where a range-bound name is worth buying \u2014 about 100% back to the top of the range.",
           "factors": [
-            "-11% over the window against a 110%-wide range",
+            "-13% over the window against a 110%-wide range",
             "trend line explains 0% of the move",
             "crossed the midline 15 times",
-            "sitting 6% of the way up the range"
+            "sitting 5% of the way up the range"
           ]
         },
         "domain": "Fintech / Crypto",
         "spark": [
-          107.01,
           109.02,
           109.22,
           110.52,
@@ -3247,24 +3129,25 @@
           77.86,
           72.06,
           69.19,
-          69.17
+          69.17,
+          68.65
         ]
       },
       {
         "ticker": "PYPL",
         "company": "PayPal Holdings, Inc.",
-        "price": 57.89,
-        "day_%": -0.37859442160104634,
+        "price": 56.37,
+        "day_%": -2.6256701913793243,
         "score": 63.8,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 50.9,
+        "rsi": 44.1,
         "above_ema200": true,
         "cycle": "bull",
-        "analyst_upside_%": -1.0,
+        "analyst_upside_%": 1.7,
         "rel_strength": {
-          "vs_spy": -2.8,
-          "vs_sector": -6.2,
+          "vs_spy": -2.3,
+          "vs_sector": -5.6,
           "sector": "Financial Services",
           "sector_etf": "XLF"
         },
@@ -3273,10 +3156,10 @@
           "fundamental": 85.0,
           "options": 50.0,
           "momentum": 50.0,
-          "sentiment": 45.0
+          "sentiment": 45.1
         },
         "sentiment_detail": {
-          "coverage": 0.85,
+          "coverage": 0.83,
           "sources": {
             "consensus": {
               "score": 1.2,
@@ -3286,11 +3169,10 @@
               ]
             },
             "targets": {
-              "score": -2.5,
-              "confidence": 0.62,
+              "score": 4.2,
+              "confidence": 0.61,
               "why": [
-                "-1% to the $57.31 mean target",
-                "already above the mean target \u2014 historically the worst cohort"
+                "+2% to the $57.31 mean target"
               ]
             },
             "revisions": {
@@ -3315,11 +3197,11 @@
               ]
             },
             "news": {
-              "score": 37.5,
-              "confidence": 0.25,
+              "score": 12.5,
+              "confidence": 0.08,
               "why": [
-                "10 recent headlines lean positive (3 positive / 0 negative words)",
-                "e.g. \"Visa Targets Secure AI Agent Payments Through Expanded Industry Partne\""
+                "10 recent headlines lean mixed (1 positive / 0 negative words)",
+                "e.g. \"Can Visa Turn AI-Led Commerce Into a New Growth Driver?\""
               ]
             }
           }
@@ -3329,33 +3211,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 57.88999938964844,
-          "display_date": "2026-11-18"
+          "display_close": 56.369998931884766,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.811,
+          "position_in_range": 0.747,
           "range_low": 38.74,
           "range_high": 62.35,
-          "net_move_%": -5.4,
+          "net_move_%": -4.7,
           "range_width_%": 61.0,
-          "trend_r2": 0.02,
+          "trend_r2": 0.023,
           "midline_crossings": 6,
           "action": "wait",
           "entry_target": 47.0,
-          "upside_to_range_high_%": 7.7,
+          "upside_to_range_high_%": 10.6,
           "typical_wait_sessions": 17,
-          "reason": "Sideways for the window and already 81% of the way up its $38.74-$62.35 range. Buying here pays near the top of a range that has gone nowhere \u2014 wait for roughly $47.00. It has revisited that area roughly every 17 sessions.",
+          "reason": "Sideways for the window and already 75% of the way up its $38.74-$62.35 range. Buying here pays near the top of a range that has gone nowhere \u2014 wait for roughly $47.00. It has revisited that area roughly every 17 sessions.",
           "factors": [
             "-5% over the window against a 61%-wide range",
             "trend line explains 2% of the move",
             "crossed the midline 6 times",
-            "sitting 81% of the way up the range"
+            "sitting 75% of the way up the range"
           ]
         },
         "domain": "Fintech / Crypto",
         "spark": [
-          55.02,
           55.53,
           56.05,
           56.17,
@@ -3384,24 +3265,141 @@
           59.28,
           58.83,
           58.11,
-          57.89
+          57.89,
+          56.37
+        ]
+      },
+      {
+        "ticker": "XYZ",
+        "company": "Block, Inc.",
+        "price": 74.23,
+        "day_%": -6.049865396858381,
+        "score": 61.7,
+        "action": "Accumulate",
+        "quality_grade": "A",
+        "rsi": 39.9,
+        "above_ema200": false,
+        "cycle": "bull",
+        "analyst_upside_%": 36.8,
+        "rel_strength": {
+          "vs_spy": -4.4,
+          "vs_sector": 1.6,
+          "sector": "Technology",
+          "sector_etf": "XLK"
+        },
+        "subscores": {
+          "technical": 48.0,
+          "fundamental": 83.0,
+          "options": 50.0,
+          "momentum": 60.0,
+          "sentiment": 64.6
+        },
+        "sentiment_detail": {
+          "coverage": 0.86,
+          "sources": {
+            "consensus": {
+              "score": 70.8,
+              "confidence": 1.0,
+              "why": [
+                "strong buy consensus (1.58) from 43 analysts"
+              ]
+            },
+            "targets": {
+              "score": 91.9,
+              "confidence": 0.7,
+              "why": [
+                "+37% to the $101.52 mean target"
+              ]
+            },
+            "revisions": {
+              "score": -9.2,
+              "confidence": 1.0,
+              "why": [
+                "ratings cut: 1.93 \u2192 1.98 over the last quarter"
+              ]
+            },
+            "insiders": {
+              "score": -33.0,
+              "confidence": 1.0,
+              "why": [
+                "insiders net sellers (1,417,269 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 92 open-market transactions"
+              ]
+            },
+            "short_interest": {
+              "score": 0.8,
+              "confidence": 0.8,
+              "why": [
+                "3.0% of float short"
+              ]
+            },
+            "news": {
+              "score": 25.0,
+              "confidence": 0.17,
+              "why": [
+                "10 recent headlines lean positive (2 positive / 0 negative words)",
+                "e.g. \"Jay-Z-Backed Music Financing Startup Duetti Raises $665M\""
+              ]
+            }
+          }
+        },
+        "quality": {
+          "data_quality": "ok",
+          "bars": 260,
+          "dropped": 0,
+          "flags": [],
+          "display_close": 74.2300033569336,
+          "display_date": "2026-11-19"
+        },
+        "entry_timing": null,
+        "domain": "Fintech / Crypto",
+        "spark": [
+          77.24,
+          76.82,
+          76.86,
+          75.85,
+          79.83,
+          77.89,
+          77.5,
+          78.1,
+          78.21,
+          79.02,
+          76.46,
+          74.55,
+          74.87,
+          75.21,
+          76.95,
+          76.22,
+          77.08,
+          76.0,
+          87.63,
+          84.04,
+          85.48,
+          88.56,
+          85.58,
+          85.72,
+          82.26,
+          84.58,
+          82.96,
+          79.31,
+          79.01,
+          74.23
         ]
       },
       {
         "ticker": "COIN",
         "company": "Coinbase Global, Inc.",
-        "price": 110.51,
-        "day_%": -3.9210525460468335,
-        "score": 57.6,
+        "price": 108.87,
+        "day_%": -1.484028013705709,
+        "score": 57.5,
         "action": "Hold",
         "quality_grade": "C",
-        "rsi": 25.8,
+        "rsi": 25.3,
         "above_ema200": false,
         "cycle": "bear",
-        "analyst_upside_%": 76.5,
+        "analyst_upside_%": 79.1,
         "rel_strength": {
-          "vs_spy": -36.9,
-          "vs_sector": -40.4,
+          "vs_spy": -33.8,
+          "vs_sector": -37.1,
           "sector": "Financial Services",
           "sector_etf": "XLF"
         },
@@ -3410,10 +3408,10 @@
           "fundamental": 67.0,
           "options": 50.0,
           "momentum": 38.0,
-          "sentiment": 60.3
+          "sentiment": 59.9
         },
         "sentiment_detail": {
-          "coverage": 0.78,
+          "coverage": 0.77,
           "sources": {
             "consensus": {
               "score": 51.4,
@@ -3424,9 +3422,9 @@
             },
             "targets": {
               "score": 100.0,
-              "confidence": 0.23,
+              "confidence": 0.22,
               "why": [
-                "+76% to the $195.00 mean target",
+                "+79% to the $195.00 mean target",
                 "but targets range $110\u2013$280 \u2014 little agreement"
               ]
             },
@@ -3453,11 +3451,10 @@
               ]
             },
             "news": {
-              "score": 25.0,
-              "confidence": 0.33,
+              "score": 0.0,
+              "confidence": 0.25,
               "why": [
-                "10 recent headlines lean positive (3 positive / 1 negative words)",
-                "e.g. \"Coinbase expands crypto-backed loans to New York, now reaching all 50 \""
+                "10 headlines, none with clear tone"
               ]
             }
           }
@@ -3467,13 +3464,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 110.51000213623047,
-          "display_date": "2026-11-18"
+          "display_close": 108.87000274658203,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Fintech / Crypto",
         "spark": [
-          172.0,
           179.39,
           180.39,
           181.79,
@@ -3502,7 +3498,8 @@
           127.65,
           119.84,
           115.02,
-          110.51
+          110.51,
+          108.87
         ]
       }
     ],
@@ -3510,18 +3507,18 @@
       {
         "ticker": "CRM",
         "company": "Salesforce, Inc.",
-        "price": 190.29,
-        "day_%": -2.1745891905303574,
-        "score": 71.0,
+        "price": 183.31,
+        "day_%": -3.7237376917907232,
+        "score": 70.7,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 24.1,
+        "rsi": 21.6,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 50.4,
+        "analyst_upside_%": 56.1,
         "rel_strength": {
-          "vs_spy": -3.3,
-          "vs_sector": 3.1,
+          "vs_spy": -4.4,
+          "vs_sector": 1.5,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -3529,8 +3526,8 @@
           "technical": 68.0,
           "fundamental": 92.0,
           "options": 50.0,
-          "momentum": 50.0,
-          "sentiment": 66.7
+          "momentum": 44.0,
+          "sentiment": 66.8
         },
         "sentiment_detail": {
           "coverage": 0.77,
@@ -3546,7 +3543,7 @@
               "score": 100.0,
               "confidence": 0.2,
               "why": [
-                "+50% to the $286.14 mean target",
+                "+56% to the $286.14 mean target",
                 "but targets range $165\u2013$475 \u2014 little agreement"
               ]
             },
@@ -3574,10 +3571,9 @@
             },
             "news": {
               "score": 0.0,
-              "confidence": 0.33,
+              "confidence": 0.25,
               "why": [
-                "10 recent headlines lean mixed (2 positive / 2 negative words)",
-                "e.g. \"Microsoft Stock (MSFT) Forecast \u2013 Mizuho Stays Bullish on Strong Reven\""
+                "10 headlines, none with clear tone"
               ]
             }
           }
@@ -3587,33 +3583,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 190.2899932861328,
-          "display_date": "2026-11-18"
+          "display_close": 183.30999755859375,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.353,
+          "position_in_range": 0.292,
           "range_low": 149.86,
           "range_high": 264.42,
           "net_move_%": -7.1,
           "range_width_%": 76.4,
           "trend_r2": 0.003,
           "midline_crossings": 7,
-          "action": "wait",
+          "action": "buy_zone",
           "entry_target": 189.95,
-          "upside_to_range_high_%": 39.0,
-          "typical_wait_sessions": 20,
-          "reason": "Sideways for the window, mid-range at 35%. Neither cheap nor extended \u2014 a patient entry near $189.95 is worth more than the 39% left to the top of the range.",
+          "upside_to_range_high_%": 44.2,
+          "typical_wait_sessions": 74,
+          "reason": "Sideways for the window and trading in the bottom 29% of its $149.86-$264.42 range. This is where a range-bound name is worth buying \u2014 about 44% back to the top of the range.",
           "factors": [
             "-7% over the window against a 76%-wide range",
             "trend line explains 0% of the move",
             "crossed the midline 7 times",
-            "sitting 35% of the way up the range"
+            "sitting 29% of the way up the range"
           ]
         },
         "domain": "Enterprise Software",
         "spark": [
-          227.8,
           229.13,
           233.92,
           238.01,
@@ -3642,56 +3637,57 @@
           217.84,
           214.83,
           194.52,
-          190.29
+          190.4,
+          183.31
         ]
       },
       {
         "ticker": "PANW",
         "company": "Palo Alto Networks, Inc.",
-        "price": 339.92,
-        "day_%": 9.90332827979593,
-        "score": 67.0,
+        "price": 361.73,
+        "day_%": 6.416214608449487,
+        "score": 68.9,
         "action": "Accumulate",
         "quality_grade": "B",
-        "rsi": 47.7,
+        "rsi": 54.6,
         "above_ema200": true,
         "cycle": "bull",
-        "analyst_upside_%": 17.3,
+        "analyst_upside_%": 12.2,
         "rel_strength": {
-          "vs_spy": 4.0,
-          "vs_sector": 10.4,
+          "vs_spy": 12.9,
+          "vs_sector": 18.9,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
         "subscores": {
-          "technical": 74.0,
+          "technical": 79.0,
           "fundamental": 69.0,
           "options": 50.0,
-          "momentum": 72.0,
-          "sentiment": 60.9
+          "momentum": 78.0,
+          "sentiment": 60.4
         },
         "sentiment_detail": {
           "coverage": 0.83,
           "sources": {
             "consensus": {
-              "score": 67.3,
+              "score": 66.7,
               "confidence": 1.0,
               "why": [
-                "strong buy consensus (1.65) from 51 analysts"
+                "strong buy consensus (1.67) from 51 analysts"
               ]
             },
             "targets": {
-              "score": 43.2,
-              "confidence": 0.51,
+              "score": 30.4,
+              "confidence": 0.54,
               "why": [
-                "+17% to the $398.63 mean target"
+                "+12% to the $405.78 mean target"
               ]
             },
             "revisions": {
               "score": 0.0,
               "confidence": 1.0,
               "why": [
-                "ratings steady at 2.05"
+                "ratings steady at 2.06"
               ]
             },
             "insiders": {
@@ -3709,11 +3705,11 @@
               ]
             },
             "news": {
-              "score": 0.0,
-              "confidence": 0.33,
+              "score": 25.0,
+              "confidence": 0.17,
               "why": [
-                "10 recent headlines lean mixed (2 positive / 2 negative words)",
-                "e.g. \"Palo Alto Soars 7%, Okta Up 11% as DHS Chief Warns of \u201cA Severe Cyber \""
+                "10 recent headlines lean positive (2 positive / 0 negative words)",
+                "e.g. \"Palo Alto Networks soars on Q1 earnings and Applied Compute deal\""
               ]
             }
           }
@@ -3723,13 +3719,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 339.9200134277344,
-          "display_date": "2026-11-18"
+          "display_close": 361.7300109863281,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Enterprise Software",
         "spark": [
-          398.5,
           418.78,
           403.83,
           397.03,
@@ -3758,36 +3753,37 @@
           322.24,
           316.09,
           309.29,
-          339.92
+          339.92,
+          361.73
         ]
       },
       {
         "ticker": "NOW",
         "company": "ServiceNow, Inc.",
-        "price": 90.55,
-        "day_%": -2.5296000382373096,
-        "score": 64.1,
+        "price": 88.87,
+        "day_%": -1.8986573140959282,
+        "score": 66.9,
         "action": "Accumulate",
         "quality_grade": "B",
-        "rsi": 25.5,
+        "rsi": 24.7,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 72.1,
+        "analyst_upside_%": 75.3,
         "rel_strength": {
-          "vs_spy": -24.7,
-          "vs_sector": -18.3,
+          "vs_spy": -23.1,
+          "vs_sector": -17.1,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
         "subscores": {
-          "technical": 60.0,
+          "technical": 68.0,
           "fundamental": 79.0,
           "options": 50.0,
           "momentum": 38.0,
-          "sentiment": 65.7
+          "sentiment": 65.9
         },
         "sentiment_detail": {
-          "coverage": 0.71,
+          "coverage": 0.7,
           "sources": {
             "consensus": {
               "score": 77.6,
@@ -3800,7 +3796,7 @@
               "score": 100.0,
               "confidence": 0.2,
               "why": [
-                "+72% to the $155.82 mean target",
+                "+75% to the $155.75 mean target",
                 "but targets range $72\u2013$266 \u2014 little agreement"
               ]
             },
@@ -3812,10 +3808,10 @@
               ]
             },
             "insiders": {
-              "score": -16.3,
-              "confidence": 0.57,
+              "score": -16.2,
+              "confidence": 0.56,
               "why": [
-                "insiders net sellers (84,538 sold vs 28,682 bought) \u2014 weak evidence, selling has many innocent reasons across 40 open-market transactions"
+                "insiders net sellers (83,958 sold vs 28,682 bought) \u2014 weak evidence, selling has many innocent reasons across 38 open-market transactions"
               ]
             },
             "short_interest": {
@@ -3827,11 +3823,11 @@
               ]
             },
             "news": {
-              "score": 0.0,
+              "score": 25.0,
               "confidence": 0.17,
               "why": [
-                "10 recent headlines lean mixed (1 positive / 1 negative words)",
-                "e.g. \"ServiceNow Stocks Fall 6.51% Despite 21% Subscription Growth as Softwa\""
+                "10 recent headlines lean positive (2 positive / 0 negative words)",
+                "e.g. \"UiPath's ARR Nears $2 Billion: Can It Sustain the Growth Momentum?\""
               ]
             }
           }
@@ -3841,33 +3837,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 90.55000305175781,
-          "display_date": "2026-11-18"
+          "display_close": 88.87000274658203,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.083,
+          "position_in_range": 0.065,
           "range_low": 83.0,
           "range_high": 173.5,
-          "net_move_%": -10.7,
+          "net_move_%": -10.5,
           "range_width_%": 109.0,
-          "trend_r2": 0.032,
+          "trend_r2": 0.031,
           "midline_crossings": 9,
           "action": "buy_zone",
           "entry_target": 114.67,
-          "upside_to_range_high_%": 91.6,
+          "upside_to_range_high_%": 95.2,
           "typical_wait_sessions": 6,
-          "reason": "Sideways for the window and trading in the bottom 8% of its $83.00-$173.50 range. This is where a range-bound name is worth buying \u2014 about 92% back to the top of the range.",
+          "reason": "Sideways for the window and trading in the bottom 6% of its $83.00-$173.50 range. This is where a range-bound name is worth buying \u2014 about 95% back to the top of the range.",
           "factors": [
             "-11% over the window against a 109%-wide range",
             "trend line explains 3% of the move",
             "crossed the midline 9 times",
-            "sitting 8% of the way up the range"
+            "sitting 6% of the way up the range"
           ]
         },
         "domain": "Enterprise Software",
         "spark": [
-          139.75,
           140.86,
           140.32,
           138.61,
@@ -3896,36 +3891,37 @@
           102.25,
           99.37,
           92.9,
-          90.55
+          90.59,
+          88.87
         ]
       },
       {
         "ticker": "SNOW",
         "company": "Snowflake Inc.",
-        "price": 279.59,
-        "day_%": 2.4364306576541384,
-        "score": 62.6,
-        "action": "Accumulate",
+        "price": 268.59,
+        "day_%": -3.9446387854610507,
+        "score": 55.1,
+        "action": "Hold",
         "quality_grade": "D",
-        "rsi": 39.3,
-        "above_ema200": true,
+        "rsi": 35.8,
+        "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 54.9,
+        "analyst_upside_%": 61.2,
         "rel_strength": {
-          "vs_spy": -7.8,
-          "vs_sector": -1.4,
+          "vs_spy": -8.6,
+          "vs_sector": -2.6,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
         "subscores": {
-          "technical": 68.0,
+          "technical": 48.0,
           "fundamental": 51.0,
           "options": 50.0,
-          "momentum": 66.0,
-          "sentiment": 71.1
+          "momentum": 60.0,
+          "sentiment": 70.2
         },
         "sentiment_detail": {
-          "coverage": 0.85,
+          "coverage": 0.83,
           "sources": {
             "consensus": {
               "score": 80.4,
@@ -3936,9 +3932,9 @@
             },
             "targets": {
               "score": 100.0,
-              "confidence": 0.54,
+              "confidence": 0.52,
               "why": [
-                "+55% to the $433.02 mean target"
+                "+61% to the $433.02 mean target"
               ]
             },
             "revisions": {
@@ -3963,10 +3959,10 @@
               ]
             },
             "news": {
-              "score": 75.0,
-              "confidence": 0.5,
+              "score": 37.5,
+              "confidence": 0.25,
               "why": [
-                "10 recent headlines lean positive (6 positive / 0 negative words)",
+                "10 recent headlines lean positive (3 positive / 0 negative words)",
                 "e.g. \"Datadog Fell 12% on a Flat Fourth-Quarter Outlook. Analysts Raised Its\""
               ]
             }
@@ -3977,13 +3973,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 279.5899963378906,
-          "display_date": "2026-11-18"
+          "display_close": 268.5899963378906,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Enterprise Software",
         "spark": [
-          343.4,
           368.89,
           360.37,
           357.76,
@@ -4012,7 +4007,8 @@
           291.0,
           280.54,
           272.94,
-          279.59
+          279.62,
+          268.59
         ]
       }
     ],
@@ -4020,18 +4016,18 @@
       {
         "ticker": "LLY",
         "company": "Eli Lilly and Company",
-        "price": 1382.31,
-        "day_%": -2.3478581664695617,
-        "score": 72.2,
+        "price": 1351.12,
+        "day_%": -2.287470973264328,
+        "score": 72.4,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 56.1,
+        "rsi": 50.4,
         "above_ema200": true,
         "cycle": "bull",
-        "analyst_upside_%": 6.2,
+        "analyst_upside_%": 8.7,
         "rel_strength": {
-          "vs_spy": 16.2,
-          "vs_sector": 6.7,
+          "vs_spy": 20.0,
+          "vs_sector": 11.7,
           "sector": "Healthcare",
           "sector_etf": "XLV"
         },
@@ -4040,10 +4036,10 @@
           "fundamental": 100.0,
           "options": 50.0,
           "momentum": 78.0,
-          "sentiment": 58.1
+          "sentiment": 58.8
         },
         "sentiment_detail": {
-          "coverage": 0.86,
+          "coverage": 0.87,
           "sources": {
             "consensus": {
               "score": 67.7,
@@ -4053,10 +4049,10 @@
               ]
             },
             "targets": {
-              "score": 15.6,
-              "confidence": 0.73,
+              "score": 21.7,
+              "confidence": 0.72,
               "why": [
-                "+6% to the $1468.57 mean target"
+                "+9% to the $1468.57 mean target"
               ]
             },
             "revisions": {
@@ -4070,7 +4066,7 @@
               "score": -33.0,
               "confidence": 1.0,
               "why": [
-                "insiders net sellers (3,877,828 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 42 open-market transactions"
+                "insiders net sellers (3,418,021 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 38 open-market transactions"
               ]
             },
             "short_interest": {
@@ -4081,11 +4077,11 @@
               ]
             },
             "news": {
-              "score": 12.5,
-              "confidence": 0.08,
+              "score": 37.5,
+              "confidence": 0.25,
               "why": [
-                "10 recent headlines lean mixed (1 positive / 0 negative words)",
-                "e.g. \"Coca-Cola Stock (KO) May Struggle to Repeat Its Strong 2026 Performanc\""
+                "10 recent headlines lean positive (3 positive / 0 negative words)",
+                "e.g. \"Can New Products and Acquisitions Revive Pfizer's Growth Story?\""
               ]
             }
           }
@@ -4095,13 +4091,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 1382.31494140625,
-          "display_date": "2026-11-18"
+          "display_close": 1351.1199951171875,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Healthcare / Pharma",
         "spark": [
-          1168.18,
           1177.84,
           1181.19,
           1165.1,
@@ -4130,153 +4125,37 @@
           1443.5,
           1431.67,
           1415.55,
-          1382.31
-        ]
-      },
-      {
-        "ticker": "JNJ",
-        "company": "Johnson & Johnson",
-        "price": 272.72,
-        "day_%": -2.1456802025131942,
-        "score": 68.0,
-        "action": "Accumulate",
-        "quality_grade": "A",
-        "rsi": 49.9,
-        "above_ema200": true,
-        "cycle": "bull",
-        "analyst_upside_%": 2.7,
-        "rel_strength": {
-          "vs_spy": 3.9,
-          "vs_sector": -5.6,
-          "sector": "Healthcare",
-          "sector_etf": "XLV"
-        },
-        "subscores": {
-          "technical": 68.0,
-          "fundamental": 85.0,
-          "options": 50.0,
-          "momentum": 66.0,
-          "sentiment": 58.5
-        },
-        "sentiment_detail": {
-          "coverage": 0.89,
-          "sources": {
-            "consensus": {
-              "score": 54.3,
-              "confidence": 1.0,
-              "why": [
-                "buy consensus (1.91) from 22 analysts"
-              ]
-            },
-            "targets": {
-              "score": 6.8,
-              "confidence": 0.76,
-              "why": [
-                "+3% to the $280.18 mean target"
-              ]
-            },
-            "revisions": {
-              "score": 0.0,
-              "confidence": 1.0,
-              "why": [
-                "ratings steady at 2.13"
-              ]
-            },
-            "insiders": {
-              "score": -32.8,
-              "confidence": 1.0,
-              "why": [
-                "insiders net sellers (869,612 sold vs 2,250 bought) \u2014 weak evidence, selling has many innocent reasons across 25 open-market transactions"
-              ]
-            },
-            "short_interest": {
-              "score": 36.3,
-              "confidence": 0.8,
-              "why": [
-                "0.8% of float short",
-                "short base shrank 23% month over month"
-              ]
-            },
-            "news": {
-              "score": 50.0,
-              "confidence": 0.33,
-              "why": [
-                "10 recent headlines lean positive (4 positive / 0 negative words)",
-                "e.g. \"Invest $25,000 in These 4 Dividend Stocks to Start Building Retirement\""
-              ]
-            }
-          }
-        },
-        "quality": {
-          "data_quality": "ok",
-          "bars": 260,
-          "dropped": 0,
-          "flags": [],
-          "display_close": 272.7200012207031,
-          "display_date": "2026-11-18"
-        },
-        "entry_timing": null,
-        "domain": "Healthcare / Pharma",
-        "spark": [
-          256.48,
-          261.44,
-          263.73,
-          248.61,
-          253.91,
-          253.28,
-          255.56,
-          253.79,
-          259.36,
-          257.78,
-          267.61,
-          263.81,
-          266.3,
-          268.73,
-          271.04,
-          275.2,
-          273.2,
-          270.56,
-          266.17,
-          276.32,
-          272.32,
-          276.22,
-          282.11,
-          280.78,
-          280.41,
-          283.52,
-          285.75,
-          282.55,
-          278.7,
-          272.72
+          1382.75,
+          1351.12
         ]
       },
       {
         "ticker": "UNH",
         "company": "UnitedHealth Group Incorporated",
-        "price": 349.9,
-        "day_%": -10.208375982082904,
-        "score": 65.7,
+        "price": 330.48,
+        "day_%": -5.552854297513547,
+        "score": 69.5,
         "action": "Accumulate",
         "quality_grade": "B",
-        "rsi": 28.5,
+        "rsi": 24.2,
         "above_ema200": false,
         "cycle": "bull",
-        "analyst_upside_%": 36.1,
+        "analyst_upside_%": 44.1,
         "rel_strength": {
-          "vs_spy": -7.2,
-          "vs_sector": -16.7,
+          "vs_spy": -10.8,
+          "vs_sector": -19.1,
           "sector": "Healthcare",
           "sector_etf": "XLV"
         },
         "subscores": {
-          "technical": 66.0,
+          "technical": 74.0,
           "fundamental": 70.0,
           "options": 50.0,
           "momentum": 54.0,
-          "sentiment": 69.5
+          "sentiment": 73.4
         },
         "sentiment_detail": {
-          "coverage": 0.77,
+          "coverage": 0.75,
           "sources": {
             "consensus": {
               "score": 69.2,
@@ -4286,17 +4165,17 @@
               ]
             },
             "targets": {
-              "score": 90.2,
-              "confidence": 0.78,
+              "score": 100.0,
+              "confidence": 0.77,
               "why": [
-                "+36% to the $476.16 mean target"
+                "+44% to the $476.16 mean target"
               ]
             },
             "revisions": {
-              "score": -14.5,
+              "score": 0.0,
               "confidence": 1.0,
               "why": [
-                "ratings cut: 1.89 \u2192 1.96 over the last quarter"
+                "ratings steady at 1.88"
               ]
             },
             "insiders": {
@@ -4315,11 +4194,11 @@
               ]
             },
             "news": {
-              "score": 0.0,
-              "confidence": 0.5,
+              "score": 12.5,
+              "confidence": 0.25,
               "why": [
-                "10 recent headlines lean mixed (3 positive / 3 negative words)",
-                "e.g. \"UnitedHealth Sinks 12% on CMS Fraud Rule as Warren Says Giants \u201cTake a\""
+                "10 recent headlines lean mixed (2 positive / 1 negative words)",
+                "e.g. \"Dow Jones Futures Rise, Nasdaq Jumps: Anthropic To Debut After Record \""
               ]
             }
           }
@@ -4329,13 +4208,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 349.8999938964844,
-          "display_date": "2026-11-18"
+          "display_close": 330.4800109863281,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Healthcare / Pharma",
         "spark": [
-          370.95,
           379.3,
           378.52,
           377.76,
@@ -4364,33 +4242,151 @@
           407.46,
           412.02,
           389.68,
-          349.9
+          349.91,
+          330.48
         ]
       },
       {
-        "ticker": "PFE",
-        "company": "Pfizer, Inc.",
-        "price": 28.06,
-        "day_%": -1.4397568240976322,
-        "score": 62.5,
+        "ticker": "JNJ",
+        "company": "Johnson & Johnson",
+        "price": 267.14,
+        "day_%": -2.038869567183097,
+        "score": 68.2,
         "action": "Accumulate",
-        "quality_grade": "C",
-        "rsi": 39.3,
+        "quality_grade": "A",
+        "rsi": 44.6,
         "above_ema200": true,
         "cycle": "bull",
-        "analyst_upside_%": 7.7,
+        "analyst_upside_%": 4.9,
         "rel_strength": {
-          "vs_spy": 3.7,
-          "vs_sector": -5.8,
+          "vs_spy": 5.2,
+          "vs_sector": -3.1,
           "sector": "Healthcare",
           "sector_etf": "XLV"
         },
         "subscores": {
           "technical": 68.0,
+          "fundamental": 85.0,
+          "options": 50.0,
+          "momentum": 72.0,
+          "sentiment": 58.4
+        },
+        "sentiment_detail": {
+          "coverage": 0.88,
+          "sources": {
+            "consensus": {
+              "score": 54.3,
+              "confidence": 1.0,
+              "why": [
+                "buy consensus (1.91) from 22 analysts"
+              ]
+            },
+            "targets": {
+              "score": 12.2,
+              "confidence": 0.76,
+              "why": [
+                "+5% to the $280.18 mean target"
+              ]
+            },
+            "revisions": {
+              "score": 0.0,
+              "confidence": 1.0,
+              "why": [
+                "ratings steady at 2.13"
+              ]
+            },
+            "insiders": {
+              "score": -32.8,
+              "confidence": 1.0,
+              "why": [
+                "insiders net sellers (869,612 sold vs 2,250 bought) \u2014 weak evidence, selling has many innocent reasons across 25 open-market transactions"
+              ]
+            },
+            "short_interest": {
+              "score": 36.3,
+              "confidence": 0.8,
+              "why": [
+                "0.8% of float short",
+                "short base shrank 23% month over month"
+              ]
+            },
+            "news": {
+              "score": 12.5,
+              "confidence": 0.25,
+              "why": [
+                "10 recent headlines lean mixed (2 positive / 1 negative words)",
+                "e.g. \"3 Dow Dividend Passive Income Stocks for Retirement, Led by a 64-Year \""
+              ]
+            }
+          }
+        },
+        "quality": {
+          "data_quality": "ok",
+          "bars": 260,
+          "dropped": 0,
+          "flags": [],
+          "display_close": 267.1400146484375,
+          "display_date": "2026-11-19"
+        },
+        "entry_timing": null,
+        "domain": "Healthcare / Pharma",
+        "spark": [
+          261.44,
+          263.73,
+          248.61,
+          253.91,
+          253.28,
+          255.56,
+          253.79,
+          259.36,
+          257.78,
+          267.61,
+          263.81,
+          266.3,
+          268.73,
+          271.04,
+          275.2,
+          273.2,
+          270.56,
+          266.17,
+          276.32,
+          272.32,
+          276.22,
+          282.11,
+          280.78,
+          280.41,
+          283.52,
+          285.75,
+          282.55,
+          278.7,
+          272.7,
+          267.14
+        ]
+      },
+      {
+        "ticker": "PFE",
+        "company": "Pfizer, Inc.",
+        "price": 27.54,
+        "day_%": -1.8531666440200167,
+        "score": 66.9,
+        "action": "Accumulate",
+        "quality_grade": "C",
+        "rsi": 34.9,
+        "above_ema200": true,
+        "cycle": "bull",
+        "analyst_upside_%": 9.7,
+        "rel_strength": {
+          "vs_spy": 5.0,
+          "vs_sector": -3.3,
+          "sector": "Healthcare",
+          "sector_etf": "XLV"
+        },
+        "subscores": {
+          "technical": 80.0,
           "fundamental": 62.0,
           "options": 50.0,
           "momentum": 66.0,
-          "sentiment": 59.6
+          "sentiment": 60.3
         },
         "sentiment_detail": {
           "coverage": 0.85,
@@ -4403,10 +4399,10 @@
               ]
             },
             "targets": {
-              "score": 19.3,
-              "confidence": 0.79,
+              "score": 24.3,
+              "confidence": 0.78,
               "why": [
-                "+8% to the $30.22 mean target"
+                "+10% to the $30.22 mean target"
               ]
             },
             "revisions": {
@@ -4432,11 +4428,11 @@
               ]
             },
             "news": {
-              "score": 37.5,
-              "confidence": 0.25,
+              "score": 50.0,
+              "confidence": 0.33,
               "why": [
-                "10 recent headlines lean positive (3 positive / 0 negative words)",
-                "e.g. \"4 Dividend Stocks Yielding Over 6% That Fit a Roth IRA\""
+                "10 recent headlines lean positive (4 positive / 0 negative words)",
+                "e.g. \"Moderna: Can the Vaccine Business Fund Its Next Phase of Growth?\""
               ]
             }
           }
@@ -4446,13 +4442,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 28.060100555419922,
-          "display_date": "2026-11-18"
+          "display_close": 27.540000915527344,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Healthcare / Pharma",
         "spark": [
-          27.42,
           27.87,
           27.99,
           27.96,
@@ -4481,7 +4476,8 @@
           28.89,
           28.86,
           28.47,
-          28.06
+          28.06,
+          27.54
         ]
       }
     ],
@@ -4489,18 +4485,18 @@
       {
         "ticker": "LMT",
         "company": "Lockheed Martin Corporation",
-        "price": 578.05,
-        "day_%": -2.0818576588757947,
+        "price": 571.85,
+        "day_%": -1.0965300037527452,
         "score": 70.6,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 47.7,
+        "rsi": 45.8,
         "above_ema200": true,
         "cycle": "bear",
-        "analyst_upside_%": 14.3,
+        "analyst_upside_%": 15.6,
         "rel_strength": {
-          "vs_spy": 8.5,
-          "vs_sector": 12.7,
+          "vs_spy": 8.0,
+          "vs_sector": 12.0,
           "sector": "Industrials",
           "sector_etf": "XLI"
         },
@@ -4509,7 +4505,7 @@
           "fundamental": 94.0,
           "options": 50.0,
           "momentum": 78.0,
-          "sentiment": 65.9
+          "sentiment": 66.1
         },
         "sentiment_detail": {
           "coverage": 0.76,
@@ -4522,10 +4518,10 @@
               ]
             },
             "targets": {
-              "score": 35.8,
+              "score": 38.9,
               "confidence": 0.71,
               "why": [
-                "+14% to the $660.86 mean target"
+                "+16% to the $660.86 mean target"
               ]
             },
             "revisions": {
@@ -4555,7 +4551,7 @@
               "confidence": 0.25,
               "why": [
                 "10 recent headlines lean positive (3 positive / 0 negative words)",
-                "e.g. \"SpaceX, Rivals Win $985 Million In Launch Awards. Cathie Wood, David T\""
+                "e.g. \"3 Defense Dividend Stocks to Buy in December With Billions in Backlogg\""
               ]
             }
           }
@@ -4565,33 +4561,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 578.0499877929688,
-          "display_date": "2026-11-18"
+          "display_close": 571.8499755859375,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.619,
+          "position_in_range": 0.593,
           "range_low": 431.38,
           "range_high": 668.17,
-          "net_move_%": 13.3,
+          "net_move_%": 15.2,
           "range_width_%": 54.9,
-          "trend_r2": 0.035,
+          "trend_r2": 0.032,
           "midline_crossings": 7,
           "action": "wait",
           "entry_target": 514.25,
-          "upside_to_range_high_%": 15.6,
+          "upside_to_range_high_%": 16.8,
           "typical_wait_sessions": 11,
-          "reason": "Sideways for the window, mid-range at 62%. Neither cheap nor extended \u2014 a patient entry near $514.25 is worth more than the 16% left to the top of the range.",
+          "reason": "Sideways for the window, mid-range at 59%. Neither cheap nor extended \u2014 a patient entry near $514.25 is worth more than the 17% left to the top of the range.",
           "factors": [
-            "+13% over the window against a 55%-wide range",
-            "trend line explains 4% of the move",
+            "+15% over the window against a 55%-wide range",
+            "trend line explains 3% of the move",
             "crossed the midline 7 times",
-            "sitting 62% of the way up the range"
+            "sitting 59% of the way up the range"
           ]
         },
         "domain": "Defense / Aerospace",
         "spark": [
-          507.89,
           509.59,
           511.88,
           504.02,
@@ -4620,24 +4615,25 @@
           596.04,
           585.21,
           590.34,
-          578.05
+          578.19,
+          571.85
         ]
       },
       {
         "ticker": "RTX",
         "company": "RTX Corporation",
-        "price": 197.52,
-        "day_%": -0.24242208461568815,
-        "score": 65.4,
+        "price": 193.44,
+        "day_%": -2.0308911465251036,
+        "score": 65.7,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 52.3,
+        "rsi": 46.9,
         "above_ema200": true,
         "cycle": "bear",
-        "analyst_upside_%": 15.5,
+        "analyst_upside_%": 17.9,
         "rel_strength": {
-          "vs_spy": -2.1,
-          "vs_sector": 2.1,
+          "vs_spy": -2.5,
+          "vs_sector": 1.5,
           "sector": "Industrials",
           "sector_etf": "XLI"
         },
@@ -4646,10 +4642,10 @@
           "fundamental": 80.0,
           "options": 50.0,
           "momentum": 66.0,
-          "sentiment": 61.7
+          "sentiment": 62.7
         },
         "sentiment_detail": {
-          "coverage": 0.89,
+          "coverage": 0.91,
           "sources": {
             "consensus": {
               "score": 54.2,
@@ -4659,10 +4655,10 @@
               ]
             },
             "targets": {
-              "score": 38.7,
+              "score": 44.8,
               "confidence": 0.87,
               "why": [
-                "+15% to the $228.13 mean target"
+                "+18% to the $228.13 mean target"
               ]
             },
             "revisions": {
@@ -4687,11 +4683,11 @@
               ]
             },
             "news": {
-              "score": 12.5,
-              "confidence": 0.08,
+              "score": 50.0,
+              "confidence": 0.33,
               "why": [
-                "10 recent headlines lean mixed (1 positive / 0 negative words)",
-                "e.g. \"Can Rising PAC-3 Demand Drive Northrop Grumman's Growth?\""
+                "10 recent headlines lean positive (4 positive / 0 negative words)",
+                "e.g. \"Top 3D Printing Stocks With Strong Potential for Long-Term Growth\""
               ]
             }
           }
@@ -4701,33 +4697,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 197.52000427246094,
-          "display_date": "2026-11-18"
+          "display_close": 193.44000244140625,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.528,
+          "position_in_range": 0.459,
           "range_low": 166.22,
           "range_high": 225.49,
-          "net_move_%": 6.3,
+          "net_move_%": 5.7,
           "range_width_%": 35.7,
-          "trend_r2": 0.136,
-          "midline_crossings": 25,
+          "trend_r2": 0.13,
+          "midline_crossings": 26,
           "action": "wait",
           "entry_target": 186.96,
-          "upside_to_range_high_%": 14.2,
+          "upside_to_range_high_%": 16.6,
           "typical_wait_sessions": 54,
-          "reason": "Sideways for the window, mid-range at 53%. Neither cheap nor extended \u2014 a patient entry near $186.96 is worth more than the 14% left to the top of the range.",
+          "reason": "Sideways for the window, mid-range at 46%. Neither cheap nor extended \u2014 a patient entry near $186.96 is worth more than the 17% left to the top of the range.",
           "factors": [
             "+6% over the window against a 36%-wide range",
-            "trend line explains 14% of the move",
-            "crossed the midline 25 times",
-            "sitting 53% of the way up the range"
+            "trend line explains 13% of the move",
+            "crossed the midline 26 times",
+            "sitting 46% of the way up the range"
           ]
         },
         "domain": "Defense / Aerospace",
         "spark": [
-          184.32,
           185.97,
           186.66,
           183.02,
@@ -4756,24 +4751,25 @@
           198.58,
           194.89,
           198.0,
-          197.52
+          197.45,
+          193.44
         ]
       },
       {
         "ticker": "NOC",
         "company": "Northrop Grumman Corporation",
-        "price": 542.96,
-        "day_%": -1.8616902742224377,
-        "score": 53.9,
+        "price": 542.31,
+        "day_%": -0.12523116227018097,
+        "score": 54.5,
         "action": "Hold",
         "quality_grade": "C",
-        "rsi": 52.8,
+        "rsi": 52.4,
         "above_ema200": false,
         "cycle": "bear",
-        "analyst_upside_%": 17.2,
+        "analyst_upside_%": 17.4,
         "rel_strength": {
-          "vs_spy": 4.5,
-          "vs_sector": 8.7,
+          "vs_spy": 5.3,
+          "vs_sector": 9.3,
           "sector": "Industrials",
           "sector_etf": "XLI"
         },
@@ -4781,7 +4777,7 @@
           "technical": 42.0,
           "fundamental": 67.0,
           "options": 50.0,
-          "momentum": 50.0,
+          "momentum": 62.0,
           "sentiment": 59.9
         },
         "sentiment_detail": {
@@ -4795,7 +4791,7 @@
               ]
             },
             "targets": {
-              "score": 43.1,
+              "score": 43.4,
               "confidence": 0.65,
               "why": [
                 "+17% to the $636.50 mean target"
@@ -4828,7 +4824,7 @@
               "confidence": 0.17,
               "why": [
                 "10 recent headlines lean positive (2 positive / 0 negative words)",
-                "e.g. \"Can S-92A+ Selection Strengthen Lockheed Martin's Growth?\""
+                "e.g. \"3 Defense Dividend Stocks to Buy in December With Billions in Backlogg\""
               ]
             }
           }
@@ -4838,13 +4834,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 542.9600219726562,
-          "display_date": "2026-11-18"
+          "display_close": 542.3099975585938,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Defense / Aerospace",
         "spark": [
-          484.48,
           480.72,
           485.0,
           481.38,
@@ -4873,7 +4868,8 @@
           550.43,
           545.65,
           553.26,
-          542.96
+          542.99,
+          542.31
         ]
       }
     ],
@@ -4881,18 +4877,18 @@
       {
         "ticker": "LUNR",
         "company": "Intuitive Machines, Inc.",
-        "price": 10.12,
-        "day_%": -8.374831908966716,
-        "score": 54.3,
+        "price": 9.78,
+        "day_%": -3.359685340244519,
+        "score": 54.2,
         "action": "Hold",
         "quality_grade": "C",
-        "rsi": 41.6,
+        "rsi": 40.1,
         "above_ema200": false,
         "cycle": "bear",
-        "analyst_upside_%": 149.0,
+        "analyst_upside_%": 157.7,
         "rel_strength": {
-          "vs_spy": -35.0,
-          "vs_sector": -30.9,
+          "vs_spy": -33.0,
+          "vs_sector": -29.1,
           "sector": "Industrials",
           "sector_etf": "XLI"
         },
@@ -4901,7 +4897,7 @@
           "fundamental": 61.0,
           "options": 50.0,
           "momentum": 54.0,
-          "sentiment": 59.5
+          "sentiment": 59.4
         },
         "sentiment_detail": {
           "coverage": 0.68,
@@ -4917,7 +4913,7 @@
               "score": 100.0,
               "confidence": 0.2,
               "why": [
-                "+149% to the $25.20 mean target",
+                "+158% to the $25.20 mean target",
                 "but targets range $13\u2013$38 \u2014 little agreement"
               ]
             },
@@ -4943,11 +4939,11 @@
               ]
             },
             "news": {
-              "score": 12.5,
+              "score": -12.5,
               "confidence": 0.08,
               "why": [
-                "10 recent headlines lean mixed (1 positive / 0 negative words)",
-                "e.g. \"Intuitive Machines Falls 7% Despite Record Quarter as Space Stocks Sli\""
+                "10 recent headlines lean mixed (0 positive / 1 negative words)",
+                "e.g. \"Intuitive Machines (LUNR) Stock Sees Fair Value Cut As Analysts Turn M\""
               ]
             }
           }
@@ -4957,13 +4953,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 10.119999885559082,
-          "display_date": "2026-11-18"
+          "display_close": 9.779999732971191,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Space",
         "spark": [
-          13.7,
           13.19,
           12.86,
           12.18,
@@ -4992,160 +4987,25 @@
           13.0,
           11.73,
           11.05,
-          10.12
-        ]
-      },
-      {
-        "ticker": "RKLB",
-        "company": "Rocket Lab Corporation",
-        "price": 53.07,
-        "day_%": -3.5967294635371414,
-        "score": 51.2,
-        "action": "Hold",
-        "quality_grade": "D",
-        "rsi": 43.1,
-        "above_ema200": false,
-        "cycle": "bear",
-        "analyst_upside_%": 75.5,
-        "rel_strength": {
-          "vs_spy": -16.7,
-          "vs_sector": -12.5,
-          "sector": "Industrials",
-          "sector_etf": "XLI"
-        },
-        "subscores": {
-          "technical": 47.0,
-          "fundamental": 43.0,
-          "options": 50.0,
-          "momentum": 54.0,
-          "sentiment": 65.4
-        },
-        "sentiment_detail": {
-          "coverage": 0.8,
-          "sources": {
-            "consensus": {
-              "score": 69.0,
-              "confidence": 1.0,
-              "why": [
-                "strong buy consensus (1.62) from 20 analysts"
-              ]
-            },
-            "targets": {
-              "score": 100.0,
-              "confidence": 0.35,
-              "why": [
-                "+76% to the $93.15 mean target",
-                "but targets range $58\u2013$127 \u2014 little agreement"
-              ]
-            },
-            "revisions": {
-              "score": 20.6,
-              "confidence": 1.0,
-              "why": [
-                "ratings upgraded: 2.06 \u2192 1.95 over the last quarter"
-              ]
-            },
-            "insiders": {
-              "score": -33.0,
-              "confidence": 1.0,
-              "why": [
-                "insiders net sellers (15,970,540 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 72 open-market transactions"
-              ]
-            },
-            "short_interest": {
-              "score": -14.0,
-              "confidence": 0.8,
-              "why": [
-                "7.3% of float short"
-              ]
-            },
-            "news": {
-              "score": 0.0,
-              "confidence": 0.25,
-              "why": [
-                "10 headlines, none with clear tone"
-              ]
-            }
-          }
-        },
-        "quality": {
-          "data_quality": "ok",
-          "bars": 260,
-          "dropped": 0,
-          "flags": [],
-          "display_close": 53.06999969482422,
-          "display_date": "2026-11-18"
-        },
-        "entry_timing": {
-          "regime": "lateral",
-          "position_in_range": 0.123,
-          "range_low": 39.48,
-          "range_high": 150.23,
-          "net_move_%": -11.1,
-          "range_width_%": 280.5,
-          "trend_r2": 0.0,
-          "midline_crossings": 6,
-          "action": "range_low",
-          "entry_target": 78.24,
-          "upside_to_range_high_%": 183.1,
-          "typical_wait_sessions": 19,
-          "reason": "Near the bottom of its sideways range, but the verdict is Hold \u2014 a low price alone is not a reason to buy.",
-          "factors": [
-            "-11% over the window against a 281%-wide range",
-            "trend line explains 0% of the move",
-            "crossed the midline 6 times",
-            "sitting 12% of the way up the range"
-          ]
-        },
-        "domain": "Space",
-        "spark": [
-          68.4,
-          68.21,
-          65.71,
-          64.22,
-          59.18,
-          55.25,
-          50.84,
-          51.36,
-          50.9,
-          53.67,
-          51.22,
-          52.6,
-          53.82,
-          58.31,
-          58.6,
-          59.1,
-          54.73,
-          52.07,
-          54.43,
-          52.37,
-          45.99,
-          53.07,
-          58.86,
-          62.71,
-          66.15,
-          64.07,
-          61.53,
-          57.37,
-          55.05,
-          53.07
+          10.12,
+          9.78
         ]
       },
       {
         "ticker": "ASTS",
         "company": "AST SpaceMobile, Inc.",
-        "price": 25.49,
-        "day_%": -7.611454765696152,
+        "price": 25.55,
+        "day_%": 0.23538433299778264,
         "score": 51.2,
         "action": "Hold",
         "quality_grade": "D",
-        "rsi": 29.7,
+        "rsi": 29.8,
         "above_ema200": false,
         "cycle": "bear",
-        "analyst_upside_%": 148.5,
+        "analyst_upside_%": 147.9,
         "rel_strength": {
-          "vs_spy": -54.9,
-          "vs_sector": -48.5,
+          "vs_spy": -51.0,
+          "vs_sector": -45.1,
           "sector": "Technology",
           "sector_etf": "XLK"
         },
@@ -5157,7 +5017,7 @@
           "sentiment": 52.7
         },
         "sentiment_detail": {
-          "coverage": 0.74,
+          "coverage": 0.76,
           "sources": {
             "consensus": {
               "score": 23.1,
@@ -5170,7 +5030,7 @@
               "score": 100.0,
               "confidence": 0.2,
               "why": [
-                "+149% to the $63.35 mean target",
+                "+148% to the $63.35 mean target",
                 "but targets range $39\u2013$108 \u2014 little agreement"
               ]
             },
@@ -5197,9 +5057,10 @@
             },
             "news": {
               "score": 0.0,
-              "confidence": 0.25,
+              "confidence": 0.5,
               "why": [
-                "10 headlines, none with clear tone"
+                "10 recent headlines lean mixed (3 positive / 3 negative words)",
+                "e.g. \"AST SpaceMobile Is Down 37% in a Month. Can B. Riley\u2019s Upgrade Get AST\""
               ]
             }
           }
@@ -5209,13 +5070,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 25.489999771118164,
-          "display_date": "2026-11-18"
+          "display_close": 25.549999237060547,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Space",
         "spark": [
-          56.93,
           50.97,
           51.46,
           47.06,
@@ -5244,7 +5104,145 @@
           32.6,
           28.58,
           27.59,
-          25.49
+          25.49,
+          25.55
+        ]
+      },
+      {
+        "ticker": "RKLB",
+        "company": "Rocket Lab Corporation",
+        "price": 50.99,
+        "day_%": -3.919348084262904,
+        "score": 49.5,
+        "action": "Hold",
+        "quality_grade": "D",
+        "rsi": 40.9,
+        "above_ema200": false,
+        "cycle": "bear",
+        "analyst_upside_%": 82.7,
+        "rel_strength": {
+          "vs_spy": -16.7,
+          "vs_sector": -12.7,
+          "sector": "Industrials",
+          "sector_etf": "XLI"
+        },
+        "subscores": {
+          "technical": 42.0,
+          "fundamental": 43.0,
+          "options": 50.0,
+          "momentum": 54.0,
+          "sentiment": 65.5
+        },
+        "sentiment_detail": {
+          "coverage": 0.79,
+          "sources": {
+            "consensus": {
+              "score": 69.0,
+              "confidence": 1.0,
+              "why": [
+                "strong buy consensus (1.62) from 20 analysts"
+              ]
+            },
+            "targets": {
+              "score": 100.0,
+              "confidence": 0.32,
+              "why": [
+                "+83% to the $93.15 mean target",
+                "but targets range $58\u2013$127 \u2014 little agreement"
+              ]
+            },
+            "revisions": {
+              "score": 20.6,
+              "confidence": 1.0,
+              "why": [
+                "ratings upgraded: 2.06 \u2192 1.95 over the last quarter"
+              ]
+            },
+            "insiders": {
+              "score": -33.0,
+              "confidence": 1.0,
+              "why": [
+                "insiders net sellers (15,920,540 sold vs 0 bought) \u2014 weak evidence, selling has many innocent reasons across 71 open-market transactions"
+              ]
+            },
+            "short_interest": {
+              "score": -14.0,
+              "confidence": 0.8,
+              "why": [
+                "7.3% of float short"
+              ]
+            },
+            "news": {
+              "score": 37.5,
+              "confidence": 0.25,
+              "why": [
+                "10 recent headlines lean positive (3 positive / 0 negative words)",
+                "e.g. \"Rocket Lab (RKLB) Stock Could Be Overvalued On Record Backlog Growth\""
+              ]
+            }
+          }
+        },
+        "quality": {
+          "data_quality": "ok",
+          "bars": 260,
+          "dropped": 0,
+          "flags": [],
+          "display_close": 50.9900016784668,
+          "display_date": "2026-11-19"
+        },
+        "entry_timing": {
+          "regime": "lateral",
+          "position_in_range": 0.104,
+          "range_low": 39.48,
+          "range_high": 150.23,
+          "net_move_%": -11.2,
+          "range_width_%": 280.5,
+          "trend_r2": 0.001,
+          "midline_crossings": 6,
+          "action": "range_low",
+          "entry_target": 78.24,
+          "upside_to_range_high_%": 194.6,
+          "typical_wait_sessions": 19,
+          "reason": "Near the bottom of its sideways range, but the verdict is Hold \u2014 a low price alone is not a reason to buy.",
+          "factors": [
+            "-11% over the window against a 281%-wide range",
+            "trend line explains 0% of the move",
+            "crossed the midline 6 times",
+            "sitting 10% of the way up the range"
+          ]
+        },
+        "domain": "Space",
+        "spark": [
+          68.21,
+          65.71,
+          64.22,
+          59.18,
+          55.25,
+          50.84,
+          51.36,
+          50.9,
+          53.67,
+          51.22,
+          52.6,
+          53.82,
+          58.31,
+          58.6,
+          59.1,
+          54.73,
+          52.07,
+          54.43,
+          52.37,
+          45.99,
+          53.07,
+          58.86,
+          62.71,
+          66.15,
+          64.07,
+          61.53,
+          57.37,
+          55.05,
+          53.07,
+          50.99
         ]
       }
     ],
@@ -5252,18 +5250,18 @@
       {
         "ticker": "COST",
         "company": "Costco Wholesale Corporation",
-        "price": 1096.62,
-        "day_%": -1.212521752517519,
-        "score": 70.1,
+        "price": 1093.83,
+        "day_%": -0.25442168435036144,
+        "score": 69.9,
         "action": "Accumulate",
         "quality_grade": "A",
-        "rsi": 69.2,
+        "rsi": 67.9,
         "above_ema200": true,
         "cycle": "bull",
-        "analyst_upside_%": -1.0,
+        "analyst_upside_%": -0.8,
         "rel_strength": {
-          "vs_spy": 18.4,
-          "vs_sector": 6.8,
+          "vs_spy": 20.9,
+          "vs_sector": 9.4,
           "sector": "Consumer Defensive",
           "sector_etf": "XLP"
         },
@@ -5272,10 +5270,10 @@
           "fundamental": 84.0,
           "options": 50.0,
           "momentum": 78.0,
-          "sentiment": 58.7
+          "sentiment": 57.9
         },
         "sentiment_detail": {
-          "coverage": 0.79,
+          "coverage": 0.77,
           "sources": {
             "consensus": {
               "score": 50.0,
@@ -5285,7 +5283,7 @@
               ]
             },
             "targets": {
-              "score": -2.6,
+              "score": -1.9,
               "confidence": 0.75,
               "why": [
                 "-1% to the $1085.35 mean target",
@@ -5315,11 +5313,11 @@
               ]
             },
             "news": {
-              "score": 62.5,
-              "confidence": 0.42,
+              "score": 12.5,
+              "confidence": 0.08,
               "why": [
-                "10 recent headlines lean positive (5 positive / 0 negative words)",
-                "e.g. \"Mizuho raises Costco price target but removes stock from Top Picks lis\""
+                "10 recent headlines lean mixed (1 positive / 0 negative words)",
+                "e.g. \"Costco Just Surpassed $1,100 Per Share Ahead of Its $30 Special Divide\""
               ]
             }
           }
@@ -5329,33 +5327,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 1096.6199951171875,
-          "display_date": "2026-11-18"
+          "display_close": 1093.8299560546875,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.936,
+          "position_in_range": 0.926,
           "range_low": 845.02,
           "range_high": 1113.74,
-          "net_move_%": 10.2,
+          "net_move_%": 10.3,
           "range_width_%": 31.8,
-          "trend_r2": 0.108,
+          "trend_r2": 0.111,
           "midline_crossings": 17,
           "action": "wait",
           "entry_target": 939.07,
-          "upside_to_range_high_%": 1.6,
+          "upside_to_range_high_%": 1.8,
           "typical_wait_sessions": 19,
-          "reason": "Sideways for the window and already 94% of the way up its $845.02-$1,113.74 range. Buying here pays near the top of a range that has gone nowhere \u2014 wait for roughly $939.07. It has revisited that area roughly every 19 sessions.",
+          "reason": "Sideways for the window and already 93% of the way up its $845.02-$1,113.74 range. Buying here pays near the top of a range that has gone nowhere \u2014 wait for roughly $939.07. It has revisited that area roughly every 19 sessions.",
           "factors": [
             "+10% over the window against a 32%-wide range",
             "trend line explains 11% of the move",
             "crossed the midline 17 times",
-            "sitting 94% of the way up the range"
+            "sitting 93% of the way up the range"
           ]
         },
         "domain": "Retail / Consumer",
         "spark": [
-          946.52,
           945.52,
           958.02,
           953.22,
@@ -5384,36 +5381,37 @@
           1106.21,
           1113.74,
           1110.08,
-          1096.62
+          1096.62,
+          1093.83
         ]
       },
       {
         "ticker": "TGT",
         "company": "Target Corporation",
-        "price": 165.96,
-        "day_%": 4.030594862265348,
-        "score": 65.8,
+        "price": 167.46,
+        "day_%": 0.9220840749842658,
+        "score": 64.3,
         "action": "Accumulate",
         "quality_grade": "C",
-        "rsi": 61.4,
+        "rsi": 62.9,
         "above_ema200": true,
         "cycle": "bull",
-        "analyst_upside_%": 0.0,
+        "analyst_upside_%": 1.8,
         "rel_strength": {
-          "vs_spy": 6.2,
-          "vs_sector": -5.3,
+          "vs_spy": 9.1,
+          "vs_sector": -2.4,
           "sector": "Consumer Defensive",
           "sector_etf": "XLP"
         },
         "subscores": {
-          "technical": 79.0,
+          "technical": 73.0,
           "fundamental": 66.0,
           "options": 50.0,
           "momentum": 72.0,
-          "sentiment": 52.4
+          "sentiment": 54.5
         },
         "sentiment_detail": {
-          "coverage": 0.87,
+          "coverage": 0.91,
           "sources": {
             "consensus": {
               "score": 25.6,
@@ -5423,10 +5421,10 @@
               ]
             },
             "targets": {
-              "score": 0.0,
-              "confidence": 0.77,
+              "score": 4.4,
+              "confidence": 0.76,
               "why": [
-                "+0% to the $165.97 mean target"
+                "+2% to the $170.43 mean target"
               ]
             },
             "revisions": {
@@ -5451,11 +5449,11 @@
               ]
             },
             "news": {
-              "score": 12.5,
-              "confidence": 0.08,
+              "score": 75.0,
+              "confidence": 0.67,
               "why": [
-                "10 recent headlines lean mixed (1 positive / 0 negative words)",
-                "e.g. \"Target betting big on the holidays after a surprisingly strong quarter\""
+                "10 recent headlines lean positive (7 positive / 1 negative words)",
+                "e.g. \"Ross Stores Earnings Due After Rival TJX Surged On Holiday Outlook\""
               ]
             }
           }
@@ -5465,13 +5463,12 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 165.9600067138672,
-          "display_date": "2026-11-18"
+          "display_close": 167.4600067138672,
+          "display_date": "2026-11-19"
         },
         "entry_timing": null,
         "domain": "Retail / Consumer",
         "spark": [
-          153.68,
           152.57,
           152.55,
           150.93,
@@ -5500,24 +5497,25 @@
           161.45,
           160.32,
           159.53,
-          165.96
+          165.93,
+          167.46
         ]
       },
       {
         "ticker": "WMT",
         "company": "Walmart Inc.",
-        "price": 127.36,
-        "day_%": -0.12546740662382472,
+        "price": 126.04,
+        "day_%": -1.0364319162204305,
         "score": 61.4,
         "action": "Accumulate",
         "quality_grade": "C",
-        "rsi": 64.6,
+        "rsi": 59.8,
         "above_ema200": true,
         "cycle": "bear",
-        "analyst_upside_%": 3.6,
+        "analyst_upside_%": 4.7,
         "rel_strength": {
-          "vs_spy": 24.9,
-          "vs_sector": 13.3,
+          "vs_spy": 27.1,
+          "vs_sector": 15.6,
           "sector": "Consumer Defensive",
           "sector_etf": "XLP"
         },
@@ -5526,10 +5524,10 @@
           "fundamental": 61.0,
           "options": 50.0,
           "momentum": 78.0,
-          "sentiment": 62.0
+          "sentiment": 62.2
         },
         "sentiment_detail": {
-          "coverage": 0.88,
+          "coverage": 0.87,
           "sources": {
             "consensus": {
               "score": 75.0,
@@ -5539,10 +5537,10 @@
               ]
             },
             "targets": {
-              "score": 8.9,
+              "score": 11.6,
               "confidence": 0.71,
               "why": [
-                "+4% to the $131.90 mean target"
+                "+5% to the $131.90 mean target"
               ]
             },
             "revisions": {
@@ -5572,7 +5570,7 @@
               "confidence": 0.33,
               "why": [
                 "10 recent headlines lean positive (4 positive / 0 negative words)",
-                "e.g. \"In 2008, The \u201cWalmart Recession Signal\u201d Neared A Record As The Market \""
+                "e.g. \"Walmart beats Q3 earnings expectations, raises full-year outlook again\""
               ]
             }
           }
@@ -5582,33 +5580,32 @@
           "bars": 260,
           "dropped": 0,
           "flags": [],
-          "display_close": 127.36000061035156,
-          "display_date": "2026-11-18"
+          "display_close": 126.04000091552734,
+          "display_date": "2026-11-19"
         },
         "entry_timing": {
           "regime": "lateral",
-          "position_in_range": 0.809,
+          "position_in_range": 0.77,
           "range_low": 99.77,
           "range_high": 133.88,
-          "net_move_%": 3.7,
+          "net_move_%": 3.6,
           "range_width_%": 34.2,
-          "trend_r2": 0.02,
+          "trend_r2": 0.023,
           "midline_crossings": 7,
           "action": "wait",
           "entry_target": 111.71,
-          "upside_to_range_high_%": 5.1,
+          "upside_to_range_high_%": 6.2,
           "typical_wait_sessions": 15,
-          "reason": "Sideways for the window and already 81% of the way up its $99.77-$133.88 range. Buying here pays near the top of a range that has gone nowhere \u2014 wait for roughly $111.71. It has revisited that area roughly every 15 sessions.",
+          "reason": "Sideways for the window and already 77% of the way up its $99.77-$133.88 range. Buying here pays near the top of a range that has gone nowhere \u2014 wait for roughly $111.71. It has revisited that area roughly every 15 sessions.",
           "factors": [
             "+4% over the window against a 34%-wide range",
             "trend line explains 2% of the move",
             "crossed the midline 7 times",
-            "sitting 81% of the way up the range"
+            "sitting 77% of the way up the range"
           ]
         },
         "domain": "Retail / Consumer",
         "spark": [
-          110.56,
           111.35,
           113.08,
           112.28,
@@ -5637,7 +5634,8 @@
           128.09,
           128.41,
           127.52,
-          127.36
+          127.36,
+          126.04
         ]
       }
     ]
